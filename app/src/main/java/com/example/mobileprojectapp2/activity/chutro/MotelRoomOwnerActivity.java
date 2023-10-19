@@ -1,7 +1,9 @@
-package com.example.mobileprojectapp2;
+package com.example.mobileprojectapp2.activity.chutro;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
+
+import com.example.mobileprojectapp2.R;
 
 public class MotelRoomOwnerActivity extends AppCompatActivity {
 
