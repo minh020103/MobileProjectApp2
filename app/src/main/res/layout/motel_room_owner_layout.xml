@@ -11,13 +11,14 @@
 
 
     <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/vp2ChuTro"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"/>
 
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bnvMotelRoomOwner"
+        android:id="@+id/bnvChuTro"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:menu="@menu/motel_room_owner_menu"
