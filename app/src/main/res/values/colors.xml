@@ -9,6 +9,7 @@
     <color name="white">#FFFFFFFF</color>
 
     <color name="main_color_app_light">#14ae5c</color>
+    <color name="bnv_gray">#3C3C3C</color>
     <color name="text_gray">#b3b3b3</color>
     <color name="button_gray">#e5e6eb</color>
     <color name="button_tim">#cba3ff</color>
