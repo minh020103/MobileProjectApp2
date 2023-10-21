@@ -9,6 +9,7 @@
     android:background="@color/background_gray">
 
     <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
@@ -71,7 +72,7 @@
                 android:layout_height="wrap_content"
                 android:text="Mặt trước CCCD"
                 android:textColor="@color/black"
-                android:layout_below="@+id/tv_not_authencation"
+                android:layout_marginTop="40dp"
                 android:textSize="18dp"
                 android:paddingLeft="18dp"/>
 
