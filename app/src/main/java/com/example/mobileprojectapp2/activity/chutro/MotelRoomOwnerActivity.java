@@ -17,6 +17,7 @@ public class MotelRoomOwnerActivity extends AppCompatActivity {
     private ViewPager2 vp2Chutro;
     private BottomNavigationView bnvChuTro;
     private MotelRoomOwnerViewPager2Adapter viewPager2Adapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,7 +32,7 @@ public class MotelRoomOwnerActivity extends AppCompatActivity {
             @Override
             public void onPageSelected(int position) {
                 super.onPageSelected(position);
-                switch (position){
+                switch (position) {
                     case MotelRoomOwnerViewPager2Adapter.LIST_ROOM:
                         bnvChuTro.getMenu().findItem(R.id.room_management).setChecked(true);
                         break;
@@ -40,6 +41,9 @@ public class MotelRoomOwnerActivity extends AppCompatActivity {
                         break;
                     case MotelRoomOwnerViewPager2Adapter.NOTIFICATION:
                         bnvChuTro.getMenu().findItem(R.id.notification).setChecked(true);
+                        break;
+                    case MotelRoomOwnerViewPager2Adapter.MESSAGE:
+                        bnvChuTro.getMenu().findItem(R.id.message).setChecked(true);
                         break;
                     case MotelRoomOwnerViewPager2Adapter.PROFILE:
                         bnvChuTro.getMenu().findItem(R.id.profile).setChecked(true);
@@ -51,7 +55,7 @@ public class MotelRoomOwnerActivity extends AppCompatActivity {
         bnvChuTro.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()){
+                switch (item.getItemId()) {
                     case R.id.room_management:
                         vp2Chutro.setCurrentItem(MotelRoomOwnerViewPager2Adapter.LIST_ROOM);
                         break;
@@ -60,6 +64,9 @@ public class MotelRoomOwnerActivity extends AppCompatActivity {
                         break;
                     case R.id.notification:
                         vp2Chutro.setCurrentItem(MotelRoomOwnerViewPager2Adapter.NOTIFICATION);
+                        break;
+                    case R.id.message:
+                        vp2Chutro.setCurrentItem(MotelRoomOwnerViewPager2Adapter.MESSAGE);
                         break;
                     case R.id.profile:
                         vp2Chutro.setCurrentItem(MotelRoomOwnerViewPager2Adapter.PROFILE);
