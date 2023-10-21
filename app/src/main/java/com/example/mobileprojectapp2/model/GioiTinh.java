@@ -1,7 +1,7 @@
 package com.example.mobileprojectapp2.model;
 
 
-public class Gender {
+public class GioiTinh {
     private String name;
 
     public String getName() {
@@ -12,7 +12,7 @@ public class Gender {
         this.name = name;
     }
 
-    public Gender(String name) {
+    public GioiTinh(String name) {
         this.name = name;
     }
 }

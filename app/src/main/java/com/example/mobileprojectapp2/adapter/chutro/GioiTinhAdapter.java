@@ -12,22 +12,22 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.example.mobileprojectapp2.R;
-import com.example.mobileprojectapp2.model.Gender;
+import com.example.mobileprojectapp2.model.GioiTinh;
 
 import java.util.List;
 
-public class GenderAdapter extends ArrayAdapter<Gender> {
-    public GenderAdapter(@NonNull Context context, int resource, @NonNull List<Gender> objects) {
+public class GioiTinhAdapter extends ArrayAdapter<GioiTinh> {
+    public GioiTinhAdapter(@NonNull Context context, int resource, @NonNull List<GioiTinh> objects) {
         super(context, resource, objects);
     }
 
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_seleted,parent,false);
+        convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_seleted_gioitinh,parent,false);
         TextView tvSelected = convertView.findViewById(R.id.tv_seleted);
 
-        Gender gender = this.getItem(position);
+        GioiTinh gender = this.getItem(position);
         if (gender != null){
             tvSelected.setText(gender.getName());
         }
@@ -36,10 +36,10 @@ public class GenderAdapter extends ArrayAdapter<Gender> {
 
     @Override
     public View getDropDownView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_gender,parent,false);
+        convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_gioitinh,parent,false);
         TextView tvGender = convertView.findViewById(R.id.tv_gender);
 
-        Gender gender = this.getItem(position);
+        GioiTinh gender = this.getItem(position);
         if (gender != null){
             tvGender.setText(gender.getName());
         }
