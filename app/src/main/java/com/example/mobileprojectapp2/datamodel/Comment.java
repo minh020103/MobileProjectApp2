@@ -1,2 +1,4 @@
-package com.example.mobileprojectapp2.datamodel;public class Comment {
+package com.example.mobileprojectapp2.datamodel;
+
+public class Comment {
 }
