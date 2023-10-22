@@ -40,8 +40,8 @@ public class ChuTroImageSlideViewPager2Adapter extends RecyclerView.Adapter<ChuT
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        HinhAnh hinhAnh = list.get(position);
-
+//        HinhAnh hinhAnh = list.get(position);
+        holder.imgItem.setImageDrawable(activity.getResources().getDrawable(R.drawable.phong_tro, activity.getTheme()));
     }
 
     @Override
@@ -55,7 +55,7 @@ public class ChuTroImageSlideViewPager2Adapter extends RecyclerView.Adapter<ChuT
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
-            itemView = itemView.findViewById(R.id.imgItem);
+            imgItem = itemView.findViewById(R.id.imgItem);
         }
     }
 }
