@@ -23,6 +23,9 @@ public class ChuTro {
         this.tenChuTaiKhoanNganHang = tenChuTaiKhoanNganHang;
         this.xacThuc = xacThuc;
     }
+    public ChuTro() {
+
+    }
 
     public int getId() {
         return id;

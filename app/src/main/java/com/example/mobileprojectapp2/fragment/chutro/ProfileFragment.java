@@ -1,38 +1,49 @@
 package com.example.mobileprojectapp2.fragment.chutro;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatButton;
 
+import com.bumptech.glide.Glide;
+import com.example.mobileprojectapp2.Api.ApiServicePhuc;
+import com.example.mobileprojectapp2.Api.Const;
 import com.example.mobileprojectapp2.R;
 import com.example.mobileprojectapp2.activity.chutro.AuthencationActivity;
 import com.example.mobileprojectapp2.activity.chutro.ChangePasswordActivity;
 import com.example.mobileprojectapp2.activity.chutro.EditProfileActivity;
+import com.example.mobileprojectapp2.model.ChuTro;
 import com.makeramen.roundedimageview.RoundedImageView;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ProfileFragment extends AbstractFragment {
 
     private RoundedImageView imgViewProfile;
     private TextView tvName, tvPhone;
-
     private AppCompatButton btnEditProfile, btnChangePassWord, btnMessenger, btnAuthencation, btnLogout;
-
+    private int id;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View fragmentLayout = null;
         fragmentLayout = inflater.inflate(R.layout.chutro_fragment_profile_layout, container, false);
-
+        id = 1;
         anhXa(fragmentLayout);
-
+        getDataFromApi();
         btnEditProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -63,6 +74,27 @@ public class ProfileFragment extends AbstractFragment {
         return fragmentLayout;
     }
 
+    private void getDataFromApi() {
+        Call<ChuTro> call = ApiServicePhuc.apiService.getChuTroById(2);
+
+        call.enqueue(new Callback<ChuTro>() {
+            @Override
+            public void onResponse(Call<ChuTro> call, Response<ChuTro> response) {
+                Log.d("TAG", "onResponse: "+Const.DOMAIN + response.body().getHinh());
+                Glide.with(ProfileFragment.this.getLayoutInflater().getContext()).load(Const.DOMAIN + response.body().getHinh()).into(imgViewProfile);
+
+                tvPhone.setText(response.body().getSoDienThoai());
+                tvName.setText(response.body().getTen());
+            }
+
+            @Override
+            public void onFailure(Call<ChuTro> call, Throwable t) {
+                Toast.makeText(getActivity(), "Loi roi ba", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+
     private void anhXa(View fragment) {
         imgViewProfile = fragment.findViewById(R.id.imgView_profile);
         tvName = fragment.findViewById(R.id.tv_nameChuTro);
@@ -74,5 +106,16 @@ public class ProfileFragment extends AbstractFragment {
         btnLogout = fragment.findViewById(R.id.btn_Logout);
     }
 
-
+    private void alertFail(String s) {
+        new AlertDialog.Builder(getActivity())
+                .setTitle("Failed")
+                .setIcon(R.drawable.icon_profile)
+                .setMessage(s)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                }).show();
+    }
 }

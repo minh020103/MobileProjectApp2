@@ -1,10 +1,6 @@
-package com.example.mobileproject.datamodel;
+package com.example.mobileprojectapp2.model;
 
-import com.google.gson.annotations.SerializedName;
-
-import java.io.Serializable;
-
-public class TaiKhoan{
+public class TaiKhoan {
     private int id;
     private String tenTaiKhoan;
     private String matKhau;
