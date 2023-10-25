@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/tbXacNhanTaiKhoan"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="2dp"
+        android:background="@color/white">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/imgBack"
+                android:layout_width="50dp"
+                android:layout_height="34dp"
+                android:src="@drawable/ic_launcher_background" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="34dp"
+                android:textStyle="bold"
+                android:text="Chi tiet thong bao"
+                android:gravity="center"
+                android:textSize="25sp"/>
+        </RelativeLayout>
+    </androidx.appcompat.widget.Toolbar>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="9"
+        android:paddingLeft="20dp"
+        android:paddingTop="30dp"
+        android:orientation="vertical">
+        
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Noi dung thong bao"
+            android:textStyle="bold"
+            android:textSize="20sp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ngay thong bao"
+            android:textStyle="bold"
+            android:textSize="20sp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Goi"
+            android:textStyle="bold"
+            android:textSize="20sp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Gia"
+            android:textStyle="bold"
+            android:textSize="20sp"/>
+        
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="center">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="10sp"
+            android:text="Xoa thong bao"
+            android:paddingLeft="50dp"
+            android:paddingRight="50dp"/>
+
+
+
+    </LinearLayout>
+
+</LinearLayout>
