@@ -1,6 +1,7 @@
 package com.example.mobileprojectapp2.api.chutro;
 
 import com.example.mobileprojectapp2.api.Const;
+import com.example.mobileprojectapp2.datamodel.NguoiThue;
 
 import java.util.List;
 
@@ -20,5 +21,6 @@ public interface ApiServiceKiet {
             .build()
             .create(ApiServiceKiet.class);
 
-
+    @GET("api/")
+    Call<List<NguoiThue>> getListNguoiThueTheoIdPhong();
 }
