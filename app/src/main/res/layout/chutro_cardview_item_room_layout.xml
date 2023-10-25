@@ -61,16 +61,25 @@
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="2"
+                android:layout_weight="3"
                 android:gravity="right">
 
                 <ImageView
+                    android:id="@+id/imgDanhSachNguoiThue"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:layout_marginRight="20dp"
+                    android:layout_marginRight="15dp"
+                    android:src="@drawable/icon_list_person" />
+
+                <ImageView
+                    android:id="@+id/imgChinhSua"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginRight="15dp"
                     android:src="@drawable/icon_edit" />
 
                 <ImageView
+                    android:id="@+id/imgXoa"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:src="@drawable/icon_close" />

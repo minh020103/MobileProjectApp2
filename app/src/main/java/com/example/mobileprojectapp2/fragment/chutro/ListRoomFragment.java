@@ -2,12 +2,14 @@ package com.example.mobileprojectapp2.fragment.chutro;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -16,6 +18,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.mobileprojectapp2.R;
+import com.example.mobileprojectapp2.activity.chutro.AddRoomActivity;
+import com.example.mobileprojectapp2.activity.chutro.EditRoomActivity;
 import com.example.mobileprojectapp2.activity.chutro.MotelRoomOwnerActivity;
 import com.example.mobileprojectapp2.datamodel.Comment;
 import com.example.mobileprojectapp2.datamodel.HinhAnh;
@@ -38,6 +42,7 @@ public class ListRoomFragment extends AbstractFragment {
     private CommentAdapter commentAdapter;
     private List<Comment> listComment;
     private ViewGroup container;
+    private LinearLayout llAdd;
 
     @Nullable
     @Override
@@ -47,10 +52,21 @@ public class ListRoomFragment extends AbstractFragment {
         anhXa(fragmentLayout);
 
         this.container = container;
+        onClickButtomInFragment();
         onClickItemInCardView();
 
 
         return fragmentLayout;
+    }
+
+    private void onClickButtomInFragment() {
+        llAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), AddRoomActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -61,6 +77,22 @@ public class ListRoomFragment extends AbstractFragment {
 
     private void onClickItemInCardView() {
         roomAdapter.setOnClickItemRoomListener(new MotelRoomAdapter.OnClickItemRoomListener() {
+            @Override
+            public void setOnClickListPerson(int position, View view) {
+
+            }
+
+            @Override
+            public void setOnClickEdit(int position, View view) {
+                Intent intent = new Intent(getActivity(), EditRoomActivity.class);
+                startActivity(intent);
+            }
+
+            @Override
+            public void setOnClickDelete(int position, View view) {
+
+            }
+
             @Override
             public void setOnClickComment(int position, View view) {
                 showBottomSheetComment(position, view);
@@ -128,7 +160,7 @@ public class ListRoomFragment extends AbstractFragment {
 
 
     private void anhXa(View fragmentLayout) {
-
+        llAdd = fragmentLayout.findViewById(R.id.llAdd);
         rcvListMotelRoom = fragmentLayout.findViewById(R.id.rcvListMotelRoom);
         phongTroList = new LinkedList<>();
         addList();

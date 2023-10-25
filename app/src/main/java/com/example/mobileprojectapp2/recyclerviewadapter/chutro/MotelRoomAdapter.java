@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
@@ -66,6 +67,15 @@ public class MotelRoomAdapter extends RecyclerView.Adapter<MotelRoomAdapter.MyVi
             @Override
             public void onClick(View view) {
                 switch (view.getId()){
+                    case R.id.imgDanhSachNguoiThue:
+                        onClickItemRoomListener.setOnClickListPerson(position, view);
+                        break;
+                    case R.id.imgChinhSua:
+                        onClickItemRoomListener.setOnClickEdit(position, view);
+                        break;
+                    case R.id.imgXoa:
+                        onClickItemRoomListener.setOnClickEdit(position, view);
+                        break;
                     case R.id.llComment:
                         onClickItemRoomListener.setOnClickComment(position, view);
                         break;
@@ -83,6 +93,9 @@ public class MotelRoomAdapter extends RecyclerView.Adapter<MotelRoomAdapter.MyVi
     }
 
     public interface OnClickItemRoomListener{
+        void setOnClickListPerson(int position, View view);
+        void setOnClickEdit(int position, View view);
+        void setOnClickDelete(int position, View view);
         void setOnClickComment(int position, View view);
         void setOnClickRating(int position, View view);
 
@@ -93,6 +106,8 @@ public class MotelRoomAdapter extends RecyclerView.Adapter<MotelRoomAdapter.MyVi
         ViewPager2 vp2SlideImage;
         CircleIndicator3 ci3SlideImage;
 
+        ImageView  imgDanhSachNguoiThue, imgChinhSua, imgXoa;
+
         LinearLayout llComment;
         LinearLayout llRating;
 
@@ -100,6 +115,11 @@ public class MotelRoomAdapter extends RecyclerView.Adapter<MotelRoomAdapter.MyVi
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
+
+            imgDanhSachNguoiThue = itemView.findViewById(R.id.imgDanhSachNguoiThue);
+            imgChinhSua = itemView.findViewById(R.id.imgChinhSua);
+            imgXoa = itemView.findViewById(R.id.imgXoa);
+
 
             llComment = itemView.findViewById(R.id.llComment);
             llRating = itemView.findViewById(R.id.llRating);
@@ -112,6 +132,9 @@ public class MotelRoomAdapter extends RecyclerView.Adapter<MotelRoomAdapter.MyVi
             ci3SlideImage.setViewPager(vp2SlideImage);
 
             // Click
+            imgDanhSachNguoiThue.setOnClickListener(this);
+            imgChinhSua.setOnClickListener(this);
+            imgXoa.setOnClickListener(this);
             llComment.setOnClickListener(this);
             llRating.setOnClickListener(this);
         }
