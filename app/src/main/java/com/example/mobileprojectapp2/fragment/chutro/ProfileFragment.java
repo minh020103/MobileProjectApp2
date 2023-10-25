@@ -106,6 +106,12 @@ public class ProfileFragment extends AbstractFragment {
         btnLogout = fragment.findViewById(R.id.btn_Logout);
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        getDataFromApi();
+    }
+
     private void alertFail(String s) {
         new AlertDialog.Builder(getActivity())
                 .setTitle("Failed")

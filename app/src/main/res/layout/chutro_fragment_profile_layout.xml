@@ -35,7 +35,7 @@
             android:id="@+id/imgView_profile"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:scaleType="fitXY"
+            android:scaleType="centerCrop"
             android:src="@drawable/avt"
             app:riv_oval="true" />
 
