@@ -22,12 +22,10 @@ public class MotelRoomOwnerActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.motel_room_owner_layout);
-
         vp2Chutro = findViewById(R.id.vp2ChuTro);
         bnvChuTro = findViewById(R.id.bnvChuTro);
         viewPager2Adapter = new MotelRoomOwnerViewPager2Adapter(this);
         vp2Chutro.setAdapter(viewPager2Adapter);
-
         vp2Chutro.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
             public void onPageSelected(int position) {

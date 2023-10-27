@@ -6,6 +6,53 @@ public class PhongTinNhan {
     private int idTaiKhoan2;
     private String tinNhanMoiNhat;
     private String thoiGianCuaTinNhan;
+    private NguoiThue nguoiThue;
+    private int trangThai1;
+    private int trangThai2;
+
+    public int getTrangThai1() {
+        return trangThai1;
+    }
+
+    public void setTrangThai1(int trangThai1) {
+        this.trangThai1 = trangThai1;
+    }
+
+    public int getTrangThai2() {
+        return trangThai2;
+    }
+
+    public void setTrangThai2(int trangThai2) {
+        this.trangThai2 = trangThai2;
+    }
+
+    public PhongTinNhan(int id, int idTaiKhoan1, int idTaiKhoan2, String tinNhanMoiNhat, String thoiGianCuaTinNhan, NguoiThue nguoiThue, int trangThai1, int trangThai2) {
+        this.id = id;
+        this.idTaiKhoan1 = idTaiKhoan1;
+        this.idTaiKhoan2 = idTaiKhoan2;
+        this.tinNhanMoiNhat = tinNhanMoiNhat;
+        this.thoiGianCuaTinNhan = thoiGianCuaTinNhan;
+        this.nguoiThue = nguoiThue;
+        this.trangThai1 = trangThai1;
+        this.trangThai2 = trangThai2;
+    }
+
+    public PhongTinNhan(int id, int idTaiKhoan1, int idTaiKhoan2, String tinNhanMoiNhat, String thoiGianCuaTinNhan, NguoiThue nguoiThue) {
+        this.id = id;
+        this.idTaiKhoan1 = idTaiKhoan1;
+        this.idTaiKhoan2 = idTaiKhoan2;
+        this.tinNhanMoiNhat = tinNhanMoiNhat;
+        this.thoiGianCuaTinNhan = thoiGianCuaTinNhan;
+        this.nguoiThue = nguoiThue;
+    }
+
+    public NguoiThue getNguoiThue() {
+        return nguoiThue;
+    }
+
+    public void setNguoiThue(NguoiThue nguoiThue) {
+        this.nguoiThue = nguoiThue;
+    }
 
     public void setTinNhanMoiNhat(String tinNhanMoiNhat) {
         this.tinNhanMoiNhat = tinNhanMoiNhat;

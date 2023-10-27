@@ -2,7 +2,9 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="80dp"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardElevation="0dp"
+    >
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -52,7 +54,6 @@
                 <TextView
                     android:id="@+id/tinnhanmoinhat_item_massage"
                     android:text="Hello My Friend!!"
-                    android:textColor="@color/black"
                     android:textSize="16sp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
@@ -82,9 +83,7 @@
                 <TextView
                     android:id="@+id/thoigiantinnhan_item_message"
                     android:layout_gravity="center"
-                    android:textStyle="bold"
                     android:text="2 giờ"
-                    android:textColor="@color/black"
                     android:textSize="16sp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>

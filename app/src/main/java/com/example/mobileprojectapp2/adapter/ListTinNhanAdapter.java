@@ -1,6 +1,9 @@
 package com.example.mobileprojectapp2.adapter;
 
 import android.app.Activity;
+import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,7 +13,9 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.mobileprojectapp2.R;
+import com.example.mobileprojectapp2.api.Const;
 import com.example.mobileprojectapp2.datamodel.PhongTinNhan;
 import com.makeramen.roundedimageview.RoundedImageView;
 
@@ -22,16 +27,21 @@ public class ListTinNhanAdapter extends RecyclerView.Adapter<ListTinNhanAdapter.
     int layoutId;
     ArrayList<PhongTinNhan> arrayList;
     OnClickItemListener onClickItemListener;
+    private int senderId;
+
+    public ListTinNhanAdapter(Activity activity, int layoutId, ArrayList<PhongTinNhan> arrayList,  int senderId) {
+        this.activity = activity;
+        this.layoutId = layoutId;
+        this.arrayList = arrayList;
+
+        this.senderId = senderId;
+    }
 
     public void setOnClickItemListener(OnClickItemListener onClickItemListener) {
         this.onClickItemListener = onClickItemListener;
     }
 
-    public ListTinNhanAdapter(Activity activity, int layoutId, ArrayList<PhongTinNhan> arrayList) {
-        this.activity = activity;
-        this.layoutId = layoutId;
-        this.arrayList = arrayList;
-    }
+
 
     @NonNull
     @Override
@@ -45,9 +55,37 @@ public class ListTinNhanAdapter extends RecyclerView.Adapter<ListTinNhanAdapter.
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         PhongTinNhan phongTinNhan = arrayList.get(position);
         ///Truy xuất tài khoản thông qua id ở đây
-        holder.ten_item_message.setText("Nguyễn Văn Nan");
-        holder.tinnhanmoinhat_item_message.setText(phongTinNhan.getTinNhanMoiNhat());
-        holder.thoigiantinnhan_item_message.setText(phongTinNhan.getThoiGianCuaTinNhan());
+
+
+        if(senderId==phongTinNhan.getIdTaiKhoan1()){
+            if(phongTinNhan.getTrangThai1()==0){
+                holder.tinnhanmoinhat_item_message.setTypeface(holder.tinnhanmoinhat_item_message.getTypeface(), Typeface.BOLD);
+                holder.tinnhanmoinhat_item_message.setTextColor(Color.parseColor("#FF000000"));
+                holder.tinnhanmoinhat_item_message.setText(phongTinNhan.getTinNhanMoiNhat());
+                holder.thoigiantinnhan_item_message.setTypeface(holder.thoigiantinnhan_item_message.getTypeface(), Typeface.BOLD);
+                holder.thoigiantinnhan_item_message.setTextColor(Color.parseColor("#FF000000"));
+                holder.thoigiantinnhan_item_message.setText(phongTinNhan.getThoiGianCuaTinNhan());
+            }else{
+                holder.tinnhanmoinhat_item_message.setText(phongTinNhan.getTinNhanMoiNhat());
+                holder.thoigiantinnhan_item_message.setText(phongTinNhan.getThoiGianCuaTinNhan());
+            }
+        }
+        else if(Const.senderId==phongTinNhan.getIdTaiKhoan2()){
+            if(phongTinNhan.getTrangThai2()==0){
+                holder.tinnhanmoinhat_item_message.setTypeface(holder.tinnhanmoinhat_item_message.getTypeface(), Typeface.BOLD);
+                holder.tinnhanmoinhat_item_message.setTextColor(Color.parseColor("#FF000000"));
+                holder.tinnhanmoinhat_item_message.setText(phongTinNhan.getTinNhanMoiNhat());
+                holder.thoigiantinnhan_item_message.setTypeface(holder.thoigiantinnhan_item_message.getTypeface(), Typeface.BOLD);
+                holder.thoigiantinnhan_item_message.setTextColor(Color.parseColor("#FF000000"));
+                holder.thoigiantinnhan_item_message.setText(phongTinNhan.getThoiGianCuaTinNhan());
+            }else{
+                holder.tinnhanmoinhat_item_message.setText(phongTinNhan.getTinNhanMoiNhat());
+                holder.thoigiantinnhan_item_message.setText(phongTinNhan.getThoiGianCuaTinNhan());
+            }
+        }
+        holder.ten_item_message.setText(phongTinNhan.getNguoiThue().getTen());
+
+        Glide.with(activity.getLayoutInflater().getContext()).load(Const.DOMAIN+phongTinNhan.getNguoiThue().getHinh()).into(holder.img_item_message);
         holder.onClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View view) {

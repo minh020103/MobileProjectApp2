@@ -2,6 +2,7 @@ package com.example.mobileprojectapp2.api;
 
 import com.example.mobileprojectapp2.datamodel.ChuTro;
 import com.example.mobileprojectapp2.datamodel.NguoiThue;
+import com.example.mobileprojectapp2.datamodel.PhongTinNhan;
 import com.example.mobileprojectapp2.datamodel.TaiKhoan;
 import com.example.mobileprojectapp2.datamodel.TinNhan;
 
@@ -39,4 +40,22 @@ public interface ApiServiceNghiem {
     Call<TinNhan> guiTinNhan(@Part("idPhong") int idPhong,
                              @Part("idTaiKhoan") int idTaiKhoan,
                              @Part("noiDung")RequestBody noiDung);
+
+
+    @GET("danhsachtinnhantheoidtaikhoan")
+    Call<ArrayList<PhongTinNhan>> danhSachTinNhanTheoIdTaiKhoan(@Query("idTaiKhoan") int idTaiKhoan);
+
+    @Multipart
+    @POST("capnhattinnhanmoinhat")
+    Call<Integer> capNhatTinNhanMoiNhat(@Part("id") int idPhong,
+                                        @Part("tinNhanMoiNhat")RequestBody noiDung,
+                                        @Part("thoiGian")RequestBody thoiGian);
+    @Multipart
+    @POST("capnhattrangthaidaxem")
+    Call<Integer> capNhatTrangThaiDaXem(@Part("idPhong") int idPhong,
+                                        @Part("idTaiKhoan")int idTaiKhoan
+                                        );
+
+    @GET("kiemtradangnhap")
+    Call<TaiKhoan> kiemTraDangNhap(@Query("tenTaiKhoan") String tenTaiKhoan, @Query("matKhau") String matKhau );
 }

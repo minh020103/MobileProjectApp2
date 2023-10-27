@@ -26,34 +26,63 @@
         app:layout_constraintTop_toTopOf="parent"
 
         />
+
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/ic_back"
         android:layout_width="@dimen/_30sdp"
         android:layout_height="@dimen/_30sdp"
-        android:layout_marginStart="@dimen/_16sdp"
-        android:layout_marginLeft="@dimen/_16ssp"
-        android:layout_marginTop="@dimen/_12sdp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="12dp"
         android:padding="@dimen/_5sdp"
         android:src="@drawable/ic_back"
+        android:tint="@color/white"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:tint="@color/white"/>
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.makeramen.roundedimageview.RoundedImageView
+        android:id="@+id/avt_doiphuong"
+        android:layout_width="@dimen/_35sdp"
+        android:layout_height="@dimen/_35sdp"
+        android:src="@drawable/avt1"
+        app:layout_constraintBottom_toBottomOf="@+id/ic_back"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.117"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/ic_back"
+        app:layout_constraintVertical_bias="0.0"
+        app:riv_border_color="@color/black"
+        app:riv_border_width="1dp"
+        app:riv_oval="true" />
+
 
     <TextView
         android:id="@+id/textName"
-        android:text="Nguyễn Văn Nan"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_width="253dp"
+        android:layout_height="32dp"
+        android:layout_marginStart="@dimen/_10sdp"
         android:ellipsize="end"
-        android:gravity="center"
         android:maxLines="1"
+        android:text="Nguyễn Văn Nas"
         android:textColor="@color/white"
         android:textSize="@dimen/_18ssp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@id/ic_back"
+        app:layout_constraintEnd_toStartOf="@id/infor_doiPhuong"
+        app:layout_constraintHorizontal_bias="0.111"
+        app:layout_constraintStart_toEndOf="@id/avt_doiphuong"
+        app:layout_constraintTop_toTopOf="@id/ic_back"
+        app:layout_constraintVertical_bias="0.571" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/infor_doiPhuong"
+        android:layout_width="@dimen/_25sdp"
+        android:layout_height="@dimen/_25sdp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:src="@drawable/ic_info"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/ic_back" />
+        app:layout_constraintTop_toTopOf="parent" />
+
     <View
         android:id="@+id/viewSupporter"
         android:layout_width="match_parent"
@@ -66,7 +95,6 @@
         android:id="@+id/chatRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:stackFromEnd="true"
         android:orientation="vertical"
         android:overScrollMode="never"
         android:paddingLeft="@dimen/_7sdp"
@@ -74,7 +102,10 @@
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="@id/viewBackground"
         app:layout_constraintTop_toBottomOf="@id/viewSupporter"
-        />
+        app:layout_constraintVertical_bias="0.0"
+        app:stackFromEnd="true"
+        tools:layout_editor_absoluteX="0dp" />
+
     <FrameLayout
         android:id="@+id/layoutSend"
         android:layout_width="@dimen/_40sdp"

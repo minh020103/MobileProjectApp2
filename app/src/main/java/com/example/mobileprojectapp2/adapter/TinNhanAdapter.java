@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.mobileprojectapp2.R;
 import com.example.mobileprojectapp2.activity.chutro.RoomMassageActivity;
+import com.example.mobileprojectapp2.api.Const;
 import com.example.mobileprojectapp2.datamodel.TinNhan;
 import com.makeramen.roundedimageview.RoundedImageView;
 
@@ -72,7 +73,7 @@ public class TinNhanAdapter extends RecyclerView.Adapter<TinNhanAdapter.MyViewHo
         TinNhan tinNhan = arrayList.get(position);
         holder.thoiGian.setText(formatDate(arrayList.get(position).getCreated_at()));
         if(arrayList.get(position).getIdTaiKhoan()!=sender){
-            Glide.with(activity.getLayoutInflater().getContext()).load("http://192.168.190.1:8080/3t/laravel/public/"+anhDoiPhuong).into(holder.roundedImageView);
+            Glide.with(activity.getLayoutInflater().getContext()).load(Const.DOMAIN +anhDoiPhuong).into(holder.roundedImageView);
         }
         holder.textMessage.setText(tinNhan.getNoiDung());
     }
