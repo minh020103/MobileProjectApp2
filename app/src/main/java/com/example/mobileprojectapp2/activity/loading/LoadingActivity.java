@@ -39,6 +39,6 @@ public class LoadingActivity extends AppCompatActivity {
                 startActivity(new Intent(LoadingActivity.this, LoginActivity.class));
                 finish();
             }
-        },3000);
+        },1000);
     }
 }
