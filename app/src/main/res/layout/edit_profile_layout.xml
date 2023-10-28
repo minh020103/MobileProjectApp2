@@ -40,7 +40,7 @@
             android:layout_height="120dp"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="15dp"
-            android:scaleType="fitXY"
+            android:scaleType="centerCrop"
             android:src="@drawable/avt"
             app:riv_oval="true" />
 
@@ -53,14 +53,25 @@
             android:text="File Upload "
             android:textColor="@color/black"
             android:textSize="18sp" />
+        <TextView
+            android:id="@+id/tv_lb_ten"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tên chủ tài khoản"
+            android:layout_below="@id/tv_upload"
+            android:padding="5dp"
+            android:textColor="@color/black"
+            android:layout_marginStart="5dp"
+            android:textSize="16sp"
+            android:drawableRight="@drawable/iconp_star"
+            android:drawablePadding="5dp"/>
 
         <EditText
             android:id="@+id/edt_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/tv_upload"
+            android:layout_below="@+id/tv_lb_ten"
             android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp"
             android:layout_marginEnd="10dp"
             android:background="@color/white"
             android:hint="Nhập tên"
@@ -68,13 +79,25 @@
             android:textColor="@color/black"
             android:textSize="18dp" />
 
+        <TextView
+            android:id="@+id/tv_lb_phone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Số điện thoại"
+            android:layout_below="@id/edt_name"
+            android:padding="5dp"
+            android:textColor="@color/black"
+            android:layout_marginStart="5dp"
+            android:textSize="16sp"
+            android:drawableRight="@drawable/iconp_star"
+            android:drawablePadding="5dp"/>
+
         <EditText
             android:id="@+id/edt_phone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/edt_name"
+            android:layout_below="@+id/tv_lb_phone"
             android:layout_marginStart="10dp"
-            android:layout_marginTop="5dp"
             android:layout_marginEnd="10dp"
             android:background="@color/white"
             android:hint="Nhập số điện thoại"
@@ -82,24 +105,25 @@
             android:textColor="@color/black"
             android:textSize="18dp" />
 
-        <Spinner
-            android:id="@+id/spiner_gender"
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/tv_lb_stk_bank"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/edt_phone"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginEnd="10dp"
-            android:background="@color/white"
-            android:padding="10dp" />
+            android:text="Số tài khoản ngân hàng"
+            android:layout_below="@id/edt_phone"
+            android:padding="5dp"
+            android:textColor="@color/black"
+            android:layout_marginStart="5dp"
+            android:textSize="16sp"
+            android:drawableRight="@drawable/iconp_star"
+            android:drawablePadding="5dp"/>
 
         <EditText
             android:id="@+id/edt_number_bank"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/spiner_gender"
+            android:layout_below="@+id/tv_lb_stk_bank"
             android:layout_marginStart="10dp"
-            android:layout_marginTop="5dp"
             android:layout_marginEnd="10dp"
             android:background="@color/white"
             android:hint="Nhập số tài khoản ngân hàng"
@@ -107,13 +131,24 @@
             android:textColor="@color/black"
             android:textSize="18dp" />
 
+        <TextView
+            android:id="@+id/tv_lb_name_bank"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tên chủ tài khoản ngân hàng"
+            android:layout_below="@id/edt_number_bank"
+            android:padding="5dp"
+            android:textColor="@color/black"
+            android:layout_marginStart="5dp"
+            android:textSize="16sp"
+            android:drawableRight="@drawable/iconp_star"
+            android:drawablePadding="5dp"/>
         <EditText
             android:id="@+id/edt_name_user_bank"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/edt_number_bank"
+            android:layout_below="@+id/tv_lb_name_bank"
             android:layout_marginStart="10dp"
-            android:layout_marginTop="5dp"
             android:layout_marginEnd="10dp"
             android:background="@color/white"
             android:hint="Nhập tên chủ tài khoản"
@@ -127,7 +162,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/edt_name_user_bank"
             android:layout_marginStart="10dp"
-            android:layout_marginTop="50dp"
+            android:layout_marginTop="30dp"
             android:layout_marginEnd="10dp"
             android:background="@color/button_fb"
             android:text="Cập nhật thông tin"

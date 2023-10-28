@@ -33,7 +33,7 @@ public class ProfileFragment extends AbstractFragment {
 
     private RoundedImageView imgViewProfile;
     private TextView tvName, tvPhone;
-    private AppCompatButton btnEditProfile, btnChangePassWord, btnMessenger, btnAuthencation, btnLogout;
+    private AppCompatButton btnEditProfile, btnChangePassWord, btnAuthencation, btnLogout;
     private int id;
 
     @Nullable
@@ -41,26 +41,20 @@ public class ProfileFragment extends AbstractFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View fragmentLayout = null;
         fragmentLayout = inflater.inflate(R.layout.chutro_fragment_profile_layout, container, false);
-        id = 1;
         anhXa(fragmentLayout);
         getDataFromApi();
         btnEditProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getActivity(), EditProfileActivity.class));
+                Intent intent = new Intent(getActivity(),EditProfileActivity.class);
+                intent.putExtra("idTaiKhoan", 5);
+                startActivity(intent);
             }
         });
         btnChangePassWord.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(getActivity(), ChangePasswordActivity.class));
-            }
-        });
-
-        btnMessenger.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
             }
         });
 
@@ -75,7 +69,7 @@ public class ProfileFragment extends AbstractFragment {
     }
 
     private void getDataFromApi() {
-        Call<ChuTro> call = ApiServicePhuc.apiService.getChuTroById(2);
+        Call<ChuTro> call = ApiServicePhuc.apiService.getChuTroById(5);
 
         call.enqueue(new Callback<ChuTro>() {
             @Override
@@ -89,7 +83,7 @@ public class ProfileFragment extends AbstractFragment {
 
             @Override
             public void onFailure(Call<ChuTro> call, Throwable t) {
-                Toast.makeText(getActivity(), "Loi roi ba", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "Url Api error", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -101,7 +95,6 @@ public class ProfileFragment extends AbstractFragment {
         tvPhone = fragment.findViewById(R.id.tv_phone);
         btnEditProfile = fragment.findViewById(R.id.btn_Edit_Profile);
         btnChangePassWord = fragment.findViewById(R.id.btn_Change_Password);
-        btnMessenger = fragment.findViewById(R.id.btn_Messenger);
         btnAuthencation = fragment.findViewById(R.id.btn_Authencation);
         btnLogout = fragment.findViewById(R.id.btn_Logout);
     }
