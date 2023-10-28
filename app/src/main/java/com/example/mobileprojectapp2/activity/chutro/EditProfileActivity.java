@@ -18,6 +18,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
@@ -50,6 +51,8 @@ public class EditProfileActivity extends AppCompatActivity {
     private RoundedImageView imgViewProfileEdit;
     private EditText edtName, edtPhone, edtStkBank, edtNameBank;
     private Uri mUri;
+
+    Handler handler;
 
     public static final String TAG = EditProfileActivity.class.getName();
     private static final int MY_REQUEST_CODE = 10;
@@ -162,10 +165,16 @@ public class EditProfileActivity extends AppCompatActivity {
                                 edtPhone.setText("");
                                 edtStkBank.setText("");
                                 edtNameBank.setText("");
-                                finish();
                                 alertSuccess("Cập nhật thông tin thành công");
 
-
+                                handler = new Handler();
+                                handler.postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        handler.postDelayed(this, 2000);
+                                        finish();
+                                    }
+                                }, 2000);
                             }
 
                             @Override
@@ -186,9 +195,16 @@ public class EditProfileActivity extends AppCompatActivity {
                                 edtPhone.setText("");
                                 edtStkBank.setText("");
                                 edtNameBank.setText("");
-                                finish();
                                 alertSuccess("Cập nhật thông tin thành công");
 
+                                handler = new Handler();
+                                handler.postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        handler.postDelayed(this, 2000);
+                                        finish();
+                                    }
+                                }, 2000);
                             }
 
                             @Override
