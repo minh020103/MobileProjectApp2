@@ -6,7 +6,6 @@ import androidx.appcompat.widget.AppCompatButton;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -61,7 +60,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
     private void doiMatKhau() {
         if (checklength(edtPassNow, edtPassNew, edtPassConfirm)) {
 
-            Call call = ApiServicePhuc.apiService.capNhatMatKhau(5, edtPassNow.getText().toString(), edtPassNew.getText().toString());
+            Call call = ApiServicePhuc.apiService.changePassWord(5, edtPassNow.getText().toString(), edtPassNew.getText().toString());
             call.enqueue(new Callback() {
                 @Override
                 public void onResponse(Call call, Response response) {

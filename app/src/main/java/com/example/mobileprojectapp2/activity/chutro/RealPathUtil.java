@@ -1,4 +1,4 @@
-package com.example.mobileproject.activity.admin;
+package com.example.mobileprojectapp2.activity.chutro;
 
 import android.annotation.SuppressLint;
 import android.content.ContentUris;

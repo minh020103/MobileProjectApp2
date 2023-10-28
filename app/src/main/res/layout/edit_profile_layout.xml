@@ -157,7 +157,7 @@
             android:textSize="18dp" />
 
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btn_accept"
+            android:id="@+id/btn_accept_edit_profile"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/edt_name_user_bank"
@@ -174,7 +174,7 @@
             android:id="@+id/btn_cancel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/btn_accept"
+            android:layout_below="@+id/btn_accept_edit_profile"
             android:layout_marginStart="10dp"
             android:layout_marginTop="5dp"
             android:layout_marginEnd="10dp"
