@@ -83,10 +83,14 @@ public class ListTinNhanAdapter extends RecyclerView.Adapter<ListTinNhanAdapter.
                 holder.thoigiantinnhan_item_message.setText(phongTinNhan.getThoiGianCuaTinNhan());
             }
         }
-        holder.ten_item_message.setText(phongTinNhan.getNguoiThue().getTen());
+        if(phongTinNhan.getNguoiThue()!=null){
+            holder.ten_item_message.setText(phongTinNhan.getNguoiThue().getTen());
+            Glide.with(activity.getLayoutInflater().getContext()).load(Const.DOMAIN+phongTinNhan.getNguoiThue().getHinh()).into(holder.img_item_message);
 
-        Glide.with(activity.getLayoutInflater().getContext()).load(Const.DOMAIN+phongTinNhan.getNguoiThue().getHinh()).into(holder.img_item_message);
-        holder.onClickListener = new View.OnClickListener() {
+        }
+
+
+          holder.onClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 onClickItemListener.onClickItem(position,view);

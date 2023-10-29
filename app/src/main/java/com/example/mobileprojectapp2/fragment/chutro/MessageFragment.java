@@ -53,7 +53,7 @@ public class MessageFragment extends AbstractFragment{
     public void onResume() {
         super.onResume();
 
-//
+////
 //        Handler handler = new Handler();
 //        final Runnable r = new Runnable() {
 //            @Override

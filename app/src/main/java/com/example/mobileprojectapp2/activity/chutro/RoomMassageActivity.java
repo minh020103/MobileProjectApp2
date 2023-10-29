@@ -60,7 +60,7 @@ public class RoomMassageActivity extends AppCompatActivity {
         setContentView(R.layout.activity_room_massage);
         anhXa();
         setDuLieu();
-        setSuKienGuiTinNhan();
+
     }
 
     @Override
@@ -90,6 +90,40 @@ public class RoomMassageActivity extends AppCompatActivity {
         SimpleDateFormat newFormat = new SimpleDateFormat("hh:mm");
         return newFormat.format(date);
     }
+
+
+    private void handleLienTuc(ArrayList<TinNhan> arrayList){
+        Handler handler = new Handler();
+        final Runnable r = new Runnable() {
+            @Override
+            public void run() {
+                Call<ArrayList<TinNhan>> call = ApiServiceNghiem.apiService.layDanhSachTinNhan(idPhong);
+                call.enqueue(new Callback<ArrayList<TinNhan>>() {
+                    @Override
+                    public void onResponse(Call<ArrayList<TinNhan>> call, Response<ArrayList<TinNhan>> response) {
+                        ArrayList<TinNhan> arrNew = response.body();
+                        if(arrNew.size()>arrayList.size()){
+                            for (int i = arrayList.size()-1;i<arrNew.size(); i++){
+                                arrayList.add(arrNew.get(i));
+                            }
+                            recyclerView.smoothScrollToPosition(arrayList.size()-1);
+                            tinNhanAdapter.notifyDataSetChanged();
+                        }
+
+                    }
+
+                    @Override
+                    public void onFailure(Call<ArrayList<TinNhan>> call, Throwable t) {
+
+                    }
+                });
+
+                handler.postDelayed(this,3000);
+            }
+        };
+        handler.postDelayed(r,3000);
+
+    }
     private void setSuKienGuiTinNhan(){
         sendMess.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -100,7 +134,12 @@ public class RoomMassageActivity extends AppCompatActivity {
                     call.enqueue(new Callback<TinNhan>() {
                         @Override
                         public void onResponse(Call<TinNhan> call, Response<TinNhan> response) {
-
+                            int time = (int) (System.currentTimeMillis());
+                            Timestamp tsTemp = new Timestamp(time);
+                        TinNhan tinNhan = new TinNhan(arrayList.get(arrayList.size()-1).getId()+1,idPhong,senderId,inputMess.getText().toString(),tsTemp);
+                        arrayList.add(tinNhan);
+                        tinNhanAdapter.notifyDataSetChanged();
+                        recyclerView.smoothScrollToPosition(arrayList.size()-1);
                         capNhatTinNhanNew(idPhong,inputMess.getText().toString(),formatDate(response.body().getCreated_at()));
                         }
 
@@ -144,6 +183,8 @@ public class RoomMassageActivity extends AppCompatActivity {
                     tinNhanAdapter.notifyDataSetChanged();
                     recyclerView.smoothScrollToPosition(arrayList.size()-1);
                     layThongTinDoiPhuong(idDoiPhuong);
+                    setSuKienGuiTinNhan();
+//                    handleLienTuc(arrayList);
                 }
             }
 
