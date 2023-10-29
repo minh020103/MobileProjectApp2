@@ -11,7 +11,9 @@ import android.widget.LinearLayout;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.mobileprojectapp2.R;
+import com.example.mobileprojectapp2.api.Const;
 import com.example.mobileprojectapp2.datamodel.HinhAnh;
 
 import java.util.List;
@@ -40,8 +42,9 @@ public class ChuTroImageSlideViewPager2Adapter extends RecyclerView.Adapter<ChuT
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-//        HinhAnh hinhAnh = list.get(position);
-        holder.imgItem.setImageDrawable(activity.getResources().getDrawable(R.drawable.phong_tro, activity.getTheme()));
+        HinhAnh hinhAnh = list.get(position);
+//        holder.imgItem.setImageDrawable(activity.getResources().getDrawable(R.drawable.phong_tro, activity.getTheme()));
+        Glide.with(activity.getLayoutInflater().getContext()).load(Const.DOMAIN+hinhAnh.getHinh()).into(holder.imgItem);
     }
 
     @Override
