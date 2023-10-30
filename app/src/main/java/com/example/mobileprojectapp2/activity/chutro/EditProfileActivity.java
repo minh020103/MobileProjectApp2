@@ -26,10 +26,9 @@ import android.widget.EditText;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
-import com.example.mobileprojectapp2.api.ApiServicePhuc;
+import com.example.mobileprojectapp2.api.chutro.ApiServicePhuc;
 import com.example.mobileprojectapp2.api.Const;
 import com.example.mobileprojectapp2.R;
-import com.example.mobileprojectapp2.fragment.chutro.ProfileFragment;
 import com.example.mobileprojectapp2.model.ChuTro;
 import com.makeramen.roundedimageview.RoundedImageView;
 
