@@ -6,6 +6,8 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.MotionEvent;
+import android.view.View;
 
 import com.example.mobileprojectapp2.R;
 import com.example.mobileprojectapp2.viewpager2adapter.MotelRoomOwnerViewPager2Adapter;
@@ -14,7 +16,7 @@ import com.google.android.material.navigation.NavigationBarView;
 
 public class MotelRoomOwnerActivity extends AppCompatActivity {
 
-    private ViewPager2 vp2Chutro;
+    public static ViewPager2 vp2Chutro;
     private BottomNavigationView bnvChuTro;
     private MotelRoomOwnerViewPager2Adapter viewPager2Adapter;
 
@@ -26,7 +28,12 @@ public class MotelRoomOwnerActivity extends AppCompatActivity {
         vp2Chutro = findViewById(R.id.vp2ChuTro);
         bnvChuTro = findViewById(R.id.bnvChuTro);
         viewPager2Adapter = new MotelRoomOwnerViewPager2Adapter(this);
+
         vp2Chutro.setAdapter(viewPager2Adapter);
+
+
+
+
 
         vp2Chutro.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
@@ -51,6 +58,8 @@ public class MotelRoomOwnerActivity extends AppCompatActivity {
                 }
             }
         });
+
+
 
         bnvChuTro.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
