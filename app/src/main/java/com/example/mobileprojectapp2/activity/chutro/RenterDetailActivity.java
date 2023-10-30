@@ -27,6 +27,7 @@ public class RenterDetailActivity extends AppCompatActivity {
     TextView tvTenNguoiThueChiTiet;
     TextView tvSDTNguoiThueChiTiet;
     TextView tvPhongNguoiThueChiTiet;
+    TextView tvGioiTinhNguoiThueChiTiet;
     Button btnGoiDienNguoiThue;
     ImageView imgBackNguoiThueChiTiet;
 
@@ -44,6 +45,7 @@ public class RenterDetailActivity extends AppCompatActivity {
         tvTenNguoiThueChiTiet = findViewById(R.id.tvTenNguoiThueChiTiet);
         tvSDTNguoiThueChiTiet = findViewById(R.id.tvSDTNguoiThueChiTiet);
         tvPhongNguoiThueChiTiet = findViewById(R.id.tvPhongNguoiThueChiTiet);
+        tvGioiTinhNguoiThueChiTiet = findViewById(R.id.tvGioiTinhNguoiThueChiTiet);
         btnGoiDienNguoiThue = findViewById(R.id.btnGoiDienNguoiThue);
         imgBackNguoiThueChiTiet = findViewById(R.id.imgBackNguoiThueChiTiet);
 
@@ -76,6 +78,14 @@ public class RenterDetailActivity extends AppCompatActivity {
                 Glide.with(getApplicationContext()).load(Const.DOMAIN + renter.getHinh()).into(imgNguoiThueChiTiet);
                 tvTenNguoiThueChiTiet.setText(renter.getTen());
                 tvSDTNguoiThueChiTiet.setText(renter.getSoDienThoai());
+                if (renter.getGioiTinh() == 1)
+                {
+                    tvGioiTinhNguoiThueChiTiet.setText("Nu");
+                }
+                else
+                {
+                    tvGioiTinhNguoiThueChiTiet.setText("Nam");
+                }
 
             }
 

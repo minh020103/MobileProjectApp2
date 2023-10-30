@@ -26,7 +26,7 @@ public interface ApiServiceKiet {
     /* Nguoi Thue */
     @GET("api/phongnguoithue/all")
     Call<List<PhongNguoiThue>> getListNguoiThueTheoIdPhong(@Query("idPhong") int idPhong);
-    @GET("api/asdaw")
+    @GET("api/nguoithue/chitiet ")
     Call<NguoiThue> getChiTietNguoiThueTheoIdPhong(@Query("id") int id);
 
     /* Thong Bao */

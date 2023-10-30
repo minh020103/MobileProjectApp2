@@ -6,9 +6,9 @@ public class NguoiThue {
     private String hinh;
     private String ten;
     private String soDienThoai;
-    private String gioiTinh;
+    private int gioiTinh;
 
-    public NguoiThue(int id, int idTaiKhoan, String hinh, String ten, String soDienThoai, String gioiTinh) {
+    public NguoiThue(int id, int idTaiKhoan, String hinh, String ten, String soDienThoai, int gioiTinh) {
         this.id = id;
         this.idTaiKhoan = idTaiKhoan;
         this.hinh = hinh;
@@ -57,11 +57,11 @@ public class NguoiThue {
         this.soDienThoai = soDienThoai;
     }
 
-    public String getGioiTinh() {
+    public int getGioiTinh() {
         return gioiTinh;
     }
 
-    public void setGioiTinh(String gioiTinh) {
+    public void setGioiTinh(int gioiTinh) {
         this.gioiTinh = gioiTinh;
     }
 
@@ -73,7 +73,7 @@ public class NguoiThue {
                 ", hinh='" + hinh + '\'' +
                 ", ten='" + ten + '\'' +
                 ", soDienThoai='" + soDienThoai + '\'' +
-                ", gioiTinh='" + gioiTinh + '\'' +
+                ", gioiTinh=" + gioiTinh +
                 '}';
     }
 }

@@ -49,18 +49,12 @@ public class RenterListActivity extends AppCompatActivity {
         layoutManager.setOrientation(RecyclerView.VERTICAL);
         recyclerView.setLayoutManager(layoutManager);
         list = new ArrayList<>();
-        phongNguoiThueAdapter = new PhongNguoiThueAdapter(RenterListActivity.this, list, R.layout.cardview_danh_sach_nguoi_thue);
-        recyclerView.setAdapter(phongNguoiThueAdapter);
+
         title = findViewById(R.id.tvTitle);
 
 
         listNguoiThueTheoIdPhong(idPhong);
-        phongNguoiThueAdapter.setOnClickItemListener(new PhongNguoiThueAdapter.OnClickItemListener() {
-            @Override
-            public void onClickItem(int position, View v) {
-                nextActivity(list.get(position).getId());
-            }
-        });
+
 
         imgBackNguoiThueDanhSach.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -75,11 +69,20 @@ public class RenterListActivity extends AppCompatActivity {
         ApiServiceKiet.apiServiceKiet.getListNguoiThueTheoIdPhong(id).enqueue(new Callback<List<PhongNguoiThue>>() {
             @Override
             public void onResponse(Call<List<PhongNguoiThue>> call, Response<List<PhongNguoiThue>> response) {
+                list = response.body();
                 Log.d("TAG", "onResponse: "+list);
                 if (list != null)
                 {
-                    list.addAll(response.body());
-                    phongNguoiThueAdapter.notifyDataSetChanged();
+                    phongNguoiThueAdapter = new PhongNguoiThueAdapter(RenterListActivity.this, list, R.layout.cardview_danh_sach_nguoi_thue);
+                    recyclerView.setAdapter(phongNguoiThueAdapter);
+                    phongNguoiThueAdapter.setOnClickItemListener(new PhongNguoiThueAdapter.OnClickItemListener() {
+                        @Override
+                        public void onClickItem(int position, View v) {
+                            nextActivity(list.get(position).getId());
+                        }
+                    });
+                    //list.addAll(response.body());
+                    //phongNguoiThueAdapter.notifyDataSetChanged();
                 }
                 else
                 {
