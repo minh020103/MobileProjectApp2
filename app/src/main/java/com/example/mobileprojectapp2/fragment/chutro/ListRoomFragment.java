@@ -21,9 +21,11 @@ import com.example.mobileprojectapp2.R;
 import com.example.mobileprojectapp2.activity.chutro.AddRoomActivity;
 import com.example.mobileprojectapp2.activity.chutro.EditRoomActivity;
 import com.example.mobileprojectapp2.activity.chutro.MotelRoomOwnerActivity;
+import com.example.mobileprojectapp2.api.chutro.ApiServiceMinh;
 import com.example.mobileprojectapp2.datamodel.Comment;
 import com.example.mobileprojectapp2.datamodel.HinhAnh;
 import com.example.mobileprojectapp2.datamodel.PhongTro;
+import com.example.mobileprojectapp2.datamodel.PhongTroChuTro;
 import com.example.mobileprojectapp2.player.RatingPlayer;
 import com.example.mobileprojectapp2.recyclerviewadapter.chutro.CommentAdapter;
 import com.example.mobileprojectapp2.recyclerviewadapter.chutro.MotelRoomAdapter;
@@ -32,17 +34,20 @@ import com.google.android.material.bottomsheet.BottomSheetDialog;
 import java.util.LinkedList;
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class ListRoomFragment extends AbstractFragment {
     private RecyclerView rcvListMotelRoom;
     private LinearLayoutManager layoutManager;
     private MotelRoomAdapter roomAdapter;
-    private List<PhongTro> phongTroList;
-    private List<HinhAnh> listHA;
     private RecyclerView rcvComment;
     private CommentAdapter commentAdapter;
     private List<Comment> listComment;
     private ViewGroup container;
     private LinearLayout llAdd;
+    private List<PhongTroChuTro> phongTroOfChuTroList;
 
     @Nullable
     @Override
@@ -73,6 +78,25 @@ public class ListRoomFragment extends AbstractFragment {
     public void onResume() {
         super.onResume();
         MotelRoomOwnerActivity.vp2Chutro.setUserInputEnabled(false);
+        getDataFromAPI();
+    }
+
+    private void getDataFromAPI() {
+        ApiServiceMinh.apiService.layTatCaPhongTroQuanLy(2).enqueue(new Callback<List<PhongTroChuTro>>() {
+            @Override
+            public void onResponse(Call<List<PhongTroChuTro>> call, Response<List<PhongTroChuTro>> response) {
+                if (response.code() == 200){
+                    phongTroOfChuTroList.clear();
+                    phongTroOfChuTroList.addAll(response.body());
+                    roomAdapter.notifyDataSetChanged();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<PhongTroChuTro>> call, Throwable t) {
+
+            }
+        });
     }
 
     private void onClickItemInCardView() {
@@ -162,10 +186,10 @@ public class ListRoomFragment extends AbstractFragment {
     private void anhXa(View fragmentLayout) {
         llAdd = fragmentLayout.findViewById(R.id.llAdd);
         rcvListMotelRoom = fragmentLayout.findViewById(R.id.rcvListMotelRoom);
-        phongTroList = new LinkedList<>();
+        phongTroOfChuTroList = new LinkedList<>();
         addList();
         layoutManager = new LinearLayoutManager(getContext());
-        roomAdapter = new MotelRoomAdapter(getActivity(), phongTroList, R.layout.chutro_cardview_item_room_layout);
+        roomAdapter = new MotelRoomAdapter(getActivity(), phongTroOfChuTroList, R.layout.chutro_cardview_item_room_layout);
         layoutManager.setOrientation(RecyclerView.VERTICAL);
         rcvListMotelRoom.setLayoutManager(layoutManager);
         rcvListMotelRoom.setAdapter(roomAdapter);
@@ -173,15 +197,9 @@ public class ListRoomFragment extends AbstractFragment {
     }
 
     private void addList() {
-        listHA = new LinkedList<>();
-        listHA.add(new HinhAnh(1, 1, "fsdrrf"));
-        listHA.add(new HinhAnh(1, 1, "fsdrrf"));
-        listHA.add(new HinhAnh(1, 1, "fsdrrf"));
-        listHA.add(new HinhAnh(1, 1, "fsdrrf"));
-        phongTroList.add(new PhongTro(listHA));
-        phongTroList.add(new PhongTro(listHA));
-        phongTroList.add(new PhongTro(listHA));
-        phongTroList.add(new PhongTro(listHA));
+
+
+
 
         listComment = new LinkedList<>();
         listComment.add(new Comment());

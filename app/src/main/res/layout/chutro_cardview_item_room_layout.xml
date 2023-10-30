@@ -27,6 +27,7 @@
                 android:orientation="horizontal">
 
                 <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/imgAnhChuTro"
                     android:layout_width="0.25in"
                     android:layout_height="0.25in"
                     android:src="@drawable/anhdaidien"
@@ -40,9 +41,10 @@
                     android:orientation="vertical">
 
                     <TextView
+                        android:id="@+id/tvTenChuTro"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Nguyễn Đức Minh"
+                        android:text="N/A"
                         android:textColor="@color/text_black"
                         android:textStyle="bold" />
 
@@ -89,13 +91,15 @@
         </LinearLayout>
 
         <TextView
+            android:id="@+id/tvNoiDungPhong"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Nội dung của phòng.ddddddddddddddddddddddd"
+            android:text=""
             android:layout_marginLeft="15dp"
             android:layout_marginBottom="15dp"/>
 
         <RelativeLayout
+            android:id="@+id/rlImages"
             android:layout_width="match_parent"
             android:layout_height="2.5in"
             android:layout_gravity="center">
@@ -130,11 +134,12 @@
                     android:src="@drawable/icon_comment" />
 
                 <TextView
+                    android:id="@+id/tvCountComment"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:gravity="top"
-                    android:text="30"/>
+                    android:text="0"/>
             </LinearLayout>
 
             <LinearLayout
@@ -147,22 +152,14 @@
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:src="@drawable/icon_star"/>
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:src="@drawable/icon_star"/>
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:src="@drawable/icon_star"/>
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:src="@drawable/icon_star"/>
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:src="@drawable/icon_star"/>
+
+                <TextView
+                    android:id="@+id/tvTBRating"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:gravity="top"
+                    android:text="0"/>
             </LinearLayout>
         </LinearLayout>
 
