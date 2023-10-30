@@ -22,6 +22,7 @@ import com.example.mobileprojectapp2.R;
 import com.example.mobileprojectapp2.activity.chutro.AuthencationActivity;
 import com.example.mobileprojectapp2.activity.chutro.ChangePasswordActivity;
 import com.example.mobileprojectapp2.activity.chutro.EditProfileActivity;
+import com.example.mobileprojectapp2.activity.chutro.MotelRoomOwnerActivity;
 import com.example.mobileprojectapp2.model.ChuTro;
 import com.makeramen.roundedimageview.RoundedImageView;
 
