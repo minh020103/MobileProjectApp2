@@ -1,79 +1,79 @@
 package com.example.mobileprojectapp2.datamodel;
 
 public class NguoiThue {
-    private int Id;
-    private int IdTaiKhoan;
-    private String HinhNguoiDung;
-    private String TenNguoiDung;
-    private String SoDienThoai;
-    private String GioiTinh;
+    private int id;
+    private int idTaiKhoan;
+    private String hinh;
+    private String ten;
+    private String soDienThoai;
+    private String gioiTinh;
 
-    public NguoiThue(int id, int idTaiKhoan, String hinhNguoiDung, String tenNguoiDung, String soDienThoai, String gioiTinh) {
-        Id = id;
-        IdTaiKhoan = idTaiKhoan;
-        HinhNguoiDung = hinhNguoiDung;
-        TenNguoiDung = tenNguoiDung;
-        SoDienThoai = soDienThoai;
-        GioiTinh = gioiTinh;
+    public NguoiThue(int id, int idTaiKhoan, String hinh, String ten, String soDienThoai, String gioiTinh) {
+        this.id = id;
+        this.idTaiKhoan = idTaiKhoan;
+        this.hinh = hinh;
+        this.ten = ten;
+        this.soDienThoai = soDienThoai;
+        this.gioiTinh = gioiTinh;
     }
 
     public int getId() {
-        return Id;
+        return id;
     }
 
     public void setId(int id) {
-        Id = id;
+        this.id = id;
     }
 
     public int getIdTaiKhoan() {
-        return IdTaiKhoan;
+        return idTaiKhoan;
     }
 
     public void setIdTaiKhoan(int idTaiKhoan) {
-        IdTaiKhoan = idTaiKhoan;
+        this.idTaiKhoan = idTaiKhoan;
     }
 
-    public String getHinhNguoiDung() {
-        return HinhNguoiDung;
+    public String getHinh() {
+        return hinh;
     }
 
-    public void setHinhNguoiDung(String hinhNguoiDung) {
-        HinhNguoiDung = hinhNguoiDung;
+    public void setHinh(String hinh) {
+        this.hinh = hinh;
     }
 
-    public String getTenNguoiDung() {
-        return TenNguoiDung;
+    public String getTen() {
+        return ten;
     }
 
-    public void setTenNguoiDpung(String tenNguoiDung) {
-        TenNguoiDung = tenNguoiDung;
+    public void setTen(String ten) {
+        this.ten = ten;
     }
 
     public String getSoDienThoai() {
-        return SoDienThoai;
+        return soDienThoai;
     }
 
     public void setSoDienThoai(String soDienThoai) {
-        SoDienThoai = soDienThoai;
+        this.soDienThoai = soDienThoai;
     }
 
     public String getGioiTinh() {
-        return GioiTinh;
+        return gioiTinh;
     }
 
     public void setGioiTinh(String gioiTinh) {
-        GioiTinh = gioiTinh;
+        this.gioiTinh = gioiTinh;
     }
 
     @Override
-    public String   toString() {
+    public String toString() {
         return "NguoiThue{" +
-                "Id=" + Id +
-                ", IdTaiKhoan=" + IdTaiKhoan +
-                ", HinhNguoiDung='" + HinhNguoiDung + '\'' +
-                ", TenNguoiDpung='" + TenNguoiDung + '\'' +
-                ", SoDienThoai='" + SoDienThoai + '\'' +
-                ", GioiTinh='" + GioiTinh + '\'' +
+                "id=" + id +
+                ", idTaiKhoan=" + idTaiKhoan +
+                ", hinh='" + hinh + '\'' +
+                ", ten='" + ten + '\'' +
+                ", soDienThoai='" + soDienThoai + '\'' +
+                ", gioiTinh='" + gioiTinh + '\'' +
                 '}';
     }
 }

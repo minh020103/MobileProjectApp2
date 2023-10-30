@@ -4,17 +4,18 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.example.mobileprojectapp2.R;
-import com.example.mobileprojectapp2.adapter.chutro.NguoiThueAdapter;
-import com.example.mobileprojectapp2.adapter.chutro.ThongBaoAdapter;
+import com.example.mobileprojectapp2.adapter.chutro.PhongNguoiThueAdapter;
 import com.example.mobileprojectapp2.api.chutro.ApiServiceKiet;
 import com.example.mobileprojectapp2.datamodel.NguoiThue;
-import com.example.mobileprojectapp2.datamodel.ThongBao;
+import com.example.mobileprojectapp2.datamodel.PhongNguoiThue;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,11 +27,13 @@ import retrofit2.Response;
 public class RenterListActivity extends AppCompatActivity {
 
     RecyclerView recyclerView;
-    List<NguoiThue> list;
-    NguoiThueAdapter nguoiThueAdapter;
+    List<PhongNguoiThue> list;
+    PhongNguoiThueAdapter phongNguoiThueAdapter;
     LinearLayoutManager layoutManager;
+    TextView title;
+    ImageView imgBackNguoiThueDanhSach;
 
-    int id;
+    int idPhong;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,37 +41,56 @@ public class RenterListActivity extends AppCompatActivity {
         setContentView(R.layout.danh_sach_nguoi_thue_layout);
 
         Intent intent = getIntent();
-        id = intent.getIntExtra("id", 0);
+        idPhong = intent.getIntExtra("idPhong", 0);
 
         recyclerView = findViewById(R.id.rvNguoiThue);
+        imgBackNguoiThueDanhSach = findViewById(R.id.imgBackNguoiThueDanhSach);
         layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(RecyclerView.VERTICAL);
         recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setAdapter(nguoiThueAdapter);
         list = new ArrayList<>();
+        phongNguoiThueAdapter = new PhongNguoiThueAdapter(RenterListActivity.this, list, R.layout.cardview_danh_sach_nguoi_thue);
+        recyclerView.setAdapter(phongNguoiThueAdapter);
+        title = findViewById(R.id.tvTitle);
 
-        listNguoiThueTheoIdPhong(id);
 
+        listNguoiThueTheoIdPhong(idPhong);
+        phongNguoiThueAdapter.setOnClickItemListener(new PhongNguoiThueAdapter.OnClickItemListener() {
+            @Override
+            public void onClickItem(int position, View v) {
+                nextActivity(list.get(position).getId());
+            }
+        });
+
+        imgBackNguoiThueDanhSach.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
     }
 
     private void listNguoiThueTheoIdPhong(int id)
     {
-        ApiServiceKiet.apiServiceKiet.getListNguoiThueTheoIdPhong(id).enqueue(new Callback<List<NguoiThue>>() {
+        ApiServiceKiet.apiServiceKiet.getListNguoiThueTheoIdPhong(id).enqueue(new Callback<List<PhongNguoiThue>>() {
             @Override
-            public void onResponse(Call<List<NguoiThue>> call, Response<List<NguoiThue>> response) {
-                list = response.body();
-                nguoiThueAdapter = new NguoiThueAdapter(RenterListActivity.this, list, R.layout.cardview_danh_sach_nguoi_thue);
-                recyclerView.setAdapter(nguoiThueAdapter);
-                nguoiThueAdapter.setOnClickItemListener(new NguoiThueAdapter.OnClickItemListener() {
-                    @Override
-                    public void onClickItem(int position, View v) {
-                        nextActivity(list.get(position).getId());
-                    }
-                });
+            public void onResponse(Call<List<PhongNguoiThue>> call, Response<List<PhongNguoiThue>> response) {
+                Log.d("TAG", "onResponse: "+list);
+                if (list != null)
+                {
+                    list.addAll(response.body());
+                    phongNguoiThueAdapter.notifyDataSetChanged();
+                }
+                else
+                {
+                    title.setText("Chưa có người thuê");
+                    title.setTextSize(30);
+                }
+
             }
 
             @Override
-            public void onFailure(Call<List<NguoiThue>> call, Throwable t) {
+            public void onFailure(Call<List<PhongNguoiThue>> call, Throwable t) {
 
             }
         });

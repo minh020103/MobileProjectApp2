@@ -15,20 +15,30 @@
             android:layout_height="match_parent">
 
             <ImageView
-                android:id="@+id/imgBack"
+                android:id="@+id/imgBackNguoiThueDanhSach"
                 android:layout_width="50dp"
                 android:layout_height="34dp"
-                android:src="@drawable/ic_launcher_background" />
+                android:src="@drawable/icon_back" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="34dp"
-                android:textStyle="bold"
-                android:text="Danh sach nguoi thue"
                 android:gravity="center"
-                android:textSize="25sp"/>
+                android:text="Danh sach nguoi thue"
+                android:textSize="25sp"
+                android:textStyle="bold" />
         </RelativeLayout>
     </androidx.appcompat.widget.Toolbar>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center">
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"

@@ -28,6 +28,7 @@ public class RenterDetailActivity extends AppCompatActivity {
     TextView tvSDTNguoiThueChiTiet;
     TextView tvPhongNguoiThueChiTiet;
     Button btnGoiDienNguoiThue;
+    ImageView imgBackNguoiThueChiTiet;
 
     int id;
 
@@ -44,6 +45,9 @@ public class RenterDetailActivity extends AppCompatActivity {
         tvSDTNguoiThueChiTiet = findViewById(R.id.tvSDTNguoiThueChiTiet);
         tvPhongNguoiThueChiTiet = findViewById(R.id.tvPhongNguoiThueChiTiet);
         btnGoiDienNguoiThue = findViewById(R.id.btnGoiDienNguoiThue);
+        imgBackNguoiThueChiTiet = findViewById(R.id.imgBackNguoiThueChiTiet);
+
+        getNguoiThueById(id);
 
         btnGoiDienNguoiThue.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -54,6 +58,13 @@ public class RenterDetailActivity extends AppCompatActivity {
                 startActivity(callIntent);
             }
         });
+
+        imgBackNguoiThueChiTiet.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
     }
 
     private void getNguoiThueById(int id)
@@ -62,8 +73,8 @@ public class RenterDetailActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<NguoiThue> call, Response<NguoiThue> response) {
                 NguoiThue renter = response.body();
-                Glide.with(getApplicationContext()).load(Const.DOMAIN + renter.getHinhNguoiDung()).into(imgNguoiThueChiTiet);
-                tvTenNguoiThueChiTiet.setText(renter.getTenNguoiDung());
+                Glide.with(getApplicationContext()).load(Const.DOMAIN + renter.getHinh()).into(imgNguoiThueChiTiet);
+                tvTenNguoiThueChiTiet.setText(renter.getTen());
                 tvSDTNguoiThueChiTiet.setText(renter.getSoDienThoai());
 
             }

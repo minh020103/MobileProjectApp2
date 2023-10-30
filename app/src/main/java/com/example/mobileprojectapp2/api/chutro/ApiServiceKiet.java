@@ -2,6 +2,7 @@ package com.example.mobileprojectapp2.api.chutro;
 
 import com.example.mobileprojectapp2.api.Const;
 import com.example.mobileprojectapp2.datamodel.NguoiThue;
+import com.example.mobileprojectapp2.datamodel.PhongNguoiThue;
 import com.example.mobileprojectapp2.datamodel.ThongBao;
 
 import java.util.List;
@@ -23,8 +24,8 @@ public interface ApiServiceKiet {
             .create(ApiServiceKiet.class);
 
     /* Nguoi Thue */
-    @GET("api/asdaw")
-    Call<List<NguoiThue>> getListNguoiThueTheoIdPhong(@Query("id") int id);
+    @GET("api/phongnguoithue/all")
+    Call<List<PhongNguoiThue>> getListNguoiThueTheoIdPhong(@Query("idPhong") int idPhong);
     @GET("api/asdaw")
     Call<NguoiThue> getChiTietNguoiThueTheoIdPhong(@Query("id") int id);
 

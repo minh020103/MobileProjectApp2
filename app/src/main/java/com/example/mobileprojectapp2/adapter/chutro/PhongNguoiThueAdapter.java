@@ -8,7 +8,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.widget.AppCompatImageView;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -16,19 +15,18 @@ import com.bumptech.glide.Glide;
 import com.example.mobileprojectapp2.R;
 import com.example.mobileprojectapp2.api.Const;
 import com.example.mobileprojectapp2.datamodel.NguoiThue;
-
-import org.w3c.dom.Text;
+import com.example.mobileprojectapp2.datamodel.PhongNguoiThue;
 
 import java.util.List;
 
-public class NguoiThueAdapter extends RecyclerView.Adapter<NguoiThueAdapter.MyViewHolder> {
+public class PhongNguoiThueAdapter extends RecyclerView.Adapter<PhongNguoiThueAdapter.MyViewHolder> {
     private Activity activity;
-    private List<NguoiThue> list;
+    private List<PhongNguoiThue> list;
     private int layoutID;
 
     OnClickItemListener onClickItemListener;
 
-    public NguoiThueAdapter(Activity activity, List<NguoiThue> list, int layoutID) {
+    public PhongNguoiThueAdapter(Activity activity, List<PhongNguoiThue> list, int layoutID) {
         this.activity = activity;
         this.list = list;
         this.layoutID = layoutID;
@@ -42,16 +40,16 @@ public class NguoiThueAdapter extends RecyclerView.Adapter<NguoiThueAdapter.MyVi
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = activity.getLayoutInflater();
-        CardView view = (CardView) inflater.inflate(viewType, parent,false);
+        CardView view = (CardView) inflater.inflate(layoutID, parent,false);
         return new MyViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        NguoiThue data = list.get(position);
-        Glide.with(activity.getLayoutInflater().getContext()).load(Const.DOMAIN + list.get(position).getHinh()).into(holder.imgNguoiThue);
-        holder.tvTenNguoiThue.setText(data.getTen());
-        holder.tvSdtNguoiThue.setText(data.getSoDienThoai());
+        PhongNguoiThue data = list.get(position);
+        Glide.with(activity.getLayoutInflater().getContext()).load(Const.DOMAIN + list.get(position).getNguoiThue().getHinh()).into(holder.imgNguoiThue);
+        holder.tvTenNguoiThue.setText(data.getNguoiThue().getTen());
+        holder.tvSdtNguoiThue.setText(data.getNguoiThue().getSoDienThoai());
 
         holder.onClickListener = new View.OnClickListener() {
             @Override

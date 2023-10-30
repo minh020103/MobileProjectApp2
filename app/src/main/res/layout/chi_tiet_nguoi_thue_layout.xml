@@ -16,10 +16,10 @@
             android:layout_height="match_parent">
 
             <ImageView
-                android:id="@+id/imgBackChuTroFragment"
+                android:id="@+id/imgBackNguoiThueChiTiet"
                 android:layout_width="50dp"
                 android:layout_height="34dp"
-                android:src="@drawable/ic_launcher_background" />
+                android:src="@drawable/icon_back" />
 
             <TextView
                 android:layout_width="match_parent"
