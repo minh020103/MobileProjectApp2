@@ -1,4 +1,4 @@
-package com.example.mobileprojectapp2.Api;
+package com.example.mobileprojectapp2.api;
 
 import com.example.mobileprojectapp2.model.ChuTro;
 
