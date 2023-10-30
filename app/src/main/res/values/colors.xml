@@ -11,6 +11,7 @@
     <color name="main_color_app_light">#14ae5c</color>
     <color name="bnv_gray">#3C3C3C</color>
     <color name="text_gray">#b3b3b3</color>
+    <color name="bg_gray">#929292</color>
     <color name="button_gray">#e5e6eb</color>
     <color name="button_tim">#cba3ff</color>
     <color name="button_xanh_nuoc">#56b8ff</color>

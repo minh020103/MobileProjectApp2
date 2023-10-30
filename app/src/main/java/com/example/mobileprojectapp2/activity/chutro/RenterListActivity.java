@@ -31,9 +31,11 @@ public class RenterListActivity extends AppCompatActivity {
     PhongNguoiThueAdapter phongNguoiThueAdapter;
     LinearLayoutManager layoutManager;
     TextView title;
+    TextView toolbar;
     ImageView imgBackNguoiThueDanhSach;
 
     int idPhong;
+    int soPhong;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +44,8 @@ public class RenterListActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         idPhong = intent.getIntExtra("idPhong", 0);
+        soPhong = intent.getIntExtra("soPhong", 0);
+
 
         recyclerView = findViewById(R.id.rvNguoiThue);
         imgBackNguoiThueDanhSach = findViewById(R.id.imgBackNguoiThueDanhSach);
@@ -51,6 +55,8 @@ public class RenterListActivity extends AppCompatActivity {
         list = new ArrayList<>();
 
         title = findViewById(R.id.tvTitle);
+        toolbar = findViewById(R.id.tvToolbar);
+        toolbar.setText("Người thuê phòng số " + soPhong);
 
 
         listNguoiThueTheoIdPhong(idPhong);
@@ -71,7 +77,7 @@ public class RenterListActivity extends AppCompatActivity {
             public void onResponse(Call<List<PhongNguoiThue>> call, Response<List<PhongNguoiThue>> response) {
                 list = response.body();
                 Log.d("TAG", "onResponse: "+list);
-                if (list != null)
+                if (list.size() >= 1)
                 {
                     phongNguoiThueAdapter = new PhongNguoiThueAdapter(RenterListActivity.this, list, R.layout.cardview_danh_sach_nguoi_thue);
                     recyclerView.setAdapter(phongNguoiThueAdapter);
@@ -104,5 +110,11 @@ public class RenterListActivity extends AppCompatActivity {
         Intent intent = new Intent(this, RenterDetailActivity.class);
         intent.putExtra("id", id);
         startActivity(intent);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        listNguoiThueTheoIdPhong(idPhong);
     }
 }

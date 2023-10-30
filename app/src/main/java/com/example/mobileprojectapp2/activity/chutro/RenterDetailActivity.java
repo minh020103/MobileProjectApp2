@@ -44,7 +44,6 @@ public class RenterDetailActivity extends AppCompatActivity {
         imgNguoiThueChiTiet = findViewById(R.id.imgNguoiThueChiTiet);
         tvTenNguoiThueChiTiet = findViewById(R.id.tvTenNguoiThueChiTiet);
         tvSDTNguoiThueChiTiet = findViewById(R.id.tvSDTNguoiThueChiTiet);
-        tvPhongNguoiThueChiTiet = findViewById(R.id.tvPhongNguoiThueChiTiet);
         tvGioiTinhNguoiThueChiTiet = findViewById(R.id.tvGioiTinhNguoiThueChiTiet);
         btnGoiDienNguoiThue = findViewById(R.id.btnGoiDienNguoiThue);
         imgBackNguoiThueChiTiet = findViewById(R.id.imgBackNguoiThueChiTiet);

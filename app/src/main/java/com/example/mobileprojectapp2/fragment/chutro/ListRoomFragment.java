@@ -106,6 +106,7 @@ public class ListRoomFragment extends AbstractFragment {
             public void setOnClickListPerson(int position, View view) {
                 Intent intent = new Intent(getActivity(), RenterListActivity.class);
                 intent.putExtra("idPhong", phongTroOfChuTroList.get(position).getIdPhongTro());
+                intent.putExtra("soPhong", phongTroOfChuTroList.get(position).getPhongTro().getSoPhong());
                 startActivity(intent);
             }
 
