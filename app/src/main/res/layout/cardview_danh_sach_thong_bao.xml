@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height=".8in"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_marginBottom="5dp"
+    android:layout_marginLeft="3dp"
+    android:layout_marginRight="3dp"
+    android:layout_marginTop="5dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingTop="20dp">
+
+        <TextView
+            android:id="@+id/tvNguoiGuiThongBao"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Admin"
+            android:textSize="25sp"
+            android:paddingLeft="20dp"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/tvNoiDungThongBao"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Thong bao thanh toan thanh cong"
+            android:textSize="20sp"
+            android:paddingLeft="20dp"
+            android:textStyle="bold"/>
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

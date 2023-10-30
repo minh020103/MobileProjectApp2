@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:background="@color/bg_gray">
     <androidx.appcompat.widget.Toolbar
+        android:id="@+id/tbXacNhanTaiKhoan"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="2dp"
         android:background="@color/white">
 
         <RelativeLayout
@@ -15,26 +16,40 @@
             android:layout_height="match_parent">
 
             <ImageView
-                android:id="@+id/imgBackChuTroFragment"
+                android:id="@+id/imgBackNguoiThueDanhSach"
                 android:layout_width="50dp"
                 android:layout_height="34dp"
-                android:src="@drawable/ic_launcher_background" />
+                android:src="@drawable/icon_back" />
 
             <TextView
+                android:id="@+id/tvToolbar"
                 android:layout_width="match_parent"
                 android:layout_height="34dp"
                 android:gravity="center"
-                android:text="Thông báo"
+                android:text="Danh sach nguoi thue"
                 android:textSize="25sp"
                 android:textStyle="bold" />
         </RelativeLayout>
     </androidx.appcompat.widget.Toolbar>
 
     <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center">
+
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textColor="@color/text_do"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvThongBao"
+            android:id="@+id/rvNguoiThue"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
     </LinearLayout>

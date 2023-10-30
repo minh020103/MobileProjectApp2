@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/bg_gray">
+
+    <androidx.appcompat.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="3dp"
+        android:background="@color/white">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/imgBackNguoiThueChiTiet"
+                android:layout_width="50dp"
+                android:layout_height="34dp"
+                android:src="@drawable/icon_back" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="34dp"
+                android:gravity="center"
+                android:text="Thông tin người thuê"
+                android:textSize="25sp"
+                android:textStyle="bold" />
+        </RelativeLayout>
+    </androidx.appcompat.widget.Toolbar>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white">
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="1.2in"
+                android:background="@color/main_color_app_light">
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="6"
+                android:paddingTop="0.3in"
+                android:layout_marginLeft="0.1in"
+                android:layout_marginRight="0.1in"
+                android:orientation="vertical">
+
+
+                <TextView
+                    android:id="@+id/tvTenNguoiThueChiTiet"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Nguyen Duc Minh"
+                    android:textSize="25sp"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <Button
+                        android:id="@+id/btnNhanTinNguoiThue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="5"
+                        android:text="Nhan tin"
+                        android:backgroundTint="@color/button_tim"
+                        android:layout_margin="5dp"/>
+                    <Button
+                        android:id="@+id/btnGoiDienNguoiThue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="5"
+                        android:text="Goi dien"
+                        android:backgroundTint="@color/main_color_app_light"
+                        android:layout_margin="5dp"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="SĐT: "
+                        android:textSize="20sp"/>
+                    <TextView
+                        android:id="@+id/tvSDTNguoiThueChiTiet"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="SDT"
+                        android:textSize="20sp"/>
+                </LinearLayout>
+
+               <LinearLayout
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:orientation="horizontal">
+                   <TextView
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:text="Giới tính: "
+                       android:textSize="20sp"/>
+                   <TextView
+                       android:id="@+id/tvGioiTinhNguoiThueChiTiet"
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:text="Gioi Tinh"
+                       android:textSize="20sp"/>
+               </LinearLayout>
+
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Số tháng đã trả :"
+                        android:textSize="20sp"/>
+                    <EditText
+                        android:id="@+id/edtSoThangDaTraNguoiThue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="9"/>
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+                <Button
+                    android:id="@+id/btnXacNhanNguoiThueChiTiet"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="5"
+                    android:text="Xac nhan"
+                    android:backgroundTint="@color/button_fb"
+                    android:layout_margin="5dp"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/imgNguoiThueChiTiet"
+            android:layout_width="1in"
+            android:layout_height="1in"
+            android:src="@color/black"
+            android:layout_marginLeft="0.1in"
+            android:layout_marginTop="0.5in"/>
+    </RelativeLayout>
+
+
+
+</LinearLayout>
