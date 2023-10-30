@@ -51,6 +51,15 @@ public class ProfileFragment extends AbstractFragment {
                 startActivity(intent);
             }
         });
+        btnAuthencation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               Intent intent = new Intent(getActivity(), AuthencationActivity.class);
+               intent.putExtra("idChuTro",2);
+               startActivity(intent);
+            }
+        });
+
         btnChangePassWord.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -58,12 +67,7 @@ public class ProfileFragment extends AbstractFragment {
             }
         });
 
-        btnAuthencation.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(getActivity(), AuthencationActivity.class));
-            }
-        });
+
 
         return fragmentLayout;
     }

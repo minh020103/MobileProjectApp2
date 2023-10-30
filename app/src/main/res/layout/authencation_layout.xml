@@ -74,7 +74,9 @@
                 android:textColor="@color/black"
                 android:layout_marginTop="40dp"
                 android:textSize="18dp"
-                android:paddingLeft="18dp"/>
+                android:paddingLeft="18dp"
+                android:drawableRight="@drawable/iconp_star"
+                android:drawablePadding="5dp"/>
 
             <ImageView
                 android:id="@+id/imgView_mat_truoc_cccd"
@@ -94,7 +96,9 @@
                 android:textColor="@color/black"
                 android:textSize="18dp"
                 android:paddingLeft="18dp"
-                android:layout_below="@+id/imgView_mat_truoc_cccd"/>
+                android:layout_below="@+id/imgView_mat_truoc_cccd"
+                android:drawableRight="@drawable/iconp_star"
+                android:drawablePadding="5dp"/>
 
             <ImageView
                 android:id="@+id/imgView_mat_sau_cccd"
@@ -104,7 +108,8 @@
                 android:layout_marginTop="-5dp"
                 android:padding="10dp"
                 android:scaleType="fitXY"
-                android:src="@drawable/iconp_add" />
+                android:src="@drawable/iconp_add"
+                />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn_accept"
@@ -117,6 +122,7 @@
                 android:layout_marginTop="10dp"
                 android:textAllCaps="false"
                 android:textSize="16sp"
+                android:layout_margin="10dp"
                 />
         </RelativeLayout>
 

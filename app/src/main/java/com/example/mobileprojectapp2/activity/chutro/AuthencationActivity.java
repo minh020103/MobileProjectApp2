@@ -1,26 +1,92 @@
 package com.example.mobileprojectapp2.activity.chutro;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 
+import android.Manifest;
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.mobileprojectapp2.R;
+import com.example.mobileprojectapp2.api.ApiServicePhuc;
+import com.example.mobileprojectapp2.api.Const;
+import com.example.mobileprojectapp2.model.XacThucChuTro;
+
+import java.io.IOException;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class AuthencationActivity extends AppCompatActivity {
 
+    private static final int CHUA_XAC_THUC = 0;
+    private static final int DA_XAC_THUC = 1;
     private ImageView imgViewBack, imageViewMatTruocCCCD, imageViewMatSauCCCD;
     private TextView tvNotAuthencation, tvOkAuthencation;
     private AppCompatButton btnAccept;
+    private Uri mUri;
+    public static final String TAG = AuthencationActivity.class.getName();
+    private static final int MY_REQUEST_CODE = 10;
+
+    private int viewID = -1;
+
+    private ActivityResultLauncher<Intent> mActivityResultLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    Log.e(TAG, "onActivityResult");
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+                        Intent data = result.getData();
+                        if (data == null) {
+                            return;
+                        }
+                        //Du anh lieu tu gallery
+                        Uri uri = data.getData();
+                        mUri = uri;
+                        try {
+                            Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
+                            if (viewID == R.id.imgView_mat_truoc_cccd) {
+                                imageViewMatTruocCCCD.setImageBitmap(bitmap);
+                            }
+                            if (viewID == R.id.imgView_mat_sau_cccd) {
+                                imageViewMatSauCCCD.setImageBitmap(bitmap);
+                            }
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+                }
+            }
+    );
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.authencation_layout);
         anhXa();
+        getDetailChuTro();
 
         imgViewBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -28,6 +94,85 @@ public class AuthencationActivity extends AppCompatActivity {
                 finish();
             }
         });
+
+    }
+
+    private void getDetailChuTro() {
+        Call<XacThucChuTro> call = ApiServicePhuc.apiService.getDetailChuTro(2);
+        call.enqueue(new Callback<XacThucChuTro>() {
+            @Override
+            public void onResponse(Call<XacThucChuTro> call, Response<XacThucChuTro> response) {
+                Glide.with(AuthencationActivity.this.getLayoutInflater().getContext()).load(Const.DOMAIN + response.body().getCccdMatTruoc()).into(imageViewMatSauCCCD);
+                Glide.with(AuthencationActivity.this.getLayoutInflater().getContext()).load(Const.DOMAIN + response.body().getCccdMatSau()).into(imageViewMatTruocCCCD);
+                if (response.body().getTrangThaiXacThuc() == CHUA_XAC_THUC) {
+                    tvNotAuthencation.setVisibility(View.VISIBLE);
+                    tvOkAuthencation.setVisibility(View.GONE);
+                    btnAccept.setVisibility(View.VISIBLE);
+                } else {
+                    tvNotAuthencation.setVisibility(View.GONE);
+                    tvOkAuthencation.setVisibility(View.VISIBLE);
+                    btnAccept.setVisibility(View.INVISIBLE);
+                }
+                onClickCanDuLieu(response.body().getTrangThaiXacThuc());
+            }
+
+            @Override
+            public void onFailure(Call<XacThucChuTro> call, Throwable t) {
+                Toast.makeText(AuthencationActivity.this, "Loi roi ba", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void onClickCanDuLieu(int xacThuc) {
+        if (xacThuc == CHUA_XAC_THUC) {
+            imageViewMatTruocCCCD.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onClickRequestPermission();
+                    viewID = v.getId();
+                }
+            });
+            imageViewMatSauCCCD.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onClickRequestPermission();
+                    viewID = v.getId();
+                }
+            });
+        }
+    }
+
+    private void onClickRequestPermission() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+            openGallery();
+            return;
+        }
+        //Xin cap phep
+        if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+            openGallery();
+        } else {
+            String[] permission = {Manifest.permission.READ_EXTERNAL_STORAGE};
+            requestPermissions(permission, MY_REQUEST_CODE);
+        }
+    }
+
+    private void openGallery() {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        mActivityResultLauncher.launch(Intent.createChooser(intent, "Seletec Picture"));
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == MY_REQUEST_CODE) {
+            //Khi nguoi dung cho phep
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                openGallery();
+            }
+        }
+
     }
 
     private void anhXa() {
@@ -37,5 +182,31 @@ public class AuthencationActivity extends AppCompatActivity {
         tvNotAuthencation = findViewById(R.id.tv_not_authencation);
         tvOkAuthencation = findViewById(R.id.tv_ok_authencation);
         btnAccept = findViewById(R.id.btn_accept);
+    }
+
+    private void alertFail(String s) {
+        new AlertDialog.Builder(this)
+                .setTitle("Thông báo")
+                .setMessage(s)
+                .setIcon(R.drawable.iconp_fail)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                }).show();
+    }
+
+    private void alertSuccess(String s) {
+        new AlertDialog.Builder(this)
+                .setTitle("Thông báo")
+                .setMessage(s)
+                .setIcon(R.drawable.iconp_check)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                }).show();
     }
 }

@@ -1,6 +1,7 @@
 package com.example.mobileprojectapp2.api;
 
 import com.example.mobileprojectapp2.model.ChuTro;
+import com.example.mobileprojectapp2.model.XacThucChuTro;
 
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -43,5 +44,7 @@ public interface ApiServicePhuc {
                                      @Part("soTaiKhoanNganHang") RequestBody soTaiKhoanNganHang,
                                      @Part("tenChuTaiKhoanNganHang") RequestBody tenChuTaiKhoanNganHang);
 
+    @GET("api/xacthucchutro/chitiet")
+    Call<XacThucChuTro> getDetailChuTro(@Query("idChuTro") int idChuTro);
 
 }
