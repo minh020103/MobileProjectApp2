@@ -49,8 +49,8 @@ public class NguoiThueAdapter extends RecyclerView.Adapter<NguoiThueAdapter.MyVi
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         NguoiThue data = list.get(position);
-        Glide.with(activity.getLayoutInflater().getContext()).load(Const.DOMAIN + list.get(position).getHinhNguoiDung()).into(holder.imgNguoiThue);
-        holder.tvTenNguoiThue.setText(data.getTenNguoiDung());
+        Glide.with(activity.getLayoutInflater().getContext()).load(Const.DOMAIN + list.get(position).getHinh()).into(holder.imgNguoiThue);
+        holder.tvTenNguoiThue.setText(data.getTen());
         holder.tvSdtNguoiThue.setText(data.getSoDienThoai());
 
         holder.onClickListener = new View.OnClickListener() {
