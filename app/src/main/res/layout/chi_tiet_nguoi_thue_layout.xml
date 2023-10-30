@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -60,6 +61,7 @@
 
 
                 <TextView
+                    android:id="@+id/tvTenNguoiThueChiTiet"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Nguyen Duc Minh"
@@ -70,26 +72,32 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
                     <Button
+                        android:id="@+id/btnNhanTinNguoiThue"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="5"
                         android:text="Nhan tin"
+                        android:backgroundTint="@color/button_tim"
                         android:layout_margin="5dp"/>
                     <Button
+                        android:id="@+id/btnGoiDienNguoiThue"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="5"
                         android:text="Goi dien"
+                        android:backgroundTint="@color/main_color_app_light"
                         android:layout_margin="5dp"/>
                 </LinearLayout>
 
                 <TextView
+                    android:id="@+id/tvSDTNguoiThueChiTiet"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="SDT"
                     android:textSize="20sp"/>
 
                 <TextView
+                    android:id="@+id/tvPhongNguoiThueChiTiet"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Phong"
@@ -106,6 +114,7 @@
                         android:text="So thang da tra :"
                         android:textSize="20sp"/>
                     <EditText
+                        android:id="@+id/edtSoThangDaTraNguoiThue"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="9"/>
@@ -119,22 +128,20 @@
                 android:layout_weight="1"
                 android:orientation="horizontal">
                 <Button
+                    android:id="@+id/btnXacNhanNguoiThueChiTiet"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="5"
                     android:text="Xac nhan"
+                    android:backgroundTint="@color/button_fb"
                     android:layout_margin="5dp"/>
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Xoa nguoi thue"
-                    android:layout_margin="5dp"/>
+
             </LinearLayout>
 
         </LinearLayout>
 
         <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/imgNguoiThueChiTiet"
             android:layout_width="1in"
             android:layout_height="1in"
             android:src="@color/black"

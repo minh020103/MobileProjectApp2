@@ -43,7 +43,7 @@ public class ThongBaoAdapter extends RecyclerView.Adapter<ThongBaoAdapter.MyView
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         ThongBao data =list.get(position);
-        holder.tvTenNguoiGuiThongBao.setText("Nguoi gui: " + data.getTaiKhoanNguoiGui().getTenTaiKhoan());
+        //holder.tvTenNguoiGuiThongBao.setText("Nguoi gui: " + data.getTaiKhoanNguoiGui().getTenTaiKhoan());
         holder.tvNoiDungThongBao.setText(data.getNoiDung());
 
         holder.onClickListener = new View.OnClickListener() {

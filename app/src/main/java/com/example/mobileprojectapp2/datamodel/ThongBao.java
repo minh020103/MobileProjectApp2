@@ -1,42 +1,42 @@
 package com.example.mobileprojectapp2.datamodel;
 
 public class ThongBao {
-    private int id;
-    private TaiKhoan TaiKhoanNguoiGui;
-    private TaiKhoan TaiKhoanNguoiNhan;
+    private int Id;
+    private int idTaiKhoanGui;
+    private int idTaiKhoanNhan;
     private String noiDung;
-    private int trangThaiTaiKhoanNguoiNhan;
+    private int trangThai;
 
-    public ThongBao(int id, TaiKhoan taiKhoanNguoiGui, TaiKhoan TaiKhoanNguoiNhan, String noiDung, int trangThaiTaiKhoanNguoiNhan) {
-        this.id = id;
-        TaiKhoanNguoiGui = taiKhoanNguoiGui;
-        this.TaiKhoanNguoiNhan = TaiKhoanNguoiNhan;
+    public ThongBao(int id, int idTaiKhoanGui, int idTaiKhoanNhan, String noiDung, int trangThai) {
+        Id = id;
+        this.idTaiKhoanGui = idTaiKhoanGui;
+        this.idTaiKhoanNhan = idTaiKhoanNhan;
         this.noiDung = noiDung;
-        this.trangThaiTaiKhoanNguoiNhan = trangThaiTaiKhoanNguoiNhan;
+        this.trangThai = trangThai;
     }
 
     public int getId() {
-        return id;
+        return Id;
     }
 
     public void setId(int id) {
-        this.id = id;
+        Id = id;
     }
 
-    public TaiKhoan getTaiKhoanNguoiGui() {
-        return TaiKhoanNguoiGui;
+    public int getIdTaiKhoanGui() {
+        return idTaiKhoanGui;
     }
 
-    public void setTaiKhoanNguoiGui(TaiKhoan taiKhoanNguoiGui) {
-        TaiKhoanNguoiGui = taiKhoanNguoiGui;
+    public void setIdTaiKhoanGui(int idTaiKhoanGui) {
+        this.idTaiKhoanGui = idTaiKhoanGui;
     }
 
-    public TaiKhoan getTaiKhoanNguoiNhan() {
-        return TaiKhoanNguoiNhan;
+    public int getIdTaiKhoanNhan() {
+        return idTaiKhoanNhan;
     }
 
-    public void setTaiKhoanNguoiNhan(TaiKhoan idTaiKhoanNguoiNhan) {
-        this.TaiKhoanNguoiNhan = idTaiKhoanNguoiNhan;
+    public void setIdTaiKhoanNhan(int idTaiKhoanNhan) {
+        this.idTaiKhoanNhan = idTaiKhoanNhan;
     }
 
     public String getNoiDung() {
@@ -47,22 +47,22 @@ public class ThongBao {
         this.noiDung = noiDung;
     }
 
-    public int getTrangThaiTaiKhoanNguoiNhan() {
-        return trangThaiTaiKhoanNguoiNhan;
+    public int getTrangThai() {
+        return trangThai;
     }
 
-    public void setTrangThaiTaiKhoanNguoiNhan(int trangThaiTaiKhoanNguoiNhan) {
-        this.trangThaiTaiKhoanNguoiNhan = trangThaiTaiKhoanNguoiNhan;
+    public void setTrangThai(int trangThai) {
+        this.trangThai = trangThai;
     }
 
     @Override
     public String toString() {
         return "ThongBao{" +
-                "id=" + id +
-                ", TaiKhoanNguoiGui=" + TaiKhoanNguoiGui +
-                ", idTaiKhoanNguoiNhan=" + TaiKhoanNguoiNhan +
+                "Id=" + Id +
+                ", idTaiKhoanGui=" + idTaiKhoanGui +
+                ", idTaiKhoanNhan=" + idTaiKhoanNhan +
                 ", noiDung='" + noiDung + '\'' +
-                ", trangThaiTaiKhoanNguoiNhan=" + trangThaiTaiKhoanNguoiNhan +
+                ", trangThai=" + trangThai +
                 '}';
     }
 }

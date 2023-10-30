@@ -39,6 +39,7 @@
         android:orientation="vertical">
         
         <TextView
+            android:id="@+id/tvNoiDungThongBaoChiTiet"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Noi dung thong bao"
@@ -46,6 +47,7 @@
             android:textSize="20sp"/>
 
         <TextView
+            android:id="@+id/tvNgayThongBaoChiTiet"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Ngay thong bao"
@@ -53,6 +55,7 @@
             android:textSize="20sp"/>
 
         <TextView
+            android:id="@+id/tvGoiThongBaoChiTiet"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Goi"
