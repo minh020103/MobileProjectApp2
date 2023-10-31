@@ -12,7 +12,7 @@ import android.provider.MediaStore;
 
 import androidx.loader.content.CursorLoader;
 
-public class ReadPathUtil {
+public class RealPathUtil {
     public static String getRealPath(Context context, Uri fileUri) {
         String realPath;
         // SDK < API11
