@@ -6,13 +6,20 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.SearchManager;
+import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.mobileprojectapp2.R;
 import com.example.mobileprojectapp2.api.chutro.ApiServicePhuc;
 import com.example.mobileprojectapp2.model.PhongTroChuTro;
 import com.example.mobileprojectapp2.recyclerviewadapter.chutro.PhongTroChuTroAdapter;
+
+import org.w3c.dom.Text;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -27,6 +34,7 @@ public class SearchActivity extends AppCompatActivity {
     private PhongTroChuTroAdapter adapter;
     private LinearLayoutManager layoutManager;
     private SearchView searchView;
+    private TextView tvThongBao;
 
     private List<PhongTroChuTro> mList;
 
@@ -35,6 +43,7 @@ public class SearchActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.search_layout);
         mList = new LinkedList<>();
+        tvThongBao = findViewById(R.id.tv_thongbao);
         rcvListPhongTro = findViewById(R.id.rcv_list_phong_tro);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         rcvListPhongTro.setLayoutManager(linearLayoutManager);
@@ -48,8 +57,21 @@ public class SearchActivity extends AppCompatActivity {
 
         RecyclerView.ItemDecoration itemDecoration = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
         rcvListPhongTro.addItemDecoration(itemDecoration);
-
         getAllDataApi();
+
+        searchView = findViewById(R.id.search);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                adapter.getFilter().filter(query);
+                return false;
+            }
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                adapter.getFilter().filter(newText);
+                return false;
+            }
+        });
     }
 
     private void getAllDataApi() {
