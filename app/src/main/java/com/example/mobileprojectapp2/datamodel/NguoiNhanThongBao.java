@@ -1,10 +1,10 @@
 package com.example.mobileprojectapp2.datamodel;
 
-public class NguoiGuiThongBao {
+public class NguoiNhanThongBao {
     private int id;
     private int loaiTaiKhoan;
 
-    public NguoiGuiThongBao(int id, int loaiTaiKhoan) {
+    public NguoiNhanThongBao(int id, int loaiTaiKhoan) {
         this.id = id;
         this.loaiTaiKhoan = loaiTaiKhoan;
     }

@@ -43,6 +43,8 @@ public class NotificationFragment extends AbstractFragment{
         recyclerView.setAdapter(thongBaoAdapter);
         list = new ArrayList<>();
 
+        listThongBaoTheoIdTaiKhoan(2);
+
         return fragmentLayout;
     }
 

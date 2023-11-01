@@ -1,11 +1,11 @@
 package com.example.mobileprojectapp2.datamodel;
 
-public class NguoiNhanThongBao {
+public class NguoiGuiThongBao {
     private String hinh;
     private String ten;
     private String soDienThoai;
 
-    public NguoiNhanThongBao(String hinh, String ten, String soDienThoai) {
+    public NguoiGuiThongBao(String hinh, String ten, String soDienThoai) {
         this.hinh = hinh;
         this.ten = ten;
         this.soDienThoai = soDienThoai;

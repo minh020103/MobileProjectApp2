@@ -20,6 +20,9 @@
     <color name="text_black">#1e1e1e</color>
     <color name="text_do">#f24822</color>
     <color name="text_xanh_la">#FF40FF00</color>
+    <color name="bg_thongbao_chuaxem">#BDFDA7</color>
+    <color name="text_thongbao_chuaxem">#FF2B2B</color>
+    <color name="text_thongbao_daxem">#353535</color>
 
 
 
