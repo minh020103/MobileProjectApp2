@@ -2,6 +2,10 @@ package com.example.mobileprojectapp2.api.chutro;
 
 import com.example.mobileprojectapp2.api.Const;
 import com.example.mobileprojectapp2.model.ChuTro;
+import com.example.mobileprojectapp2.model.PhongTro;
+import com.example.mobileprojectapp2.model.PhongTroChuTro;
+
+import java.util.List;
 
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -43,6 +47,7 @@ public interface ApiServicePhuc {
                                      @Part("soDienThoai") RequestBody soDienThoai,
                                      @Part("soTaiKhoanNganHang") RequestBody soTaiKhoanNganHang,
                                      @Part("tenChuTaiKhoanNganHang") RequestBody tenChuTaiKhoanNganHang);
-
+    @GET("api/phongtrochutro/all")
+    Call<List<PhongTroChuTro>> getALlListPhongTro(@Query("idChuTro") int idChuTro);
 
 }

@@ -21,6 +21,7 @@ import com.example.mobileprojectapp2.R;
 import com.example.mobileprojectapp2.activity.chutro.AddRoomActivity;
 import com.example.mobileprojectapp2.activity.chutro.EditRoomActivity;
 import com.example.mobileprojectapp2.activity.chutro.MotelRoomOwnerActivity;
+import com.example.mobileprojectapp2.activity.chutro.SearchActivity;
 import com.example.mobileprojectapp2.api.chutro.ApiServiceMinh;
 import com.example.mobileprojectapp2.datamodel.Comment;
 import com.example.mobileprojectapp2.datamodel.HinhAnh;
@@ -47,6 +48,8 @@ public class ListRoomFragment extends AbstractFragment {
     private List<Comment> listComment;
     private ViewGroup container;
     private LinearLayout llAdd;
+    private LinearLayout llSearch;
+
     private List<PhongTroChuTro> phongTroOfChuTroList;
 
     @Nullable
@@ -70,6 +73,12 @@ public class ListRoomFragment extends AbstractFragment {
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), AddRoomActivity.class);
                 startActivity(intent);
+            }
+        });
+        llSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getActivity(), SearchActivity.class));
             }
         });
     }
@@ -193,6 +202,7 @@ public class ListRoomFragment extends AbstractFragment {
         layoutManager.setOrientation(RecyclerView.VERTICAL);
         rcvListMotelRoom.setLayoutManager(layoutManager);
         rcvListMotelRoom.setAdapter(roomAdapter);
+        llSearch = fragmentLayout.findViewById(R.id.llSearch);
 
     }
 

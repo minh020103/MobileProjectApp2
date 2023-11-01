@@ -10,17 +10,17 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.mobileprojectapp2.R;
-import com.example.mobileprojectapp2.model.PhongTro;
+import com.example.mobileprojectapp2.model.Define;
 import com.example.mobileprojectapp2.model.PhongTroChuTro;
 
 import java.util.List;
 
-public class PhongTroAdapter extends RecyclerView.Adapter<PhongTroAdapter.PhongTroViewHolder> {
+public class PhongTroChuTroAdapter extends RecyclerView.Adapter<PhongTroChuTroAdapter.PhongTroViewHolder> {
     private List<PhongTroChuTro> mListPhongTro;
     private Activity activity;
     private int layoutID;
 
-    public PhongTroAdapter(List<PhongTroChuTro> mListPhongTro, Activity activity, int layoutID) {
+    public PhongTroChuTroAdapter(List<PhongTroChuTro> mListPhongTro, Activity activity, int layoutID) {
         this.mListPhongTro = mListPhongTro;
         this.activity = activity;
         this.layoutID = layoutID;
@@ -35,14 +35,16 @@ public class PhongTroAdapter extends RecyclerView.Adapter<PhongTroAdapter.PhongT
 
     @Override
     public void onBindViewHolder(@NonNull PhongTroViewHolder holder, int position) {
-        PhongTroChuTro phongTro = mListPhongTro.get(position);
-        if (phongTro == null) {
+        PhongTroChuTro phongTroChuTro = mListPhongTro.get(position);
+        if (phongTroChuTro == null) {
             return;
         }
-        holder.soPhong.setText(phongTro.getSoPhong() + "");
-        holder.gia.setText(phongTro.getGia() + "");
-        holder.loaiPhong.setText(phongTro.getLoaiPhong() + "");
-        holder.tienCoc.setText(phongTro.getTienCoc() + "");
+        holder.soPhong.setText(phongTroChuTro.getPhongTro().getSoPhong() + "" );
+        holder.gia.setText(phongTroChuTro.getPhongTro().getGia() + " " + "₫");
+
+        holder.loaiPhong.setText(phongTroChuTro.getPhongTro().getLoaiPhong() == Define.PHONG_TRONG ? "Phòng trống": phongTroChuTro.getPhongTro().getLoaiPhong() == Define.PHONG_GHEP ? "Phòng ghép" : "Phòng đơn");
+
+        holder.dienTich.setText(phongTroChuTro.getPhongTro().getDienTich() + "" + "㎡");
     }
 
     @Override
@@ -56,7 +58,7 @@ public class PhongTroAdapter extends RecyclerView.Adapter<PhongTroAdapter.PhongT
 
     public class PhongTroViewHolder extends RecyclerView.ViewHolder {
 
-        private TextView soPhong, gia, loaiPhong, tienCoc;
+        private TextView soPhong, gia, loaiPhong, dienTich;
 
         public PhongTroViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -64,7 +66,7 @@ public class PhongTroAdapter extends RecyclerView.Adapter<PhongTroAdapter.PhongT
             soPhong = itemView.findViewById(R.id.tv_soPhong);
             gia = itemView.findViewById(R.id.tv_gia);
             loaiPhong = itemView.findViewById(R.id.tv_loaiPhong);
-            tienCoc = itemView.findViewById(R.id.tv_tienCoc);
+            dienTich = itemView.findViewById(R.id.tv_dienTich);
         }
     }
 }
