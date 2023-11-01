@@ -76,4 +76,10 @@ public class NotificationFragment extends AbstractFragment{
         intent.putExtra("id", id);
         startActivity(intent);
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        listThongBaoTheoIdTaiKhoan(2);
+    }
 }
