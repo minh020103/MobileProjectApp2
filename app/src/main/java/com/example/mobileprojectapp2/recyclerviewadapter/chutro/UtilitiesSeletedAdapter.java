@@ -1,6 +1,7 @@
 package com.example.mobileprojectapp2.recyclerviewadapter.chutro;
 
 import android.app.Activity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,6 +44,7 @@ public class UtilitiesSeletedAdapter extends RecyclerView.Adapter<UtilitiesSelet
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         TienIch tienIch = listSeleted.get(position);
         if (tienIch != null) {
+            Log.d("TAG", "onBindViewHolder: "+Const.DOMAIN + tienIch.getHinh());
             Glide.with(activity.getLayoutInflater().getContext()).load(Const.DOMAIN + tienIch.getHinh()).into(holder.imgAnhTienIch);
             holder.tvTenTienIch.setText(tienIch.getTen());
         }

@@ -97,15 +97,16 @@ public class AddRoomActivity extends AppCompatActivity {
         adapter = new ImagesAdapter(this, bitmapList, R.layout.chutro_choose_images_layout);
         rcvChoosedImages.setLayoutManager(layoutManager);
         rcvChoosedImages.setAdapter(adapter);
-        // 2 recyclerview tiện ích
-        utilitiesAdapter = new UtilitiesAdapter(AddRoomActivity.this, listTienIch, listTienIchSeleted, R.layout.chutro_cardview_item_utilities_layout);
-        // 3 recyclerview tiện ích đã chọn
+        // 2 recyclerview tiện ích đã chọn
         utilitiesSeletedAdapter = new UtilitiesSeletedAdapter(this, listTienIchSeleted, R.layout.chutro_cardview_item_utilities_seleted_layout);
         LinearLayoutManager layoutManager2 = new LinearLayoutManager(this);
         layoutManager2.setOrientation(RecyclerView.HORIZONTAL);
         rcvTienIchDaChon = findViewById(R.id.rcvTienIchDaChon);
         rcvTienIchDaChon.setLayoutManager(layoutManager2);
         rcvTienIchDaChon.setAdapter(utilitiesSeletedAdapter);
+        // 3 recyclerview tiện ích
+        utilitiesAdapter = new UtilitiesAdapter(AddRoomActivity.this, listTienIch, listTienIchSeleted, R.layout.chutro_cardview_item_utilities_layout);
+
 
         batSuKien();
     }
@@ -160,8 +161,6 @@ public class AddRoomActivity extends AppCompatActivity {
                 View viewDialog = inflater.inflate(R.layout.chutro_dialog_choose_utilities_layout, null);
                 builder.setView(viewDialog);
                 AlertDialog dialog = builder.create();
-                dialog.show();
-
                 getListTienIch();
 
 
@@ -170,6 +169,14 @@ public class AddRoomActivity extends AppCompatActivity {
                 layoutManager1.setOrientation(RecyclerView.VERTICAL);
                 rcvChonTienIch.setLayoutManager(layoutManager1);
                 rcvChonTienIch.setAdapter(utilitiesAdapter);
+
+                utilitiesAdapter.setOnClick(new UtilitiesAdapter.OnClick() {
+                    @Override
+                    public void checkBox(int position, View v) {
+                        utilitiesSeletedAdapter.notifyDataSetChanged();
+                    }
+                });
+                dialog.show();
             }
         });
         tvXacNhan.setOnClickListener(new View.OnClickListener() {

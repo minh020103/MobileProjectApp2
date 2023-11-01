@@ -1,6 +1,7 @@
 package com.example.mobileprojectapp2.recyclerviewadapter.chutro;
 
 import android.app.Activity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +29,11 @@ public class UtilitiesAdapter extends RecyclerView.Adapter<UtilitiesAdapter.MyVi
     private List<TienIch> list;
     private List<TienIch> listSeleted;
     private int layoutID;
+    private OnClick onClick;
+
+    public void setOnClick(OnClick onClick) {
+        this.onClick = onClick;
+    }
 
     public UtilitiesAdapter(Activity activity, List<TienIch> list, List<TienIch> listSeleted, int layoutID) {
         this.activity = activity;
@@ -50,11 +56,17 @@ public class UtilitiesAdapter extends RecyclerView.Adapter<UtilitiesAdapter.MyVi
         if (tienIch != null) {
             holder.tvTenTienIch.setText(tienIch.getTen());
             Glide.with(activity.getLayoutInflater().getContext()).load(Const.DOMAIN+tienIch.getHinh()).into(holder.imgAnhTienIch);
-            if (holder.cbTienIch.isChecked()) {
-                listSeleted.add(tienIch);
-            } else {
-                listSeleted.remove(tienIch);
-            }
+            holder.onClickListener = new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (holder.cbTienIch.isChecked()) {
+                        listSeleted.add(tienIch);
+                    } else {
+                        listSeleted.remove(tienIch);
+                    }
+                    onClick.checkBox(position, view);
+                }
+            };
         }
     }
 
@@ -63,16 +75,27 @@ public class UtilitiesAdapter extends RecyclerView.Adapter<UtilitiesAdapter.MyVi
         return list.size();
     }
 
-    public class MyViewHolder extends RecyclerView.ViewHolder{
+    public interface OnClick{
+        void checkBox(int position, View v);
+    }
 
+    public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         CheckBox cbTienIch;
         TextView tvTenTienIch;
         ImageView imgAnhTienIch;
+        View.OnClickListener onClickListener;
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             cbTienIch = itemView.findViewById(R.id.cbTienIch);
             tvTenTienIch = itemView.findViewById(R.id.tvTenTienIch);
             imgAnhTienIch = itemView.findViewById(R.id.imgHinhTienIch);
+
+            cbTienIch.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View view) {
+            onClickListener.onClick(view);
         }
     }
 }
