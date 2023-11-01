@@ -18,7 +18,7 @@
                 android:id="@+id/imgBack"
                 android:layout_width="50dp"
                 android:layout_height="34dp"
-                android:src="@drawable/ic_launcher_background" />
+                android:src="@drawable/icon_back" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -46,28 +46,7 @@
             android:textStyle="bold"
             android:textSize="20sp"/>
 
-        <TextView
-            android:id="@+id/tvNgayThongBaoChiTiet"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Ngay thong bao"
-            android:textStyle="bold"
-            android:textSize="20sp"/>
 
-        <TextView
-            android:id="@+id/tvGoiThongBaoChiTiet"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Goi"
-            android:textStyle="bold"
-            android:textSize="20sp"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Gia"
-            android:textStyle="bold"
-            android:textSize="20sp"/>
         
     </LinearLayout>
 
