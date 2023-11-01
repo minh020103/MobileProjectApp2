@@ -34,4 +34,6 @@ public interface ApiServiceKiet {
     Call<List<ThongBao>> getListThongBaoTheoIdTaiKhoan(@Query("idTaiKhoanNhan") int idTaiKhoanNhan);
     @GET("api/thongbao/chitiet")
     Call<ThongBao> getChiTietThongBaoTheoId(@Query("id") int id);
+    @GET("api/thongbao/xoa")
+    Call<ThongBao> xoaThongBaoTheoId(@Query("id") int id);
 }

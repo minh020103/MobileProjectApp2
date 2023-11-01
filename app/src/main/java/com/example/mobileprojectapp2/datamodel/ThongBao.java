@@ -19,6 +19,10 @@ public class ThongBao {
         this.taiKhoanNhan = taiKhoanNhan;
     }
 
+    public ThongBao() {
+
+    }
+
     public int getId() {
         return id;
     }
