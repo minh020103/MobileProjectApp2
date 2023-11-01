@@ -5,8 +5,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.mobileprojectapp2.R;
 import com.example.mobileprojectapp2.api.chutro.ApiServiceKiet;
@@ -20,6 +22,7 @@ import retrofit2.Response;
 public class NotificationDetailActivity extends AppCompatActivity {
 
     ImageView imgBack;
+    Button btnXoaThongBaoChiTiet;
     TextView tvNoiDungThongBaoChiTiet;
     int id;
     @Override
@@ -31,11 +34,20 @@ public class NotificationDetailActivity extends AppCompatActivity {
         id = intent.getIntExtra("id", 0);
 
         imgBack = findViewById(R.id.imgBack);
+        btnXoaThongBaoChiTiet = findViewById(R.id.btnXoaThongBaoChiTiet);
         tvNoiDungThongBaoChiTiet = findViewById(R.id.tvNoiDungThongBaoChiTiet);
 
         imgBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                finish();
+            }
+        });
+
+        btnXoaThongBaoChiTiet.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                xoaThongBao(id);
                 finish();
             }
         });
@@ -58,4 +70,20 @@ public class NotificationDetailActivity extends AppCompatActivity {
             }
         });
     }
+
+    private void xoaThongBao(int id)
+    {
+        ApiServiceKiet.apiServiceKiet.xoaThongBaoTheoId(id).enqueue(new Callback<ThongBao>() {
+            @Override
+            public void onResponse(Call<ThongBao> call, Response<ThongBao> response) {
+                Toast.makeText(NotificationDetailActivity.this, "Xóa thành công", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(Call<ThongBao> call, Throwable t) {
+
+            }
+        });
+    }
+
 }

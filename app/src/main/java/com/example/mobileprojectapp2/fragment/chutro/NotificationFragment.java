@@ -74,6 +74,8 @@ public class NotificationFragment extends AbstractFragment{
     {
         Intent intent = new Intent(getActivity(), NotificationDetailActivity.class);
         intent.putExtra("id", id);
+        //intent.putExtra("thongBao",  thongBao());
+        // trangthaithongbao = 1
         startActivity(intent);
     }
 
