@@ -97,6 +97,14 @@ public class AddRoomActivity extends AppCompatActivity {
         adapter = new ImagesAdapter(this, bitmapList, R.layout.chutro_choose_images_layout);
         rcvChoosedImages.setLayoutManager(layoutManager);
         rcvChoosedImages.setAdapter(adapter);
+        adapter.setOnCLick(new ImagesAdapter.OnCLick() {
+            @Override
+            public void delete(int position, View v) {
+                bitmapList.remove(bitmapList.get(position));
+                pathList.remove(pathList.get(position));
+                adapter.notifyDataSetChanged();
+            }
+        });
         // 2 recyclerview tiện ích đã chọn
         utilitiesSeletedAdapter = new UtilitiesSeletedAdapter(this, listTienIchSeleted, R.layout.chutro_cardview_item_utilities_seleted_layout);
         LinearLayoutManager layoutManager2 = new LinearLayoutManager(this);
@@ -104,6 +112,13 @@ public class AddRoomActivity extends AppCompatActivity {
         rcvTienIchDaChon = findViewById(R.id.rcvTienIchDaChon);
         rcvTienIchDaChon.setLayoutManager(layoutManager2);
         rcvTienIchDaChon.setAdapter(utilitiesSeletedAdapter);
+        utilitiesSeletedAdapter.setOnClick(new UtilitiesSeletedAdapter.OnClick() {
+            @Override
+            public void deleteImage(int position, View v) {
+                listTienIchSeleted.remove(listTienIchSeleted.get(position));
+                utilitiesSeletedAdapter.notifyDataSetChanged();
+            }
+        });
         // 3 recyclerview tiện ích
         utilitiesAdapter = new UtilitiesAdapter(AddRoomActivity.this, listTienIch, listTienIchSeleted, R.layout.chutro_cardview_item_utilities_layout);
 

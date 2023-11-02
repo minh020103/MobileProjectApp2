@@ -25,6 +25,7 @@ public class UtilitiesSeletedAdapter extends RecyclerView.Adapter<UtilitiesSelet
     private Activity activity;
     private List<TienIch> listSeleted;
     private int layoutID;
+    private OnClick onClick;
 
     public UtilitiesSeletedAdapter(Activity activity, List<TienIch> listSeleted, int layoutID) {
         this.activity = activity;
@@ -48,6 +49,12 @@ public class UtilitiesSeletedAdapter extends RecyclerView.Adapter<UtilitiesSelet
             Glide.with(activity.getLayoutInflater().getContext()).load(Const.DOMAIN + tienIch.getHinh()).into(holder.imgAnhTienIch);
             holder.tvTenTienIch.setText(tienIch.getTen());
         }
+        holder.onClickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onClick.deleteImage(position, view);
+            }
+        };
     }
 
     @Override
@@ -55,14 +62,31 @@ public class UtilitiesSeletedAdapter extends RecyclerView.Adapter<UtilitiesSelet
         return listSeleted.size();
     }
 
-    public class MyViewHolder extends RecyclerView.ViewHolder{
+    public interface OnClick {
+        void deleteImage(int position, View v);
+    }
+
+    public void setOnClick(OnClick onClick) {
+        this.onClick = onClick;
+    }
+
+    public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView tvTenTienIch;
         ImageView imgAnhTienIch;
+        ImageView imgXoa;
+        View.OnClickListener onClickListener;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             tvTenTienIch = itemView.findViewById(R.id.tvTenTienIch);
             imgAnhTienIch = itemView.findViewById(R.id.imgHinhTienIch);
+            imgXoa = itemView.findViewById(R.id.imgXoa);
+            imgXoa.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View view) {
+            onClickListener.onClick(view);
         }
     }
 }

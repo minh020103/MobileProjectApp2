@@ -20,6 +20,7 @@ public class ImagesAdapter extends RecyclerView.Adapter<ImagesAdapter.MyViewHold
     private Activity activity;
     private List<Bitmap> bitmapList;
     private int layoutID;
+    private OnCLick onCLick;
 
 
     public ImagesAdapter(Activity activity, List<Bitmap> bitmapList, int layoutID) {
@@ -41,6 +42,20 @@ public class ImagesAdapter extends RecyclerView.Adapter<ImagesAdapter.MyViewHold
         Bitmap hinhAnh = bitmapList.get(position);
 
         holder.imgItem.setImageBitmap(hinhAnh);
+        holder.onClickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onCLick.delete(position,view);
+            }
+        };
+    }
+
+    public interface OnCLick{
+        void delete(int position, View v);
+    }
+
+    public void setOnCLick(OnCLick onCLick) {
+        this.onCLick = onCLick;
     }
 
     @Override
@@ -48,12 +63,20 @@ public class ImagesAdapter extends RecyclerView.Adapter<ImagesAdapter.MyViewHold
         return bitmapList.size();
     }
 
-    public class MyViewHolder extends RecyclerView.ViewHolder{
-        ImageView imgItem;
+    public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        ImageView imgItem, imgXoaHinh;
+        View.OnClickListener onClickListener;
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             imgItem = itemView.findViewById(R.id.imgItem);
+            imgXoaHinh = itemView.findViewById(R.id.imgXoaHinh);
 
+            imgXoaHinh.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View view) {
+            onClickListener.onClick(view);
         }
     }
 }
