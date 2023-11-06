@@ -9,6 +9,7 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
@@ -60,7 +61,10 @@ public class UtilitiesAdapter extends RecyclerView.Adapter<UtilitiesAdapter.MyVi
                 @Override
                 public void onClick(View view) {
                     if (holder.cbTienIch.isChecked()) {
-                        listSeleted.add(tienIch);
+                        // Nếu chưa có mới thêm vào danh sách
+                        if (listSeleted.contains(tienIch) == false) {
+                            listSeleted.add(tienIch);
+                        }
                     } else {
                         listSeleted.remove(tienIch);
                     }

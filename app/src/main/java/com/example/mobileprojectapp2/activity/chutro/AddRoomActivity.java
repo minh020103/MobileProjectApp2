@@ -4,8 +4,6 @@ import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -22,38 +20,52 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.mobileprojectapp2.R;
 import com.example.mobileprojectapp2.api.chutro.ApiServiceMinh;
+import com.example.mobileprojectapp2.datamodel.Phuong;
+import com.example.mobileprojectapp2.datamodel.Quan;
 import com.example.mobileprojectapp2.datamodel.TienIch;
 import com.example.mobileprojectapp2.path.RealPathUtil;
+import com.example.mobileprojectapp2.recyclerviewadapter.chutro.DistrictAdapter;
 import com.example.mobileprojectapp2.recyclerviewadapter.chutro.ImagesAdapter;
 import com.example.mobileprojectapp2.recyclerviewadapter.chutro.UtilitiesAdapter;
 import com.example.mobileprojectapp2.recyclerviewadapter.chutro.UtilitiesSeletedAdapter;
+import com.example.mobileprojectapp2.recyclerviewadapter.chutro.WardAdapter;
+import com.google.gson.Gson;
 
+import java.io.File;
 import java.util.LinkedList;
 import java.util.List;
 
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import okio.ByteString;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class AddRoomActivity extends AppCompatActivity {
+    private final int idChuTro = 2;
     //EditText
-    private EditText edtSoPhong, edtGia, edtDienTich, edtMota, edtDiaChiChiTiet;
+    private EditText edtSoPhong, edtGia, edtDienTich, edtMota, edtDiaChiChiTiet, edtTienDien, edtTienNuoc, edtSoLuongToiDa, edtTienCoc;
     //TextView
-    private TextView tvChonHinh, tvQuan, tvPhuong, tvXacNhan,tvChonTienIch;
+    private TextView tvChonHinh, tvQuan, tvPhuong, tvXacNhanThem, tvChonTienIch;
     //Recycleview
     private RecyclerView rcvChoosedImages;
     private RecyclerView rcvTienIchDaChon;
     private RecyclerView rcvChonTienIch;
+    private RecyclerView rcvChonQuan;
+    private RecyclerView rcvChonPhuong;
     //ImageView
     private ImageView imgBack;
     //Final
@@ -61,19 +73,35 @@ public class AddRoomActivity extends AppCompatActivity {
     //List
     private List<String> pathList;
     private List<Bitmap> bitmapList;
+    private List<Uri> uriList;
     private List<TienIch> listTienIchSeleted;
     private List<TienIch> listTienIch;
+    private List<Quan> lisQuan;
+    private List<Phuong> listPhuong;
     //Uri
     private Uri imgUri;
     //Context
     private Context context = AddRoomActivity.this;
 
     //Adapter
-    private ImagesAdapter adapter;
+    private ImagesAdapter imagesAdapter;
     private UtilitiesAdapter utilitiesAdapter;
     private UtilitiesSeletedAdapter utilitiesSeletedAdapter;
+    private DistrictAdapter districtAdapter;
+    private WardAdapter wardAdapter;
     //Linearlayoutmanager
     private LinearLayoutManager layoutManager;
+    //position
+    // Sử lý lựa chọn cho list quận
+    private int positionSeletedQuan = -1;
+    private int backColorQuan;
+    private LinearLayout previousItemGroundQuan;
+    // Sử lý lựa chọn phường
+    private int positionSeletedPhuong = -1;
+    private int backColorPhuong;
+    private LinearLayout previousItemGroundPhuong;
+
+    // Sử lý lựa chọn phường
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,8 +113,11 @@ public class AddRoomActivity extends AppCompatActivity {
         // Khởi tạo
         pathList = new LinkedList<>();
         bitmapList = new LinkedList<>();
+        uriList = new LinkedList<>();
         listTienIch = new LinkedList<>();
         listTienIchSeleted = new LinkedList<>();
+        lisQuan = new LinkedList<>();
+        listPhuong = new LinkedList<>();
 
         // layout manager of recyclerview
         // 1 recyclerview select images
@@ -94,15 +125,15 @@ public class AddRoomActivity extends AppCompatActivity {
         layoutManager.setOrientation(RecyclerView.HORIZONTAL);
         layoutManager = new GridLayoutManager(this, 3);
         // adpater seleted images
-        adapter = new ImagesAdapter(this, bitmapList, R.layout.chutro_choose_images_layout);
+        imagesAdapter = new ImagesAdapter(this, bitmapList, R.layout.chutro_choose_images_layout);
         rcvChoosedImages.setLayoutManager(layoutManager);
-        rcvChoosedImages.setAdapter(adapter);
-        adapter.setOnCLick(new ImagesAdapter.OnCLick() {
+        rcvChoosedImages.setAdapter(imagesAdapter);
+        imagesAdapter.setOnCLick(new ImagesAdapter.OnCLick() {
             @Override
             public void delete(int position, View v) {
                 bitmapList.remove(bitmapList.get(position));
                 pathList.remove(pathList.get(position));
-                adapter.notifyDataSetChanged();
+                imagesAdapter.notifyDataSetChanged();
             }
         });
         // 2 recyclerview tiện ích đã chọn
@@ -121,8 +152,16 @@ public class AddRoomActivity extends AppCompatActivity {
         });
         // 3 recyclerview tiện ích
         utilitiesAdapter = new UtilitiesAdapter(AddRoomActivity.this, listTienIch, listTienIchSeleted, R.layout.chutro_cardview_item_utilities_layout);
+        // 4 recyclerview quận
+        districtAdapter = new DistrictAdapter(AddRoomActivity.this, lisQuan, R.layout.chutro_cardview_item_quan_layout);
+        // 5 recyclerview phường
+        wardAdapter = new WardAdapter(AddRoomActivity.this, listPhuong, R.layout.chutro_cardview_item_phuong_layout);
 
+        // get data
+        getListTienIch();
+        getQuan();
 
+        // Bắt sự kiện
         batSuKien();
     }
 
@@ -133,12 +172,16 @@ public class AddRoomActivity extends AppCompatActivity {
         edtDienTich = findViewById(R.id.edtDienTich);
         edtMota = findViewById(R.id.edtMota);
         edtDiaChiChiTiet = findViewById(R.id.edtDiaChiChiTiet);
+        edtTienDien = findViewById(R.id.edtTienDien);
+        edtTienNuoc = findViewById(R.id.edtTienNuoc);
+        edtSoLuongToiDa = findViewById(R.id.edtSoLuongToiDa);
+        edtTienCoc = findViewById(R.id.edtTienCoc);
         //TextView
         tvChonHinh = findViewById(R.id.tvChonHinh);
         tvQuan = findViewById(R.id.tvQuan);
         tvPhuong = findViewById(R.id.tvPhuong);
         tvChonTienIch = findViewById(R.id.tvChonTienIch);
-        tvXacNhan = findViewById(R.id.tvXacNhan);
+        tvXacNhanThem = findViewById(R.id.tvXacNhan);
     }
 
 
@@ -158,13 +201,128 @@ public class AddRoomActivity extends AppCompatActivity {
         tvQuan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                LayoutInflater inflater = getLayoutInflater();
+                View viewDialog = inflater.inflate(R.layout.chutro_dialog_choose_district_layout, null);
+                builder.setView(viewDialog);
+                AlertDialog dialog = builder.create();
 
+                TextView tvXacNhan = viewDialog.findViewById(R.id.tvXacNhan);
+                tvXacNhan.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        dialog.hide();
+                    }
+                });
+                rcvChonQuan = viewDialog.findViewById(R.id.rcvChonQuan);
+                LinearLayoutManager layoutManagerQ = new LinearLayoutManager(context);
+                layoutManagerQ.setOrientation(RecyclerView.VERTICAL);
+                rcvChonQuan.setLayoutManager(layoutManagerQ);
+                rcvChonQuan.setAdapter(districtAdapter);
+
+                districtAdapter.setOnClick(new DistrictAdapter.OnClick() {
+                    @Override
+                    public void onClickItemListener(int position, View view) {
+                        // Chưa chọn
+                        if (positionSeletedQuan == -1) {
+                            positionSeletedQuan = position;
+
+                            LinearLayout bgrItem = view.findViewById(R.id.llQuan);
+                            // lưu lại màu trước đó (lưu màu mặc định)
+                            backColorQuan = bgrItem.getSolidColor();
+                            bgrItem.setBackgroundColor(getResources().getColor(R.color.button_fb, getTheme()));
+                            previousItemGroundQuan = bgrItem;
+                            tvQuan.setText(lisQuan.get(position).getTenQuan());
+                            getDataForListPhuong(position);
+                        }
+                        // đã chọn
+                        else {
+                            // chọn lại thì sẽ tắt màu
+                            if (positionSeletedQuan == position) {
+                                positionSeletedQuan = -1;
+                                previousItemGroundQuan.setBackgroundColor(backColorQuan);
+                                tvQuan.setText("Quận");
+                            }
+                            // chọn cái khác thì sẽ đổi màu cái mới chọn và cho cái trước đó về màu mặc định
+                            else {
+                                positionSeletedQuan = position;
+                                previousItemGroundQuan.setBackgroundColor(backColorQuan);
+
+                                LinearLayout bgrItem = view.findViewById(R.id.llQuan);
+                                backColorQuan = bgrItem.getSolidColor();
+                                bgrItem.setBackgroundColor(getResources().getColor(R.color.button_fb, getTheme()));
+                                previousItemGroundQuan = bgrItem;
+                                tvQuan.setText(lisQuan.get(position).getTenQuan());
+                                getDataForListPhuong(position);
+                            }
+                        }
+
+                    }
+                });
+
+                dialog.show();
             }
         });
         tvPhuong.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (positionSeletedQuan != -1) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                    LayoutInflater inflater = getLayoutInflater();
+                    View viewDialog = inflater.inflate(R.layout.chutro_dialog_choose_ward_layout, null);
+                    builder.setView(viewDialog);
+                    AlertDialog dialog = builder.create();
 
+                    TextView tvXacNhan = viewDialog.findViewById(R.id.tvXacNhan);
+                    tvXacNhan.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            dialog.hide();
+                        }
+                    });
+                    rcvChonPhuong = viewDialog.findViewById(R.id.rcvChonPhuong);
+                    LinearLayoutManager layoutManagerP = new LinearLayoutManager(context);
+                    layoutManagerP.setOrientation(RecyclerView.VERTICAL);
+                    rcvChonPhuong.setLayoutManager(layoutManagerP);
+                    rcvChonPhuong.setAdapter(wardAdapter);
+                    dialog.show();
+                    wardAdapter.setOnClick(new WardAdapter.OnClick() {
+                        @Override
+                        public void onClickItemListener(int position, View view) {
+                            // Chưa chọn
+                            if (positionSeletedPhuong == -1) {
+                                positionSeletedPhuong = position;
+
+                                LinearLayout bgrItemPhuong = view.findViewById(R.id.llPhuong);
+                                // lưu lại màu trước đó (lưu màu mặc định)
+                                backColorPhuong = bgrItemPhuong.getSolidColor();
+                                bgrItemPhuong.setBackgroundColor(getResources().getColor(R.color.button_fb, getTheme()));
+                                previousItemGroundPhuong = bgrItemPhuong;
+                                tvPhuong.setText(listPhuong.get(position).getTenPhuong());
+                            }
+                            // đã chọn
+                            else {
+                                // chọn lại thì sẽ tắt màu
+                                if (positionSeletedPhuong == position) {
+                                    positionSeletedPhuong = -1;
+                                    previousItemGroundPhuong.setBackgroundColor(backColorPhuong);
+                                    tvPhuong.setText("Phường");
+                                }
+                                // chọn cái khác thì sẽ đổi màu cái mới chọn và cho cái trước đó về màu mặc định
+                                else {
+                                    positionSeletedPhuong = position;
+                                    previousItemGroundPhuong.setBackgroundColor(backColorPhuong);
+
+                                    LinearLayout bgrItemPhuong = view.findViewById(R.id.llPhuong);
+                                    backColorPhuong = bgrItemPhuong.getSolidColor();
+                                    bgrItemPhuong.setBackgroundColor(getResources().getColor(R.color.button_fb, getTheme()));
+                                    previousItemGroundPhuong = bgrItemPhuong;
+                                    tvPhuong.setText(listPhuong.get(position).getTenPhuong());
+                                }
+                            }
+                        }
+                    });
+                }
             }
         });
         tvChonTienIch.setOnClickListener(new View.OnClickListener() {
@@ -176,9 +334,15 @@ public class AddRoomActivity extends AppCompatActivity {
                 View viewDialog = inflater.inflate(R.layout.chutro_dialog_choose_utilities_layout, null);
                 builder.setView(viewDialog);
                 AlertDialog dialog = builder.create();
-                getListTienIch();
 
 
+                TextView tvXacNhan = viewDialog.findViewById(R.id.tvXacNhan);
+                tvXacNhan.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        dialog.hide();
+                    }
+                });
                 rcvChonTienIch = viewDialog.findViewById(R.id.rcvChonTienIch);
                 LinearLayoutManager layoutManager1 = new LinearLayoutManager(AddRoomActivity.this);
                 layoutManager1.setOrientation(RecyclerView.VERTICAL);
@@ -194,9 +358,106 @@ public class AddRoomActivity extends AppCompatActivity {
                 dialog.show();
             }
         });
-        tvXacNhan.setOnClickListener(new View.OnClickListener() {
+        tvXacNhanThem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (edtSoPhong.getText().toString().trim().equals("") == false && edtGia.getText().toString().trim().equals("") == false && edtDienTich.getText().toString().trim().equals("") == false && edtMota.getText().toString().trim().equals("") == false && edtDiaChiChiTiet.getText().toString().trim().equals("") == false && edtTienDien.getText().toString().trim().equals("") == false && edtTienNuoc.getText().toString().trim().equals("") == false && edtSoLuongToiDa.getText().toString().trim().equals("") == false && edtTienCoc.getText().toString().trim().equals("") == false && positionSeletedQuan != -1 && positionSeletedPhuong != -1) {
+                    // Thêm phòng
+                    List<MultipartBody.Part> partList = new LinkedList<>();
+                    List<MultipartBody.Part> partTienIch = new LinkedList<>();
+                    Log.d("TAG", "onClick: >>>> 0K");
+                    RequestBody requestBodySoPhong = RequestBody.create(MediaType.parse("miltipart/form-data"), edtSoPhong.getText().toString().trim());
+                    RequestBody requestBodyGia = RequestBody.create(MediaType.parse("miltipart/form-data"), edtGia.getText().toString().trim());
+                    RequestBody requestBodyDienTich = RequestBody.create(MediaType.parse("miltipart/form-data"), edtDienTich.getText().toString().trim());
+                    RequestBody requestBodyMoTa = RequestBody.create(MediaType.parse("miltipart/form-data"), edtMota.getText().toString().trim());
+                    RequestBody requestBodyDiaChiChiTiet = RequestBody.create(MediaType.parse("miltipart/form-data"), edtDiaChiChiTiet.getText().toString().trim());
+                    RequestBody requestBodyTienDien = RequestBody.create(MediaType.parse("miltipart/form-data"), edtTienDien.getText().toString().trim());
+                    RequestBody requestBodyTienNuoc = RequestBody.create(MediaType.parse("miltipart/form-data"), edtTienNuoc.getText().toString().trim());
+                    RequestBody requestBodyIDQuan = RequestBody.create(MediaType.parse("miltipart/form-data"), lisQuan.get(positionSeletedQuan).getId()+"");
+                    RequestBody requestBodyIDPhuong = RequestBody.create(MediaType.parse("miltipart/form-data"), listPhuong.get(positionSeletedPhuong).getId()+"");
+                    RequestBody requestBodySoLuongToiDa = RequestBody.create(MediaType.parse("miltipart/form-data"), edtTienNuoc.getText().toString().trim());
+                    RequestBody requestBodyTienCoc = RequestBody.create(MediaType.parse("miltipart/form-data"), edtTienNuoc.getText().toString().trim());
+                    RequestBody requestBodyIDChuTro = RequestBody.create(MediaType.parse("miltipart/form-data"), idChuTro+"");
+                    for (String path: pathList) {
+                        File file = new File(path);
+                        RequestBody requestBodyImage = RequestBody.create(MediaType.parse("miltipart/form-data"), file);
+                        MultipartBody.Part multiPartImage = MultipartBody.Part.createFormData("hinh[]", file.getName(), requestBodyImage);
+                        partList.add(multiPartImage);
+                    }
+                    Gson gson = new Gson();
+
+                    RequestBody requestBodyListTienIch = RequestBody.create(MediaType.parse("miltipart/form-data"), gson.toJson(listTienIchSeleted));
+                    Log.d("TAG", "onClick: "+gson.toJson(listTienIchSeleted));
+                    Call<Integer> call = ApiServiceMinh.apiService.themPhongTroTheoIdChuTro(
+                            requestBodySoPhong,
+                            requestBodyGia,
+                            requestBodyDienTich,
+                            requestBodyMoTa,
+                            requestBodyIDQuan,
+                            requestBodyIDPhuong,
+                            requestBodyDiaChiChiTiet,
+                            requestBodySoLuongToiDa,
+                            requestBodyTienCoc,
+                            requestBodyTienDien,
+                            requestBodyTienNuoc,
+                            partList,
+                            requestBodyListTienIch,
+                            requestBodyIDChuTro);
+                    call.enqueue(new Callback<Integer>() {
+                        @Override
+                        public void onResponse(Call<Integer> call, Response<Integer> response) {
+                            if (response.code() == 200){
+                                Log.d("TAG", "onResponse create: "+response.body());
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<Integer> call, Throwable t) {
+                            Log.d("TAG", "onFailure create: "+t);
+                            Log.d("TAG", "onFailure create: "+call.request());
+                        }
+                    });
+                }
+                else {
+                    Toast.makeText(context, "Hãy nhập đầy đủ thông tin!", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+    }
+
+    private void getDataForListPhuong(int positionSeletedQuan) {
+        Log.d("TAG", "getDataForListPhuong: " + ">>>>>>" + positionSeletedQuan);
+        ApiServiceMinh.apiService.layTatCaPhuongTheoQuan(lisQuan.get(positionSeletedQuan).getId()).enqueue(new Callback<List<Phuong>>() {
+            @Override
+            public void onResponse(Call<List<Phuong>> call, Response<List<Phuong>> response) {
+                if (response.code() == 200) {
+                    listPhuong.clear();
+                    listPhuong.addAll(response.body());
+                    wardAdapter.notifyDataSetChanged();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Phuong>> call, Throwable t) {
+
+            }
+        });
+    }
+
+    private void getQuan() {
+        ApiServiceMinh.apiService.layTatCaQuan().enqueue(new Callback<List<Quan>>() {
+            @Override
+            public void onResponse(Call<List<Quan>> call, Response<List<Quan>> response) {
+                if (response.code() == 200) {
+                    lisQuan.clear();
+                    lisQuan.addAll(response.body());
+                    Log.d("TAG", "onResponse quan: " + lisQuan);
+                }
+                districtAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onFailure(Call<List<Quan>> call, Throwable t) {
 
             }
         });
@@ -206,7 +467,7 @@ public class AddRoomActivity extends AppCompatActivity {
         ApiServiceMinh.apiService.layTatCaTienIch().enqueue(new Callback<List<TienIch>>() {
             @Override
             public void onResponse(Call<List<TienIch>> call, Response<List<TienIch>> response) {
-                if (response.code() == 200){
+                if (response.code() == 200) {
                     listTienIch.clear();
                     listTienIch.addAll(response.body());
                 }
@@ -215,52 +476,60 @@ public class AddRoomActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<List<TienIch>> call, Throwable t) {
-                Log.d("TAG", "onFailure: "+t);
+                Log.d("TAG", "onFailure: " + t);
             }
         });
     }
 
-    private void checkPesmission(){
-        if(Build.VERSION.SDK_INT<Build.VERSION_CODES.M){
+    private void checkPesmission() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
             openGallery();
             return;
         }
-        if(checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)== PackageManager.PERMISSION_GRANTED){
+        if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
             openGallery();
-        }else{
+        } else {
             String[] permission = {Manifest.permission.READ_EXTERNAL_STORAGE};
-            requestPermissions(permission,RQ);
+            requestPermissions(permission, RQ);
         }
     }
+
     private void openGallery() {
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
         intent.setAction(Intent.ACTION_GET_CONTENT);
-        mActivityResultLauncher.launch(Intent.createChooser(intent,"Select Picture"));
+        mActivityResultLauncher.launch(Intent.createChooser(intent, "Select Picture"));
     }
+
     private ActivityResultLauncher<Intent> mActivityResultLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             new ActivityResultCallback<ActivityResult>() {
                 @Override
                 public void onActivityResult(ActivityResult result) {
-                    if(result.getResultCode() == Activity.RESULT_OK){
+                    if (result.getResultCode() == Activity.RESULT_OK) {
                         Intent data = result.getData();
-                        if(data.getClipData()!=null){
+                        if (data.getClipData() != null) {
 //                            imgUri = data.getData();
                             for (int i = 0; i < data.getClipData().getItemCount(); i++) {
                                 imgUri = data.getClipData().getItemAt(i).getUri();
+                                if (uriList.contains(imgUri) == false) {
+                                    bitmapList.add(BitmapFactory.decodeFile(RealPathUtil.getRealPath(context, imgUri)));
+                                    pathList.add(RealPathUtil.getRealPath(context, imgUri));
+                                    Log.d("TAG", "onActivityResult: " + imgUri);
+                                }
+                            }
+                        } else {
+
+                            imgUri = data.getData();
+                            Log.d("TAG", "onActivityResult 1: " + imgUri);
+                            if (uriList.contains(imgUri) == false) {
+                                uriList.add(imgUri);
                                 bitmapList.add(BitmapFactory.decodeFile(RealPathUtil.getRealPath(context, imgUri)));
                                 pathList.add(RealPathUtil.getRealPath(context, imgUri));
                             }
                         }
-                        else {
-                            imgUri = data.getData();
-                            bitmapList.add(BitmapFactory.decodeFile(RealPathUtil.getRealPath(context, imgUri)));
-                            pathList.add(RealPathUtil.getRealPath(context, imgUri));
-                        }
-                        adapter.notifyDataSetChanged();
-
+                        imagesAdapter.notifyDataSetChanged();
 
 
                     }

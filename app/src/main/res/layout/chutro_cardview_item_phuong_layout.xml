@@ -8,7 +8,7 @@
         android:layout_height="50dp">
 
         <LinearLayout
-            android:id="@+id/llQuan"
+            android:id="@+id/llPhuong"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center|left"
@@ -16,20 +16,13 @@
 
 
             <TextView
-                android:id="@+id/tvQuan"
+                android:id="@+id/tvPhuong"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
-                android:text="Tên quận"
+                android:text="Tên phường"
                 android:textSize="20sp" />
 
         </LinearLayout>
-        <ImageView
-            android:id="@+id/imgQuan"
-            android:layout_width="50dp"
-            android:layout_height="match_parent"
-            android:src="@drawable/load"
-            android:layout_marginRight="10dp"
-            android:layout_alignParentRight="true"/>
     </RelativeLayout>
 </androidx.cardview.widget.CardView>

@@ -37,6 +37,7 @@ public interface ApiServiceMinh {
     @Multipart
     @POST("api/phongtro/create")
     Call<Integer> themPhongTroTheoIdChuTro(
+            // Thông tin phòng
             @Part("soPhong") RequestBody soPhong,
             @Part("gia") RequestBody gia,
             @Part("dienTich") RequestBody dienTich,
@@ -44,10 +45,16 @@ public interface ApiServiceMinh {
             @Part("idQuan") RequestBody idQuan,
             @Part("idPhuong") RequestBody idPhuong,
             @Part("diaChiChiTiet") RequestBody diaChiChiTiet,
-            @Part("loaiPhong") RequestBody loaiPhong,
+//            @Part("loaiPhong") RequestBody loaiPhong,
             @Part("soLuongToiDa") RequestBody soLuongToiDa,
             @Part("tienCoc") RequestBody tienCoc,
-            @Part("gioiTinh") RequestBody gioiTinh,
-            @Part("hinh") List<MultipartBody.Part> hinh,
+//            @Part("gioiTinh") RequestBody gioiTinh, thêm mặc định là tất cả
+            @Part("tienDien") RequestBody tienDien,
+            @Part("tienNuoc") RequestBody tienNuoc,
+            //Hình ảnh của phòng
+            @Part List<MultipartBody.Part> hinh,
+            //Tiện ích của phòng
+            @Part("tienIch") RequestBody listTienIch,
+            //ID chủ phòng
             @Part("idChuTro") RequestBody idChuTro);
 }

@@ -14,5 +14,15 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rcvChonTienIch"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
+    <TextView
+        android:id="@+id/tvXacNhan"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Xác nhận"
+        android:gravity="center"
+        android:background="@drawable/btn_gray"
+        android:textSize="25sp"
+        android:padding="5dp"/>
 </LinearLayout>
