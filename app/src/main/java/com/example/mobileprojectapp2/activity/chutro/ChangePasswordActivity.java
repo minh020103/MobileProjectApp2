@@ -6,6 +6,7 @@ import androidx.appcompat.widget.AppCompatButton;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -25,6 +26,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
     private AppCompatButton btnCancel;
     private Button btnAcceptChangePass;
 
+    private Handler handler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +77,14 @@ public class ChangePasswordActivity extends AppCompatActivity {
                         edtPassNow.setText("");
                         edtPassNew.setText("");
                         edtPassConfirm.setText("");
+                        handler = new Handler();
+                        handler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                handler.postDelayed(this, 2000);
+                                finish();
+                            }
+                        }, 2000);
                     } else {
                         alertFail("Nhập lại mật khẩu không đúng");
                         edtPassNow.setText("");

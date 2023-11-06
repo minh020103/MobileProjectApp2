@@ -3,14 +3,17 @@ package com.example.mobileprojectapp2.activity.chutro;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.SearchManager;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,16 +37,16 @@ public class SearchActivity extends AppCompatActivity {
     private PhongTroChuTroAdapter adapter;
     private LinearLayoutManager layoutManager;
     private SearchView searchView;
-    private TextView tvThongBao;
 
     private List<PhongTroChuTro> mList;
+    private ImageView imgViewBack;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.search_layout);
         mList = new LinkedList<>();
-        tvThongBao = findViewById(R.id.tv_thongbao);
+        imgViewBack = findViewById(R.id.img_back);
         rcvListPhongTro = findViewById(R.id.rcv_list_phong_tro);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         rcvListPhongTro.setLayoutManager(linearLayoutManager);
@@ -51,6 +54,8 @@ public class SearchActivity extends AppCompatActivity {
 
         adapter = new PhongTroChuTroAdapter(mList, this, R.layout.cardview_item_search_layout);
         layoutManager = new LinearLayoutManager(this);
+//        layoutManager.setOrientation(RecyclerView.HORIZONTAL);
+//        layoutManager = new GridLayoutManager(this, 4);
         layoutManager.setOrientation(RecyclerView.VERTICAL);
         rcvListPhongTro.setLayoutManager(layoutManager);
         rcvListPhongTro.setAdapter(adapter);
@@ -72,6 +77,22 @@ public class SearchActivity extends AppCompatActivity {
                 return false;
             }
         });
+
+        adapter.setMyOnClickListener(new PhongTroChuTroAdapter.MyOnClickListener() {
+            @Override
+            public void OnClickItem(int position, View v) {
+                Log.d("TAG", "OnClickItem: ");
+                startActivity(new Intent(SearchActivity.this, DetailPhongTro.class));
+
+            }
+        });
+
+        imgViewBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
     private void getAllDataApi() {
@@ -88,7 +109,7 @@ public class SearchActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<List<PhongTroChuTro>> call, Throwable t) {
-                Toast.makeText(SearchActivity.this, "Loi roi ba", Toast.LENGTH_SHORT).show();
+                Toast.makeText(SearchActivity.this, "Error not call api", Toast.LENGTH_SHORT).show();
             }
         });
 

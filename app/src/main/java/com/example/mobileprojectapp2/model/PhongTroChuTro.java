@@ -7,6 +7,15 @@ public class PhongTroChuTro {
 
     private PhongTro phongTro;
 
+//      private HinhAnh hinhAnh;
+//
+//    public HinhAnh getHinhAnh() {
+//        return hinhAnh;
+//    }
+//
+//    public void setHinhAnh(HinhAnh hinhAnh) {
+//        this.hinhAnh = hinhAnh;
+//    }
 
     public PhongTro getPhongTro() {
         return phongTro;

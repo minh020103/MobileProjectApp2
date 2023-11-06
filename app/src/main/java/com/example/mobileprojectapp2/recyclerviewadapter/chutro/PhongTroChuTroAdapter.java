@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Filter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -23,7 +24,11 @@ public class PhongTroChuTroAdapter extends RecyclerView.Adapter<PhongTroChuTroAd
     private Activity activity;
     private int layoutID;
 
+    private MyOnClickListener myOnClickListener;
 
+    public void setMyOnClickListener(MyOnClickListener myOnClickListener) {
+        this.myOnClickListener = myOnClickListener;
+    }
 
     public PhongTroChuTroAdapter(List<PhongTroChuTro> mListPhongTro, Activity activity, int layoutID) {
         this.mListPhongTro = mListPhongTro;
@@ -47,37 +52,42 @@ public class PhongTroChuTroAdapter extends RecyclerView.Adapter<PhongTroChuTroAd
         }
         holder.soPhong.setText(phongTroChuTro.getPhongTro().getSoPhong() + "");
         holder.gia.setText(phongTroChuTro.getPhongTro().getGia() + " " + "₫");
-
         holder.loaiPhong.setText(phongTroChuTro.getPhongTro().getLoaiPhong() == Define.PHONG_TRONG ? "Phòng trống" : phongTroChuTro.getPhongTro().getLoaiPhong() == Define.PHONG_GHEP ? "Phòng ghép" : "Phòng đơn");
-
         holder.dienTich.setText(phongTroChuTro.getPhongTro().getDienTich() + "" + "㎡");
-
+        holder.onClickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                myOnClickListener.OnClickItem(position, v);
+            }
+        };
     }
-
     @Override
     public int getItemCount() {
         if (mListPhongTro != null) {
             return mListPhongTro.size();
         }
-
         return 0;
     }
-
-    public class PhongTroViewHolder extends RecyclerView.ViewHolder {
-
-        private TextView soPhong, gia, loaiPhong, dienTich, tvThongBao;
-
+    public interface MyOnClickListener {
+        void OnClickItem(int position, View v);
+    }
+    public class PhongTroViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        View.OnClickListener onClickListener;
+        private TextView soPhong, gia, loaiPhong, dienTich;
+        private ImageView imageView;
         public PhongTroViewHolder(@NonNull View itemView) {
             super(itemView);
-
             soPhong = itemView.findViewById(R.id.tv_soPhong);
             gia = itemView.findViewById(R.id.tv_gia);
             loaiPhong = itemView.findViewById(R.id.tv_loaiPhong);
             dienTich = itemView.findViewById(R.id.tv_dienTich);
-            tvThongBao = itemView.findViewById(R.id.tv_thongbao);
+            itemView.setOnClickListener(this);
+        }
+        @Override
+        public void onClick(View v) {
+            onClickListener.onClick(v);
         }
     }
-
     public Filter getFilter() {
         return new Filter() {
             @Override
@@ -88,7 +98,7 @@ public class PhongTroChuTroAdapter extends RecyclerView.Adapter<PhongTroChuTroAd
                 } else {
                     List<PhongTroChuTro> list = new ArrayList<>();
                     for (PhongTroChuTro phongTroChuTro : mListPhongTroOld) {
-                        if ((phongTroChuTro.getPhongTro().getSoPhong()+"").contains(strSearch)) {
+                        if ((phongTroChuTro.getPhongTro().getSoPhong() + "").contains(strSearch)) {
                             list.add(phongTroChuTro);
                         }
                     }
@@ -98,6 +108,7 @@ public class PhongTroChuTroAdapter extends RecyclerView.Adapter<PhongTroChuTroAd
                 filterResults.values = mListPhongTro;
                 return filterResults;
             }
+
             @Override
             protected void publishResults(CharSequence constraint, FilterResults results) {
                 mListPhongTro = (List<PhongTroChuTro>) results.values;
@@ -105,5 +116,4 @@ public class PhongTroChuTroAdapter extends RecyclerView.Adapter<PhongTroChuTroAd
             }
         };
     }
-
 }
