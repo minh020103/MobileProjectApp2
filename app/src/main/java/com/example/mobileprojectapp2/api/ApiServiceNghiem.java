@@ -1,5 +1,6 @@
 package com.example.mobileprojectapp2.api;
 
+import com.example.mobileprojectapp2.datamodel.ChinhSach;
 import com.example.mobileprojectapp2.datamodel.ChuTro;
 import com.example.mobileprojectapp2.datamodel.NguoiThue;
 import com.example.mobileprojectapp2.datamodel.PhongTinNhan;
@@ -53,9 +54,26 @@ public interface ApiServiceNghiem {
     @Multipart
     @POST("capnhattrangthaidaxem")
     Call<Integer> capNhatTrangThaiDaXem(@Part("idPhong") int idPhong,
-                                        @Part("idTaiKhoan")int idTaiKhoan
-                                        );
+                                        @Part("idTaiKhoan")int idTaiKhoan);
 
     @GET("kiemtradangnhap")
     Call<TaiKhoan> kiemTraDangNhap(@Query("tenTaiKhoan") String tenTaiKhoan, @Query("matKhau") String matKhau );
+
+    @Multipart
+    @POST("taotaikhoanchutro")
+    Call<ChuTro> taoTaiKhoanChuTro(@Part("ten") RequestBody ten,
+                                   @Part("tenTaiKhoan")RequestBody tenTaiKhoan,
+                                   @Part("matKhau")RequestBody matKhau,
+                                   @Part("email")RequestBody email);
+    @Multipart
+    @POST("taotaikhoannguoithue")
+    Call<NguoiThue> taoTaiKhoanNguoiThue(@Part("ten") RequestBody ten,
+                                   @Part("tenTaiKhoan")RequestBody tenTaiKhoan,
+                                   @Part("matKhau")RequestBody matKhau,
+                                   @Part("email")RequestBody email,
+                                    @Part("gioiTinh") RequestBody gioiTinh);
+    @GET("chinhsach")
+    Call<ChinhSach> xemChinhSach(@Query("id") int id);
+    @GET("tatcataikhoan")
+    Call<ArrayList<TaiKhoan>> layTatCaTaiKhoan();
 }
