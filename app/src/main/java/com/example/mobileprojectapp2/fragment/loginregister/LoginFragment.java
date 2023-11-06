@@ -18,11 +18,9 @@ import androidx.appcompat.app.AlertDialog;
 
 import com.example.mobileprojectapp2.R;
 import com.example.mobileprojectapp2.activity.chutro.MotelRoomOwnerActivity;
-import com.example.mobileprojectapp2.activity.chutro.RoomMassageActivity;
-import com.example.mobileprojectapp2.api.ApiServiceNghiem;
+import com.example.mobileprojectapp2.api.chutro.ApiServiceNghiem;
 import com.example.mobileprojectapp2.api.Const;
 import com.example.mobileprojectapp2.datamodel.TaiKhoan;
-import com.example.mobileprojectapp2.fragment.chutro.ListRoomFragment;
 
 import retrofit2.Call;
 import retrofit2.Callback;

@@ -1,4 +1,4 @@
-package com.example.mobileprojectapp2.api;
+package com.example.mobileprojectapp2.api.chutro;
 
 import com.example.mobileprojectapp2.datamodel.ChinhSach;
 import com.example.mobileprojectapp2.datamodel.ChuTro;
@@ -28,6 +28,8 @@ public interface ApiServiceNghiem {
             .build().create(ApiServiceNghiem.class);
     @GET("danhsachtinnhan")
     Call<ArrayList<TinNhan>> layDanhSachTinNhan(@Query("idPhong")int idPhong);
+    @GET("phongtinnhan")
+    Call<Integer> layIdPhongTinNhan(@Query("idTaiKhoan1")int idTaiKhoan1,@Query("idTaiKhoan2")int idTaiKhoan2 );
 
     @GET("laytaikhoandoiphuong")
     Call<TaiKhoan> layTaiKhoanDoiPhuong(@Query("idDoiPhuong") int idDoiPhuong);
@@ -76,4 +78,10 @@ public interface ApiServiceNghiem {
     Call<ChinhSach> xemChinhSach(@Query("id") int id);
     @GET("tatcataikhoan")
     Call<ArrayList<TaiKhoan>> layTatCaTaiKhoan();
+    @Multipart
+    @POST("taophongtinnhan")
+    Call<PhongTinNhan> taoPhongTinNhan(@Part("idTaiKhoan1") RequestBody idTaiKhoan1,
+                                         @Part("idTaiKhoan2")RequestBody idTaiKhoan2
+                                         );
+
 }

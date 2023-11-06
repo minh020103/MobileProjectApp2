@@ -1,8 +1,10 @@
 package com.example.mobileprojectapp2.fragment.chutro;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -22,6 +24,7 @@ import com.example.mobileprojectapp2.activity.chutro.AddRoomActivity;
 import com.example.mobileprojectapp2.activity.chutro.EditRoomActivity;
 import com.example.mobileprojectapp2.activity.chutro.MotelRoomOwnerActivity;
 import com.example.mobileprojectapp2.activity.chutro.RenterListActivity;
+import com.example.mobileprojectapp2.api.Const;
 import com.example.mobileprojectapp2.api.chutro.ApiServiceMinh;
 import com.example.mobileprojectapp2.datamodel.Comment;
 import com.example.mobileprojectapp2.datamodel.HinhAnh;
@@ -49,6 +52,8 @@ public class ListRoomFragment extends AbstractFragment {
     private ViewGroup container;
     private LinearLayout llAdd;
     private List<PhongTroChuTro> phongTroOfChuTroList;
+    SharedPreferences sharedPreferences;
+    private int senderId =2;
 
     @Nullable
     @Override
@@ -56,7 +61,8 @@ public class ListRoomFragment extends AbstractFragment {
         View fragmentLayout = null;
         fragmentLayout = inflater.inflate(R.layout.chutro_fragment_list_room_layout, container, false);
         anhXa(fragmentLayout);
-
+        sharedPreferences = getActivity().getSharedPreferences(Const.PRE_LOGIN, Context.MODE_PRIVATE);
+        senderId =sharedPreferences.getInt("idTaiKhoan", -1);
         this.container = container;
         onClickButtomInFragment();
         onClickItemInCardView();
@@ -83,7 +89,7 @@ public class ListRoomFragment extends AbstractFragment {
     }
 
     private void getDataFromAPI() {
-        ApiServiceMinh.apiService.layTatCaPhongTroQuanLy(2).enqueue(new Callback<List<PhongTroChuTro>>() {
+        ApiServiceMinh.apiService.layTatCaPhongTroQuanLy(senderId).enqueue(new Callback<List<PhongTroChuTro>>() {
             @Override
             public void onResponse(Call<List<PhongTroChuTro>> call, Response<List<PhongTroChuTro>> response) {
                 if (response.code() == 200){
@@ -99,6 +105,7 @@ public class ListRoomFragment extends AbstractFragment {
             }
         });
     }
+
 
     private void onClickItemInCardView() {
         roomAdapter.setOnClickItemRoomListener(new MotelRoomAdapter.OnClickItemRoomListener() {
@@ -201,10 +208,6 @@ public class ListRoomFragment extends AbstractFragment {
     }
 
     private void addList() {
-
-
-
-
         listComment = new LinkedList<>();
         listComment.add(new Comment());
         listComment.add(new Comment());

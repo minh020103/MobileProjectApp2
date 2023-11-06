@@ -3,27 +3,23 @@ package com.example.mobileprojectapp2.activity.chutro;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageView;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
-import android.graphics.Canvas;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.mobileprojectapp2.R;
 import com.example.mobileprojectapp2.adapter.TinNhanAdapter;
-import com.example.mobileprojectapp2.api.ApiServiceNghiem;
+import com.example.mobileprojectapp2.api.chutro.ApiServiceNghiem;
 import com.example.mobileprojectapp2.api.Const;
 import com.example.mobileprojectapp2.datamodel.ChuTro;
 import com.example.mobileprojectapp2.datamodel.NguoiThue;
-import com.example.mobileprojectapp2.datamodel.PhongTinNhan;
 import com.example.mobileprojectapp2.datamodel.TaiKhoan;
 import com.example.mobileprojectapp2.datamodel.TinNhan;
 import com.makeramen.roundedimageview.RoundedImageView;
@@ -59,8 +55,12 @@ public class RoomMassageActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_room_massage);
         anhXa();
+        sharedPreferences = getApplicationContext().getSharedPreferences(Const.PRE_LOGIN,MODE_PRIVATE);
+        senderId = sharedPreferences.getInt("idTaiKhoan", -1);
+        idDoiPhuong= getIntent().getIntExtra("key",-1);
+        idPhong=getIntent().getIntExtra("phong",-1);;
+        thongBao("idPhong: "+idPhong+" idDOiPhuong: "+idDoiPhuong);
         setDuLieu();
-
     }
 
     @Override
@@ -129,6 +129,7 @@ public class RoomMassageActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if(!inputMess.getText().toString().isEmpty()){
+
                     RequestBody noiDung = RequestBody.create(MediaType.parse("multipart/form-data"),inputMess.getText().toString());
                     Call<TinNhan> call = ApiServiceNghiem.apiService.guiTinNhan(idPhong,senderId,noiDung);
                     call.enqueue(new Callback<TinNhan>() {
@@ -136,11 +137,20 @@ public class RoomMassageActivity extends AppCompatActivity {
                         public void onResponse(Call<TinNhan> call, Response<TinNhan> response) {
                             int time = (int) (System.currentTimeMillis());
                             Timestamp tsTemp = new Timestamp(time);
-                        TinNhan tinNhan = new TinNhan(arrayList.get(arrayList.size()-1).getId()+1,idPhong,senderId,inputMess.getText().toString(),tsTemp);
-                        arrayList.add(tinNhan);
-                        tinNhanAdapter.notifyDataSetChanged();
-                        recyclerView.smoothScrollToPosition(arrayList.size()-1);
-                        capNhatTinNhanNew(idPhong,inputMess.getText().toString(),formatDate(response.body().getCreated_at()));
+
+                            if(arrayList.size()!=0){
+                                TinNhan tinNhan = new TinNhan(arrayList.get(arrayList.size()-1).getId()+1,idPhong,senderId,inputMess.getText().toString(),tsTemp);
+                                arrayList.add(tinNhan);
+                                tinNhanAdapter.notifyDataSetChanged();
+                                recyclerView.smoothScrollToPosition(arrayList.size()-1);
+                            }
+                            else{
+                                TinNhan tinNhan = new TinNhan(1,idPhong,senderId,inputMess.getText().toString(),tsTemp);
+                                arrayList.add(tinNhan);
+                                tinNhanAdapter.notifyDataSetChanged();
+                                recyclerView.smoothScrollToPosition(arrayList.size()-1);
+                            }
+                         capNhatTinNhanNew(idPhong,inputMess.getText().toString(),formatDate(response.body().getCreated_at()));
                         }
 
                         @Override
@@ -167,10 +177,7 @@ public class RoomMassageActivity extends AppCompatActivity {
         });
     }
     private void setDuLieu(){
-        sharedPreferences = getApplicationContext().getSharedPreferences(Const.PRE_LOGIN,MODE_PRIVATE);
-        senderId = sharedPreferences.getInt("idTaiKhoan", -1);
-        idDoiPhuong= getIntent().getIntExtra("key",-1);
-        idPhong=getIntent().getIntExtra("phong",-1);;
+
         capNhatTrangThaiDaXem();
         arrayList = new ArrayList<>();
         tinNhanAdapter = new TinNhanAdapter(this,arrayList,R.layout.cardview_send_message,R.layout.cardview_recieve_message,senderId);
@@ -185,6 +192,10 @@ public class RoomMassageActivity extends AppCompatActivity {
                     layThongTinDoiPhuong(idDoiPhuong);
                     setSuKienGuiTinNhan();
 //                    handleLienTuc(arrayList);
+                }else{
+                    tinNhanAdapter.notifyDataSetChanged();
+                    layThongTinDoiPhuong(idDoiPhuong);
+                    setSuKienGuiTinNhan();
                 }
             }
 

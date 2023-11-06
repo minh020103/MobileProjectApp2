@@ -5,7 +5,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,9 +18,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.mobileprojectapp2.R;
 import com.example.mobileprojectapp2.activity.chutro.RoomMassageActivity;
 import com.example.mobileprojectapp2.adapter.ListTinNhanAdapter;
-import com.example.mobileprojectapp2.api.ApiServiceNghiem;
+import com.example.mobileprojectapp2.api.chutro.ApiServiceNghiem;
 import com.example.mobileprojectapp2.api.Const;
 import com.example.mobileprojectapp2.datamodel.PhongTinNhan;
+import com.example.mobileprojectapp2.datamodel.TinNhan;
 
 import java.util.ArrayList;
 
@@ -73,8 +73,30 @@ public class MessageFragment extends AbstractFragment{
         call.enqueue(new Callback<ArrayList<PhongTinNhan>>() {
             @Override
             public void onResponse(Call<ArrayList<PhongTinNhan>> call, Response<ArrayList<PhongTinNhan>> response) {
-                arrayList.addAll(response.body());
-                listTinNhanAdapter.notifyDataSetChanged();
+                if(response.body()!=null){
+                    for (PhongTinNhan phongTN:
+                         response.body()) {
+                        Call<ArrayList<TinNhan>> ds = ApiServiceNghiem.apiService.layDanhSachTinNhan(phongTN.getId());
+                        ds.enqueue(new Callback<ArrayList<TinNhan>>() {
+                            @Override
+                            public void onResponse(Call<ArrayList<TinNhan>> call, Response<ArrayList<TinNhan>> response) {
+                                if(response.body().size()!=0){
+                                    arrayList.add(phongTN);
+                                    listTinNhanAdapter.notifyDataSetChanged();
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Call<ArrayList<TinNhan>> call, Throwable t) {
+
+                            }
+                        });
+                    }
+
+//                    arrayList.addAll(response.body());
+
+                }
+
             }
 
             @Override
@@ -112,6 +134,9 @@ public class MessageFragment extends AbstractFragment{
         builder.create();
         builder.show();
     }
+
+
+
     private void anhXa(View fragment){
         recyclerView = fragment.findViewById(R.id.recyclerViewTinNhan);
     }
