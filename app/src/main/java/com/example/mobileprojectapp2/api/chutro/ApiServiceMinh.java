@@ -1,6 +1,7 @@
 package com.example.mobileprojectapp2.api.chutro;
 
 import com.example.mobileprojectapp2.api.Const;
+import com.example.mobileprojectapp2.datamodel.PhongBinhLuan;
 import com.example.mobileprojectapp2.datamodel.PhongTro;
 import com.example.mobileprojectapp2.datamodel.PhongTroChuTro;
 import com.example.mobileprojectapp2.datamodel.Phuong;
@@ -17,6 +18,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.GET;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Part;
 import retrofit2.http.Query;
 
@@ -62,4 +64,13 @@ public interface ApiServiceMinh {
             @Part("tienIch") RequestBody listTienIch,
             //ID chủ phòng
             @Part("idChuTro") RequestBody idChuTro);
+    @GET("api/phongbinhluan/all")
+    Call<List<PhongBinhLuan>> layTatCaBinhLuanCuaPhong(
+            @Query("idPhong") int idPhong,
+            @Query("page") int page,
+            @Query("quantity") int quantity
+    );
+    @PUT("api/phongbinhluan/create")
+    Call<PhongBinhLuan> themBinhLuanChoPhong(@Query("idPhong") int idPhong, @Query("idTaiKhoan")int idTaiKhoan, @Query("noiDungBinhLuan") String noiDungBinhLuan);
+
 }
