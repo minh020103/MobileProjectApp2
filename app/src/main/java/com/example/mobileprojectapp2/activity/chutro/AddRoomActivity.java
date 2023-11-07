@@ -30,12 +30,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.mobileprojectapp2.R;
+import com.example.mobileprojectapp2.api.Const;
 import com.example.mobileprojectapp2.api.chutro.ApiServiceMinh;
+import com.example.mobileprojectapp2.datamodel.GioiTinh;
 import com.example.mobileprojectapp2.datamodel.Phuong;
 import com.example.mobileprojectapp2.datamodel.Quan;
 import com.example.mobileprojectapp2.datamodel.TienIch;
 import com.example.mobileprojectapp2.path.RealPathUtil;
 import com.example.mobileprojectapp2.recyclerviewadapter.chutro.DistrictAdapter;
+import com.example.mobileprojectapp2.recyclerviewadapter.chutro.GenderAdapter;
 import com.example.mobileprojectapp2.recyclerviewadapter.chutro.ImagesAdapter;
 import com.example.mobileprojectapp2.recyclerviewadapter.chutro.UtilitiesAdapter;
 import com.example.mobileprojectapp2.recyclerviewadapter.chutro.UtilitiesSeletedAdapter;
@@ -59,13 +62,14 @@ public class AddRoomActivity extends AppCompatActivity {
     //EditText
     private EditText edtSoPhong, edtGia, edtDienTich, edtMota, edtDiaChiChiTiet, edtTienDien, edtTienNuoc, edtSoLuongToiDa, edtTienCoc;
     //TextView
-    private TextView tvChonHinh, tvQuan, tvPhuong, tvXacNhanThem, tvChonTienIch;
+    private TextView tvChonHinh, tvQuan, tvPhuong, tvXacNhanThem, tvChonTienIch, tvChonGioiTinh;
     //Recycleview
     private RecyclerView rcvChoosedImages;
     private RecyclerView rcvTienIchDaChon;
     private RecyclerView rcvChonTienIch;
     private RecyclerView rcvChonQuan;
     private RecyclerView rcvChonPhuong;
+    private RecyclerView rcvGioiTinh;
     //ImageView
     private ImageView imgBack;
     //Final
@@ -78,6 +82,7 @@ public class AddRoomActivity extends AppCompatActivity {
     private List<TienIch> listTienIch;
     private List<Quan> lisQuan;
     private List<Phuong> listPhuong;
+    private List<GioiTinh> gioiTinhs;
     //Uri
     private Uri imgUri;
     //Context
@@ -89,17 +94,22 @@ public class AddRoomActivity extends AppCompatActivity {
     private UtilitiesSeletedAdapter utilitiesSeletedAdapter;
     private DistrictAdapter districtAdapter;
     private WardAdapter wardAdapter;
+    private GenderAdapter genderAdapter;
     //Linearlayoutmanager
     private LinearLayoutManager layoutManager;
     //position
-    // Sử lý lựa chọn cho list quận
+    // 1 Sử lý lựa chọn cho list quận
     private int positionSeletedQuan = -1;
     private int backColorQuan;
     private LinearLayout previousItemGroundQuan;
-    // Sử lý lựa chọn phường
+    // 2 Sử lý lựa chọn phường
     private int positionSeletedPhuong = -1;
     private int backColorPhuong;
     private LinearLayout previousItemGroundPhuong;
+    // 3 Sử lý lựa chọn giới tính
+    private int positionSeletedGioiTinh = -1;
+    private int backColorGioiTinh;
+    private LinearLayout previousItemGroundGioiTinh;
 
     // Sử lý lựa chọn phường
     @Override
@@ -118,6 +128,12 @@ public class AddRoomActivity extends AppCompatActivity {
         listTienIchSeleted = new LinkedList<>();
         lisQuan = new LinkedList<>();
         listPhuong = new LinkedList<>();
+        // Create list and data
+        gioiTinhs = new LinkedList<>();
+        gioiTinhs.clear();
+        gioiTinhs.add(new GioiTinh(Const.ALL_GENDERS, "Tất cả"));
+        gioiTinhs.add(new GioiTinh(Const.MALE_GENDERS, "Nam"));
+        gioiTinhs.add(new GioiTinh(Const.FEMALE_GENDERS, "Nữ"));
 
         // layout manager of recyclerview
         // 1 recyclerview select images
@@ -156,7 +172,8 @@ public class AddRoomActivity extends AppCompatActivity {
         districtAdapter = new DistrictAdapter(AddRoomActivity.this, lisQuan, R.layout.chutro_cardview_item_quan_layout);
         // 5 recyclerview phường
         wardAdapter = new WardAdapter(AddRoomActivity.this, listPhuong, R.layout.chutro_cardview_item_phuong_layout);
-
+        // 6 recyclerview giới tính
+        genderAdapter = new GenderAdapter(AddRoomActivity.this, gioiTinhs, R.layout.chutro_cardview_item_gender_layout);
         // get data
         getListTienIch();
         getQuan();
@@ -182,6 +199,7 @@ public class AddRoomActivity extends AppCompatActivity {
         tvPhuong = findViewById(R.id.tvPhuong);
         tvChonTienIch = findViewById(R.id.tvChonTienIch);
         tvXacNhanThem = findViewById(R.id.tvXacNhan);
+        tvChonGioiTinh = findViewById(R.id.tvChonGioiTinh);
     }
 
 
@@ -358,14 +376,75 @@ public class AddRoomActivity extends AppCompatActivity {
                 dialog.show();
             }
         });
+        tvChonGioiTinh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                LayoutInflater inflater = getLayoutInflater();
+                View viewDialog = inflater.inflate(R.layout.chutro_dialog_choose_gender_layout, null);
+                builder.setView(viewDialog);
+                AlertDialog dialog = builder.create();
+
+                TextView tvXacNhan = viewDialog.findViewById(R.id.tvXacNhan);
+                tvXacNhan.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        dialog.hide();
+                    }
+                });
+                rcvGioiTinh = viewDialog.findViewById(R.id.rcvChonGioiTinh);
+                LinearLayoutManager layoutManagerGT = new LinearLayoutManager(AddRoomActivity.this);
+                layoutManagerGT.setOrientation(RecyclerView.VERTICAL);
+                rcvGioiTinh.setLayoutManager(layoutManagerGT);
+                rcvGioiTinh.setAdapter(genderAdapter);
+
+                genderAdapter.setOnClick(new GenderAdapter.OnClick() {
+                    @Override
+                    public void onClickGender(int position, View view) {
+                        // Chưa chọn
+                        if (positionSeletedGioiTinh == -1) {
+                            positionSeletedGioiTinh = position;
+
+                            LinearLayout bgrItemGioiTinh = view.findViewById(R.id.llGioiTinh);
+                            // lưu lại màu trước đó (lưu màu mặc định)
+                            backColorGioiTinh = bgrItemGioiTinh.getSolidColor();
+                            bgrItemGioiTinh.setBackgroundColor(getResources().getColor(R.color.button_fb, getTheme()));
+                            previousItemGroundGioiTinh = bgrItemGioiTinh;
+                            tvChonGioiTinh.setText(gioiTinhs.get(position).getGioiTinh());
+                        }
+                        // đã chọn
+                        else {
+                            // chọn lại thì sẽ tắt màu
+                            if (positionSeletedGioiTinh == position) {
+                                positionSeletedGioiTinh = -1;
+                                previousItemGroundGioiTinh.setBackgroundColor(backColorGioiTinh);
+                                tvPhuong.setText("Chọn giới tính");
+                            }
+                            // chọn cái khác thì sẽ đổi màu cái mới chọn và cho cái trước đó về màu mặc định
+                            else {
+                                positionSeletedGioiTinh = position;
+                                previousItemGroundGioiTinh.setBackgroundColor(backColorGioiTinh);
+
+                                LinearLayout bgrItemGioiTinh = view.findViewById(R.id.llGioiTinh);
+                                backColorGioiTinh = bgrItemGioiTinh.getSolidColor();
+                                bgrItemGioiTinh.setBackgroundColor(getResources().getColor(R.color.button_fb, getTheme()));
+                                previousItemGroundGioiTinh = bgrItemGioiTinh;
+                                tvChonGioiTinh.setText(gioiTinhs.get(position).getGioiTinh());
+                            }
+                        }
+                    }
+                });
+
+                dialog.show();
+            }
+        });
         tvXacNhanThem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (edtSoPhong.getText().toString().trim().equals("") == false && edtGia.getText().toString().trim().equals("") == false && edtDienTich.getText().toString().trim().equals("") == false && edtMota.getText().toString().trim().equals("") == false && edtDiaChiChiTiet.getText().toString().trim().equals("") == false && edtTienDien.getText().toString().trim().equals("") == false && edtTienNuoc.getText().toString().trim().equals("") == false && edtSoLuongToiDa.getText().toString().trim().equals("") == false && edtTienCoc.getText().toString().trim().equals("") == false && positionSeletedQuan != -1 && positionSeletedPhuong != -1) {
+                if (edtSoPhong.getText().toString().trim().equals("") == false && edtGia.getText().toString().trim().equals("") == false && edtDienTich.getText().toString().trim().equals("") == false && edtMota.getText().toString().trim().equals("") == false && edtDiaChiChiTiet.getText().toString().trim().equals("") == false && edtTienDien.getText().toString().trim().equals("") == false && edtTienNuoc.getText().toString().trim().equals("") == false && edtSoLuongToiDa.getText().toString().trim().equals("") == false && edtTienCoc.getText().toString().trim().equals("") == false && positionSeletedQuan != -1 && positionSeletedPhuong != -1 && positionSeletedGioiTinh != -1) {
                     // Thêm phòng
                     List<MultipartBody.Part> partList = new LinkedList<>();
                     List<MultipartBody.Part> partTienIch = new LinkedList<>();
-                    Log.d("TAG", "onClick: >>>> 0K");
                     RequestBody requestBodySoPhong = RequestBody.create(MediaType.parse("miltipart/form-data"), edtSoPhong.getText().toString().trim());
                     RequestBody requestBodyGia = RequestBody.create(MediaType.parse("miltipart/form-data"), edtGia.getText().toString().trim());
                     RequestBody requestBodyDienTich = RequestBody.create(MediaType.parse("miltipart/form-data"), edtDienTich.getText().toString().trim());
@@ -375,6 +454,7 @@ public class AddRoomActivity extends AppCompatActivity {
                     RequestBody requestBodyTienNuoc = RequestBody.create(MediaType.parse("miltipart/form-data"), edtTienNuoc.getText().toString().trim());
                     RequestBody requestBodyIDQuan = RequestBody.create(MediaType.parse("miltipart/form-data"), lisQuan.get(positionSeletedQuan).getId()+"");
                     RequestBody requestBodyIDPhuong = RequestBody.create(MediaType.parse("miltipart/form-data"), listPhuong.get(positionSeletedPhuong).getId()+"");
+                    RequestBody requestBodyGioiTinh = RequestBody.create(MediaType.parse("miltipart/form-data"), gioiTinhs.get(positionSeletedGioiTinh).getId()+"");
                     RequestBody requestBodySoLuongToiDa = RequestBody.create(MediaType.parse("miltipart/form-data"), edtTienNuoc.getText().toString().trim());
                     RequestBody requestBodyTienCoc = RequestBody.create(MediaType.parse("miltipart/form-data"), edtTienNuoc.getText().toString().trim());
                     RequestBody requestBodyIDChuTro = RequestBody.create(MediaType.parse("miltipart/form-data"), idChuTro+"");
@@ -387,7 +467,6 @@ public class AddRoomActivity extends AppCompatActivity {
                     Gson gson = new Gson();
 
                     RequestBody requestBodyListTienIch = RequestBody.create(MediaType.parse("miltipart/form-data"), gson.toJson(listTienIchSeleted));
-                    Log.d("TAG", "onClick: "+gson.toJson(listTienIchSeleted));
                     Call<Integer> call = ApiServiceMinh.apiService.themPhongTroTheoIdChuTro(
                             requestBodySoPhong,
                             requestBodyGia,
@@ -395,6 +474,7 @@ public class AddRoomActivity extends AppCompatActivity {
                             requestBodyMoTa,
                             requestBodyIDQuan,
                             requestBodyIDPhuong,
+                            requestBodyGioiTinh,
                             requestBodyDiaChiChiTiet,
                             requestBodySoLuongToiDa,
                             requestBodyTienCoc,
@@ -423,6 +503,7 @@ public class AddRoomActivity extends AppCompatActivity {
                 }
             }
         });
+
     }
 
     private void getDataForListPhuong(int positionSeletedQuan) {

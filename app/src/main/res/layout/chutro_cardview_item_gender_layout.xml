@@ -8,7 +8,7 @@
         android:layout_height="50dp">
 
         <LinearLayout
-            android:id="@+id/llPhuong"
+            android:id="@+id/llGioiTinh"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center|left"
@@ -16,11 +16,11 @@
 
 
             <TextView
-                android:id="@+id/tvPhuong"
+                android:id="@+id/tvGioiTinh"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
-                android:text="Tên phường"
+                android:text="Giới tính"
                 android:textSize="20sp" />
 
         </LinearLayout>

@@ -10,10 +10,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -39,6 +42,8 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class ListRoomFragment extends AbstractFragment {
+    private final int idChuTro = 2;
+    private NestedScrollView ntsvListRoom;
     private RecyclerView rcvListMotelRoom;
     private LinearLayoutManager layoutManager;
     private MotelRoomAdapter roomAdapter;
@@ -48,6 +53,9 @@ public class ListRoomFragment extends AbstractFragment {
     private ViewGroup container;
     private LinearLayout llAdd;
     private List<PhongTroChuTro> phongTroOfChuTroList;
+    private ProgressBar pbLoadmore;
+    private int page = 1;
+    private final int quantity = 5;
 
     @Nullable
     @Override
@@ -55,13 +63,28 @@ public class ListRoomFragment extends AbstractFragment {
         View fragmentLayout = null;
         fragmentLayout = inflater.inflate(R.layout.chutro_fragment_list_room_layout, container, false);
         anhXa(fragmentLayout);
-
         this.container = container;
+        getDataFromAPI();
+        onScrollView();
         onClickButtomInFragment();
         onClickItemInCardView();
 
 
         return fragmentLayout;
+    }
+
+    private void onScrollView() {
+        ntsvListRoom.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
+            @Override
+            public void onScrollChange(@NonNull NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                if (scrollY == (v.getChildAt(0).getMeasuredHeight() - v.getMeasuredHeight())){
+                    page++;
+                    pbLoadmore.setVisibility(View.VISIBLE);
+                    getDataFromAPI();
+
+                }
+            }
+        });
     }
 
     private void onClickButtomInFragment() {
@@ -78,16 +101,21 @@ public class ListRoomFragment extends AbstractFragment {
     public void onResume() {
         super.onResume();
         MotelRoomOwnerActivity.vp2Chutro.setUserInputEnabled(false);
-        getDataFromAPI();
+
     }
 
     private void getDataFromAPI() {
-        ApiServiceMinh.apiService.layTatCaPhongTroQuanLy(2).enqueue(new Callback<List<PhongTroChuTro>>() {
+        Log.d("TAG", "getDataFromAPI: "+page);
+        ApiServiceMinh.apiService.layTatCaPhongTroQuanLy(idChuTro, page, quantity).enqueue(new Callback<List<PhongTroChuTro>>() {
             @Override
             public void onResponse(Call<List<PhongTroChuTro>> call, Response<List<PhongTroChuTro>> response) {
                 if (response.code() == 200){
-                    phongTroOfChuTroList.clear();
                     phongTroOfChuTroList.addAll(response.body());
+                    if (response.body().size() == 0){
+                        page--;
+                        Toast.makeText(getActivity(), "Đã hết dữ liệu", Toast.LENGTH_LONG).show();
+                    }
+                    pbLoadmore.setVisibility(View.GONE);
                     roomAdapter.notifyDataSetChanged();
                 }
             }
@@ -178,12 +206,11 @@ public class ListRoomFragment extends AbstractFragment {
 
     }
 
-    private void getDataForDialog(int position, View view) {
-
-    }
 
 
     private void anhXa(View fragmentLayout) {
+        ntsvListRoom = fragmentLayout.findViewById(R.id.ntsvListRoom);
+        pbLoadmore = fragmentLayout.findViewById(R.id.pbLoadmore);
         llAdd = fragmentLayout.findViewById(R.id.llAdd);
         rcvListMotelRoom = fragmentLayout.findViewById(R.id.rcvListMotelRoom);
         phongTroOfChuTroList = new LinkedList<>();

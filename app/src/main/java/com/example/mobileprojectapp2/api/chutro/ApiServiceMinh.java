@@ -27,7 +27,11 @@ public interface ApiServiceMinh {
             .build()
             .create(ApiServiceMinh.class);
     @GET("api/phongtrochutro/all")
-    Call<List<PhongTroChuTro>> layTatCaPhongTroQuanLy(@Query("idChuTro") int idChuTro);
+    Call<List<PhongTroChuTro>> layTatCaPhongTroQuanLy(
+            @Query("idChuTro") int idChuTro,
+            @Query("page") int page,
+            @Query("quantity") int quantity
+    );
     @GET("api/laytatcatienich")
     Call<List<TienIch>> layTatCaTienIch();
     @GET("api/quan/all")
@@ -44,6 +48,7 @@ public interface ApiServiceMinh {
             @Part("moTa") RequestBody moTa,
             @Part("idQuan") RequestBody idQuan,
             @Part("idPhuong") RequestBody idPhuong,
+            @Part("gioiTinh") RequestBody gioiTinh,
             @Part("diaChiChiTiet") RequestBody diaChiChiTiet,
 //            @Part("loaiPhong") RequestBody loaiPhong,
             @Part("soLuongToiDa") RequestBody soLuongToiDa,
