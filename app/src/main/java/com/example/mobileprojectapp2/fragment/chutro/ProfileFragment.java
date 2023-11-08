@@ -1,8 +1,10 @@
 package com.example.mobileprojectapp2.fragment.chutro;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -43,12 +45,20 @@ public class ProfileFragment extends AbstractFragment {
         View fragmentLayout = null;
         fragmentLayout = inflater.inflate(R.layout.chutro_fragment_profile_layout, container, false);
         anhXa(fragmentLayout);
+
+        SharedPreferences sharedPreferences = getContext().getSharedPreferences(Const.PRE_LOGIN, Context.MODE_PRIVATE);
+        sharedPreferences.edit().putInt("idTaiKhoan", 2).commit();
+
+        sharedPreferences = getActivity().getSharedPreferences(Const.PRE_LOGIN,Context.MODE_PRIVATE);
+        id = sharedPreferences.getInt("idTaiKhoan", -1);
+
         getDataFromApi();
         btnEditProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(),EditProfileActivity.class);
                 intent.putExtra("idTaiKhoan", 2);
+
                 startActivity(intent);
             }
         });
@@ -70,7 +80,7 @@ public class ProfileFragment extends AbstractFragment {
     }
 
     private void getDataFromApi() {
-        Call<ChuTro> call = ApiServicePhuc.apiService.getChuTroById(2);
+        Call<ChuTro> call = ApiServicePhuc.apiService.getChuTroById(id);
 
         call.enqueue(new Callback<ChuTro>() {
             @Override
