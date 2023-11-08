@@ -53,14 +53,14 @@ public class ThongBaoAdapter extends RecyclerView.Adapter<ThongBaoAdapter.MyView
         if (data.getTrangThai() == 0)
         {
             holder.bgItemthongBao.setBackgroundColor(0xFFBDFDA7);
-            holder.tvNoiDungThongBao.setTextColor(0xFFFF2B2B);
-            holder.tvTenNguoiGuiThongBao.setTextColor(0xFFFF2B2B);
+            holder.tvNoiDungThongBao.setTextColor(0xFF000000);
+            holder.tvTenNguoiGuiThongBao.setTextColor(0xFF000000);
         }
         else
         {
             holder.bgItemthongBao.setBackgroundColor(0xFFFFFFFF);
-            holder.tvNoiDungThongBao.setTextColor(0xFF353535);
-            holder.tvTenNguoiGuiThongBao.setTextColor(0xFF353535);
+            holder.tvNoiDungThongBao.setTextColor(0xFF858383);
+            holder.tvTenNguoiGuiThongBao.setTextColor(0xFF858383);
         }
 
         holder.onClickListener = new View.OnClickListener() {
