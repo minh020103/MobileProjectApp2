@@ -28,7 +28,7 @@ public interface ApiServiceMinh {
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(ApiServiceMinh.class);
-    @GET("api/phongtrochutro/all")
+    @GET("api/phongtrochutro/phantrang")
     Call<List<PhongTroChuTro>> layTatCaPhongTroQuanLy(
             @Query("idChuTro") int idChuTro,
             @Query("page") int page,
