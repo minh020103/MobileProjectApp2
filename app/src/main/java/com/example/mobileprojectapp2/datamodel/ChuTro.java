@@ -11,6 +11,10 @@ public class ChuTro {
     private String tenChuTaiKhoanNganHang;
     private String xacThuc;
 
+	public ChuTro() {
+
+    }
+
     public int getId() {
         return id;
     }

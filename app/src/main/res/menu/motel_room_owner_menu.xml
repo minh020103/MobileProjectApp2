@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:id="@+id/room_management" android:icon="@drawable/room_management_selector" android:title="Quản lý phòng"/>
+    <item android:id="@+id/room_management" android:icon="@drawable/room_management_selector" android:title="Phòng"/>
     <item android:id="@+id/package_using" android:icon="@drawable/package_using_selector" android:title="Gói dịch vụ"/>
     <item android:id="@+id/notification" android:icon="@drawable/notification_selector" android:title="Thông báo"/>
     <item android:id="@+id/message" android:title="Tin nhắn" android:icon="@drawable/message_selector"/>
