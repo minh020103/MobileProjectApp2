@@ -1,6 +1,8 @@
 package com.example.mobileprojectapp2.datamodel;
 
-public class NguoiThue {
+import java.io.Serializable;
+
+public class NguoiThue implements Serializable {
     private int id;
     private int idTaiKhoan;
     private String hinh;
@@ -15,6 +17,9 @@ public class NguoiThue {
         this.ten = ten;
         this.soDienThoai = soDienThoai;
         this.gioiTinh = gioiTinh;
+    }
+    public NguoiThue() {
+
     }
 
     public int getId() {

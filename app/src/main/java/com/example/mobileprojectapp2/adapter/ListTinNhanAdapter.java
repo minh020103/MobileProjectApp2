@@ -70,7 +70,7 @@ public class ListTinNhanAdapter extends RecyclerView.Adapter<ListTinNhanAdapter.
                 holder.thoigiantinnhan_item_message.setText(phongTinNhan.getThoiGianCuaTinNhan());
             }
         }
-        else if(Const.senderId==phongTinNhan.getIdTaiKhoan2()){
+        else if(senderId==phongTinNhan.getIdTaiKhoan2()){
             if(phongTinNhan.getTrangThai2()==0){
                 holder.tinnhanmoinhat_item_message.setTypeface(holder.tinnhanmoinhat_item_message.getTypeface(), Typeface.BOLD);
                 holder.tinnhanmoinhat_item_message.setTextColor(Color.parseColor("#FF000000"));

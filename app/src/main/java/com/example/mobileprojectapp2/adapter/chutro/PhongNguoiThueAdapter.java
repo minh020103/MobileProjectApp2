@@ -19,6 +19,8 @@ import com.example.mobileprojectapp2.datamodel.PhongNguoiThue;
 
 import java.util.List;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class PhongNguoiThueAdapter extends RecyclerView.Adapter<PhongNguoiThueAdapter.MyViewHolder> {
     private Activity activity;
     private List<PhongNguoiThue> list;
@@ -69,7 +71,7 @@ public class PhongNguoiThueAdapter extends RecyclerView.Adapter<PhongNguoiThueAd
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        ImageView imgNguoiThue;
+        CircleImageView imgNguoiThue;
         TextView tvTenNguoiThue;
         TextView tvSdtNguoiThue;
         View.OnClickListener onClickListener;
