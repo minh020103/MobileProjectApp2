@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -37,6 +38,7 @@ public class NotificationFragment extends AbstractFragment{
         fragmentLayout = inflater.inflate(R.layout.chutro_fragment_notification_layout, container, false);
 
         recyclerView = fragmentLayout.findViewById(R.id.rvThongBao);
+        ImageView imgRefresh = fragmentLayout.findViewById(R.id.imgRefresh);
         layoutManager = new LinearLayoutManager(getActivity());
         layoutManager.setOrientation(RecyclerView.VERTICAL);
         recyclerView.setLayoutManager(layoutManager);
@@ -44,6 +46,13 @@ public class NotificationFragment extends AbstractFragment{
         list = new ArrayList<>();
 
         listThongBaoTheoIdTaiKhoan(2);
+
+        imgRefresh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                listThongBaoTheoIdTaiKhoan(2);
+            }
+        });
 
         return fragmentLayout;
     }
