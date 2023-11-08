@@ -50,7 +50,7 @@ public class NotificationDetailActivity extends AppCompatActivity {
         btnXoaThongBaoChiTiet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                openDialogDeleteNotify();
+                openDialogDeleteNotification();
             }
         });
 
@@ -73,7 +73,7 @@ public class NotificationDetailActivity extends AppCompatActivity {
         });
     }
 
-    private void openDialogDeleteNotify()
+    private void openDialogDeleteNotification()
     {
         new AlertDialog.Builder(this).setMessage("Xác nhận xóa thông báo ?").setCancelable(false).setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
