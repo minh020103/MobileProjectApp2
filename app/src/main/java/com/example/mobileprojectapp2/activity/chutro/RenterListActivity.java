@@ -96,24 +96,26 @@ public class RenterListActivity extends AppCompatActivity {
                 if (response.body()!=null)
                 {
 //                    thongBao("Ok");
-                    list.addAll(response.body());
+                    if(response.body().size()!=0){
+                        list.addAll(response.body());
 
-                    phongNguoiThueAdapter.notifyDataSetChanged();
+                        phongNguoiThueAdapter.notifyDataSetChanged();
 
 //                    recyclerView.setAdapter(phongNguoiThueAdapter);
-                    phongNguoiThueAdapter.setOnClickItemListener(new PhongNguoiThueAdapter.OnClickItemListener() {
-                        @Override
-                        public void onClickItem(int position, View v) {
-                            nextActivity(list.get(position).getNguoiThue());
-                        }
-                    });
-                }
-                else
-                {
+                        phongNguoiThueAdapter.setOnClickItemListener(new PhongNguoiThueAdapter.OnClickItemListener() {
+                            @Override
+                            public void onClickItem(int position, View v) {
+                                nextActivity(list.get(position).getNguoiThue());
+                            }
+                        });
+                    } else
+                    {
+                        title.setText("Chưa có người thuê");
+                        title.setTextSize(30);
+                    }
 
-                    title.setText("Chưa có người thuê");
-                    title.setTextSize(30);
                 }
+
 
             }
 

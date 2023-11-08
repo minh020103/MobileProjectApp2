@@ -50,7 +50,8 @@ public interface ApiServiceNghiem {
 
     @Multipart
     @POST("capnhattinnhanmoinhat")
-    Call<Integer> capNhatTinNhanMoiNhat(@Part("id") int idPhong,
+    Call<Integer> capNhatTinNhanMoiNhat(@Part("idTaiKhoan") int idTaiKhoan,
+                                        @Part("id") int idPhong,
                                         @Part("tinNhanMoiNhat")RequestBody noiDung,
                                         @Part("thoiGian")RequestBody thoiGian);
     @Multipart

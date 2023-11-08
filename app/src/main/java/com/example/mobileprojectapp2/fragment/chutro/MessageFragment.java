@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +23,7 @@ import com.example.mobileprojectapp2.api.chutro.ApiServiceNghiem;
 import com.example.mobileprojectapp2.api.Const;
 import com.example.mobileprojectapp2.datamodel.PhongTinNhan;
 import com.example.mobileprojectapp2.datamodel.TinNhan;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 
@@ -36,7 +38,6 @@ public class MessageFragment extends AbstractFragment{
     ListTinNhanAdapter listTinNhanAdapter;
     SharedPreferences sharedPreferences;
     private int senderId =2;
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -44,15 +45,23 @@ public class MessageFragment extends AbstractFragment{
         fragmentLayout = inflater.inflate(R.layout.chutro_fragmant_message_layout, container, false);
         sharedPreferences = getActivity().getSharedPreferences(Const.PRE_LOGIN, Context.MODE_PRIVATE);
         senderId =sharedPreferences.getInt("idTaiKhoan", -1);
+        arrayList = new ArrayList<>();
         anhXa(fragmentLayout);
         setDuLieu();
+        FloatingActionButton btn = fragmentLayout.findViewById(R.id.load);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setDuLieu();
+            }
+        });
 
         return fragmentLayout;
     }
     @Override
     public void onResume() {
         super.onResume();
-
+        setDuLieu();
 ////
 //        Handler handler = new Handler();
 //        final Runnable r = new Runnable() {
@@ -60,41 +69,22 @@ public class MessageFragment extends AbstractFragment{
 //            public void run() {
 //
 //                setDuLieu();
-//                handler.postDelayed(this,3000);
+//                handler.postDelayed(this,4000);
 //            }
 //        };
-//        handler.postDelayed(r,3000);
+//        handler.postDelayed(r,4000);
     }
 
     private void setDuLieu(){
-        arrayList = new ArrayList<>();
+        arrayList.clear();
         listTinNhanAdapter = new ListTinNhanAdapter(getActivity(),R.layout.cardview_item_message,arrayList, senderId);
         Call<ArrayList<PhongTinNhan>> call = ApiServiceNghiem.apiService.danhSachTinNhanTheoIdTaiKhoan(senderId);
         call.enqueue(new Callback<ArrayList<PhongTinNhan>>() {
             @Override
             public void onResponse(Call<ArrayList<PhongTinNhan>> call, Response<ArrayList<PhongTinNhan>> response) {
-                if(response.body()!=null){
-                    for (PhongTinNhan phongTN:
-                         response.body()) {
-                        Call<ArrayList<TinNhan>> ds = ApiServiceNghiem.apiService.layDanhSachTinNhan(phongTN.getId());
-                        ds.enqueue(new Callback<ArrayList<TinNhan>>() {
-                            @Override
-                            public void onResponse(Call<ArrayList<TinNhan>> call, Response<ArrayList<TinNhan>> response) {
-                                if(response.body().size()!=0){
-                                    arrayList.add(phongTN);
-                                    listTinNhanAdapter.notifyDataSetChanged();
-                                }
-                            }
-
-                            @Override
-                            public void onFailure(Call<ArrayList<TinNhan>> call, Throwable t) {
-
-                            }
-                        });
-                    }
-
-//                    arrayList.addAll(response.body());
-
+                if(response!=null){
+                    arrayList.addAll(response.body());
+                    listTinNhanAdapter.notifyDataSetChanged();
                 }
 
             }
@@ -111,9 +101,11 @@ public class MessageFragment extends AbstractFragment{
                 if(arrayList.get(position).getIdTaiKhoan1()!=senderId){
                     intent.putExtra("key", arrayList.get(position).getIdTaiKhoan1());
                     intent.putExtra("phong",arrayList.get(position).getId());
+                    intent.putExtra("trangThai",arrayList.get(position).getTrangThai1());
                 }else {
                     intent.putExtra("key", arrayList.get(position).getIdTaiKhoan2());
                     intent.putExtra("phong",arrayList.get(position).getId());
+                    intent.putExtra("trangThai",arrayList.get(position).getTrangThai2());
                 }
                 startActivity(intent);
             }
