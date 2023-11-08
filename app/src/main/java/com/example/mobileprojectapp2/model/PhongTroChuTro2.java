@@ -1,21 +1,30 @@
 package com.example.mobileprojectapp2.model;
 
-public class PhongTroChuTro {
+import com.example.mobileprojectapp2.datamodel.HinhAnh;
+
+import java.io.Serializable;
+import java.util.List;
+
+public class PhongTroChuTro implements Serializable {
     private int id;
     private int idChuTro;
     private int idPhongTro;
 
     private PhongTro phongTro;
 
-//      private HinhAnh hinhAnh;
-//
-//    public HinhAnh getHinhAnh() {
-//        return hinhAnh;
-//    }
-//
-//    public void setHinhAnh(HinhAnh hinhAnh) {
-//        this.hinhAnh = hinhAnh;
-//    }
+    private List<HinhAnh> listHinhAnh;
+
+    public List<HinhAnh> getListHinhAnh() {
+        return listHinhAnh;
+    }
+
+
+    public PhongTroChuTro() {
+    }
+
+    public void setListHinhAnh(List<HinhAnh> listHinhAnh) {
+        this.listHinhAnh = listHinhAnh;
+    }
 
     public PhongTro getPhongTro() {
         return phongTro;
