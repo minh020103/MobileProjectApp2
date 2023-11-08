@@ -5,7 +5,7 @@ import com.example.mobileprojectapp2.datamodel.HinhAnh;
 import java.io.Serializable;
 import java.util.List;
 
-public class PhongTroChuTro implements Serializable {
+public class PhongTroChuTro2 implements Serializable {
     private int id;
     private int idChuTro;
     private int idPhongTro;
@@ -19,7 +19,7 @@ public class PhongTroChuTro implements Serializable {
     }
 
 
-    public PhongTroChuTro() {
+    public PhongTroChuTro2() {
     }
 
     public void setListHinhAnh(List<HinhAnh> listHinhAnh) {

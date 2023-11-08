@@ -112,7 +112,7 @@ public class EditProfileActivity extends AppCompatActivity {
     }
 
     private void getDataFormApi() {
-        Call<ChuTro> call = ApiServicePhuc.apiService.getChuTroById(5);
+        Call<ChuTro> call = ApiServicePhuc.apiService.getChuTroById(2);
         call.enqueue(new Callback<ChuTro>() {
             @Override
             public void onResponse(Call<ChuTro> call, Response<ChuTro> response) {
@@ -156,7 +156,7 @@ public class EditProfileActivity extends AppCompatActivity {
                     RequestBody numberBankChuTro = RequestBody.create(MediaType.parse("multipart/form-data"), numberBank);
                     RequestBody nameBankChuTro = RequestBody.create(MediaType.parse("multipart/form-data"), nameBank);
                     if (mUri == null) {
-                        Call<Integer> call = ApiServicePhuc.apiService.editProfileNoImage(5, nameChuTro, phoneChuTro, numberBankChuTro, nameBankChuTro);
+                        Call<Integer> call = ApiServicePhuc.apiService.editProfileNoImage(2, nameChuTro, phoneChuTro, numberBankChuTro, nameBankChuTro);
                         call.enqueue(new Callback<Integer>() {
                             @Override
                             public void onResponse(Call<Integer> call, Response<Integer> response) {

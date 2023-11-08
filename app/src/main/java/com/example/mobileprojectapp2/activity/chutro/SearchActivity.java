@@ -3,26 +3,20 @@ package com.example.mobileprojectapp2.activity.chutro;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.app.SearchManager;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.mobileprojectapp2.R;
 import com.example.mobileprojectapp2.api.chutro.ApiServicePhuc;
-import com.example.mobileprojectapp2.model.PhongTroChuTro;
+import com.example.mobileprojectapp2.model.PhongTroChuTro2;
 import com.example.mobileprojectapp2.recyclerviewadapter.chutro.PhongTroChuTroAdapter;
-
-import org.w3c.dom.Text;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -38,8 +32,9 @@ public class SearchActivity extends AppCompatActivity {
     private LinearLayoutManager layoutManager;
     private SearchView searchView;
 
-    private List<PhongTroChuTro> mList;
+    private List<PhongTroChuTro2> mList;
     private ImageView imgViewBack;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,8 +76,9 @@ public class SearchActivity extends AppCompatActivity {
         adapter.setMyOnClickListener(new PhongTroChuTroAdapter.MyOnClickListener() {
             @Override
             public void OnClickItem(int position, View v) {
-                Log.d("TAG", "OnClickItem: ");
-                startActivity(new Intent(SearchActivity.this, DetailPhongTro.class));
+                Log.d("TAG", "OnClickItem: "+mList.get(position).getId());
+                Intent intent = new Intent(SearchActivity.this, DetailPhongTro.class);
+                startActivity(intent);
 
             }
         });
@@ -96,10 +92,10 @@ public class SearchActivity extends AppCompatActivity {
     }
 
     private void getAllDataApi() {
-        Call<List<PhongTroChuTro>> call = ApiServicePhuc.apiService.getALlListPhongTro(2);
-        call.enqueue(new Callback<List<PhongTroChuTro>>() {
+        Call<List<PhongTroChuTro2>> call = ApiServicePhuc.apiService.getALlListPhongTro(2);
+        call.enqueue(new Callback<List<PhongTroChuTro2>>() {
             @Override
-            public void onResponse(Call<List<PhongTroChuTro>> call, Response<List<PhongTroChuTro>> response) {
+            public void onResponse(Call<List<PhongTroChuTro2>> call, Response<List<PhongTroChuTro2>> response) {
                 if (response.code() == 200) {
                     mList.clear();
                     mList.addAll(response.body());
@@ -108,7 +104,7 @@ public class SearchActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<List<PhongTroChuTro>> call, Throwable t) {
+            public void onFailure(Call<List<PhongTroChuTro2>> call, Throwable t) {
                 Toast.makeText(SearchActivity.this, "Error not call api", Toast.LENGTH_SHORT).show();
             }
         });

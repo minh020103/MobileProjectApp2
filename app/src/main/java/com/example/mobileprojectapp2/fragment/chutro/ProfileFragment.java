@@ -48,7 +48,7 @@ public class ProfileFragment extends AbstractFragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(),EditProfileActivity.class);
-                intent.putExtra("idTaiKhoan", 5);
+                intent.putExtra("idTaiKhoan", 2);
                 startActivity(intent);
             }
         });
@@ -70,7 +70,7 @@ public class ProfileFragment extends AbstractFragment {
     }
 
     private void getDataFromApi() {
-        Call<ChuTro> call = ApiServicePhuc.apiService.getChuTroById(5);
+        Call<ChuTro> call = ApiServicePhuc.apiService.getChuTroById(2);
 
         call.enqueue(new Callback<ChuTro>() {
             @Override
