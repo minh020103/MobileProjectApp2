@@ -31,23 +31,29 @@ import com.example.mobileprojectapp2.api.Const;
 import com.example.mobileprojectapp2.api.chutro.ApiServicePhuc;
 import com.example.mobileprojectapp2.model.XacThucChuTro;
 
+import java.io.File;
 import java.io.IOException;
 
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class AuthencationActivity extends AppCompatActivity {
 
+    int idChuTro = 2;
     private static final int CHUA_XAC_THUC = 0;
     private static final int DA_XAC_THUC = 1;
     private ImageView imgViewBack, imageViewMatTruocCCCD, imageViewMatSauCCCD;
     private TextView tvNotAuthencation, tvOkAuthencation;
-    private AppCompatButton btnAccept;
-    private Uri mUri;
+    private AppCompatButton btnAcceptYeuCauXacThuc;
     public static final String TAG = AuthencationActivity.class.getName();
     private static final int MY_REQUEST_CODE = 10;
 
+    private Uri cccdMT = null;
+    private Uri cccdMS = null;
     private int viewID = -1;
 
     private ActivityResultLauncher<Intent> mActivityResultLauncher = registerForActivityResult(
@@ -63,13 +69,14 @@ public class AuthencationActivity extends AppCompatActivity {
                         }
                         //Du anh lieu tu gallery
                         Uri uri = data.getData();
-                        mUri = uri;
                         try {
                             Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
                             if (viewID == R.id.imgView_mat_truoc_cccd) {
+                                cccdMT = uri;
                                 imageViewMatTruocCCCD.setImageBitmap(bitmap);
                             }
                             if (viewID == R.id.imgView_mat_sau_cccd) {
+                                cccdMS = uri;
                                 imageViewMatSauCCCD.setImageBitmap(bitmap);
                             }
                         } catch (IOException e) {
@@ -86,6 +93,7 @@ public class AuthencationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.authencation_layout);
         anhXa();
+
         getDetailChuTro();
 
         imgViewBack.setOnClickListener(new View.OnClickListener() {
@@ -95,10 +103,58 @@ public class AuthencationActivity extends AppCompatActivity {
             }
         });
 
+        btnAcceptYeuCauXacThuc.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                sendDataToApi();
+            }
+        });
+
+
     }
 
+//    private void sendDataToApi() {
+//        File fileMT;
+//        File fileMS;
+//        if (cccdMT != null && cccdMS != null) {
+//
+//            fileMT = new File(RealPathUtil.getRealPath(this, cccdMT));
+//            fileMS = new File(RealPathUtil.getRealPath(this, cccdMS));
+//
+//            Log.d(TAG, "sendDataToApi: "+fileMT.getName());
+//            Log.d(TAG, "sendDataToApi: "+fileMS.getName());
+//            RequestBody requestBodyIdChuTro = RequestBody.create(MediaType.parse("multipart/form-data"), idChuTro + "");
+//
+//            RequestBody requestBodycccdMT = RequestBody.create(MediaType.parse("multipart/form-data"), fileMT);
+//            MultipartBody.Part partCccdMT = MultipartBody.Part.createFormData("cccdMatTruoc", fileMT.getName(), requestBodycccdMT);
+//
+//            RequestBody requestBodycccdMS = RequestBody.create(MediaType.parse("multipart/form-data"), fileMS);
+//            MultipartBody.Part partCccdMS = MultipartBody.Part.createFormData("cccdMatSau", fileMS.getName(), requestBodycccdMS);
+//
+//
+//            Call<XacThucChuTro> call = ApiServicePhuc.apiService.apiService.guiYeuCauXacThucChuTro(requestBodyIdChuTro, partCccdMT, partCccdMS);
+//            call.enqueue(new Callback<XacThucChuTro>() {
+//                @Override
+//                public void onResponse(Call<XacThucChuTro> call, Response<XacThucChuTro> response) {
+//
+//                    alertSuccess("Gửi yêu cầu xác nhận chủ trọ thành công");
+//                }
+//
+//                @Override
+//                public void onFailure(Call<XacThucChuTro> call, Throwable t) {
+//                    Log.d(TAG, "onFailure: "+t);
+//                    alertFail("Gửi yêu cầu xác nhận chủ trọ thất bại");
+//                }
+//            });
+//        } else {
+//            Toast.makeText(this, "Chưa chọn ảnh Căn cước công dân", Toast.LENGTH_SHORT).show();
+//        }
+//
+//
+//    }
+
     private void getDetailChuTro() {
-        Call<XacThucChuTro> call = ApiServicePhuc.apiService.getDetailChuTro(2);
+        Call<XacThucChuTro> call = ApiServicePhuc.apiService.getDetailChuTro(idChuTro);
         call.enqueue(new Callback<XacThucChuTro>() {
             @Override
             public void onResponse(Call<XacThucChuTro> call, Response<XacThucChuTro> response) {
@@ -107,11 +163,11 @@ public class AuthencationActivity extends AppCompatActivity {
                 if (response.body().getTrangThaiXacThuc() == CHUA_XAC_THUC) {
                     tvNotAuthencation.setVisibility(View.VISIBLE);
                     tvOkAuthencation.setVisibility(View.GONE);
-                    btnAccept.setVisibility(View.VISIBLE);
+                    btnAcceptYeuCauXacThuc.setVisibility(View.VISIBLE);
                 } else {
                     tvNotAuthencation.setVisibility(View.GONE);
                     tvOkAuthencation.setVisibility(View.VISIBLE);
-                    btnAccept.setVisibility(View.INVISIBLE);
+                    btnAcceptYeuCauXacThuc.setVisibility(View.INVISIBLE);
                 }
                 onClickCanDuLieu(response.body().getTrangThaiXacThuc());
             }
@@ -181,7 +237,7 @@ public class AuthencationActivity extends AppCompatActivity {
         imageViewMatSauCCCD = findViewById(R.id.imgView_mat_sau_cccd);
         tvNotAuthencation = findViewById(R.id.tv_not_authencation);
         tvOkAuthencation = findViewById(R.id.tv_ok_authencation);
-        btnAccept = findViewById(R.id.btn_accept);
+        btnAcceptYeuCauXacThuc = findViewById(R.id.btn_accept_yeu_cau_xac_thuc);
     }
 
     private void alertFail(String s) {

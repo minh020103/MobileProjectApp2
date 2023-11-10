@@ -40,6 +40,7 @@ public interface ApiServicePhuc {
                                    @Part("soTaiKhoanNganHang") RequestBody soTaiKhoanNganHang,
                                    @Part("tenChuTaiKhoanNganHang") RequestBody tenChuTaiKhoanNganHang,
                                    @Part MultipartBody.Part hinh);
+
     @Multipart
     @POST("api/capnhatthongtinchutrokhonghinh")
     Call<Integer> editProfileNoImage(@Part("idTaiKhoan") int idTaiKhoan,
@@ -47,10 +48,18 @@ public interface ApiServicePhuc {
                                      @Part("soDienThoai") RequestBody soDienThoai,
                                      @Part("soTaiKhoanNganHang") RequestBody soTaiKhoanNganHang,
                                      @Part("tenChuTaiKhoanNganHang") RequestBody tenChuTaiKhoanNganHang);
+
     @GET("api/phongtrochutro/all")
     Call<List<PhongTroChuTro2>> getALlListPhongTro(@Query("idChuTro") int idChuTro);
 
-
     @GET("api/xacthucchutro/chitiet")
     Call<XacThucChuTro> getDetailChuTro(@Query("idChuTro") int idChuTro);
+
+    @Multipart
+    @POST("api/xacthucchutro/create")
+    Call<XacThucChuTro> guiYeuCauXacThucChuTro(@Part("idChuTro") RequestBody idChuTro,
+                                               @Part MultipartBody.Part cccdMatTruoc,
+                                               @Part MultipartBody.Part cccdMatSau);
+
+
 }

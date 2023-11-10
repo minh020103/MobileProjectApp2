@@ -46,11 +46,11 @@ public class ProfileFragment extends AbstractFragment {
         fragmentLayout = inflater.inflate(R.layout.chutro_fragment_profile_layout, container, false);
         anhXa(fragmentLayout);
 
-        SharedPreferences sharedPreferences = getContext().getSharedPreferences(Const.PRE_LOGIN, Context.MODE_PRIVATE);
-        sharedPreferences.edit().putInt("idTaiKhoan", 2).commit();
-
-        sharedPreferences = getActivity().getSharedPreferences(Const.PRE_LOGIN,Context.MODE_PRIVATE);
-        id = sharedPreferences.getInt("idTaiKhoan", -1);
+//        SharedPreferences sharedPreferences = getContext().getSharedPreferences(Const.PRE_LOGIN, Context.MODE_PRIVATE);
+//        sharedPreferences.edit().putInt("idTaiKhoan", 2).commit();
+//
+//        sharedPreferences = getActivity().getSharedPreferences(Const.PRE_LOGIN,Context.MODE_PRIVATE);
+//        id = sharedPreferences.getInt("idTaiKhoan", -1);
 
         getDataFromApi();
         btnEditProfile.setOnClickListener(new View.OnClickListener() {
@@ -80,7 +80,7 @@ public class ProfileFragment extends AbstractFragment {
     }
 
     private void getDataFromApi() {
-        Call<ChuTro> call = ApiServicePhuc.apiService.getChuTroById(id);
+        Call<ChuTro> call = ApiServicePhuc.apiService.getChuTroById(2);
 
         call.enqueue(new Callback<ChuTro>() {
             @Override

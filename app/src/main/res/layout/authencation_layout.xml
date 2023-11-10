@@ -74,7 +74,10 @@
                 android:textColor="@color/black"
                 android:layout_marginTop="40dp"
                 android:textSize="18dp"
-                android:paddingLeft="18dp"/>
+                android:paddingLeft="18dp"
+                android:drawableRight="@drawable/iconp_star"
+                android:drawablePadding="5dp"
+                />
 
             <ImageView
                 android:id="@+id/imgView_mat_truoc_cccd"
@@ -94,7 +97,9 @@
                 android:textColor="@color/black"
                 android:textSize="18dp"
                 android:paddingLeft="18dp"
-                android:layout_below="@+id/imgView_mat_truoc_cccd"/>
+                android:drawablePadding="5dp"
+                android:layout_below="@+id/imgView_mat_truoc_cccd"
+                android:drawableRight="@drawable/iconp_star"/>
 
             <ImageView
                 android:id="@+id/imgView_mat_sau_cccd"
@@ -107,17 +112,17 @@
                 android:src="@drawable/iconp_add" />
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btn_accept"
+                android:id="@+id/btn_accept_yeu_cau_xac_thuc"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Gửi yêu cầu xác thực"
                 android:layout_below="@+id/imgView_mat_sau_cccd"
-                android:background="@color/button_fb"
-                android:textColor="@color/white"
+                android:layout_margin="10dp"
                 android:layout_marginTop="10dp"
+                android:background="@color/button_fb"
+                android:text="Gửi yêu cầu xác thực"
                 android:textAllCaps="false"
-                android:textSize="16sp"
-                />
+                android:textColor="@color/white"
+                android:textSize="16sp" />
         </RelativeLayout>
 
 
