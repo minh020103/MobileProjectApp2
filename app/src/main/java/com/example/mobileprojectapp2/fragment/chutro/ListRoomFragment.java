@@ -78,6 +78,8 @@ public class ListRoomFragment extends AbstractFragment {
         return fragmentLayout;
     }
 
+
+
     private void onScrollView() {
         ntsvListRoom.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
             @Override
@@ -107,6 +109,9 @@ public class ListRoomFragment extends AbstractFragment {
     public void onResume() {
         super.onResume();
         MotelRoomOwnerActivity.vp2Chutro.setUserInputEnabled(false);
+        pageRoom = 1;
+        phongTroOfChuTroList.clear();
+        getDataFromAPI();
 
     }
 
@@ -162,6 +167,8 @@ public class ListRoomFragment extends AbstractFragment {
                                     public void onResponse(Call<Integer> call, Response<Integer> response) {
                                         if (response.code() == 200){
                                             if (response.body() == 1){
+                                                phongTroOfChuTroList.remove(phongTroOfChuTroList.get(position));
+                                                roomAdapter.notifyDataSetChanged();
                                                 Toast.makeText(getContext(), "Xóa thành công", Toast.LENGTH_SHORT).show();
 
                                             }

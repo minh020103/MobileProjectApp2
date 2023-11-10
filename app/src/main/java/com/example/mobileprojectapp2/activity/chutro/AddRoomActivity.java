@@ -487,7 +487,10 @@ public class AddRoomActivity extends AppCompatActivity {
                         @Override
                         public void onResponse(Call<Integer> call, Response<Integer> response) {
                             if (response.code() == 200){
-                                Log.d("TAG", "onResponse create: "+response.body());
+                                if (response.body() == 1){
+                                    Toast.makeText(AddRoomActivity.this, "Thêm thành công", Toast.LENGTH_SHORT).show();
+                                    finish();
+                                }
                             }
                         }
 
