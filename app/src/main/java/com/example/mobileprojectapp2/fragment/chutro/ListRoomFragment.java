@@ -1,5 +1,6 @@
 package com.example.mobileprojectapp2.fragment.chutro;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -27,6 +28,7 @@ import com.example.mobileprojectapp2.activity.chutro.MotelRoomOwnerActivity;
 import com.example.mobileprojectapp2.api.chutro.ApiServiceMinh;
 import com.example.mobileprojectapp2.datamodel.Comment;
 import com.example.mobileprojectapp2.datamodel.PhongBinhLuan;
+import com.example.mobileprojectapp2.datamodel.PhongDanhGia;
 import com.example.mobileprojectapp2.datamodel.PhongTroChuTro;
 import com.example.mobileprojectapp2.player.RatingPlayer;
 import com.example.mobileprojectapp2.recyclerviewadapter.chutro.CommentAdapter;
@@ -147,6 +149,44 @@ public class ListRoomFragment extends AbstractFragment {
             @Override
             public void setOnClickDelete(int position, View view) {
 
+                AlertDialog.Builder builder1 = new AlertDialog.Builder(getContext());
+                builder1.setMessage(" Bạn có chắc sẽ xóa phòng này?\n Nếu chấp nhận thì phòng sẽ bị xóa!!");
+                builder1.setCancelable(true);
+
+                builder1.setPositiveButton(
+                        "Chấp nhận", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                ApiServiceMinh.apiService.xoaPhongTroCuaChuTro(idChuTro, phongTroOfChuTroList.get(position).getIdPhongTro()).enqueue(new Callback<Integer>() {
+                                    @Override
+                                    public void onResponse(Call<Integer> call, Response<Integer> response) {
+                                        if (response.code() == 200){
+                                            if (response.body() == 1){
+                                                Toast.makeText(getContext(), "Xóa thành công", Toast.LENGTH_SHORT).show();
+
+                                            }
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onFailure(Call<Integer> call, Throwable t) {
+                                        Log.d("TAG", "onFailure: "+call.request());
+                                        Log.d("TAG", "onFailure: "+t);
+                                    }
+                                });
+                            }
+                        });
+
+                builder1.setNegativeButton(
+                        "No",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        });
+
+                AlertDialog alert11 = builder1.create();
+                alert11.show();
             }
 
             @Override
@@ -176,6 +216,20 @@ public class ListRoomFragment extends AbstractFragment {
                 RatingPlayer ratingPlayer = new RatingPlayer(viewDialog);
                 // đổi sao ra giao diện
                 ratingPlayer.setStarForRating(0);
+                ApiServiceMinh.apiService.layDanhGiaCuaNguoiDunngChoPhong(idTaiKhoan, phongTroOfChuTroList.get(position).getIdPhongTro()).enqueue(new Callback<PhongDanhGia>() {
+                    @Override
+                    public void onResponse(Call<PhongDanhGia> call, Response<PhongDanhGia> response) {
+                        if (response.code() == 200) {
+                            ratingPlayer.setStarForRating(response.body().getDanhGia());
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<PhongDanhGia> call, Throwable t) {
+
+                    }
+                });
+
                 // chọn sao
                 ratingPlayer.rating();
                 //  hàm sử lý số sao đã chọn được ủy quyền
@@ -184,6 +238,21 @@ public class ListRoomFragment extends AbstractFragment {
                     public void layDanhGia(int rating) {
                         // được ủy quyền ra ngoài để lấy lượng đánh giá
                         Log.d("TAG", "setOnClickRating: " + rating);
+                        // TODO: làm đánh giá
+                        ApiServiceMinh.apiService.danhGiaChoPhong(idTaiKhoan, phongTroOfChuTroList.get(position).getIdPhongTro(), rating).enqueue(new Callback<Integer>() {
+                            @Override
+                            public void onResponse(Call<Integer> call, Response<Integer> response) {
+                                if (response.code() == 200) {
+                                    Toast.makeText(getContext(), "Đánh giá thành công", Toast.LENGTH_SHORT).show();
+                                    dialog.hide();
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Call<Integer> call, Throwable t) {
+
+                            }
+                        });
                     }
                 });
 
@@ -208,11 +277,11 @@ public class ListRoomFragment extends AbstractFragment {
         imgSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (edtComment.length() > 0 && edtComment.length() <= 255){
+                if (edtComment.length() > 0 && edtComment.length() <= 255) {
                     ApiServiceMinh.apiService.themBinhLuanChoPhong(phongTroOfChuTroList.get(position).getIdPhongTro(), idTaiKhoan, edtComment.getText().toString().trim()).enqueue(new Callback<PhongBinhLuan>() {
                         @Override
                         public void onResponse(Call<PhongBinhLuan> call, Response<PhongBinhLuan> response) {
-                            if (response.code() == 201){
+                            if (response.code() == 201) {
                                 edtComment.setText("");
                                 edtComment.onEditorAction(EditorInfo.IME_ACTION_DONE);
                                 listComment.addFirst(response.body());
@@ -234,7 +303,7 @@ public class ListRoomFragment extends AbstractFragment {
         ntsvListComment.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
             @Override
             public void onScrollChange(@NonNull NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-                Log.d("TAG", "onScrollChange: "+scrollY);
+                Log.d("TAG", "onScrollChange: " + scrollY);
                 if (scrollY == (v.getChildAt(0).getMeasuredHeight() - v.getMeasuredHeight())) {
                     pageComment++;
                     pbLoadmoreComment.setVisibility(View.VISIBLE);
@@ -256,7 +325,6 @@ public class ListRoomFragment extends AbstractFragment {
 
 
     }
-
 
 
     private void getCommentFromAPI(int position, ProgressBar progressBar) {

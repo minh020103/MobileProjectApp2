@@ -2,6 +2,7 @@ package com.example.mobileprojectapp2.api.chutro;
 
 import com.example.mobileprojectapp2.api.Const;
 import com.example.mobileprojectapp2.datamodel.PhongBinhLuan;
+import com.example.mobileprojectapp2.datamodel.PhongDanhGia;
 import com.example.mobileprojectapp2.datamodel.PhongTro;
 import com.example.mobileprojectapp2.datamodel.PhongTroChuTro;
 import com.example.mobileprojectapp2.datamodel.Phuong;
@@ -15,6 +16,7 @@ import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
@@ -28,18 +30,23 @@ public interface ApiServiceMinh {
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(ApiServiceMinh.class);
+
     @GET("api/phongtrochutro/phantrang")
     Call<List<PhongTroChuTro>> layTatCaPhongTroQuanLy(
             @Query("idChuTro") int idChuTro,
             @Query("page") int page,
             @Query("quantity") int quantity
     );
+
     @GET("api/laytatcatienich")
     Call<List<TienIch>> layTatCaTienIch();
+
     @GET("api/quan/all")
     Call<List<Quan>> layTatCaQuan();
+
     @GET("api/phuong/layphuongtheoquan")
     Call<List<Phuong>> layTatCaPhuongTheoQuan(@Query("idQuan") int idQuan);
+
     @Multipart
     @POST("api/phongtro/create")
     Call<Integer> themPhongTroTheoIdChuTro(
@@ -64,13 +71,31 @@ public interface ApiServiceMinh {
             @Part("tienIch") RequestBody listTienIch,
             //ID chủ phòng
             @Part("idChuTro") RequestBody idChuTro);
+
     @GET("api/phongbinhluan/all")
     Call<List<PhongBinhLuan>> layTatCaBinhLuanCuaPhong(
             @Query("idPhong") int idPhong,
             @Query("page") int page,
             @Query("quantity") int quantity
     );
-    @PUT("api/phongbinhluan/create")
-    Call<PhongBinhLuan> themBinhLuanChoPhong(@Query("idPhong") int idPhong, @Query("idTaiKhoan")int idTaiKhoan, @Query("noiDungBinhLuan") String noiDungBinhLuan);
 
+    @PUT("api/phongbinhluan/create")
+    Call<PhongBinhLuan> themBinhLuanChoPhong(@Query("idPhong") int idPhong, @Query("idTaiKhoan") int idTaiKhoan, @Query("noiDungBinhLuan") String noiDungBinhLuan);
+
+    @GET("api/phongdanhgia/laydanhgia")
+    Call<PhongDanhGia> layDanhGiaCuaNguoiDunngChoPhong(
+            @Query("idTaiKhoan") int idTaiKhoan,
+            @Query("idPhong") int idPhong
+    );
+
+    @PUT("api/phongdanhgia/create")
+    Call<Integer> danhGiaChoPhong(
+            @Query("idTaiKhoan") int idTaiKhoan,
+            @Query("idPhong") int idPhong,
+            @Query("danhGia") int danhGia
+    );
+    @DELETE("api/phongtrochutro/delete")
+    Call<Integer> xoaPhongTroCuaChuTro(
+            @Query("idChuTro") int idChuTro,
+            @Query("idPhongTro") int idPhongTro);
 }

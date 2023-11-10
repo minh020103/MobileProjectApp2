@@ -112,7 +112,7 @@ public class MotelRoomAdapter extends RecyclerView.Adapter<MotelRoomAdapter.MyVi
                         onClickItemRoomListener.setOnClickEdit(position, view);
                         break;
                     case R.id.imgXoa:
-                        onClickItemRoomListener.setOnClickEdit(position, view);
+                        onClickItemRoomListener.setOnClickDelete(position, view);
                         break;
                     case R.id.llComment:
                         onClickItemRoomListener.setOnClickComment(position, view);
