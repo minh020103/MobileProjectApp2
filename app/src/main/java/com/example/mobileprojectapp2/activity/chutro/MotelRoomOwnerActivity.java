@@ -13,6 +13,7 @@ import com.example.mobileprojectapp2.R;
 import com.example.mobileprojectapp2.viewpager2adapter.MotelRoomOwnerViewPager2Adapter;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
+import com.google.firebase.FirebaseApp;
 
 public class MotelRoomOwnerActivity extends AppCompatActivity {
 

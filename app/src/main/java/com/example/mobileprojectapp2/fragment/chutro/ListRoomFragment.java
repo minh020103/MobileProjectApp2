@@ -34,6 +34,11 @@ import com.example.mobileprojectapp2.player.RatingPlayer;
 import com.example.mobileprojectapp2.recyclerviewadapter.chutro.CommentAdapter;
 import com.example.mobileprojectapp2.recyclerviewadapter.chutro.MotelRoomAdapter;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -61,6 +66,9 @@ public class ListRoomFragment extends AbstractFragment {
     private NestedScrollView ntsvListComment;
     private int pageComment = 1;
     private final int quantityComment = 10;
+
+    FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+    DatabaseReference databaseReference = firebaseDatabase.getReference("comment");
 
     @Nullable
     @Override
@@ -268,6 +276,17 @@ public class ListRoomFragment extends AbstractFragment {
     }
 
     private void showBottomSheetComment(int position, View view) {
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                Log.d("TAG", "onDataChange: NEW OK");
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
         pageComment = 1;
         listComment.clear();
         View viewBottomSheetCommnent = getLayoutInflater().inflate(R.layout.chutro_buttom_sheet_comment_layout, container, false);
