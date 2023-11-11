@@ -74,9 +74,7 @@ public interface ApiServiceMinh {
 
     @GET("api/phongbinhluan/all")
     Call<List<PhongBinhLuan>> layTatCaBinhLuanCuaPhong(
-            @Query("idPhong") int idPhong,
-            @Query("page") int page,
-            @Query("quantity") int quantity
+            @Query("idPhong") int idPhong
     );
 
     @PUT("api/phongbinhluan/create")

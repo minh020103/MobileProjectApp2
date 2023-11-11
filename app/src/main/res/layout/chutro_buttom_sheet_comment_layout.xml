@@ -38,30 +38,21 @@
 
         </LinearLayout>
 
-        <androidx.core.widget.NestedScrollView
-            android:id="@+id/ntsvListComment"
-            android:layout_width="match_parent"
-            android:layout_height="50in"
-            android:layout_weight="1"
-            android:background="@color/white">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="5in"
+                android:layout_weight="1"
                 android:orientation="vertical">
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rcvComment"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"/>
+                    android:layout_height="match_parent"
+                    android:background="@color/white"/>
 
-                <ProgressBar
-                    android:id="@+id/pbLoadmoreComment"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:padding="15dp" />
+
             </LinearLayout>
-        </androidx.core.widget.NestedScrollView>
 
         <LinearLayout
             android:layout_marginTop="1dp"

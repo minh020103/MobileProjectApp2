@@ -33,6 +33,8 @@ import com.example.mobileprojectapp2.datamodel.PhongTroChuTro;
 import com.example.mobileprojectapp2.player.RatingPlayer;
 import com.example.mobileprojectapp2.recyclerviewadapter.chutro.CommentAdapter;
 import com.example.mobileprojectapp2.recyclerviewadapter.chutro.MotelRoomAdapter;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -63,12 +65,11 @@ public class ListRoomFragment extends AbstractFragment {
     private ProgressBar pbLoadmoreRoom;
     private int pageRoom = 1;
     private final int quantityRoom = 5;
-    private NestedScrollView ntsvListComment;
     private int pageComment = 1;
     private final int quantityComment = 10;
 
     FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-    DatabaseReference databaseReference = firebaseDatabase.getReference("comment");
+    DatabaseReference databaseReference = firebaseDatabase.getReference();
 
     @Nullable
     @Override
@@ -276,10 +277,19 @@ public class ListRoomFragment extends AbstractFragment {
     }
 
     private void showBottomSheetComment(int position, View view) {
-        databaseReference.addValueEventListener(new ValueEventListener() {
+
+        pageComment = 1;
+
+        View viewBottomSheetCommnent = getLayoutInflater().inflate(R.layout.chutro_buttom_sheet_comment_layout, container, false);
+        BottomSheetDialog bottomSheetComment = new BottomSheetDialog(getActivity(), R.style.BottomSheetDialogTheme);
+        bottomSheetComment.setContentView(viewBottomSheetCommnent);
+
+        databaseReference.child("comment").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                Log.d("TAG", "onDataChange: NEW OK");
+                getCommentFromAPI(position);
+                Log.d("TAG", "onDataChange: GET OK");
+
             }
 
             @Override
@@ -287,18 +297,10 @@ public class ListRoomFragment extends AbstractFragment {
 
             }
         });
-        pageComment = 1;
-        listComment.clear();
-        View viewBottomSheetCommnent = getLayoutInflater().inflate(R.layout.chutro_buttom_sheet_comment_layout, container, false);
-        BottomSheetDialog bottomSheetComment = new BottomSheetDialog(getActivity(), R.style.BottomSheetDialogTheme);
-        bottomSheetComment.setContentView(viewBottomSheetCommnent);
-        ProgressBar pbLoadmoreComment = viewBottomSheetCommnent.findViewById(R.id.pbLoadmoreComment);
-        getCommentFromAPI(position, pbLoadmoreComment);
+
         //Ánh xạ
         ImageView imgSend = viewBottomSheetCommnent.findViewById(R.id.imgSend);
         EditText edtComment = viewBottomSheetCommnent.findViewById(R.id.edtComment);
-        //nestedscrollview
-        ntsvListComment = viewBottomSheetCommnent.findViewById(R.id.ntsvListComment);
         // set
         imgSend.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -310,8 +312,17 @@ public class ListRoomFragment extends AbstractFragment {
                             if (response.code() == 201) {
                                 edtComment.setText("");
                                 edtComment.onEditorAction(EditorInfo.IME_ACTION_DONE);
-                                listComment.addFirst(response.body());
-                                commentAdapter.notifyDataSetChanged();
+                                databaseReference.child("comment").child(response.body().getId()+"").setValue(response.body().getId()).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void unused) {
+                                        Log.d("TAG", "onDataChange: NEW OK");
+                                    }
+                                }).addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+
+                                    }
+                                });
                             }
                         }
 
@@ -326,18 +337,6 @@ public class ListRoomFragment extends AbstractFragment {
             }
         });
 
-        ntsvListComment.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
-            @Override
-            public void onScrollChange(@NonNull NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-                Log.d("TAG", "onScrollChange: " + scrollY);
-                if (scrollY == (v.getChildAt(0).getMeasuredHeight() - v.getMeasuredHeight())) {
-                    pageComment++;
-                    pbLoadmoreComment.setVisibility(View.VISIBLE);
-                    getCommentFromAPI(position, pbLoadmoreComment);
-
-                }
-            }
-        });
         //recyclerview
         rcvComment = viewBottomSheetCommnent.findViewById(R.id.rcvComment);
         commentAdapter = new CommentAdapter(getActivity(), listComment, R.layout.chutro_cardview_comment_layout);
@@ -353,9 +352,10 @@ public class ListRoomFragment extends AbstractFragment {
     }
 
 
-    private void getCommentFromAPI(int position, ProgressBar progressBar) {
+    private void getCommentFromAPI(int position) {
+        listComment.clear();
         Log.d("TAG", "getCommentFromAPI: " + phongTroOfChuTroList.get(position).getIdPhongTro());
-        ApiServiceMinh.apiService.layTatCaBinhLuanCuaPhong(phongTroOfChuTroList.get(position).getIdPhongTro(), pageComment, quantityComment).enqueue(new Callback<List<PhongBinhLuan>>() {
+        ApiServiceMinh.apiService.layTatCaBinhLuanCuaPhong(phongTroOfChuTroList.get(position).getIdPhongTro()).enqueue(new Callback<List<PhongBinhLuan>>() {
             @Override
             public void onResponse(Call<List<PhongBinhLuan>> call, Response<List<PhongBinhLuan>> response) {
                 if (response.code() == 200) {
@@ -363,12 +363,12 @@ public class ListRoomFragment extends AbstractFragment {
                         pageComment--;
                         Toast.makeText(getContext(), "Đã hết bình luận", Toast.LENGTH_SHORT).show();
                     } else {
+                        listComment.clear();
                         listComment.addAll(response.body());
                         commentAdapter.notifyDataSetChanged();
                     }
 
                 }
-                progressBar.setVisibility(View.GONE);
             }
 
             @Override
@@ -377,6 +377,8 @@ public class ListRoomFragment extends AbstractFragment {
             }
         });
     }
+
+
 
 
     private void anhXa(View fragmentLayout) {
