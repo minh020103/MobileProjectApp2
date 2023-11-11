@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "533405558317",
+    "firebase_url": "https://pushnotification-1cf60-default-rtdb.firebaseio.com",
+    "project_id": "pushnotification-1cf60",
+    "storage_bucket": "pushnotification-1cf60.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:533405558317:android:41cea28198054f6614faa4",
+        "android_client_info": {
+          "package_name": "com.example.mobileprojectapp2"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBFj-4dRRXwuYwA3XESwrobyC2FmVf4LDQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
