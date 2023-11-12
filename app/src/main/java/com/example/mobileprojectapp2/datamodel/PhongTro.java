@@ -17,6 +17,44 @@ public class PhongTro {
     private int tienCoc;
     private int gioiTinh;
     private Timestamp created_at;
+    private int tienDien;
+    private int tienNuoc;
+    private Quan quan;
+    private Phuong phuong;
+    private List<TienIch> tienIch;
+    private List<HinhAnh> hinhAnhPhongTro;
+
+    public List<TienIch> getTienIch() {
+        return tienIch;
+    }
+
+    public void setTienIch(List<TienIch> tienIch) {
+        this.tienIch = tienIch;
+    }
+
+    public List<HinhAnh> getHinhAnhPhongTro() {
+        return hinhAnhPhongTro;
+    }
+
+    public void setHinhAnhPhongTro(List<HinhAnh> hinhAnhPhongTro) {
+        this.hinhAnhPhongTro = hinhAnhPhongTro;
+    }
+
+    public Quan getQuan() {
+        return quan;
+    }
+
+    public void setQuan(Quan quan) {
+        this.quan = quan;
+    }
+
+    public Phuong getPhuong() {
+        return phuong;
+    }
+
+    public void setPhuong(Phuong phuong) {
+        this.phuong = phuong;
+    }
 
     public int getId() {
         return id;
@@ -120,5 +158,21 @@ public class PhongTro {
 
     public void setGioiTinh(int gioiTinh) {
         this.gioiTinh = gioiTinh;
+    }
+
+    public int getTienDien() {
+        return tienDien;
+    }
+
+    public void setTienDien(int tienDien) {
+        this.tienDien = tienDien;
+    }
+
+    public int getTienNuoc() {
+        return tienNuoc;
+    }
+
+    public void setTienNuoc(int tienNuoc) {
+        this.tienNuoc = tienNuoc;
     }
 }
