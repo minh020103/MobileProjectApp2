@@ -1,8 +1,11 @@
 package com.example.mobileprojectapp2.activity.chutro;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
@@ -14,10 +17,14 @@ import com.bumptech.glide.Glide;
 import com.example.mobileprojectapp2.R;
 import com.example.mobileprojectapp2.api.Const;
 import com.example.mobileprojectapp2.api.chutro.ApiServiceKiet;
+import com.example.mobileprojectapp2.api.chutro.ApiServiceNghiem;
 import com.example.mobileprojectapp2.datamodel.NguoiThue;
+import com.example.mobileprojectapp2.datamodel.PhongTinNhan;
 
 import java.util.List;
 
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -29,26 +36,74 @@ public class RenterDetailActivity extends AppCompatActivity {
     TextView tvPhongNguoiThueChiTiet;
     TextView tvGioiTinhNguoiThueChiTiet;
     Button btnGoiDienNguoiThue;
+    Button btnNhanTinNguoiThue;
     ImageView imgBackNguoiThueChiTiet;
 
-    int id;
-
+    NguoiThue nguoiThue;
+    SharedPreferences sharedPreferences;
+    private int senderId;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.chi_tiet_nguoi_thue_layout);
-
         Intent intent = getIntent();
-        id = intent.getIntExtra("id", 0);
-
+        nguoiThue = new NguoiThue();
+        nguoiThue = (NguoiThue) intent.getSerializableExtra("nguoiThue");
+        sharedPreferences = getApplicationContext().getSharedPreferences(Const.PRE_LOGIN,MODE_PRIVATE);
+        senderId = sharedPreferences.getInt("idTaiKhoan", -1);
         imgNguoiThueChiTiet = findViewById(R.id.imgNguoiThueChiTiet);
         tvTenNguoiThueChiTiet = findViewById(R.id.tvTenNguoiThueChiTiet);
         tvSDTNguoiThueChiTiet = findViewById(R.id.tvSDTNguoiThueChiTiet);
         tvGioiTinhNguoiThueChiTiet = findViewById(R.id.tvGioiTinhNguoiThueChiTiet);
         btnGoiDienNguoiThue = findViewById(R.id.btnGoiDienNguoiThue);
         imgBackNguoiThueChiTiet = findViewById(R.id.imgBackNguoiThueChiTiet);
+        btnNhanTinNguoiThue = findViewById(R.id.btnNhanTinNguoiThue);
+        getNguoiThueById(nguoiThue.getId());
+        btnNhanTinNguoiThue.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
-        getNguoiThueById(id);
+                Call<Integer> call = ApiServiceNghiem.apiService.layIdPhongTinNhan(senderId,nguoiThue.getIdTaiKhoan());
+                call.enqueue(new Callback<Integer>() {
+                    @Override
+                    public void onResponse(Call<Integer> call, Response<Integer> response) {
+                        if(response.body()==-1){
+                            RequestBody senderID = RequestBody.create(MediaType.parse("multipart/form-data"),senderId+"");
+                            RequestBody nguoiThueID = RequestBody.create(MediaType.parse("multipart/form-data"),nguoiThue.getIdTaiKhoan()+"");
+                            Call<PhongTinNhan> phongTinNhanCall = ApiServiceNghiem.apiService.taoPhongTinNhan(senderID,nguoiThueID);
+                            phongTinNhanCall.enqueue(new Callback<PhongTinNhan>() {
+                                @Override
+                                public void onResponse(Call<PhongTinNhan> call, Response<PhongTinNhan> response) {
+                                    Call<Integer> phong = ApiServiceNghiem.apiService.layIdPhongTinNhan(senderId,nguoiThue.getIdTaiKhoan());
+                                    phong.enqueue(new Callback<Integer>() {
+                                        @Override
+                                        public void onResponse(Call<Integer> call, Response<Integer> response) {
+                                            thietLapIntent(nguoiThue.getIdTaiKhoan(),response.body());
+                                        }
+
+                                        @Override
+                                        public void onFailure(Call<Integer> call, Throwable t) {
+
+                                        }
+                                    });
+                                }
+
+                                @Override
+                                public void onFailure(Call<PhongTinNhan> call, Throwable t) {
+
+                                }
+                            });
+                        }else{
+                            thietLapIntent(nguoiThue.getIdTaiKhoan(),response.body());
+                        }
+                    }
+                    @Override
+                    public void onFailure(Call<Integer> call, Throwable t) {
+
+                    }
+                });
+            }
+        });
 
         btnGoiDienNguoiThue.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -66,6 +121,24 @@ public class RenterDetailActivity extends AppCompatActivity {
                 finish();
             }
         });
+    }
+    private void thietLapIntent(int idDoiPhuong, int phong){
+        Intent intent = new Intent(RenterDetailActivity.this,RoomMassageActivity.class);
+        intent.putExtra("key",idDoiPhuong);
+        intent.putExtra("phong",phong);
+        startActivity(intent);
+    }
+
+    private void thongBao(String mes){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(mes).setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+            }
+        });
+        builder.create();
+        builder.show();
     }
 
     private void getNguoiThueById(int id)
@@ -85,9 +158,7 @@ public class RenterDetailActivity extends AppCompatActivity {
                 {
                     tvGioiTinhNguoiThueChiTiet.setText("Nam");
                 }
-
             }
-
             @Override
             public void onFailure(Call<NguoiThue> call, Throwable t) {
 

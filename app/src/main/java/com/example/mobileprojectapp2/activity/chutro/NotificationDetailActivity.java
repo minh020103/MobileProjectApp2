@@ -2,8 +2,11 @@ package com.example.mobileprojectapp2.activity.chutro;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -47,8 +50,7 @@ public class NotificationDetailActivity extends AppCompatActivity {
         btnXoaThongBaoChiTiet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                xoaThongBao(id);
-                finish();
+                openDialogDeleteNotification();
             }
         });
 
@@ -69,6 +71,17 @@ public class NotificationDetailActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    private void openDialogDeleteNotification()
+    {
+        new AlertDialog.Builder(this).setMessage("Xác nhận xóa thông báo ?").setCancelable(false).setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                xoaThongBao(id);
+                finish();
+            }
+        }).setNegativeButton("Cancle",null).show();
     }
 
     private void xoaThongBao(int id)
