@@ -6,11 +6,14 @@ public class TienIch {
     private String hinh;
     private int trangThai;
 
-    public TienIch(int id, String ten, String hinh, int trangThai) {
+    private PhongTroTienIch pivot;
+
+    public TienIch(int id, String ten, String hinh, int trangThai, PhongTroTienIch pivot) {
         this.id = id;
         this.ten = ten;
         this.hinh = hinh;
         this.trangThai = trangThai;
+        this.pivot = pivot;
     }
 
     public int getId() {
@@ -43,5 +46,24 @@ public class TienIch {
 
     public void setTrangThai(int trangThai) {
         this.trangThai = trangThai;
+    }
+
+    public PhongTroTienIch getPivot() {
+        return pivot;
+    }
+
+    public void setPivot(PhongTroTienIch pivot) {
+        this.pivot = pivot;
+    }
+
+    @Override
+    public String toString() {
+        return "TienIch{" +
+                "id=" + id +
+                ", ten='" + ten + '\'' +
+                ", hinh='" + hinh + '\'' +
+                ", trangThai=" + trangThai +
+                ", pivot=" + pivot +
+                '}';
     }
 }

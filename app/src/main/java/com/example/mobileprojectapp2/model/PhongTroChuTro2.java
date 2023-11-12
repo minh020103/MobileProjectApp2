@@ -12,18 +12,7 @@ public class PhongTroChuTro2 implements Serializable {
 
     private PhongTro phongTro;
 
-    private List<HinhAnh> listHinhAnh;
-
-    public List<HinhAnh> getListHinhAnh() {
-        return listHinhAnh;
-    }
-
-
     public PhongTroChuTro2() {
-    }
-
-    public void setListHinhAnh(List<HinhAnh> listHinhAnh) {
-        this.listHinhAnh = listHinhAnh;
     }
 
     public PhongTro getPhongTro() {
@@ -33,7 +22,6 @@ public class PhongTroChuTro2 implements Serializable {
     public void setPhongTro(PhongTro phongTro) {
         this.phongTro = phongTro;
     }
-
 
 
     public int getId() {

@@ -1,4 +1,4 @@
-package com.example.imagesslider;
+package com.example.mobileprojectapp2.activity.chutro;
 
 import android.view.View;
 

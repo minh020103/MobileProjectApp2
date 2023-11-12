@@ -1,5 +1,10 @@
 package com.example.mobileprojectapp2.model;
 
+import com.example.mobileprojectapp2.datamodel.HinhAnh;
+import com.example.mobileprojectapp2.datamodel.PhongTroChuTro;
+
+import java.util.List;
+
 public class PhongTro {
     private int id;
     private int soPhong;
@@ -14,9 +19,15 @@ public class PhongTro {
     private int soLuongToiDa;
     private int tienCoc;
     private int gioiTinh;
+    private int tienDien;
+    private int tienNuoc;
 
-    public PhongTro(int id, int soPhong, String tenPhong, int gia, int dienTich, String moTa, int idQuan,
-                    int idPhuong, String diaChiChiTiet, int loaiPhong, int soLuongToiDa, int tienCoc, int gioiTinh) {
+    private List<TienIch> danhSachTienIch;
+    private List<HinhAnh> hinhAnhPhongTro;
+
+    private PhongTroChuTro phongTroChuTro;
+
+    public PhongTro(int id, int soPhong, String tenPhong, int gia, int dienTich, String moTa, int idQuan, int idPhuong, String diaChiChiTiet, int loaiPhong, int soLuongToiDa, int tienCoc, int gioiTinh, int tienDien, int tienNuoc, List<TienIch> danhSachTienIch, List<HinhAnh> hinhAnhPhongTro, PhongTroChuTro phongTroChuTro) {
         this.id = id;
         this.soPhong = soPhong;
         this.tenPhong = tenPhong;
@@ -30,6 +41,11 @@ public class PhongTro {
         this.soLuongToiDa = soLuongToiDa;
         this.tienCoc = tienCoc;
         this.gioiTinh = gioiTinh;
+        this.tienDien = tienDien;
+        this.tienNuoc = tienNuoc;
+        this.danhSachTienIch = danhSachTienIch;
+        this.hinhAnhPhongTro = hinhAnhPhongTro;
+        this.phongTroChuTro = phongTroChuTro;
     }
 
     public int getId() {
@@ -134,5 +150,45 @@ public class PhongTro {
 
     public void setGioiTinh(int gioiTinh) {
         this.gioiTinh = gioiTinh;
+    }
+
+    public int getTienDien() {
+        return tienDien;
+    }
+
+    public void setTienDien(int tienDien) {
+        this.tienDien = tienDien;
+    }
+
+    public int getTienNuoc() {
+        return tienNuoc;
+    }
+
+    public void setTienNuoc(int tienNuoc) {
+        this.tienNuoc = tienNuoc;
+    }
+
+    public List<TienIch> getDanhSachTienIch() {
+        return danhSachTienIch;
+    }
+
+    public void setDanhSachTienIch(List<TienIch> danhSachTienIch) {
+        this.danhSachTienIch = danhSachTienIch;
+    }
+
+    public List<HinhAnh> getHinhAnhPhongTro() {
+        return hinhAnhPhongTro;
+    }
+
+    public void setHinhAnhPhongTro(List<HinhAnh> hinhAnhPhongTro) {
+        this.hinhAnhPhongTro = hinhAnhPhongTro;
+    }
+
+    public PhongTroChuTro getPhongTroChuTro() {
+        return phongTroChuTro;
+    }
+
+    public void setPhongTroChuTro(PhongTroChuTro phongTroChuTro) {
+        this.phongTroChuTro = phongTroChuTro;
     }
 }

@@ -22,7 +22,7 @@
                 android:background="@color/white">
 
                 <ImageView
-                    android:id="@+id/img_back"
+                    android:id="@+id/img_back_detail"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/iconp_back" />
@@ -77,18 +77,24 @@
                     android:layout_height="wrap_content"
                     android:text="Loai phong"
                     android:textColor="@color/black"
+                    android:textSize="@dimen/size_16sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="/"
+                    android:textColor="@color/black"
                     android:textSize="@dimen/size_16sp"
-                    android:textStyle="italic" />
+                    android:layout_marginStart="2dp"
+                    android:layout_marginEnd="2dp"/>
 
                 <TextView
                     android:id="@+id/tv_detail_gio_tinh"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
                     android:text="Gioi tinh"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/size_16sp"
-                    android:textStyle="italic" />
+                    android:textSize="@dimen/size_16sp" />
 
             </LinearLayout>
 
@@ -97,34 +103,50 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/tv_detail_quan"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="5dp"
-                    android:text="Ký túc xá Quận Thủ Đức"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/size_25sp" />
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
+                    android:gravity="center"
                     android:orientation="horizontal">
 
                     <TextView
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:gravity="center_horizontal"
+                        android:text="Ký túc xá quận"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/size_25sp" />
+
+                    <TextView
+                        android:id="@+id/tv_detail_quan"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:text="Thủ Đức"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/size_25sp" />
+
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:padding="5dp"
                         android:text="Giá:"
                         android:textColor="@color/black"
                         android:textSize="@dimen/size_20sp" />
 
                     <TextView
-                        android:layout_width="match_parent"
+                        android:id="@+id/tv_detail_gia"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:gravity="center_horizontal"
                         android:padding="5dp"
                         android:text="1.5 triệu VND/người"
                         android:textColor="@color/main_color_app_light"
@@ -205,7 +227,7 @@
                         android:textSize="@dimen/size_16sp" />
 
                     <TextView
-                        android:id="@+id/tv_detail_dat_coc"
+                        android:id="@+id/tv_detail_tien_coc"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:padding="5dp"
@@ -329,14 +351,13 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginTop="5dp">
+                    android:layout_marginTop="5dp"
+                    android:orientation="horizontal">
 
                     <ImageView
                         android:layout_width="25dp"
                         android:layout_height="25dp"
-                        android:src="@drawable/iconp_info"
-                        />
+                        android:src="@drawable/iconp_info" />
 
                     <com.borjabravo.readmoretextview.ReadMoreTextView
                         android:id="@+id/tv_detail_mo_ta"
@@ -352,7 +373,6 @@
                         app:trimLength="100"
                         app:trimMode="trimModeLength" />
                 </LinearLayout>
-
 
 
             </LinearLayout>
@@ -401,33 +421,35 @@
 
             </LinearLayout>
 
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="4dp"
                 android:layout_marginTop="15dp"
                 android:layout_marginBottom="10dp"
                 android:background="@color/text_gray2" />
 
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/lb_tien_ich"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="5dp"
-                    android:text="TIện ích"
+                    android:text="Tiện ích"
                     android:textColor="@color/black"
                     android:textSize="@dimen/size_20sp" />
 
-               <androidx.recyclerview.widget.RecyclerView
-                   android:id="@+id/rcv_list_tien_ich"
-                   android:layout_width="match_parent"
-                   android:layout_height="match_parent"
-                   android:padding="10dp"/>
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rcv_list_tien_ich"
+                    android:layout_below="@+id/lb_tien_ich"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="10dp" />
 
-            </LinearLayout>
+            </RelativeLayout>
 
         </LinearLayout>
 
