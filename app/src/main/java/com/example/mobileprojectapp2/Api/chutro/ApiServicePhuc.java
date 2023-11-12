@@ -58,14 +58,14 @@ public interface ApiServicePhuc {
 
     @Multipart
     @POST("api/xacthucchutro/create")
-    Call<XacThucChuTro> guiYeuCauXacThucChuTro(@Part("idChuTro") RequestBody idChuTro,
+    Call<Integer> guiYeuCauXacThucChuTro(@Part("idChuTro") RequestBody idChuTro,
                                                @Part MultipartBody.Part cccdMatTruoc,
-                                               @Part MultipartBody.Part cccdMatSau);
+                                               @Part MultipartBody.Part cccdMatSau,
+                                            @Query("trangThaiXacThuc") int trangThaiXacThuc);
 
     @GET("api/thongtinphongtro")
     Call<PhongTro> getPhongTroByID(@Query("idPhong") int idPhong);
 
-    @GET("api/thongtinphongtro")
-    Call<List<PhongTro>> getListTienIch(@Query("idPhong") int idPhong);
+
 
 }

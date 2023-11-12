@@ -124,10 +124,6 @@ public class DetailPhongTro extends AppCompatActivity {
                 tvSoLuongToiDa.setText(response.body().getSoLuongToiDa() + " người");
                 tvDiaChi.setText(response.body().getDiaChiChiTiet());
 
-                Log.d("TAG", "onResponse: " + response.body().getDanhSachTienIch().get(0).getTen());
-                Log.d("TAG", "onResponse: " + response.body().getHinhAnhPhongTro().size());
-
-
                 for (HinhAnh hinhAnh : response.body().getHinhAnhPhongTro()){
                     listHinhAnh.add((hinhAnh));
                 }

@@ -67,6 +67,20 @@
                 android:layout_centerHorizontal="true"/>
 
             <TextView
+                android:id="@+id/tv_dangcho_authencation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Đang chờ xác thực"
+                android:textSize="18sp"
+                android:textColor="@color/vang"
+                android:textStyle="bold"
+                android:padding="10dp"
+                android:layout_marginStart="10dp"
+                android:visibility="gone"
+                android:drawablePadding="10dp"
+                android:layout_centerHorizontal="true"/>
+
+            <TextView
                 android:id="@+id/tv_mat_truoc_cccd"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

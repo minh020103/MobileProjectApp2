@@ -44,10 +44,11 @@ import retrofit2.Response;
 public class AuthencationActivity extends AppCompatActivity {
 
     int idChuTro = 2;
+    int trangThaiXacThuc = 0;
     private static final int CHUA_XAC_THUC = 0;
     private static final int DA_XAC_THUC = 1;
     private ImageView imgViewBack, imageViewMatTruocCCCD, imageViewMatSauCCCD;
-    private TextView tvNotAuthencation, tvOkAuthencation;
+    private TextView tvNotAuthencation, tvOkAuthencation, tvDangChoAuthencation;
     private AppCompatButton btnAcceptYeuCauXacThuc;
     public static final String TAG = AuthencationActivity.class.getName();
     private static final int MY_REQUEST_CODE = 10;
@@ -106,52 +107,54 @@ public class AuthencationActivity extends AppCompatActivity {
         btnAcceptYeuCauXacThuc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                sendDataToApi();
+
+                sendDataToApi();
             }
         });
 
 
     }
 
-//    private void sendDataToApi() {
-//        File fileMT;
-//        File fileMS;
-//        if (cccdMT != null && cccdMS != null) {
-//
-//            fileMT = new File(RealPathUtil.getRealPath(this, cccdMT));
-//            fileMS = new File(RealPathUtil.getRealPath(this, cccdMS));
-//
-//            Log.d(TAG, "sendDataToApi: "+fileMT.getName());
-//            Log.d(TAG, "sendDataToApi: "+fileMS.getName());
-//            RequestBody requestBodyIdChuTro = RequestBody.create(MediaType.parse("multipart/form-data"), idChuTro + "");
-//
-//            RequestBody requestBodycccdMT = RequestBody.create(MediaType.parse("multipart/form-data"), fileMT);
-//            MultipartBody.Part partCccdMT = MultipartBody.Part.createFormData("cccdMatTruoc", fileMT.getName(), requestBodycccdMT);
-//
-//            RequestBody requestBodycccdMS = RequestBody.create(MediaType.parse("multipart/form-data"), fileMS);
-//            MultipartBody.Part partCccdMS = MultipartBody.Part.createFormData("cccdMatSau", fileMS.getName(), requestBodycccdMS);
-//
-//
-//            Call<XacThucChuTro> call = ApiServicePhuc.apiService.apiService.guiYeuCauXacThucChuTro(requestBodyIdChuTro, partCccdMT, partCccdMS);
-//            call.enqueue(new Callback<XacThucChuTro>() {
-//                @Override
-//                public void onResponse(Call<XacThucChuTro> call, Response<XacThucChuTro> response) {
-//
-//                    alertSuccess("Gửi yêu cầu xác nhận chủ trọ thành công");
-//                }
-//
-//                @Override
-//                public void onFailure(Call<XacThucChuTro> call, Throwable t) {
-//                    Log.d(TAG, "onFailure: "+t);
-//                    alertFail("Gửi yêu cầu xác nhận chủ trọ thất bại");
-//                }
-//            });
-//        } else {
-//            Toast.makeText(this, "Chưa chọn ảnh Căn cước công dân", Toast.LENGTH_SHORT).show();
-//        }
-//
-//
-//    }
+    private void sendDataToApi() {
+        File fileMT;
+        File fileMS;
+        if (cccdMT != null && cccdMS != null) {
+
+            fileMT = new File(RealPathUtil.getRealPath(this, cccdMT));
+            fileMS = new File(RealPathUtil.getRealPath(this, cccdMS));
+
+            Log.d(TAG, "sendDataToApi: " + fileMT.getName());
+            Log.d(TAG, "sendDataToApi: " + fileMS.getName());
+            RequestBody requestBodyIdChuTro = RequestBody.create(MediaType.parse("multipart/form-data"), idChuTro + "");
+
+            RequestBody requestBodycccdMT = RequestBody.create(MediaType.parse("multipart/form-data"), fileMT);
+            MultipartBody.Part partCccdMT = MultipartBody.Part.createFormData("cccdMatTruoc", fileMT.getName(), requestBodycccdMT);
+
+            RequestBody requestBodycccdMS = RequestBody.create(MediaType.parse("multipart/form-data"), fileMS);
+            MultipartBody.Part partCccdMS = MultipartBody.Part.createFormData("cccdMatSau", fileMS.getName(), requestBodycccdMS);
+
+
+            Call<Integer> call = ApiServicePhuc.apiService.guiYeuCauXacThucChuTro(requestBodyIdChuTro, partCccdMT, partCccdMS,trangThaiXacThuc);
+            call.enqueue(new Callback<Integer>() {
+                @Override
+                public void onResponse(Call<Integer> call, Response<Integer> response) {
+                    alertSuccess("Gửi yêu cầu xác nhận chủ trọ thành công");
+                    onClickCanDuLieu(trangThaiXacThuc);
+                    tvNotAuthencation.setVisibility(View.GONE);
+                    tvOkAuthencation.setVisibility(View.GONE);
+                    btnAcceptYeuCauXacThuc.setVisibility(View.GONE);
+                    tvDangChoAuthencation.setVisibility(View.VISIBLE);
+                }
+
+                @Override
+                public void onFailure(Call<Integer> call, Throwable t) {
+                    alertFail("Gửi yêu cầu xác nhận chủ trọ thất bại");
+                }
+            });
+        } else {
+            Toast.makeText(this, "Chưa chọn ảnh Căn cước công dân", Toast.LENGTH_SHORT).show();
+        }
+    }
 
     private void getDetailChuTro() {
         Call<XacThucChuTro> call = ApiServicePhuc.apiService.getDetailChuTro(idChuTro);
@@ -238,6 +241,7 @@ public class AuthencationActivity extends AppCompatActivity {
         tvNotAuthencation = findViewById(R.id.tv_not_authencation);
         tvOkAuthencation = findViewById(R.id.tv_ok_authencation);
         btnAcceptYeuCauXacThuc = findViewById(R.id.btn_accept_yeu_cau_xac_thuc);
+        tvDangChoAuthencation = findViewById(R.id.tv_dangcho_authencation);
     }
 
     private void alertFail(String s) {

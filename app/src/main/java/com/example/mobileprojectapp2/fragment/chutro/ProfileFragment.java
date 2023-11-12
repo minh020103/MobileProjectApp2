@@ -85,7 +85,6 @@ public class ProfileFragment extends AbstractFragment {
         call.enqueue(new Callback<ChuTro>() {
             @Override
             public void onResponse(Call<ChuTro> call, Response<ChuTro> response) {
-                Log.d("TAG", "onResponse: "+Const.DOMAIN + response.body().getHinh());
                 Glide.with(ProfileFragment.this.getLayoutInflater().getContext()).load(Const.DOMAIN + response.body().getHinh()).into(imgViewProfile);
 
                 tvPhone.setText(response.body().getSoDienThoai());
