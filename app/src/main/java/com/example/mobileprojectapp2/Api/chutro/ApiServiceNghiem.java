@@ -1,5 +1,6 @@
 package com.example.mobileprojectapp2.api.chutro;
 
+import com.example.mobileprojectapp2.api.Const;
 import com.example.mobileprojectapp2.datamodel.ChinhSach;
 import com.example.mobileprojectapp2.datamodel.ChuTro;
 import com.example.mobileprojectapp2.datamodel.NguoiThue;
@@ -21,9 +22,9 @@ import retrofit2.http.Query;
 
 public interface ApiServiceNghiem {
 
-    String http = "http://192.168.1.11/3t/laravel/public/api/";
+    String doman = "http://192.168.177.1/3t/laravel/public/api/";
     ApiServiceNghiem apiService =new Retrofit.Builder()
-            .baseUrl(http)
+            .baseUrl(doman)
             .addConverterFactory(GsonConverterFactory.create())
             .build().create(ApiServiceNghiem.class);
     @GET("danhsachtinnhan")

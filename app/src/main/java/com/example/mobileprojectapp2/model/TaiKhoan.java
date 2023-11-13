@@ -7,6 +7,25 @@ public class TaiKhoan {
     private int trangThai;
     private int loaiTaiKhoan;
     private String email;
+    private NguoiDangNhap nguoiDangNhap;
+
+    public NguoiDangNhap getNguoiDangNhap() {
+        return nguoiDangNhap;
+    }
+
+    public void setNguoiDangNhap(NguoiDangNhap nguoiDangNhap) {
+        this.nguoiDangNhap = nguoiDangNhap;
+    }
+
+    public TaiKhoan(int id, String tenTaiKhoan, String matKhau, int trangThai, int loaiTaiKhoan, String email, NguoiDangNhap nguoiDangNhap) {
+        this.id = id;
+        this.tenTaiKhoan = tenTaiKhoan;
+        this.matKhau = matKhau;
+        this.trangThai = trangThai;
+        this.loaiTaiKhoan = loaiTaiKhoan;
+        this.email = email;
+        this.nguoiDangNhap = nguoiDangNhap;
+    }
 
     public TaiKhoan(String tenTaiKhoan, String matKhau, int trangThai, int loaiTaiKhoan, String email) {
         this.tenTaiKhoan = tenTaiKhoan;

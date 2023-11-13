@@ -317,6 +317,8 @@ public class ListRoomFragment extends AbstractFragment {
                             if (response.code() == 201) {
                                 edtComment.setText("");
                                 edtComment.onEditorAction(EditorInfo.IME_ACTION_DONE);
+                                listComment.addFirst(response.body());
+                                commentAdapter.notifyDataSetChanged();
                                 databaseReference.child("comment").child(response.body().getId()+"").setValue(response.body().getId()).addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
                                     public void onSuccess(Void unused) {
@@ -364,15 +366,9 @@ public class ListRoomFragment extends AbstractFragment {
             @Override
             public void onResponse(Call<List<PhongBinhLuan>> call, Response<List<PhongBinhLuan>> response) {
                 if (response.code() == 200) {
-                    if (response.body() == null) {
-                        pageComment--;
-                        Toast.makeText(getContext(), "Đã hết bình luận", Toast.LENGTH_SHORT).show();
-                    } else {
                         listComment.clear();
                         listComment.addAll(response.body());
                         commentAdapter.notifyDataSetChanged();
-                    }
-
                 }
             }
 
