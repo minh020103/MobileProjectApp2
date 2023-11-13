@@ -38,6 +38,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 import retrofit2.Call;
@@ -57,7 +58,7 @@ public class RoomMassageActivity extends AppCompatActivity {
     TextView textName;
     EditText inputMess;
     AppCompatImageView sendMess;
-    RoundedImageView avt_doiPhuong;
+    CircleImageView avt_doiPhuong;
     AppCompatImageView info;
     SharedPreferences sharedPreferences;
 
@@ -136,9 +137,12 @@ public class RoomMassageActivity extends AppCompatActivity {
         call.enqueue(new Callback<ArrayList<TinNhan>>() {
             @Override
             public void onResponse(Call<ArrayList<TinNhan>> call, Response<ArrayList<TinNhan>> response) {
-                arrayList.addAll(response.body());
-                tinNhanAdapter.notifyDataSetChanged();
-                recyclerView.smoothScrollToPosition(arrayList.size()-1);
+                if(response.body().size()!=0){
+                    arrayList.addAll(response.body());
+                    tinNhanAdapter.notifyDataSetChanged();
+                    recyclerView.smoothScrollToPosition(arrayList.size()-1);
+                }
+
             }
 
             @Override
@@ -230,7 +234,7 @@ public class RoomMassageActivity extends AppCompatActivity {
             capNhatTrangThaiDaXem();
         }
         arrayList.clear();
-         Call<ArrayList<TinNhan>> call = ApiServiceNghiem.apiService.layDanhSachTinNhan(idPhong);
+        Call<ArrayList<TinNhan>> call = ApiServiceNghiem.apiService.layDanhSachTinNhan(idPhong);
         call.enqueue(new Callback<ArrayList<TinNhan>>() {
             @Override
             public void onResponse(Call<ArrayList<TinNhan>> call, Response<ArrayList<TinNhan>> response) {
