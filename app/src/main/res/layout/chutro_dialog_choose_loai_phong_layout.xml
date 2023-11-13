@@ -8,11 +8,11 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Chọn phường"
+        android:text="Chọn loại phòng"
         android:textSize="25sp"
         android:gravity="center"/>
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rcvChonPhuong"
+        android:id="@+id/rcvLoaiPhong"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"/>

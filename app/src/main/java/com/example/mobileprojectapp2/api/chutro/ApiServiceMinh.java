@@ -119,7 +119,8 @@ public interface ApiServiceMinh {
             //Hình ảnh của phòng
             @Part List<MultipartBody.Part> hinh,
             //Tiện ích của phòng
-            @Part("tienIch") RequestBody listTienIch);
+            @Part("tienIch") RequestBody listTienIch,
+            @Part("loaiPhong") RequestBody loaiPhong);
 
 
     @GET("api/phongtro/chitiet")
