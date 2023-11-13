@@ -134,16 +134,16 @@ public class DetailPhongTro extends AppCompatActivity {
 
                 Log.d("TAG", "onResponse: "+ response.body().getHinhAnhPhongTro().size());
 
-                if (response.body().getHinhAnhPhongTro().size() < 0){
-                    tvTienIchRong.setVisibility(View.VISIBLE);
+                if (response.body().getHinhAnhPhongTro().size() == 0){
+                    tvHinhAnhRong.setVisibility(View.VISIBLE);
                     mViewPager2.setVisibility(View.GONE);
                 }
                 for (HinhAnh hinhAnh : response.body().getHinhAnhPhongTro()) {
-                    listHinhAnh.add((hinhAnh));
+                    listHinhAnh.add(hinhAnh);
                 }
                 adapterHinhAnh.notifyDataSetChanged();
 
-                if (response.body().getDanhSachTienIch().size() < 0) {
+                if (response.body().getDanhSachTienIch().size() == 0) {
                     tvTienIchRong.setVisibility(View.VISIBLE);
                 }
                 if (response.body().getDanhSachTienIch().size() < 8) {
@@ -197,13 +197,6 @@ public class DetailPhongTro extends AppCompatActivity {
 
     private void anhXa() {
 
-        mViewPager2 = findViewById(R.id.view_pager_2);
-        mCircleIndicator3 = findViewById(R.id.circle_indicator_3);
-        adapterHinhAnh = new HinhAnhAdapter(DetailPhongTro.this, listHinhAnh, R.layout.chutro_item_image_layout);
-        mViewPager2.setAdapter(adapterHinhAnh);
-        mCircleIndicator3.setViewPager(mViewPager2);
-
-
         tvDienTich = findViewById(R.id.tv_detail_dien_tich);
         tvQuan = findViewById(R.id.tv_detail_quan);
         tvMoTa = findViewById(R.id.tv_detail_mo_ta);
@@ -221,12 +214,17 @@ public class DetailPhongTro extends AppCompatActivity {
         tvTienIchRong = findViewById(R.id.tv_tien_ich_rong);
         tvHinhAnhRong = findViewById(R.id.tv_hinh_anh_rong);
 
+        mViewPager2 = findViewById(R.id.view_pager_2);
+        mCircleIndicator3 = findViewById(R.id.circle_indicator_3);
+        adapterHinhAnh = new HinhAnhAdapter(DetailPhongTro.this, listHinhAnh, R.layout.chutro_item_image_layout);
+        mViewPager2.setAdapter(adapterHinhAnh);
+        mCircleIndicator3.setViewPager(mViewPager2);
+
 
         adapterTienIch = new TienIchAdapter(DetailPhongTro.this, listTienIch, R.layout.cardview_item_tien_ich_layout);
         layoutManagerTienIch = new LinearLayoutManager(DetailPhongTro.this);
         layoutManagerTienIch.setOrientation(RecyclerView.HORIZONTAL);
         layoutManagerTienIch = new GridLayoutManager(this, 4);
-//        layoutManagerTienIch.setOrientation(RecyclerView.VERTICAL);
         rcvListTienIch.setLayoutManager(layoutManagerTienIch);
         rcvListTienIch.setAdapter(adapterTienIch);
         imageBack = findViewById(R.id.img_back_detail);
