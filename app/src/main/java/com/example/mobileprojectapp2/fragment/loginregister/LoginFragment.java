@@ -32,12 +32,14 @@ public class LoginFragment extends AbstractFragment{
     TextView quenMatKhau;
     Button dangNhap;
     Float v = 0.0f;
+    SharedPreferences sharedPreferences;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         View view = null;
         view = getLayoutInflater().inflate(R.layout.login_tab_fragment,container, false);
+        sharedPreferences = getContext().getSharedPreferences(Const.PRE_LOGIN, Context.MODE_PRIVATE);
         anhXa(view);
         setHieuUng();
         batSuKienDangNhap();
@@ -86,11 +88,9 @@ public class LoginFragment extends AbstractFragment{
         call.enqueue(new Callback<TaiKhoan>() {
             @Override
             public void onResponse(Call<TaiKhoan> call, Response<TaiKhoan> response) {
-                SharedPreferences sharedPreferences = getContext().getSharedPreferences(Const.PRE_LOGIN, Context.MODE_PRIVATE);
-                sharedPreferences.edit().putInt("idTaiKhoan", response.body().getId());
+                sharedPreferences.edit().putInt("idTaiKhoan", response.body().getId()).commit();
                 if(response.body().getLoaiTaiKhoan()==1){
-                    sharedPreferences.edit().putInt("trangThaiXacThuc", response.body().getTrangThai());
-                    sharedPreferences.edit().commit();
+                    sharedPreferences.edit().putInt("trangThaiXacThuc", response.body().getNguoiDangNhap().getXacThuc()).commit();
                     Intent intent = new Intent(getContext(), MotelRoomOwnerActivity.class);
                     startActivity(intent);
                 }else{

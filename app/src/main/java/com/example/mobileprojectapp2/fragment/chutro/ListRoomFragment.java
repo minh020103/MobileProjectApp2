@@ -53,7 +53,8 @@ public class ListRoomFragment extends AbstractFragment {
     private LinearLayout llAdd;
     private List<PhongTroChuTro> phongTroOfChuTroList;
     SharedPreferences sharedPreferences;
-    private int senderId =2;
+    private int senderId =-1;
+    private int trangThai = -2;
 
     @Nullable
     @Override
@@ -62,7 +63,8 @@ public class ListRoomFragment extends AbstractFragment {
         fragmentLayout = inflater.inflate(R.layout.chutro_fragment_list_room_layout, container, false);
         anhXa(fragmentLayout);
         sharedPreferences = getActivity().getSharedPreferences(Const.PRE_LOGIN, Context.MODE_PRIVATE);
-        senderId =sharedPreferences.getInt("idTaiKhoan", -1);
+        senderId =  sharedPreferences.getInt("idTaiKhoan", -1);
+        trangThai = sharedPreferences.getInt("trangThaiXacThuc",-1);
         this.container = container;
         onClickButtomInFragment();
         onClickItemInCardView();
@@ -70,7 +72,17 @@ public class ListRoomFragment extends AbstractFragment {
 
         return fragmentLayout;
     }
+    private void thongBao(String mes){
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setMessage(mes).setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
 
+            }
+        });
+        builder.create();
+        builder.show();
+    }
     private void onClickButtomInFragment() {
         llAdd.setOnClickListener(new View.OnClickListener() {
             @Override
