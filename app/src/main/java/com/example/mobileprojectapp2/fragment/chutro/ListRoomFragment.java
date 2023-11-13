@@ -161,6 +161,7 @@ public class ListRoomFragment extends AbstractFragment {
             @Override
             public void setOnClickEdit(int position, View view) {
                 Intent intent = new Intent(getActivity(), EditRoomActivity.class);
+                intent.putExtra("idPhong", phongTroOfChuTroList.get(position).getIdPhongTro());
                 startActivity(intent);
             }
 

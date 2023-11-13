@@ -96,4 +96,34 @@ public interface ApiServiceMinh {
     Call<Integer> xoaPhongTroCuaChuTro(
             @Query("idChuTro") int idChuTro,
             @Query("idPhongTro") int idPhongTro);
+    @Multipart
+    @POST("api/phongtro/update")
+    Call<Integer> suaPhongTroTheoIdChuTro(
+            //id phòng
+            @Part("idPhong") RequestBody requestBodyIDPhong,
+            // Thông tin phòng
+            @Part("soPhong") RequestBody soPhong,
+            @Part("gia") RequestBody gia,
+            @Part("dienTich") RequestBody dienTich,
+            @Part("moTa") RequestBody moTa,
+            @Part("idQuan") RequestBody idQuan,
+            @Part("idPhuong") RequestBody idPhuong,
+            @Part("gioiTinh") RequestBody gioiTinh,
+            @Part("diaChiChiTiet") RequestBody diaChiChiTiet,
+//            @Part("loaiPhong") RequestBody loaiPhong,
+            @Part("soLuongToiDa") RequestBody soLuongToiDa,
+            @Part("tienCoc") RequestBody tienCoc,
+//            @Part("gioiTinh") RequestBody gioiTinh, thêm mặc định là tất cả
+            @Part("tienDien") RequestBody tienDien,
+            @Part("tienNuoc") RequestBody tienNuoc,
+            //Hình ảnh của phòng
+            @Part List<MultipartBody.Part> hinh,
+            //Tiện ích của phòng
+            @Part("tienIch") RequestBody listTienIch);
+
+
+    @GET("api/phongtro/chitiet")
+    Call<PhongTro> layChiTietPhongTro(
+            @Query("id") int idPhong
+    );
 }
