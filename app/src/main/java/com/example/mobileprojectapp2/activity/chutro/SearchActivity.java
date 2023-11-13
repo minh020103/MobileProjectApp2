@@ -6,7 +6,9 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -14,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.mobileprojectapp2.R;
+import com.example.mobileprojectapp2.api.Const;
 import com.example.mobileprojectapp2.api.chutro.ApiServicePhuc;
 import com.example.mobileprojectapp2.model.PhongTroChuTro2;
 import com.example.mobileprojectapp2.recyclerviewadapter.chutro.PhongTroChuTroAdapter;
@@ -34,12 +37,19 @@ public class SearchActivity extends AppCompatActivity {
 
     private List<PhongTroChuTro2> mList;
     private ImageView imgViewBack;
+    SharedPreferences sharedPreferences;
+    private int idChuTro;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.search_layout);
+
+        sharedPreferences = SearchActivity.this.getSharedPreferences(Const.PRE_LOGIN, Context.MODE_PRIVATE);
+        idChuTro = sharedPreferences.getInt("idChuTro", -1);
+
+
         mList = new LinkedList<>();
         imgViewBack = findViewById(R.id.img_back);
         rcvListPhongTro = findViewById(R.id.rcv_list_phong_tro);
@@ -93,7 +103,7 @@ public class SearchActivity extends AppCompatActivity {
     }
 
     private void getAllDataApi() {
-        Call<List<PhongTroChuTro2>> call = ApiServicePhuc.apiService.getALlListPhongTro(2);
+        Call<List<PhongTroChuTro2>> call = ApiServicePhuc.apiService.getALlListPhongTro(idChuTro);
         call.enqueue(new Callback<List<PhongTroChuTro2>>() {
             @Override
             public void onResponse(Call<List<PhongTroChuTro2>> call, Response<List<PhongTroChuTro2>> response) {

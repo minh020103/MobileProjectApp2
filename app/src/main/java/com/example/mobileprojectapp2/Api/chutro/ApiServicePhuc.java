@@ -60,8 +60,7 @@ public interface ApiServicePhuc {
     @POST("api/xacthucchutro/create")
     Call<Integer> guiYeuCauXacThucChuTro(@Part("idChuTro") RequestBody idChuTro,
                                                @Part MultipartBody.Part cccdMatTruoc,
-                                               @Part MultipartBody.Part cccdMatSau,
-                                            @Query("trangThaiXacThuc") int trangThaiXacThuc);
+                                               @Part MultipartBody.Part cccdMatSau);
 
     @GET("api/thongtinphongtro")
     Call<PhongTro> getPhongTroByID(@Query("idPhong") int idPhong);

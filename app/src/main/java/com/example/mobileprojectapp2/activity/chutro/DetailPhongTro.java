@@ -1,5 +1,10 @@
 package com.example.mobileprojectapp2.activity.chutro;
 
+import static com.example.mobileprojectapp2.api.Const.MALE_GENDERS;
+import static com.example.mobileprojectapp2.api.Const.PHONG_DON;
+import static com.example.mobileprojectapp2.api.Const.PHONG_TRONG;
+
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -36,14 +41,9 @@ import retrofit2.Response;
 
 public class DetailPhongTro extends AppCompatActivity {
 
-    private static final int PHONG_TRONG = 0;
-    private static final int PHONG_DON = 1;
-    private static final int PHONG_GHEP = 2;
-    private static final int NAM = 1;
-    private static final int NU = 2;
 
     private TextView tvLoaiPhong, tvGioTinh, tvGia, tvSoLuongToiDa, tvDienTich,
-            tvTienCoc, tvTienDien, tvTienNuoc, tvQuan, tvDiaChi;
+            tvTienCoc, tvTienDien, tvTienNuoc, tvQuan, tvDiaChi, tvTienIchRong, tvHinhAnhRong;
     private ReadMoreTextView tvMoTa;
     private List<TienIch> listTienIch;
     private TienIchAdapter adapterTienIch;
@@ -61,11 +61,11 @@ public class DetailPhongTro extends AppCompatActivity {
     private Runnable runnable = new Runnable() {
         @Override
         public void run() {
-            if (mViewPager2.getCurrentItem() == listHinhAnh.size() - 1){
+            if (mViewPager2.getCurrentItem() == listHinhAnh.size() - 1) {
                 mViewPager2.setCurrentItem(0);
-            }else {
+            } else {
                 //            Next sang page tiep theo
-                mViewPager2.setCurrentItem(mViewPager2.getCurrentItem()+ 1);
+                mViewPager2.setCurrentItem(mViewPager2.getCurrentItem() + 1);
             }
 
         }
@@ -81,7 +81,7 @@ public class DetailPhongTro extends AppCompatActivity {
         listHinhAnh = new ArrayList<>();
 
         Intent intent = getIntent();
-        idPhong = intent.getIntExtra("idPhong",0);
+        idPhong = intent.getIntExtra("idPhong", 0);
 
         anhXa();
         getDataFromApi();
@@ -104,6 +104,7 @@ public class DetailPhongTro extends AppCompatActivity {
 
         mViewPager2.setPageTransformer(new ZoomOutPageTransformer());
     }
+
     private void getDataFromApi() {
         Call<PhongTro> call = ApiServicePhuc.apiService.getPhongTroByID(idPhong);
         call.enqueue(new Callback<PhongTro>() {
@@ -120,7 +121,7 @@ public class DetailPhongTro extends AppCompatActivity {
                     tvLoaiPhong.setText("Phòng ghép");
                 }
                 tvMoTa.setText(response.body().getMoTa());
-                if (response.body().getGioiTinh() == NAM) {
+                if (response.body().getGioiTinh() == MALE_GENDERS) {
                     tvGioTinh.setText("Nam ♂");
                 } else {
                     tvGioTinh.setText("Nữ ♀");
@@ -131,25 +132,37 @@ public class DetailPhongTro extends AppCompatActivity {
                 tvSoLuongToiDa.setText(response.body().getSoLuongToiDa() + " người");
                 tvDiaChi.setText(response.body().getDiaChiChiTiet());
 
-                for (HinhAnh hinhAnh : response.body().getHinhAnhPhongTro()){
+                Log.d("TAG", "onResponse: "+ response.body().getHinhAnhPhongTro().size());
+
+                if (response.body().getHinhAnhPhongTro().size() < 0){
+                    tvTienIchRong.setVisibility(View.VISIBLE);
+                    mViewPager2.setVisibility(View.GONE);
+                }
+                for (HinhAnh hinhAnh : response.body().getHinhAnhPhongTro()) {
                     listHinhAnh.add((hinhAnh));
                 }
                 adapterHinhAnh.notifyDataSetChanged();
 
+                if (response.body().getDanhSachTienIch().size() < 0) {
+                    tvTienIchRong.setVisibility(View.VISIBLE);
+                }
+                if (response.body().getDanhSachTienIch().size() < 8) {
+                    llXemThem.setVisibility(View.GONE);
+                }
                 int i = 0;
-                for (TienIch tienIch : response.body().getDanhSachTienIch() ){
+                for (TienIch tienIch : response.body().getDanhSachTienIch()) {
                     listTienIch.add(tienIch);
                     i++;
-                    if (i == 8)
+                    if (i == 8) {
                         break;
+                    }
                 }
                 adapterTienIch.notifyDataSetChanged();
-
                 llXemThem.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         listTienIch.clear();
-                        for (TienIch tienIch : response.body().getDanhSachTienIch() ) {
+                        for (TienIch tienIch : response.body().getDanhSachTienIch()) {
                             listTienIch.add(tienIch);
                         }
                         adapterTienIch.notifyDataSetChanged();
@@ -162,7 +175,7 @@ public class DetailPhongTro extends AppCompatActivity {
                     public void onClick(View v) {
                         listTienIch.clear();
                         int i = 0;
-                        for (TienIch tienIch : response.body().getDanhSachTienIch() ){
+                        for (TienIch tienIch : response.body().getDanhSachTienIch()) {
                             listTienIch.add(tienIch);
                             i++;
                             if (i == 8)
@@ -205,7 +218,8 @@ public class DetailPhongTro extends AppCompatActivity {
         rcvListTienIch = findViewById(R.id.rcv_list_tien_ich);
         llThuGon = findViewById(R.id.ll_thu_gon);
         llXemThem = findViewById(R.id.ll_xem_them);
-
+        tvTienIchRong = findViewById(R.id.tv_tien_ich_rong);
+        tvHinhAnhRong = findViewById(R.id.tv_hinh_anh_rong);
 
 
         adapterTienIch = new TienIchAdapter(DetailPhongTro.this, listTienIch, R.layout.cardview_item_tien_ich_layout);

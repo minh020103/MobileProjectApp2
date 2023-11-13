@@ -14,7 +14,8 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            >
 
             <androidx.appcompat.widget.Toolbar
                 android:layout_width="match_parent"
@@ -39,16 +40,29 @@
             </androidx.appcompat.widget.Toolbar>
         </LinearLayout>
 
+
         <LinearLayout
             android:id="@+id/llListHinhAnh"
             android:layout_width="match_parent"
             android:layout_height="250dp"
             android:orientation="vertical">
 
+            <TextView
+                android:id="@+id/tv_hinh_anh_rong"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Chưa có hình ảnh"
+                android:textSize="@dimen/size_16sp"
+                android:textColor="@color/black"
+                android:gravity="center_vertical|center_horizontal"
+                android:visibility="gone"
+                />
+
             <androidx.viewpager2.widget.ViewPager2
                 android:id="@+id/view_pager_2"
                 android:layout_width="match_parent"
-                android:layout_height="220dp" />
+                android:layout_height="220dp"
+              />
 
             <me.relex.circleindicator.CircleIndicator3
                 android:id="@+id/circle_indicator_3"
@@ -440,12 +454,23 @@
                     android:text="Tiện ích"
                     android:textColor="@color/black"
                     android:textSize="@dimen/size_20sp" />
+               <TextView
+                   android:id="@+id/tv_tien_ich_rong"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:text="Chưa có tiện ích"
+                   android:textSize="@dimen/size_16sp"
+                   android:textColor="@color/black"
+                   android:layout_below="@+id/lb_tien_ich"
+                   android:layout_centerHorizontal="true"
+                   android:visibility="gone"
+                   />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rcv_list_tien_ich"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_below="@+id/lb_tien_ich"
+                    android:layout_below="@+id/tv_tien_ich_rong"
                     android:padding="10dp" />
 
                 <RelativeLayout
