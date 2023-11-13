@@ -1,7 +1,6 @@
-package com.example.mobileprojectapp2.viewpager2adapter;
+package com.example.mobileprojectapp2.recyclerviewadapter.chutro;
 
 import android.app.Activity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,16 +14,15 @@ import com.bumptech.glide.Glide;
 import com.example.mobileprojectapp2.R;
 import com.example.mobileprojectapp2.api.Const;
 import com.example.mobileprojectapp2.datamodel.HinhAnh;
-
 import java.util.List;
 
-public class ChuTroImageSlideViewPager2Adapter extends RecyclerView.Adapter<ChuTroImageSlideViewPager2Adapter.MyViewHolder> {
-
+public class HinhAnhAdapter extends RecyclerView.Adapter<HinhAnhAdapter.HinhAnhViewHolder>{
     private Activity activity;
     private List<HinhAnh> list;
+
     private int layoutID;
 
-    public ChuTroImageSlideViewPager2Adapter(Activity activity, List<HinhAnh> list, int layoutID) {
+    public HinhAnhAdapter(Activity activity, List<HinhAnh> list, int layoutID) {
         this.activity = activity;
         this.list = list;
         this.layoutID = layoutID;
@@ -32,32 +30,29 @@ public class ChuTroImageSlideViewPager2Adapter extends RecyclerView.Adapter<ChuT
 
     @NonNull
     @Override
-    public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public HinhAnhViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = activity.getLayoutInflater();
-        LinearLayout view = (LinearLayout) inflater.inflate(layoutID, parent, false);
-
-
-        return new MyViewHolder(view);
+        LinearLayout view = (LinearLayout) inflater.inflate(layoutID,parent,false);
+        return new HinhAnhViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull HinhAnhViewHolder holder, int position) {
         HinhAnh hinhAnh = list.get(position);
-//        holder.imgItem.setImageDrawable(activity.getResources().getDrawable(R.drawable.phong_tro, activity.getTheme()));
         Glide.with(activity.getLayoutInflater().getContext()).load(Const.DOMAIN+hinhAnh.getHinh()).into(holder.imgItem);
-
     }
 
     @Override
     public int getItemCount() {
-        return list.size();
+        if (list != null){
+            return list.size();
+        }
+        return 0;
     }
 
-    public class MyViewHolder extends RecyclerView.ViewHolder{
-
-        ImageView imgItem;
-
-        public MyViewHolder(@NonNull View itemView) {
+    public class HinhAnhViewHolder extends RecyclerView.ViewHolder{
+        private ImageView imgItem;
+        public HinhAnhViewHolder(@NonNull View itemView) {
             super(itemView);
             imgItem = itemView.findViewById(R.id.imgItem);
         }

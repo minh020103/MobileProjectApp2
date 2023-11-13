@@ -62,6 +62,7 @@ public class ListRoomFragment extends AbstractFragment {
     private LinkedList<PhongBinhLuan> listComment;
     private ViewGroup container;
     private LinearLayout llAdd;
+    private LinearLayout llSearch;
     private List<PhongTroChuTro> phongTroOfChuTroList;
     private ProgressBar pbLoadmoreRoom;
     private int pageRoom = 1;
@@ -111,6 +112,12 @@ public class ListRoomFragment extends AbstractFragment {
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), AddRoomActivity.class);
                 startActivity(intent);
+            }
+        });
+         llSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getActivity(), SearchActivity.class));
             }
         });
     }
