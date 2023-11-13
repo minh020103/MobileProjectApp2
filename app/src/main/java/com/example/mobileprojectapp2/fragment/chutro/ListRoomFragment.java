@@ -26,6 +26,7 @@ import com.example.mobileprojectapp2.activity.chutro.AddRoomActivity;
 import com.example.mobileprojectapp2.activity.chutro.EditRoomActivity;
 import com.example.mobileprojectapp2.activity.chutro.MotelRoomOwnerActivity;
 import com.example.mobileprojectapp2.activity.chutro.RenterListActivity;
+import com.example.mobileprojectapp2.activity.chutro.SearchActivity;
 import com.example.mobileprojectapp2.api.chutro.ApiServiceMinh;
 import com.example.mobileprojectapp2.datamodel.Comment;
 import com.example.mobileprojectapp2.datamodel.PhongBinhLuan;
@@ -393,6 +394,7 @@ public class ListRoomFragment extends AbstractFragment {
         ntsvListRoom = fragmentLayout.findViewById(R.id.ntsvListRoom);
         pbLoadmoreRoom = fragmentLayout.findViewById(R.id.pbLoadmore);
         llAdd = fragmentLayout.findViewById(R.id.llAdd);
+        llSearch = fragmentLayout.findViewById(R.id.llSearch);
         rcvListMotelRoom = fragmentLayout.findViewById(R.id.rcvListMotelRoom);
         phongTroOfChuTroList = new LinkedList<>();
         layoutManager = new LinearLayoutManager(getContext());
