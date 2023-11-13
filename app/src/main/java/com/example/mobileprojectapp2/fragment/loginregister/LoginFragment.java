@@ -96,6 +96,7 @@ public class LoginFragment extends AbstractFragment{
                 }else{
                     thongBao("Đây là Tài khoản người thuê");
                 }
+
             }
 
             @Override
