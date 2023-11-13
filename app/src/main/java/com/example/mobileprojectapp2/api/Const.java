@@ -8,4 +8,8 @@ public class Const {
     public static final int MALE_GENDERS = 1;
     public static final int FEMALE_GENDERS = 2;
 
+    public static final int PHONG_TRONG = 0;
+    public static final int PHONG_DON = 1;
+    public static final int PHONG_GHEP = 2;
+
 }
