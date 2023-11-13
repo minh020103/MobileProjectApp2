@@ -18,7 +18,7 @@
             android:gravity="top"
             >
 
-            <com.makeramen.roundedimageview.RoundedImageView
+            <de.hdodenhof.circleimageview.CircleImageView
                 app:riv_border_color="@color/black"
                 app:riv_border_width="1dp"
                 android:id="@+id/img_doiphuong"

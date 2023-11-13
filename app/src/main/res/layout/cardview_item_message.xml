@@ -20,7 +20,7 @@
             android:paddingBottom="5sp"
             >
 
-            <com.makeramen.roundedimageview.RoundedImageView
+            <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/img_item_message"
                 android:src="@drawable/avt1"
                 android:layout_width="match_parent"
