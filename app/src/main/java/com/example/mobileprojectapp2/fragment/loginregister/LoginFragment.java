@@ -18,11 +18,9 @@ import androidx.appcompat.app.AlertDialog;
 
 import com.example.mobileprojectapp2.R;
 import com.example.mobileprojectapp2.activity.chutro.MotelRoomOwnerActivity;
-import com.example.mobileprojectapp2.activity.chutro.RoomMassageActivity;
-import com.example.mobileprojectapp2.api.ApiServiceNghiem;
+import com.example.mobileprojectapp2.api.chutro.ApiServiceNghiem;
 import com.example.mobileprojectapp2.api.Const;
 import com.example.mobileprojectapp2.datamodel.TaiKhoan;
-import com.example.mobileprojectapp2.fragment.chutro.ListRoomFragment;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -63,24 +61,46 @@ public class LoginFragment extends AbstractFragment{
 
     }
     private void kiemTraDangNhap(String tenTaiKhoan, String matKhau){
-        Call<TaiKhoan> call = ApiServiceNghiem.apiService.kiemTraDangNhap(tenTaiKhoan,matKhau);
+//        Call<TaiKhoan> call = ApiServiceNghiem.apiService.kiemTraDangNhap(tenTaiKhoan,matKhau);
+//        call.enqueue(new Callback<TaiKhoan>() {
+//            @Override
+//            public void onResponse(Call<TaiKhoan> call, Response<TaiKhoan> response) {
+//                SharedPreferences sharedPreferences = getContext().getSharedPreferences(Const.PRE_LOGIN, Context.MODE_PRIVATE);
+//                sharedPreferences.edit().putInt("idTaiKhoan", response.body().getId()).commit();
+//                if(response.body().getLoaiTaiKhoan()==1){
+//                    Intent intent = new Intent(getContext(), MotelRoomOwnerActivity.class);
+//                    startActivity(intent);
+//                }else{
+//                    thongBao("Đây là Tài khoản người thuê");
+//                }
+//
+//            }
+//
+//            @Override
+//            public void onFailure(Call<TaiKhoan> call, Throwable t) {
+//            thongBao("Tài Khoản Hoặc Mật Khẩu Không Đúng!");
+//            }
+//        });
+
+        Call<TaiKhoan> call = ApiServiceNghiem.apiService.dangNhap(tenTaiKhoan,matKhau);
         call.enqueue(new Callback<TaiKhoan>() {
             @Override
             public void onResponse(Call<TaiKhoan> call, Response<TaiKhoan> response) {
                 SharedPreferences sharedPreferences = getContext().getSharedPreferences(Const.PRE_LOGIN, Context.MODE_PRIVATE);
-                sharedPreferences.edit().putInt("idTaiKhoan", response.body().getId()).commit();
+                sharedPreferences.edit().putInt("idTaiKhoan", response.body().getId());
                 if(response.body().getLoaiTaiKhoan()==1){
+                    sharedPreferences.edit().putInt("trangThaiXacThuc", response.body().getTrangThai());
+                    sharedPreferences.edit().commit();
                     Intent intent = new Intent(getContext(), MotelRoomOwnerActivity.class);
                     startActivity(intent);
                 }else{
                     thongBao("Đây là Tài khoản người thuê");
                 }
-
             }
 
             @Override
             public void onFailure(Call<TaiKhoan> call, Throwable t) {
-            thongBao("Tài Khoản Hoặc Mật Khẩu Không Đúng!");
+                thongBao("Tài Khoản Hoặc Mật Khẩu Không Đúng!");
             }
         });
     }

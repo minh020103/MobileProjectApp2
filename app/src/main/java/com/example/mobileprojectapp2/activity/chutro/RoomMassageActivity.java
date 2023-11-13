@@ -3,27 +3,23 @@ package com.example.mobileprojectapp2.activity.chutro;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageView;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
-import android.graphics.Canvas;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.mobileprojectapp2.R;
 import com.example.mobileprojectapp2.adapter.TinNhanAdapter;
-import com.example.mobileprojectapp2.api.ApiServiceNghiem;
+import com.example.mobileprojectapp2.api.chutro.ApiServiceNghiem;
 import com.example.mobileprojectapp2.api.Const;
 import com.example.mobileprojectapp2.datamodel.ChuTro;
 import com.example.mobileprojectapp2.datamodel.NguoiThue;
-import com.example.mobileprojectapp2.datamodel.PhongTinNhan;
 import com.example.mobileprojectapp2.datamodel.TaiKhoan;
 import com.example.mobileprojectapp2.datamodel.TinNhan;
 import com.makeramen.roundedimageview.RoundedImageView;
@@ -31,6 +27,7 @@ import com.makeramen.roundedimageview.RoundedImageView;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 import okhttp3.MediaType;
@@ -47,6 +44,7 @@ public class RoomMassageActivity extends AppCompatActivity {
     private int senderId;
     private int idDoiPhuong;
     private int idPhong;
+    private int trangThai;
     AppCompatImageView ic_back;
     TextView textName;
     EditText inputMess;
@@ -59,20 +57,28 @@ public class RoomMassageActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_room_massage);
         anhXa();
-        setDuLieu();
+        arrayList = new ArrayList<>();
+        sharedPreferences = getApplicationContext().getSharedPreferences(Const.PRE_LOGIN,MODE_PRIVATE);
+        senderId = sharedPreferences.getInt("idTaiKhoan", -1);
+        idDoiPhuong= getIntent().getIntExtra("key",-1);
+        idPhong=getIntent().getIntExtra("phong",-1);;
+        trangThai = getIntent().getIntExtra("trangThai",-1);
+        if(idDoiPhuong==-1||idPhong==-1){
+            thongBao("Xảy Ra Lỗi!");
+        }else{
+            setDuLieu();
+        }
 
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-
-
     }
     private void capNhatTinNhanNew(int idPhong, String noiDung, String thoiGian){
         RequestBody noiDungAPi = RequestBody.create(MediaType.parse("multipart/form-data"),inputMess.getText().toString());
         RequestBody thoiGianApi = RequestBody.create(MediaType.parse("multipart/form-data"),thoiGian);
-        Call<Integer> call = ApiServiceNghiem.apiService.capNhatTinNhanMoiNhat(idPhong,noiDungAPi,thoiGianApi);
+        Call<Integer> call = ApiServiceNghiem.apiService.capNhatTinNhanMoiNhat(senderId,idPhong,noiDungAPi,thoiGianApi);
         call.enqueue(new Callback<Integer>() {
             @Override
             public void onResponse(Call<Integer> call, Response<Integer> response) {
@@ -129,20 +135,30 @@ public class RoomMassageActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if(!inputMess.getText().toString().isEmpty()){
+
                     RequestBody noiDung = RequestBody.create(MediaType.parse("multipart/form-data"),inputMess.getText().toString());
                     Call<TinNhan> call = ApiServiceNghiem.apiService.guiTinNhan(idPhong,senderId,noiDung);
                     call.enqueue(new Callback<TinNhan>() {
                         @Override
                         public void onResponse(Call<TinNhan> call, Response<TinNhan> response) {
-                            int time = (int) (System.currentTimeMillis());
-                            Timestamp tsTemp = new Timestamp(time);
-                        TinNhan tinNhan = new TinNhan(arrayList.get(arrayList.size()-1).getId()+1,idPhong,senderId,inputMess.getText().toString(),tsTemp);
-                        arrayList.add(tinNhan);
-                        tinNhanAdapter.notifyDataSetChanged();
-                        recyclerView.smoothScrollToPosition(arrayList.size()-1);
-                        capNhatTinNhanNew(idPhong,inputMess.getText().toString(),formatDate(response.body().getCreated_at()));
+                            Date currentTime = Calendar.getInstance().getTime();
+                            Timestamp tsTemp = new Timestamp(currentTime.getTime());
+                            Date date = new Date(tsTemp.getTime());
+                            SimpleDateFormat newFormat = new SimpleDateFormat("hh:mm dd-MM-yyyy");
+                            if(arrayList.size()!=0){
+                                TinNhan tinNhan = new TinNhan(arrayList.get(arrayList.size()-1).getId()+1,idPhong,senderId,inputMess.getText().toString(),tsTemp);
+                                arrayList.add(tinNhan);
+                                tinNhanAdapter.notifyDataSetChanged();
+                                recyclerView.smoothScrollToPosition(arrayList.size()-1);
+                            }
+                            else{
+                                TinNhan tinNhan = new TinNhan(1,idPhong,senderId,inputMess.getText().toString(),tsTemp);
+                                arrayList.add(tinNhan);
+                                tinNhanAdapter.notifyDataSetChanged();
+                                recyclerView.smoothScrollToPosition(arrayList.size()-1);
+                            }
+                         capNhatTinNhanNew(idPhong,inputMess.getText().toString(),formatDate(response.body().getCreated_at()));
                         }
-
                         @Override
                         public void onFailure(Call<TinNhan> call, Throwable t) {
                             thongBao("Không Thể Gửi");
@@ -167,25 +183,30 @@ public class RoomMassageActivity extends AppCompatActivity {
         });
     }
     private void setDuLieu(){
-        sharedPreferences = getApplicationContext().getSharedPreferences(Const.PRE_LOGIN,MODE_PRIVATE);
-        senderId = sharedPreferences.getInt("idTaiKhoan", -1);
-        idDoiPhuong= getIntent().getIntExtra("key",-1);
-        idPhong=getIntent().getIntExtra("phong",-1);;
-        capNhatTrangThaiDaXem();
-        arrayList = new ArrayList<>();
+        if(trangThai!=-1&&trangThai==0){
+            capNhatTrangThaiDaXem();
+        }
+        arrayList.clear();
         tinNhanAdapter = new TinNhanAdapter(this,arrayList,R.layout.cardview_send_message,R.layout.cardview_recieve_message,senderId);
         Call<ArrayList<TinNhan>> call = ApiServiceNghiem.apiService.layDanhSachTinNhan(idPhong);
         call.enqueue(new Callback<ArrayList<TinNhan>>() {
             @Override
             public void onResponse(Call<ArrayList<TinNhan>> call, Response<ArrayList<TinNhan>> response) {
-                if(response.body().size()!=0){
-                    arrayList.addAll(response.body());
-                    tinNhanAdapter.notifyDataSetChanged();
-                    recyclerView.smoothScrollToPosition(arrayList.size()-1);
-                    layThongTinDoiPhuong(idDoiPhuong);
-                    setSuKienGuiTinNhan();
+                if(response != null){
+                    if(response.body().size()!=0){
+                        arrayList.addAll(response.body());
+                        tinNhanAdapter.notifyDataSetChanged();
+                        recyclerView.smoothScrollToPosition(arrayList.size()-1);
+                        layThongTinDoiPhuong(idDoiPhuong);
+                        setSuKienGuiTinNhan();
 //                    handleLienTuc(arrayList);
+                    }else{
+                        tinNhanAdapter.notifyDataSetChanged();
+                        layThongTinDoiPhuong(idDoiPhuong);
+                        setSuKienGuiTinNhan();
+                    }
                 }
+
             }
 
             @Override
