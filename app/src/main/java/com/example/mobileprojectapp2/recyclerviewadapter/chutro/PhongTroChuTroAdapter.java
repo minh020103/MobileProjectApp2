@@ -1,5 +1,8 @@
 package com.example.mobileprojectapp2.recyclerviewadapter.chutro;
 
+import static com.example.mobileprojectapp2.api.Const.PHONG_GHEP;
+import static com.example.mobileprojectapp2.api.Const.PHONG_TRONG;
+
 import android.app.Activity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,7 +15,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.mobileprojectapp2.R;
 import com.example.mobileprojectapp2.datamodel.HinhAnh;
-import com.example.mobileprojectapp2.model.Define;
 import com.example.mobileprojectapp2.model.PhongTroChuTro2;
 import com.example.mobileprojectapp2.viewpager2adapter.ChuTroImageSlideViewPager2Adapter;
 
@@ -54,7 +56,7 @@ public class PhongTroChuTroAdapter extends RecyclerView.Adapter<PhongTroChuTroAd
         }
         holder.soPhong.setText(phongTroChuTro.getPhongTro().getSoPhong() + "");
         holder.gia.setText(phongTroChuTro.getPhongTro().getGia() + " " + "₫");
-        holder.loaiPhong.setText(phongTroChuTro.getPhongTro().getLoaiPhong() == Define.PHONG_TRONG ? "Phòng trống" : phongTroChuTro.getPhongTro().getLoaiPhong() == Define.PHONG_GHEP ? "Phòng ghép" : "Phòng đơn");
+        holder.loaiPhong.setText(phongTroChuTro.getPhongTro().getLoaiPhong() == PHONG_TRONG ? "Phòng trống" : phongTroChuTro.getPhongTro().getLoaiPhong() == PHONG_GHEP ? "Phòng ghép" : "Phòng đơn");
         holder.dienTich.setText(phongTroChuTro.getPhongTro().getDienTich() + "" + "㎡");
         holder.onClickListener = new View.OnClickListener() {
             @Override

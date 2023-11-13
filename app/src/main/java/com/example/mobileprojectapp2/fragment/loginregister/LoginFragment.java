@@ -90,6 +90,7 @@ public class LoginFragment extends AbstractFragment{
             public void onResponse(Call<TaiKhoan> call, Response<TaiKhoan> response) {
                 sharedPreferences.edit().putInt("idTaiKhoan", response.body().getId()).commit();
                 if(response.body().getLoaiTaiKhoan()==1){
+                    sharedPreferences.edit().putInt("idChuTro", response.body().getNguoiDangNhap().getId()).commit();
                     sharedPreferences.edit().putInt("trangThaiXacThuc", response.body().getNguoiDangNhap().getXacThuc()).commit();
                     Intent intent = new Intent(getContext(), MotelRoomOwnerActivity.class);
                     startActivity(intent);

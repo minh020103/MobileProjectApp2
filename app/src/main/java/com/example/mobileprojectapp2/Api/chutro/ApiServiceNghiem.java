@@ -22,7 +22,7 @@ import retrofit2.http.Query;
 
 public interface ApiServiceNghiem {
 
-    String doman = "http://192.168.1.107/3t/laravel/public/api/";
+    String doman = "http://192.168.226.1/3t/laravel/public/api/";
     ApiServiceNghiem apiService =new Retrofit.Builder()
             .baseUrl(doman)
             .addConverterFactory(GsonConverterFactory.create())
