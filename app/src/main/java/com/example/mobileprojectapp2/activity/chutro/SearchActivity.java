@@ -78,6 +78,7 @@ public class SearchActivity extends AppCompatActivity {
             public void OnClickItem(int position, View v) {
                 Log.d("TAG", "OnClickItem: "+mList.get(position).getId());
                 Intent intent = new Intent(SearchActivity.this, DetailPhongTro.class);
+                intent.putExtra("idPhong",mList.get(position).getIdPhongTro());
                 startActivity(intent);
 
             }

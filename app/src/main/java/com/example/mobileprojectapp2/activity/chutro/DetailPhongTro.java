@@ -6,11 +6,13 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -52,7 +54,9 @@ public class DetailPhongTro extends AppCompatActivity {
     private ViewPager2 mViewPager2;
     private CircleIndicator3 mCircleIndicator3;
     private List<HinhAnh> listHinhAnh;
-    private int idPhong = 2;
+    private int idPhong;
+
+    private LinearLayout llXemThem, llThuGon;
     private Handler handler = new Handler();
     private Runnable runnable = new Runnable() {
         @Override
@@ -75,6 +79,9 @@ public class DetailPhongTro extends AppCompatActivity {
 
         listTienIch = new ArrayList<>();
         listHinhAnh = new ArrayList<>();
+
+        Intent intent = getIntent();
+        idPhong = intent.getIntExtra("idPhong",0);
 
         anhXa();
         getDataFromApi();
@@ -129,11 +136,43 @@ public class DetailPhongTro extends AppCompatActivity {
                 }
                 adapterHinhAnh.notifyDataSetChanged();
 
+                int i = 0;
                 for (TienIch tienIch : response.body().getDanhSachTienIch() ){
                     listTienIch.add(tienIch);
+                    i++;
+                    if (i == 8)
+                        break;
                 }
                 adapterTienIch.notifyDataSetChanged();
 
+                llXemThem.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        listTienIch.clear();
+                        for (TienIch tienIch : response.body().getDanhSachTienIch() ) {
+                            listTienIch.add(tienIch);
+                        }
+                        adapterTienIch.notifyDataSetChanged();
+                        llXemThem.setVisibility(View.GONE);
+                        llThuGon.setVisibility(View.VISIBLE);
+                    }
+                });
+                llThuGon.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        listTienIch.clear();
+                        int i = 0;
+                        for (TienIch tienIch : response.body().getDanhSachTienIch() ){
+                            listTienIch.add(tienIch);
+                            i++;
+                            if (i == 8)
+                                break;
+                        }
+                        adapterTienIch.notifyDataSetChanged();
+                        llXemThem.setVisibility(View.VISIBLE);
+                        llThuGon.setVisibility(View.GONE);
+                    }
+                });
             }
 
             @Override
@@ -164,6 +203,8 @@ public class DetailPhongTro extends AppCompatActivity {
         tvGioTinh = findViewById(R.id.tv_detail_gio_tinh);
         tvDiaChi = findViewById(R.id.tv_detail_dia_chi);
         rcvListTienIch = findViewById(R.id.rcv_list_tien_ich);
+        llThuGon = findViewById(R.id.ll_thu_gon);
+        llXemThem = findViewById(R.id.ll_xem_them);
 
 
 

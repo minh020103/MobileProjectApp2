@@ -82,11 +82,11 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="2dp"
+                    android:layout_marginEnd="2dp"
                     android:text="/"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/size_16sp"
-                    android:layout_marginStart="2dp"
-                    android:layout_marginEnd="2dp"/>
+                    android:textSize="@dimen/size_16sp" />
 
                 <TextView
                     android:id="@+id/tv_detail_gio_tinh"
@@ -421,7 +421,7 @@
 
             </LinearLayout>
 
-            <RelativeLayout
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="4dp"
                 android:layout_marginTop="15dp"
@@ -430,8 +430,7 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:layout_height="wrap_content">
 
                 <TextView
                     android:id="@+id/lb_tien_ich"
@@ -444,10 +443,82 @@
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rcv_list_tien_ich"
-                    android:layout_below="@+id/lb_tien_ich"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_below="@+id/lb_tien_ich"
                     android:padding="10dp" />
+
+                <RelativeLayout
+                    android:id="@id/rlt"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginRight="30dp"
+                    android:background="@color/text_gray"
+                    android:layout_below="@+id/rcv_list_tien_ich"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:layout_below="@+id/rlt"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:id="@+id/ll_xem_them"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center|center_horizontal"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/rcv_list_tien_ich"
+                            android:gravity="center"
+                            android:text="Xem thêm"
+                            android:textColor="@color/up_down"
+                            android:textSize="@dimen/size_20sp"
+                            android:textStyle="bold" />
+
+                        <ImageView
+                            android:layout_width="15dp"
+                            android:layout_height="15dp"
+                            android:layout_marginStart="2dp"
+                            android:src="@drawable/iconp_down" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:visibility="gone"
+                        android:id="@+id/ll_thu_gon"
+                        android:layout_width="match_parent"
+                        android:layout_height="35dp"
+                        android:gravity="center|center_horizontal"
+                        android:layout_below="@+id/rlt"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/rcv_list_tien_ich"
+                            android:gravity="center"
+                            android:text="Thu gọn"
+                            android:textColor="@color/up_down"
+                            android:textSize="@dimen/size_20sp"
+                            android:textStyle="bold" />
+
+                        <ImageView
+                            android:layout_width="15dp"
+                            android:layout_height="15dp"
+                            android:layout_marginStart="2dp"
+                            android:src="@drawable/iconp_up"/>
+
+
+                    </LinearLayout>
+
+
+                </LinearLayout>
+
 
             </RelativeLayout>
 
