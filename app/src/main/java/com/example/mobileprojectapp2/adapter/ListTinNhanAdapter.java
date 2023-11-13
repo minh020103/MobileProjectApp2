@@ -7,6 +7,7 @@ import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -116,7 +117,7 @@ public class ListTinNhanAdapter extends RecyclerView.Adapter<ListTinNhanAdapter.
     }
 
     protected class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
-        RoundedImageView img_item_message;
+        ImageView img_item_message;
         TextView ten_item_message;
         TextView tinnhanmoinhat_item_message;
         TextView thoigiantinnhan_item_message;
