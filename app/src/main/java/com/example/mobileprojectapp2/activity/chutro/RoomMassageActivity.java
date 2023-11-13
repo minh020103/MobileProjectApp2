@@ -22,6 +22,8 @@ import com.example.mobileprojectapp2.datamodel.ChuTro;
 import com.example.mobileprojectapp2.datamodel.NguoiThue;
 import com.example.mobileprojectapp2.datamodel.TaiKhoan;
 import com.example.mobileprojectapp2.datamodel.TinNhan;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.makeramen.roundedimageview.RoundedImageView;
 
 import java.sql.Timestamp;
@@ -52,6 +54,9 @@ public class RoomMassageActivity extends AppCompatActivity {
     RoundedImageView avt_doiPhuong;
     AppCompatImageView info;
     SharedPreferences sharedPreferences;
+
+    FirebaseDatabase firebaseDatabase;
+    DatabaseReference databaseReference;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,9 +73,12 @@ public class RoomMassageActivity extends AppCompatActivity {
         }else{
             setDuLieu();
         }
-
     }
 
+    private void khoiTaoFireBase(){
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        databaseReference = firebaseDatabase.getReference();
+    }
     @Override
     protected void onResume() {
         super.onResume();
@@ -98,38 +106,6 @@ public class RoomMassageActivity extends AppCompatActivity {
     }
 
 
-    private void handleLienTuc(ArrayList<TinNhan> arrayList){
-        Handler handler = new Handler();
-        final Runnable r = new Runnable() {
-            @Override
-            public void run() {
-                Call<ArrayList<TinNhan>> call = ApiServiceNghiem.apiService.layDanhSachTinNhan(idPhong);
-                call.enqueue(new Callback<ArrayList<TinNhan>>() {
-                    @Override
-                    public void onResponse(Call<ArrayList<TinNhan>> call, Response<ArrayList<TinNhan>> response) {
-                        ArrayList<TinNhan> arrNew = response.body();
-                        if(arrNew.size()>arrayList.size()){
-                            for (int i = arrayList.size()-1;i<arrNew.size(); i++){
-                                arrayList.add(arrNew.get(i));
-                            }
-                            recyclerView.smoothScrollToPosition(arrayList.size()-1);
-                            tinNhanAdapter.notifyDataSetChanged();
-                        }
-
-                    }
-
-                    @Override
-                    public void onFailure(Call<ArrayList<TinNhan>> call, Throwable t) {
-
-                    }
-                });
-
-                handler.postDelayed(this,3000);
-            }
-        };
-        handler.postDelayed(r,3000);
-
-    }
     private void setSuKienGuiTinNhan(){
         sendMess.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -252,7 +228,6 @@ public class RoomMassageActivity extends AppCompatActivity {
                 Glide.with(getApplicationContext()).load(Const.DOMAIN+response.body().getHinh()).into(avt_doiPhuong);
                 tinNhanAdapter.notifyDataSetChanged();
                 setTextName(response.body().getTen());
-
             }
 
             @Override
