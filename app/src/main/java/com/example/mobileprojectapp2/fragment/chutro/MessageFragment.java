@@ -54,7 +54,6 @@ public class MessageFragment extends AbstractFragment{
         khoiTaoFireBase();
         sharedPreferences = getActivity().getSharedPreferences(Const.PRE_LOGIN, Context.MODE_PRIVATE);
         senderId =sharedPreferences.getInt("idTaiKhoan", -1);
-        thongBao(senderId+"");
         arrayList = new ArrayList<>();
         listTinNhanAdapter = new ListTinNhanAdapter(getActivity(),R.layout.cardview_item_message,arrayList, senderId);
         anhXa(fragmentLayout);
@@ -91,7 +90,7 @@ public class MessageFragment extends AbstractFragment{
         databaseReference = firebaseDatabase.getReference();
     }
     private void reloadDuLieu(){
-        databaseReference.child("tinNhan").addValueEventListener(new ValueEventListener() {
+        databaseReference.child("thongBaoReset").child(senderId+"").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                setLaiDuLieu();
@@ -152,6 +151,8 @@ public class MessageFragment extends AbstractFragment{
                     intent.putExtra("trangThai",arrayList.get(position).getTrangThai1());
                 }
                 startActivity(intent);
+
+
             }
         });
         linearLayoutManager = new LinearLayoutManager(getActivity());

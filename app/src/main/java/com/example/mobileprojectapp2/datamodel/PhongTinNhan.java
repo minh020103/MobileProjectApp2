@@ -7,6 +7,28 @@ public class PhongTinNhan {
     private String tinNhanMoiNhat;
     private String thoiGianCuaTinNhan;
     private NguoiThue nguoiThue;
+    private ChuTro chuTro;
+
+    public PhongTinNhan(int id, int idTaiKhoan1, int idTaiKhoan2, String tinNhanMoiNhat, String thoiGianCuaTinNhan, NguoiThue nguoiThue, ChuTro chuTro, int trangThai1, int trangThai2) {
+        this.id = id;
+        this.idTaiKhoan1 = idTaiKhoan1;
+        this.idTaiKhoan2 = idTaiKhoan2;
+        this.tinNhanMoiNhat = tinNhanMoiNhat;
+        this.thoiGianCuaTinNhan = thoiGianCuaTinNhan;
+        this.nguoiThue = nguoiThue;
+        this.chuTro = chuTro;
+        this.trangThai1 = trangThai1;
+        this.trangThai2 = trangThai2;
+    }
+
+    public ChuTro getChuTro() {
+        return chuTro;
+    }
+
+    public void setChuTro(ChuTro chuTro) {
+        this.chuTro = chuTro;
+    }
+
     private int trangThai1;
     private int trangThai2;
 

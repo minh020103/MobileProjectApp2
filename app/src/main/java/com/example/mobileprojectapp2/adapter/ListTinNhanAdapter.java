@@ -83,8 +83,11 @@ public class ListTinNhanAdapter extends RecyclerView.Adapter<ListTinNhanAdapter.
                 holder.thoigiantinnhan_item_message.setText(phongTinNhan.getThoiGianCuaTinNhan());
             }
         }
-        if(phongTinNhan.getNguoiThue()!=null){
-            holder.ten_item_message.setText(phongTinNhan.getNguoiThue().getTen());
+        if(phongTinNhan.getNguoiThue()==null){
+            holder.ten_item_message.setText(phongTinNhan.getChuTro().getTen());
+            Glide.with(activity.getLayoutInflater().getContext()).load(Const.DOMAIN+phongTinNhan.getChuTro().getHinh()).into(holder.img_item_message);
+        }else if(phongTinNhan.getChuTro()==null){
+             holder.ten_item_message.setText(phongTinNhan.getNguoiThue().getTen());
             Glide.with(activity.getLayoutInflater().getContext()).load(Const.DOMAIN+phongTinNhan.getNguoiThue().getHinh()).into(holder.img_item_message);
 
         }

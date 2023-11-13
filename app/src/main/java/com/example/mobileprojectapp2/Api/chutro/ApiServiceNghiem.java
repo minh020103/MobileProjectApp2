@@ -37,14 +37,11 @@ public interface ApiServiceNghiem {
     Call<ChuTro> thongTinChiTietChuTro(@Query("idTaiKhoan") int idTaiKhoan);
     @GET("nguoithue/thongtinchitiet")
     Call<NguoiThue> thongTinChiTietNguoiThue(@Query("idTaiKhoan") int idTaiKhoan);
-
     @Multipart
     @POST("guitinnhan")
     Call<TinNhan> guiTinNhan(@Part("idPhong") int idPhong,
                              @Part("idTaiKhoan") int idTaiKhoan,
                              @Part("noiDung")RequestBody noiDung);
-
-
     @GET("danhsachtinnhantheoidtaikhoan")
     Call<ArrayList<PhongTinNhan>> danhSachTinNhanTheoIdTaiKhoan(@Query("idTaiKhoan") int idTaiKhoan);
 
