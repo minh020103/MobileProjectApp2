@@ -68,7 +68,7 @@ public class ListRoomFragment extends AbstractFragment {
     private LinearLayout llAdd;
     private LinearLayout llSearch;
     private List<PhongTroChuTro> phongTroOfChuTroList;
-    private ProgressBar pbLoadmoreRoom;
+    private ProgressBar pbLoadmoreRoom, pbReLoad;
     private int pageRoom = 1;
     private final int quantityRoom = 5;
     private int pageComment = 1;
@@ -106,6 +106,13 @@ public class ListRoomFragment extends AbstractFragment {
                 if (scrollY == (v.getChildAt(0).getMeasuredHeight() - v.getMeasuredHeight())) {
                     pageRoom++;
                     pbLoadmoreRoom.setVisibility(View.VISIBLE);
+                    getDataFromAPI();
+
+                }
+                if(scrollY == 0){
+                    pageRoom = 1;
+                    pbReLoad.setVisibility(View.VISIBLE);
+                    phongTroOfChuTroList.clear();
                     getDataFromAPI();
 
                 }
@@ -151,6 +158,7 @@ public class ListRoomFragment extends AbstractFragment {
                         phongTroOfChuTroList.addAll(response.body());
                         roomAdapter.notifyDataSetChanged();
                     }
+                    pbReLoad.setVisibility(View.GONE);
                     pbLoadmoreRoom.setVisibility(View.GONE);
                 }
             }
@@ -398,6 +406,7 @@ public class ListRoomFragment extends AbstractFragment {
     private void anhXa(View fragmentLayout) {
         ntsvListRoom = fragmentLayout.findViewById(R.id.ntsvListRoom);
         pbLoadmoreRoom = fragmentLayout.findViewById(R.id.pbLoadmore);
+        pbReLoad = fragmentLayout.findViewById(R.id.pbReLoad);
         llAdd = fragmentLayout.findViewById(R.id.llAdd);
         llSearch = fragmentLayout.findViewById(R.id.llSearch);
         rcvListMotelRoom = fragmentLayout.findViewById(R.id.rcvListMotelRoom);

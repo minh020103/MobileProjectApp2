@@ -129,4 +129,6 @@ public interface ApiServiceMinh {
     );
     @DELETE("api/hinhcuaphong/delete")
     Call<Integer> xoaHinhCuaPhong(@Query("idHinh") int idHinh);
+    @GET("api/thongbao/demthongbaocuataikhoan")
+    Call<Integer> demThongBaoCuaTaiKhoan(@Query("idTaiKhoan") int idTaiKhoan);
 }

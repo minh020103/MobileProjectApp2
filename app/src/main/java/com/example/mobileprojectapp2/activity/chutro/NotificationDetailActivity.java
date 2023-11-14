@@ -3,8 +3,10 @@ package com.example.mobileprojectapp2.activity.chutro;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -14,9 +16,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.mobileprojectapp2.R;
+import com.example.mobileprojectapp2.api.Const;
 import com.example.mobileprojectapp2.api.chutro.ApiServiceKiet;
 import com.example.mobileprojectapp2.datamodel.NguoiThue;
 import com.example.mobileprojectapp2.datamodel.ThongBao;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -27,15 +33,24 @@ public class NotificationDetailActivity extends AppCompatActivity {
     ImageView imgBack;
     Button btnXoaThongBaoChiTiet;
     TextView tvNoiDungThongBaoChiTiet;
+    private int idTaiKhoan;
+    private SharedPreferences sharedPreferences;
     int id;
+    DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.chi_tiet_thong_bao_layout);
-
+        sharedPreferences = this.getSharedPreferences(Const.PRE_LOGIN, Context.MODE_PRIVATE);
+        idTaiKhoan = sharedPreferences.getInt("idTaiKhoan", -1);
         Intent intent = getIntent();
         id = intent.getIntExtra("id", 0);
+        databaseReference.child("notification").child(idTaiKhoan+"").child(id+"").setValue(1).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void unused) {
 
+            }
+        });
         imgBack = findViewById(R.id.imgBack);
         btnXoaThongBaoChiTiet = findViewById(R.id.btnXoaThongBaoChiTiet);
         tvNoiDungThongBaoChiTiet = findViewById(R.id.tvNoiDungThongBaoChiTiet);
