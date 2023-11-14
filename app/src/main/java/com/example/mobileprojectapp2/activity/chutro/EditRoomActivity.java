@@ -22,7 +22,6 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.NetworkOnMainThreadException;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -48,6 +47,7 @@ import com.example.mobileprojectapp2.path.RealPathUtil;
 import com.example.mobileprojectapp2.recyclerviewadapter.chutro.DistrictAdapter;
 import com.example.mobileprojectapp2.recyclerviewadapter.chutro.GenderAdapter;
 import com.example.mobileprojectapp2.recyclerviewadapter.chutro.ImagesAdapter;
+import com.example.mobileprojectapp2.recyclerviewadapter.chutro.ImagesOldAdapter;
 import com.example.mobileprojectapp2.recyclerviewadapter.chutro.LoaiPhongAdapter;
 import com.example.mobileprojectapp2.recyclerviewadapter.chutro.UtilitiesAdapter;
 import com.example.mobileprojectapp2.recyclerviewadapter.chutro.UtilitiesSeletedAdapter;
@@ -55,9 +55,6 @@ import com.example.mobileprojectapp2.recyclerviewadapter.chutro.WardAdapter;
 import com.google.gson.Gson;
 
 import java.io.File;
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -76,7 +73,8 @@ public class EditRoomActivity extends AppCompatActivity {
     //TextView
     private TextView tvChonHinh, tvQuan, tvPhuong, tvXacNhanSua, tvChonTienIch, tvChonGioiTinh, tvChonLoaiPhong;
     //Recycleview
-    private RecyclerView rcvChoosedImages;
+    private RecyclerView rcvChoosedNewImages;
+    private RecyclerView rcvChoosedOldImages;
     private RecyclerView rcvTienIchDaChon;
     private RecyclerView rcvChonTienIch;
     private RecyclerView rcvChonQuan;
@@ -97,12 +95,14 @@ public class EditRoomActivity extends AppCompatActivity {
     private List<Phuong> listPhuong;
     private List<GioiTinh> gioiTinhs;
     private List<Integer> listLoaiPhong;
+    private List<HinhAnh> listHinhAnh;
     //Uri
     private Uri imgUri;
     //Context
     private Context context = EditRoomActivity.this;
 
     //Adapter
+    private ImagesOldAdapter imagesOldAdapter;
     private ImagesAdapter imagesAdapter;
     private UtilitiesAdapter utilitiesAdapter;
     private UtilitiesSeletedAdapter utilitiesSeletedAdapter;
@@ -143,7 +143,8 @@ public class EditRoomActivity extends AppCompatActivity {
         idPhong = intent.getIntExtra("idPhong", -1);
         anhXa();
 
-        rcvChoosedImages = findViewById(R.id.rcvChoosedImages);
+        rcvChoosedOldImages = findViewById(R.id.rcvChoosedOldImages);
+        rcvChoosedNewImages = findViewById(R.id.rcvChoosedNewImages);
 
         // Khởi tạo
         pathList = new LinkedList<>();
@@ -171,8 +172,8 @@ public class EditRoomActivity extends AppCompatActivity {
         layoutManager = new GridLayoutManager(this, 3);
         // adpater seleted images
         imagesAdapter = new ImagesAdapter(this, bitmapList, R.layout.chutro_choose_images_layout);
-        rcvChoosedImages.setLayoutManager(layoutManager);
-        rcvChoosedImages.setAdapter(imagesAdapter);
+        rcvChoosedNewImages.setLayoutManager(layoutManager);
+        rcvChoosedNewImages.setAdapter(imagesAdapter);
         imagesAdapter.setOnCLick(new ImagesAdapter.OnCLick() {
             @Override
             public void delete(int position, View v) {
@@ -205,6 +206,15 @@ public class EditRoomActivity extends AppCompatActivity {
         genderAdapter = new GenderAdapter(EditRoomActivity.this, gioiTinhs, R.layout.chutro_cardview_item_gender_layout);
         // 7 recyclerview loại phòng
         loaiPhongAdapter = new LoaiPhongAdapter(EditRoomActivity.this, listLoaiPhong, R.layout.chutro_cardview_item_loai_phong_layout);
+        // 8 recyclerview hinh anh cu tren database
+        listHinhAnh = new LinkedList<>();
+        imagesOldAdapter = new ImagesOldAdapter(EditRoomActivity.this, R.layout.chutro_choose_images_layout, listHinhAnh);
+        LinearLayoutManager layoutManagerioa = new LinearLayoutManager(this);
+        layoutManagerioa.setOrientation(RecyclerView.HORIZONTAL);
+        layoutManagerioa = new GridLayoutManager(this, 3);
+        rcvChoosedOldImages.setLayoutManager(layoutManagerioa);
+        rcvChoosedOldImages.setAdapter(imagesOldAdapter);
+        
         // get data
         getListTienIch();
         getQuan();
@@ -242,24 +252,28 @@ public class EditRoomActivity extends AppCompatActivity {
                             loaiPhong = phongTro.getLoaiPhong();
                             listTienIchSeleted.addAll(phongTro.getTienIch());
                             utilitiesSeletedAdapter.notifyDataSetChanged();
-                            for (HinhAnh hinhAnh : phongTro.getHinhAnhPhongTro()) {
-                                Glide.with(EditRoomActivity.this)
-                                        .asBitmap()
-                                        .load(Const.DOMAIN + hinhAnh.getHinh())
-                                        .into(new SimpleTarget<Bitmap>() {
-                                                  @Override
-                                                  public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
-                                                      bitmapList.add(resource);
-//                                                      String path = RealPathUtil.getRealPath(context, Uri.parse(Const.DOMAIN+hinhAnh.getHinh()));
-//                                                      pathList.add(path);
-                                                      imagesAdapter.notifyDataSetChanged();
-                                                  }
-                                              }
-                                        );
-                            }
+                            listHinhAnh.addAll(phongTro.getHinhAnhPhongTro());
+                            imagesOldAdapter.notifyDataSetChanged();
 
                         }
-                        imagesAdapter.notifyDataSetChanged();
+                        imagesOldAdapter.setOnCLick(new ImagesAdapter.OnCLick() {
+                            @Override
+                            public void delete(int position, View v) {
+                                ApiServiceMinh.apiService.xoaHinhCuaPhong(listHinhAnh.get(position).getId()).enqueue(new Callback<Integer>() {
+                                    @Override
+                                    public void onResponse(Call<Integer> call, Response<Integer> response) {
+                                        listHinhAnh.remove(listHinhAnh.get(position));
+                                        imagesOldAdapter.notifyDataSetChanged();
+                                        Toast.makeText(EditRoomActivity.this, "Xóa thành công hình trên database", Toast.LENGTH_SHORT).show();
+                                    }
+
+                                    @Override
+                                    public void onFailure(Call<Integer> call, Throwable t) {
+
+                                    }
+                                });
+                            }
+                        });
 
                     }
                 }

@@ -264,8 +264,24 @@
                 android:paddingBottom="5dp"
                 android:textSize="20sp" />
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Hình cũ"
+                android:textStyle="bold"/>
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rcvChoosedImages"
+                android:id="@+id/rcvChoosedOldImages"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Hình mới thêm"
+                android:textStyle="bold"/>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rcvChoosedNewImages"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"/>
