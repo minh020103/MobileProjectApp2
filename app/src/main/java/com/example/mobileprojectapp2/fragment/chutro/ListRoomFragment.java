@@ -280,7 +280,7 @@ public class ListRoomFragment extends AbstractFragment {
         });
     }
 
-    private void showBottomSheetComment(int position, View view) {
+        private void showBottomSheetComment(int position, View view) {
 
         pageComment = 1;
 

@@ -23,6 +23,12 @@ public class GoiDichVuAdapter extends RecyclerView.Adapter<GoiDichVuAdapter.Dich
 
     OnClickItemListener onClickItemListener;
 
+    public GoiDichVuAdapter(Activity activity, List<Goi> list, int layoutID) {
+        this.activity = activity;
+        this.list = list;
+        this.layoutID = layoutID;
+    }
+
     public void setOnClickItemListener(OnClickItemListener onClickItemListener) {
         this.onClickItemListener = onClickItemListener;
     }
@@ -38,8 +44,8 @@ public class GoiDichVuAdapter extends RecyclerView.Adapter<GoiDichVuAdapter.Dich
     @Override
     public void onBindViewHolder(@NonNull DichVuViewHolder holder, int position) {
         Goi data = list.get(position);
-        holder.phong.setText(data.getSoLuongPhongToiDa());
-        holder.ngay.setText(data.getThoiHan());
+        holder.phong.setText(String.valueOf(data.getSoLuongPhongToiDa()+ " Phong"));
+        holder.ngay.setText(String.valueOf(data.getThoiHan() +" Ngay"));
         holder.onClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
