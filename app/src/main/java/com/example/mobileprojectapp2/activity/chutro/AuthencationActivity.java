@@ -32,6 +32,9 @@ import com.example.mobileprojectapp2.R;
 import com.example.mobileprojectapp2.api.Const;
 import com.example.mobileprojectapp2.api.chutro.ApiServicePhuc;
 import com.example.mobileprojectapp2.model.XacThucChuTro;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.io.File;
 import java.io.IOException;
@@ -60,6 +63,7 @@ public class AuthencationActivity extends AppCompatActivity {
     private Uri cccdMT = null;
     private Uri cccdMS = null;
     private int viewID = -1;
+    DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
 
     private ActivityResultLauncher<Intent> mActivityResultLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
@@ -151,6 +155,12 @@ public class AuthencationActivity extends AppCompatActivity {
                     tvNotAuthencation.setVisibility(View.GONE);
                     tvOkAuthencation.setVisibility(View.GONE);
                     btnAcceptYeuCauXacThuc.setVisibility(View.GONE);
+                    databaseReference.child("notification_admin").child(idTaiKhoan+"").setValue(0).addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void unused) {
+                            Log.d(TAG, "onSuccess: PUSH NOTIFICATION REALTIME");
+                        }
+                    });
                 }
 
                 @Override
