@@ -21,6 +21,7 @@ import com.example.mobileprojectapp2.adapter.chutro.ThongBaoAdapter;
 import com.example.mobileprojectapp2.api.Const;
 import com.example.mobileprojectapp2.api.chutro.ApiServiceKiet;
 import com.example.mobileprojectapp2.datamodel.ThongBao;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -60,7 +61,7 @@ public class NotificationFragment extends AbstractFragment{
         recyclerView.setAdapter(thongBaoAdapter);
         list = new ArrayList<>();
 
-        databaseReference.child("notification").addValueEventListener(new ValueEventListener() {
+        databaseReference.child("notification").child(idTaiKhoan+"").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 listThongBaoTheoIdTaiKhoan();

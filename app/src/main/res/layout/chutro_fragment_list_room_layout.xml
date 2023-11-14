@@ -13,9 +13,10 @@
         android:orientation="vertical">
         <androidx.appcompat.widget.Toolbar
             android:layout_width="match_parent"
-            android:layout_height="0.8in"
+            android:layout_height="wrap_content"
             android:layout_marginBottom="1dp"
-            android:background="@color/white">
+            android:background="@color/white"
+            android:paddingBottom="10dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -89,6 +90,13 @@
 
 
         </androidx.appcompat.widget.Toolbar>
+
+        <ProgressBar
+            android:id="@+id/pbReLoad"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_margin="10dp"
+            android:visibility="gone"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rcvListMotelRoom"
