@@ -82,8 +82,8 @@ public class ListRoomFragment extends AbstractFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View fragmentLayout = null;
         fragmentLayout = inflater.inflate(R.layout.chutro_fragment_list_room_layout, container, false);
-        SharedPreferences sharedPreferences = getActivity().getSharedPreferences(Const.PRE_LOGIN, Context.MODE_PRIVATE);
-        idChuTro = sharedPreferences.getInt("idChutro", -1);
+        SharedPreferences sharedPreferences = getContext().getSharedPreferences(Const.PRE_LOGIN, Context.MODE_PRIVATE);
+        idChuTro = sharedPreferences.getInt("idChuTro", -1);
         idTaiKhoan = sharedPreferences.getInt("idTaiKhoan", -1);
         anhXa(fragmentLayout);
         this.container = container;

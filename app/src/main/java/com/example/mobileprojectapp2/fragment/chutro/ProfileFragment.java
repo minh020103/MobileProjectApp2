@@ -48,14 +48,14 @@ public class ProfileFragment extends AbstractFragment {
         anhXa(fragmentLayout);
 
 
-        sharedPreferences = getActivity().getSharedPreferences(Const.PRE_LOGIN,Context.MODE_PRIVATE);
+        sharedPreferences = getActivity().getSharedPreferences(Const.PRE_LOGIN, Context.MODE_PRIVATE);
         idTaiKhoan = sharedPreferences.getInt("idTaiKhoan", -1);
 
         getDataFromApi();
         btnEditProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(),EditProfileActivity.class);
+                Intent intent = new Intent(getActivity(), EditProfileActivity.class);
                 intent.putExtra("idTaiKhoan", -1);
 
                 startActivity(intent);
@@ -84,7 +84,8 @@ public class ProfileFragment extends AbstractFragment {
         call.enqueue(new Callback<ChuTro>() {
             @Override
             public void onResponse(Call<ChuTro> call, Response<ChuTro> response) {
-                Glide.with(ProfileFragment.this.getLayoutInflater().getContext()).load(Const.DOMAIN + response.body().getHinh()).into(imgViewProfile);
+                if (response.body().getHinh() != null)
+                    Glide.with(ProfileFragment.this.getLayoutInflater().getContext()).load(Const.DOMAIN + response.body().getHinh()).into(imgViewProfile);
 
                 tvPhone.setText(response.body().getSoDienThoai());
                 tvName.setText(response.body().getTen());
