@@ -56,7 +56,7 @@ public class ProfileFragment extends AbstractFragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(),EditProfileActivity.class);
-                intent.putExtra("idTaiKhoan", 2);
+                intent.putExtra("idTaiKhoan", -1);
 
                 startActivity(intent);
             }
