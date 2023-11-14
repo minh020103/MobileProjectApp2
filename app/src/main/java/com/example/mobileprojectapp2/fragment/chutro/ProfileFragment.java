@@ -18,6 +18,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatButton;
 
 import com.bumptech.glide.Glide;
+import com.example.mobileprojectapp2.activity.loginregister.LoginActivity;
 import com.example.mobileprojectapp2.api.chutro.ApiServicePhuc;
 import com.example.mobileprojectapp2.api.Const;
 import com.example.mobileprojectapp2.R;
@@ -72,6 +73,18 @@ public class ProfileFragment extends AbstractFragment {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(getActivity(), AuthencationActivity.class));
+            }
+        });
+
+        btnLogout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sharedPreferences = getContext().getSharedPreferences("SharedPreferencesLogin", Context.MODE_PRIVATE);
+                sharedPreferences.edit().remove("idTaiKhoan").commit();
+                sharedPreferences.edit().remove("idChuTro").commit();
+                sharedPreferences.edit().remove("trangThaiXacThuc").commit();
+
+                startActivity(new Intent(getActivity(), LoginActivity.class));
             }
         });
 
