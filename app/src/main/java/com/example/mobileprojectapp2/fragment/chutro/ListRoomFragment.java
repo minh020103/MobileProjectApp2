@@ -1,7 +1,9 @@
 package com.example.mobileprojectapp2.fragment.chutro;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -27,6 +29,7 @@ import com.example.mobileprojectapp2.activity.chutro.EditRoomActivity;
 import com.example.mobileprojectapp2.activity.chutro.MotelRoomOwnerActivity;
 import com.example.mobileprojectapp2.activity.chutro.RenterListActivity;
 import com.example.mobileprojectapp2.activity.chutro.SearchActivity;
+import com.example.mobileprojectapp2.api.Const;
 import com.example.mobileprojectapp2.api.chutro.ApiServiceMinh;
 import com.example.mobileprojectapp2.datamodel.Comment;
 import com.example.mobileprojectapp2.datamodel.PhongBinhLuan;
@@ -52,8 +55,8 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class ListRoomFragment extends AbstractFragment {
-    private final int idChuTro = 2;
-    private final int idTaiKhoan = 3;
+    private int idChuTro;
+    private int idTaiKhoan;
     private NestedScrollView ntsvListRoom;
     private RecyclerView rcvListMotelRoom;
     private LinearLayoutManager layoutManager;
@@ -79,6 +82,9 @@ public class ListRoomFragment extends AbstractFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View fragmentLayout = null;
         fragmentLayout = inflater.inflate(R.layout.chutro_fragment_list_room_layout, container, false);
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences(Const.PRE_LOGIN, Context.MODE_PRIVATE);
+        idChuTro = sharedPreferences.getInt("idChutro", -1);
+        idTaiKhoan = sharedPreferences.getInt("idTaiKhoan", -1);
         anhXa(fragmentLayout);
         this.container = container;
         getDataFromAPI();
