@@ -127,4 +127,6 @@ public interface ApiServiceMinh {
     Call<PhongTro> layChiTietPhongTro(
             @Query("id") int idPhong
     );
+    @DELETE("api/hinhcuaphong/delete")
+    Call<Integer> xoaHinhCuaPhong(@Query("idHinh") int idHinh);
 }
