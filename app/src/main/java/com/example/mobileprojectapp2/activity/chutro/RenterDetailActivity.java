@@ -79,7 +79,8 @@ public class RenterDetailActivity extends AppCompatActivity {
                                     phong.enqueue(new Callback<Integer>() {
                                         @Override
                                         public void onResponse(Call<Integer> call, Response<Integer> response) {
-                                            thietLapIntent(nguoiThue.getIdTaiKhoan(),response.body());
+
+                                            thietLapIntent(response.body());
                                         }
 
                                         @Override
@@ -95,7 +96,8 @@ public class RenterDetailActivity extends AppCompatActivity {
                                 }
                             });
                         }else{
-                            thietLapIntent(nguoiThue.getIdTaiKhoan(),response.body());
+
+                            thietLapIntent(response.body());
                         }
                     }
                     @Override
@@ -123,24 +125,16 @@ public class RenterDetailActivity extends AppCompatActivity {
             }
         });
     }
-    private void layIntent(int idDoiPhuong, int idPhong, String ten, String hinh){
+    private void layIntent( int idPhong){
         Intent intent = new Intent(RenterDetailActivity.this,PhongNhanTinActivity.class);
-        intent.putExtra("idDoiPhuong",idDoiPhuong);
+        intent.putExtra("idDoiPhuong",nguoiThue.getIdTaiKhoan());
         intent.putExtra("idPhong",idPhong);
-        intent.putExtra("ten",ten);
-        intent.putExtra("hinh",hinh);
+        intent.putExtra("ten",nguoiThue.getTen());
+        intent.putExtra("hinh",nguoiThue.getHinh());
         startActivity(intent);
     }
-    private void thietLapIntent(int idDoiPhuong, int phong){
-        ApiServiceKiet.apiServiceKiet.getChiTietNguoiThueTheoIdPhong(idDoiPhuong).enqueue(new Callback<NguoiThue>() {
-            @Override
-            public void onResponse(Call<NguoiThue> call, Response<NguoiThue> response) {
-                layIntent(response.body().getIdTaiKhoan(),phong,response.body().getTen(),response.body().getHinh());
-            }
-            @Override
-            public void onFailure(Call<NguoiThue> call, Throwable t) {
-            }
-        });
+    private void thietLapIntent(int phong){
+        layIntent(phong);
     }
     private void thongBao(String mes){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
