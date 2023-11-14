@@ -273,7 +273,6 @@ public class ListRoomFragment extends AbstractFragment {
                     public void layDanhGia(int rating) {
                         // được ủy quyền ra ngoài để lấy lượng đánh giá
                         Log.d("TAG", "setOnClickRating: " + rating);
-                        // TODO: làm đánh giá
                         ApiServiceMinh.apiService.danhGiaChoPhong(idTaiKhoan, phongTroOfChuTroList.get(position).getIdPhongTro(), rating).enqueue(new Callback<Integer>() {
                             @Override
                             public void onResponse(Call<Integer> call, Response<Integer> response) {
@@ -303,7 +302,7 @@ public class ListRoomFragment extends AbstractFragment {
         BottomSheetDialog bottomSheetComment = new BottomSheetDialog(getActivity(), R.style.BottomSheetDialogTheme);
         bottomSheetComment.setContentView(viewBottomSheetCommnent);
 
-        databaseReference.child("comment").addValueEventListener(new ValueEventListener() {
+        databaseReference.child("comment").child(phongTroOfChuTroList.get(position).getIdPhongTro()+"").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 getCommentFromAPI(position);
@@ -324,16 +323,16 @@ public class ListRoomFragment extends AbstractFragment {
         imgSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                edtComment.onEditorAction(EditorInfo.IME_ACTION_DONE);
                 if (edtComment.length() > 0 && edtComment.length() <= 255) {
                     ApiServiceMinh.apiService.themBinhLuanChoPhong(phongTroOfChuTroList.get(position).getIdPhongTro(), idTaiKhoan, edtComment.getText().toString().trim()).enqueue(new Callback<PhongBinhLuan>() {
                         @Override
                         public void onResponse(Call<PhongBinhLuan> call, Response<PhongBinhLuan> response) {
                             if (response.code() == 201) {
                                 edtComment.setText("");
-                                edtComment.onEditorAction(EditorInfo.IME_ACTION_DONE);
                                 listComment.addFirst(response.body());
                                 commentAdapter.notifyDataSetChanged();
-                                databaseReference.child("comment").child(response.body().getId()+"").setValue(response.body().getId()).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                databaseReference.child("comment").child(phongTroOfChuTroList.get(position).getIdPhongTro()+"").child(response.body().getId()+"").setValue(response.body().getId()).addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
                                     public void onSuccess(Void unused) {
                                         Log.d("TAG", "onDataChange: NEW OK");
@@ -353,7 +352,7 @@ public class ListRoomFragment extends AbstractFragment {
                         }
                     });
                 } else {
-                    Toast.makeText(getContext(), "Bình luận tối đa 255 ký tự", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Bình luận tối đa 255 ký tự và phải nhập dữ liệu", Toast.LENGTH_SHORT).show();
                 }
             }
         });

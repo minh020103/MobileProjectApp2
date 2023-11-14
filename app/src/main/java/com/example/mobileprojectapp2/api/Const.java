@@ -1,7 +1,7 @@
 package com.example.mobileprojectapp2.api;
 
 public class Const {
-    public static String DOMAIN = "http://192.168.177.1/3t/laravel/public/";
+    public static String DOMAIN = "http://192.168.1.127/3t/laravel/public/";
     public static final String PRE_LOGIN = "SharedPreferencesLogin";
 	//Giới tính
     public static final int ALL_GENDERS = 0;
