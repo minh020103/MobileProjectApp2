@@ -14,6 +14,7 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -58,7 +59,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class AddRoomActivity extends AppCompatActivity {
-    private final int idChuTro = 2;
+    private int idChuTro;
     //EditText
     private EditText edtSoPhong, edtGia, edtDienTich, edtMota, edtDiaChiChiTiet, edtTienDien, edtTienNuoc, edtSoLuongToiDa, edtTienCoc;
     //TextView
@@ -116,6 +117,8 @@ public class AddRoomActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.chutro_add_room_layout);
+        SharedPreferences sharedPreferences = this.getSharedPreferences(Const.PRE_LOGIN, Context.MODE_PRIVATE);
+        idChuTro = sharedPreferences.getInt("idChuTro", -1);
         anhXa();
         imgBack = findViewById(R.id.imgBack);
         rcvChoosedImages = findViewById(R.id.rcvChoosedImages);
