@@ -20,6 +20,7 @@ import com.example.mobileprojectapp2.api.chutro.ApiServiceKiet;
 import com.example.mobileprojectapp2.api.chutro.ApiServiceNghiem;
 import com.example.mobileprojectapp2.datamodel.NguoiThue;
 import com.example.mobileprojectapp2.datamodel.PhongTinNhan;
+import com.example.mobileprojectapp2.datamodel.TaiKhoan;
 
 import java.util.List;
 
@@ -122,13 +123,25 @@ public class RenterDetailActivity extends AppCompatActivity {
             }
         });
     }
-    private void thietLapIntent(int idDoiPhuong, int phong){
-        Intent intent = new Intent(RenterDetailActivity.this,RoomMassageActivity.class);
-        intent.putExtra("key",idDoiPhuong);
-        intent.putExtra("phong",phong);
+    private void layIntent(int idDoiPhuong, int idPhong, String ten, String hinh){
+        Intent intent = new Intent(RenterDetailActivity.this,PhongNhanTinActivity.class);
+        intent.putExtra("idDoiPhuong",idDoiPhuong);
+        intent.putExtra("idPhong",idPhong);
+        intent.putExtra("ten",ten);
+        intent.putExtra("hinh",hinh);
         startActivity(intent);
     }
-
+    private void thietLapIntent(int idDoiPhuong, int phong){
+        ApiServiceKiet.apiServiceKiet.getChiTietNguoiThueTheoIdPhong(idDoiPhuong).enqueue(new Callback<NguoiThue>() {
+            @Override
+            public void onResponse(Call<NguoiThue> call, Response<NguoiThue> response) {
+                layIntent(response.body().getIdTaiKhoan(),phong,response.body().getTen(),response.body().getHinh());
+            }
+            @Override
+            public void onFailure(Call<NguoiThue> call, Throwable t) {
+            }
+        });
+    }
     private void thongBao(String mes){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage(mes).setPositiveButton("OK", new DialogInterface.OnClickListener() {
@@ -158,6 +171,8 @@ public class RenterDetailActivity extends AppCompatActivity {
                 {
                     tvGioiTinhNguoiThueChiTiet.setText("Nam");
                 }
+
+
             }
             @Override
             public void onFailure(Call<NguoiThue> call, Throwable t) {

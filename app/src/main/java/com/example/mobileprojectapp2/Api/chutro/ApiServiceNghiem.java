@@ -86,4 +86,6 @@ public interface ApiServiceNghiem {
                                          @Part("idTaiKhoan2")RequestBody idTaiKhoan2
                                          );
 
+    @GET("layanhvatendoiphuong")
+    Call<TaiKhoan> callThongTinDoiPhuong(@Query("idSender") int idSender,@Query("idPhong") int idPhong,@Query("idDoiPhuong") int idDoiPhuong   );
 }
