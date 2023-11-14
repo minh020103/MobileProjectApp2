@@ -228,6 +228,8 @@ public class PhongNhanTinActivity extends AppCompatActivity {
                         tinNhanAdapter.notifyDataSetChanged();
                         setSuKienGuiTinNhan();
                         scrollLastPotition();
+                    }else{
+                        setSuKienGuiTinNhan();
                     }
                 }else{
                     thongBao("Error");
