@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -33,6 +34,7 @@ public class LoginFragment extends AbstractFragment{
     Button dangNhap;
     Float v = 0.0f;
     SharedPreferences sharedPreferences;
+    ProgressBar progressBar;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -50,11 +52,13 @@ public class LoginFragment extends AbstractFragment{
             @Override
             public void onClick(View view) {
 
+                batTatProgessBar(0);
                 if(kiemTraRong()){
                     String ten = tenTaiKhoan.getText().toString();
                     String mk = matKhau.getText().toString();
                     kiemTraDangNhap(ten, mk);
                 }else{
+                    batTatProgessBar(1);
                     thongBao("Không Được Để Trống!");
                 }
             }
@@ -92,9 +96,11 @@ public class LoginFragment extends AbstractFragment{
                 if(response.body().getLoaiTaiKhoan()==1){
                     sharedPreferences.edit().putInt("idChuTro", response.body().getNguoiDangNhap().getId()).commit();
                     sharedPreferences.edit().putInt("trangThaiXacThuc", response.body().getNguoiDangNhap().getXacThuc()).commit();
+                    batTatProgessBar(1);
                     Intent intent = new Intent(getContext(), MotelRoomOwnerActivity.class);
                     startActivity(intent);
                 }else{
+                    batTatProgessBar(1);
                     thongBao("Đây là Tài khoản người thuê");
                 }
 
@@ -102,6 +108,7 @@ public class LoginFragment extends AbstractFragment{
 
             @Override
             public void onFailure(Call<TaiKhoan> call, Throwable t) {
+                batTatProgessBar(1);
                 thongBao("Tài Khoản Hoặc Mật Khẩu Không Đúng!");
             }
         });
@@ -137,10 +144,18 @@ public class LoginFragment extends AbstractFragment{
         quenMatKhau.animate().translationX(0).alpha(1).setDuration(800).setStartDelay(500).start();
         dangNhap.animate().translationX(0).alpha(1).setDuration(800).setStartDelay(700).start();
     }
+    private void batTatProgessBar(int kt){
+        if(kt ==0 ){
+            progressBar.setVisibility(View.VISIBLE);
+        }else if(kt==1){
+            progressBar.setVisibility(View.INVISIBLE);
+        }
+    }
     private void anhXa(View fragment){
         tenTaiKhoan = fragment.findViewById(R.id.tenTaiKhoan);
         matKhau = fragment.findViewById(R.id.matKhau);
         quenMatKhau = fragment.findViewById(R.id.quenMatKhau);
         dangNhap = fragment.findViewById(R.id.dangNhap);
+        progressBar = fragment.findViewById(R.id.progessbar);
     }
 }

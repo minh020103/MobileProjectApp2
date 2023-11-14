@@ -12,6 +12,7 @@ import com.example.mobileprojectapp2.fragment.chutro.MessageFragment;
 import com.example.mobileprojectapp2.fragment.chutro.NotificationFragment;
 import com.example.mobileprojectapp2.fragment.chutro.PackageUsingFragment;
 import com.example.mobileprojectapp2.fragment.chutro.ProfileFragment;
+import com.example.mobileprojectapp2.fragment.chutro.TinNhanFragment;
 
 public class MotelRoomOwnerViewPager2Adapter extends FragmentStateAdapter {
 
@@ -58,7 +59,7 @@ public class MotelRoomOwnerViewPager2Adapter extends FragmentStateAdapter {
                     fragment = new NotificationFragment();
                     break;
                 case MESSAGE:
-                    fragment = new MessageFragment();
+                    fragment = new TinNhanFragment();
                     break;
                 case PROFILE:
                     fragment = new ProfileFragment();

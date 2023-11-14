@@ -20,6 +20,7 @@ import com.example.mobileprojectapp2.api.chutro.ApiServiceKiet;
 import com.example.mobileprojectapp2.api.chutro.ApiServiceNghiem;
 import com.example.mobileprojectapp2.datamodel.NguoiThue;
 import com.example.mobileprojectapp2.datamodel.PhongTinNhan;
+import com.example.mobileprojectapp2.datamodel.TaiKhoan;
 
 import java.util.List;
 
@@ -78,7 +79,8 @@ public class RenterDetailActivity extends AppCompatActivity {
                                     phong.enqueue(new Callback<Integer>() {
                                         @Override
                                         public void onResponse(Call<Integer> call, Response<Integer> response) {
-                                            thietLapIntent(nguoiThue.getIdTaiKhoan(),response.body());
+
+                                            thietLapIntent(response.body());
                                         }
 
                                         @Override
@@ -94,7 +96,8 @@ public class RenterDetailActivity extends AppCompatActivity {
                                 }
                             });
                         }else{
-                            thietLapIntent(nguoiThue.getIdTaiKhoan(),response.body());
+
+                            thietLapIntent(response.body());
                         }
                     }
                     @Override
@@ -122,13 +125,17 @@ public class RenterDetailActivity extends AppCompatActivity {
             }
         });
     }
-    private void thietLapIntent(int idDoiPhuong, int phong){
-        Intent intent = new Intent(RenterDetailActivity.this,RoomMassageActivity.class);
-        intent.putExtra("key",idDoiPhuong);
-        intent.putExtra("phong",phong);
+    private void layIntent( int idPhong){
+        Intent intent = new Intent(RenterDetailActivity.this,PhongNhanTinActivity.class);
+        intent.putExtra("idDoiPhuong",nguoiThue.getIdTaiKhoan());
+        intent.putExtra("idPhong",idPhong);
+        intent.putExtra("ten",nguoiThue.getTen());
+        intent.putExtra("hinh",nguoiThue.getHinh());
         startActivity(intent);
     }
-
+    private void thietLapIntent(int phong){
+        layIntent(phong);
+    }
     private void thongBao(String mes){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage(mes).setPositiveButton("OK", new DialogInterface.OnClickListener() {
@@ -158,6 +165,8 @@ public class RenterDetailActivity extends AppCompatActivity {
                 {
                     tvGioiTinhNguoiThueChiTiet.setText("Nam");
                 }
+
+
             }
             @Override
             public void onFailure(Call<NguoiThue> call, Throwable t) {

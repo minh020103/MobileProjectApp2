@@ -56,8 +56,6 @@ public class ListTinNhanAdapter extends RecyclerView.Adapter<ListTinNhanAdapter.
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         PhongTinNhan phongTinNhan = arrayList.get(position);
         ///Truy xuất tài khoản thông qua id ở đây
-
-
         if(senderId==phongTinNhan.getIdTaiKhoan1()){
             if(phongTinNhan.getTrangThai1()==0){
                 holder.tinnhanmoinhat_item_message.setTypeface(holder.tinnhanmoinhat_item_message.getTypeface(), Typeface.BOLD);
