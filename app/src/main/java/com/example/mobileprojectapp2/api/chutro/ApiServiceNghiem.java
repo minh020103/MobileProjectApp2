@@ -21,7 +21,7 @@ import retrofit2.http.Query;
 
 public interface ApiServiceNghiem {
 
-    String http = "http://192.168.1.11/3t/laravel/public/api/";
+    String http = "http://192.168.1.41/3t/laravel/public/api/";
     ApiServiceNghiem apiService =new Retrofit.Builder()
             .baseUrl(http)
             .addConverterFactory(GsonConverterFactory.create())
