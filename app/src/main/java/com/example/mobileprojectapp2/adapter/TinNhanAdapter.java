@@ -95,7 +95,7 @@ public class TinNhanAdapter extends RecyclerView.Adapter<TinNhanAdapter.MyViewHo
 
         TextView thoiGian;
         TextView textMessage;
-        RoundedImageView roundedImageView;
+        ImageView roundedImageView;
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             thoiGian = itemView.findViewById(R.id.thoiGian);

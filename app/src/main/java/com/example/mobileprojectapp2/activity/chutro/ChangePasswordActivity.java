@@ -4,13 +4,17 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import com.example.mobileprojectapp2.api.Const;
 import com.example.mobileprojectapp2.api.chutro.ApiServicePhuc;
 import com.example.mobileprojectapp2.R;
 
@@ -24,12 +28,17 @@ public class ChangePasswordActivity extends AppCompatActivity {
 
     private AppCompatButton btnCancel;
     private Button btnAcceptChangePass;
+    private SharedPreferences sharedPreferences;
+    private int idTaiKhoan;
 
+    private Handler handler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.change_password_layout);
+        sharedPreferences = ChangePasswordActivity.this.getSharedPreferences(Const.PRE_LOGIN, Context.MODE_PRIVATE);
+        idTaiKhoan = sharedPreferences.getInt("idTaiKhoan", -1);
         anhXa();
 
 
@@ -60,35 +69,44 @@ public class ChangePasswordActivity extends AppCompatActivity {
     private void doiMatKhau() {
         if (checklength(edtPassNow, edtPassNew, edtPassConfirm)) {
 
-            Call call = ApiServicePhuc.apiService.changePassWord(5, edtPassNow.getText().toString(), edtPassNew.getText().toString());
-            call.enqueue(new Callback() {
-                @Override
-                public void onResponse(Call call, Response response) {
-                    int intResponse = Integer.parseInt(response.body().toString());
-                    if (intResponse == 0) {
+            if (edtPassNew.getText().toString().equals(edtPassConfirm.getText().toString())){
+                Call call = ApiServicePhuc.apiService.changePassWord(idTaiKhoan, edtPassNow.getText().toString(), edtPassNew.getText().toString());
+                call.enqueue(new Callback() {
+                    @Override
+                    public void onResponse(Call call, Response response) {
+                        int intResponse = Integer.parseInt(response.body().toString());
+                        if (intResponse == 0 ){
                         alertFail("Mật khẩu hiện tại sai");
                         edtPassNow.setText("");
                         edtPassNew.setText("");
                         edtPassConfirm.setText("");
-                    } else if (edtPassNew.getText().toString().equals(edtPassConfirm.getText().toString())) {
-                        alertSuccess("Cập nhật Thành Công");
+                        }else {
+                            alertSuccess("Cập nhật Thành Công");
                         edtPassNow.setText("");
                         edtPassNew.setText("");
                         edtPassConfirm.setText("");
-                    } else {
-                        alertFail("Nhập lại mật khẩu không đúng");
-                        edtPassNow.setText("");
-                        edtPassNew.setText("");
-                        edtPassConfirm.setText("");
+                        handler = new Handler();
+                        handler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                handler.postDelayed(this, 2000);
+                                finish();
+                            }
+                        }, 2000);
+                        }
                     }
-                }
+                    @Override
+                    public void onFailure(Call call, Throwable t) {
 
-                @Override
-                public void onFailure(Call call, Throwable t) {
-                    alertFail("Không call được api");
-                }
-            });
-
+                    }
+                });
+            }
+            else {
+                alertFail("Nhập lại mật khẩu không đúng");
+                edtPassNow.setText("");
+                edtPassNew.setText("");
+                edtPassConfirm.setText("");
+            }
         } else {
             alertFail("Mật khẩu tối thiểu 6 chữ số");
             edtPassNow.setText("");

@@ -7,6 +7,7 @@ import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -55,8 +56,6 @@ public class ListTinNhanAdapter extends RecyclerView.Adapter<ListTinNhanAdapter.
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         PhongTinNhan phongTinNhan = arrayList.get(position);
         ///Truy xuất tài khoản thông qua id ở đây
-
-
         if(senderId==phongTinNhan.getIdTaiKhoan1()){
             if(phongTinNhan.getTrangThai1()==0){
                 holder.tinnhanmoinhat_item_message.setTypeface(holder.tinnhanmoinhat_item_message.getTypeface(), Typeface.BOLD);
@@ -83,8 +82,11 @@ public class ListTinNhanAdapter extends RecyclerView.Adapter<ListTinNhanAdapter.
                 holder.thoigiantinnhan_item_message.setText(phongTinNhan.getThoiGianCuaTinNhan());
             }
         }
-        if(phongTinNhan.getNguoiThue()!=null){
-            holder.ten_item_message.setText(phongTinNhan.getNguoiThue().getTen());
+        if(phongTinNhan.getNguoiThue()==null){
+            holder.ten_item_message.setText(phongTinNhan.getChuTro().getTen());
+            Glide.with(activity.getLayoutInflater().getContext()).load(Const.DOMAIN+phongTinNhan.getChuTro().getHinh()).into(holder.img_item_message);
+        }else if(phongTinNhan.getChuTro()==null){
+             holder.ten_item_message.setText(phongTinNhan.getNguoiThue().getTen());
             Glide.with(activity.getLayoutInflater().getContext()).load(Const.DOMAIN+phongTinNhan.getNguoiThue().getHinh()).into(holder.img_item_message);
 
         }
@@ -113,7 +115,7 @@ public class ListTinNhanAdapter extends RecyclerView.Adapter<ListTinNhanAdapter.
     }
 
     protected class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
-        RoundedImageView img_item_message;
+        ImageView img_item_message;
         TextView ten_item_message;
         TextView tinnhanmoinhat_item_message;
         TextView thoigiantinnhan_item_message;

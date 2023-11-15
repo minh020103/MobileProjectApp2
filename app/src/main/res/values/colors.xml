@@ -25,6 +25,16 @@
     <color name="text_thongbao_chuaxem">#FF2B2B</color>
     <color name="text_thongbao_daxem">#353535</color>
 
+ <color name="xanh_la">#5D7B6F</color>
+    <color name="hong">#FBA2D0</color>
+    <color name="xanhduong">#92B9E3</color>
+    <color name="vang">#E78A02</color>
 
+
+    <color name="xanh1">#70d0dc</color>
+    <color name="xanh2">#aaeaf3</color>
+    <color name="xanh3">#a1b8c5</color>
+    <color name="text_gray2">#E4E3E3</color>
+    <color name="up_down">#039BE5</color>
 
 </resources>

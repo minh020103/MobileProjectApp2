@@ -1,6 +1,8 @@
 package com.example.mobileprojectapp2.datamodel;
 
-public class HinhAnh {
+import java.io.Serializable;
+
+public class HinhAnh implements Serializable {
     private int id;
     private int idPhong;
     private String hinh;

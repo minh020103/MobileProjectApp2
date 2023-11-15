@@ -1,8 +1,10 @@
 package com.example.mobileprojectapp2.fragment.chutro;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -35,7 +37,8 @@ public class ProfileFragment extends AbstractFragment {
     private RoundedImageView imgViewProfile;
     private TextView tvName, tvPhone;
     private AppCompatButton btnEditProfile, btnChangePassWord, btnAuthencation, btnLogout;
-    private int id;
+    private int idTaiKhoan;
+    private SharedPreferences sharedPreferences;
 
     @Nullable
     @Override
@@ -43,12 +46,18 @@ public class ProfileFragment extends AbstractFragment {
         View fragmentLayout = null;
         fragmentLayout = inflater.inflate(R.layout.chutro_fragment_profile_layout, container, false);
         anhXa(fragmentLayout);
+
+
+        sharedPreferences = getActivity().getSharedPreferences(Const.PRE_LOGIN, Context.MODE_PRIVATE);
+        idTaiKhoan = sharedPreferences.getInt("idTaiKhoan", -1);
+
         getDataFromApi();
         btnEditProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(),EditProfileActivity.class);
-                intent.putExtra("idTaiKhoan", 5);
+                Intent intent = new Intent(getActivity(), EditProfileActivity.class);
+                intent.putExtra("idTaiKhoan", -1);
+
                 startActivity(intent);
             }
         });
@@ -70,13 +79,13 @@ public class ProfileFragment extends AbstractFragment {
     }
 
     private void getDataFromApi() {
-        Call<ChuTro> call = ApiServicePhuc.apiService.getChuTroById(5);
+        Call<ChuTro> call = ApiServicePhuc.apiService.getChuTroById(idTaiKhoan);
 
         call.enqueue(new Callback<ChuTro>() {
             @Override
             public void onResponse(Call<ChuTro> call, Response<ChuTro> response) {
-                Log.d("TAG", "onResponse: "+Const.DOMAIN + response.body().getHinh());
-                Glide.with(ProfileFragment.this.getLayoutInflater().getContext()).load(Const.DOMAIN + response.body().getHinh()).into(imgViewProfile);
+                if (response.body().getHinh() != null)
+                    Glide.with(ProfileFragment.this.getLayoutInflater().getContext()).load(Const.DOMAIN + response.body().getHinh()).into(imgViewProfile);
 
                 tvPhone.setText(response.body().getSoDienThoai());
                 tvName.setText(response.body().getTen());

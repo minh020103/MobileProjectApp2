@@ -21,6 +21,12 @@
             android:name=".activity.chutro.ThanhToanGoiActivity"
             android:exported="false" />
         <activity
+            android:name=".activity.chutro.DetailPhongTro"
+            android:exported="false" />
+        <activity
+            android:name=".activity.chutro.SearchActivity"
+            android:exported="false" />
+        <activity
             android:name=".activity.chutro.EditRoomActivity"
             android:exported="false">
             <meta-data
@@ -85,6 +91,10 @@
             android:exported="false" />
         <activity
             android:name=".activity.chutro.RoomMassageActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".activity.chutro.PhongNhanTinActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
     </application>

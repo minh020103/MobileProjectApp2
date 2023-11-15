@@ -1,7 +1,9 @@
 package com.example.mobileprojectapp2.fragment.chutro;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -26,6 +28,8 @@ import com.example.mobileprojectapp2.activity.chutro.AddRoomActivity;
 import com.example.mobileprojectapp2.activity.chutro.EditRoomActivity;
 import com.example.mobileprojectapp2.activity.chutro.MotelRoomOwnerActivity;
 import com.example.mobileprojectapp2.activity.chutro.RenterListActivity;
+import com.example.mobileprojectapp2.activity.chutro.SearchActivity;
+import com.example.mobileprojectapp2.api.Const;
 import com.example.mobileprojectapp2.api.chutro.ApiServiceMinh;
 import com.example.mobileprojectapp2.datamodel.Comment;
 import com.example.mobileprojectapp2.datamodel.PhongBinhLuan;
@@ -51,8 +55,8 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class ListRoomFragment extends AbstractFragment {
-    private final int idChuTro = 2;
-    private final int idTaiKhoan = 3;
+    private int idChuTro;
+    private int idTaiKhoan;
     private NestedScrollView ntsvListRoom;
     private RecyclerView rcvListMotelRoom;
     private LinearLayoutManager layoutManager;
@@ -62,8 +66,9 @@ public class ListRoomFragment extends AbstractFragment {
     private LinkedList<PhongBinhLuan> listComment;
     private ViewGroup container;
     private LinearLayout llAdd;
+    private LinearLayout llSearch;
     private List<PhongTroChuTro> phongTroOfChuTroList;
-    private ProgressBar pbLoadmoreRoom;
+    private ProgressBar pbLoadmoreRoom, pbReLoad;
     private int pageRoom = 1;
     private final int quantityRoom = 5;
     private int pageComment = 1;
@@ -77,6 +82,9 @@ public class ListRoomFragment extends AbstractFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View fragmentLayout = null;
         fragmentLayout = inflater.inflate(R.layout.chutro_fragment_list_room_layout, container, false);
+        SharedPreferences sharedPreferences = getContext().getSharedPreferences(Const.PRE_LOGIN, Context.MODE_PRIVATE);
+        idChuTro = sharedPreferences.getInt("idChuTro", -1);
+        idTaiKhoan = sharedPreferences.getInt("idTaiKhoan", -1);
         anhXa(fragmentLayout);
         this.container = container;
         getDataFromAPI();
@@ -101,6 +109,13 @@ public class ListRoomFragment extends AbstractFragment {
                     getDataFromAPI();
 
                 }
+                if(scrollY == 0){
+                    pageRoom = 1;
+                    pbReLoad.setVisibility(View.VISIBLE);
+                    phongTroOfChuTroList.clear();
+                    getDataFromAPI();
+
+                }
             }
         });
     }
@@ -111,6 +126,12 @@ public class ListRoomFragment extends AbstractFragment {
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), AddRoomActivity.class);
                 startActivity(intent);
+            }
+        });
+         llSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getActivity(), SearchActivity.class));
             }
         });
     }
@@ -137,6 +158,7 @@ public class ListRoomFragment extends AbstractFragment {
                         phongTroOfChuTroList.addAll(response.body());
                         roomAdapter.notifyDataSetChanged();
                     }
+                    pbReLoad.setVisibility(View.GONE);
                     pbLoadmoreRoom.setVisibility(View.GONE);
                 }
             }
@@ -161,6 +183,7 @@ public class ListRoomFragment extends AbstractFragment {
             @Override
             public void setOnClickEdit(int position, View view) {
                 Intent intent = new Intent(getActivity(), EditRoomActivity.class);
+                intent.putExtra("idPhong", phongTroOfChuTroList.get(position).getIdPhongTro());
                 startActivity(intent);
             }
 
@@ -258,7 +281,6 @@ public class ListRoomFragment extends AbstractFragment {
                     public void layDanhGia(int rating) {
                         // được ủy quyền ra ngoài để lấy lượng đánh giá
                         Log.d("TAG", "setOnClickRating: " + rating);
-                        // TODO: làm đánh giá
                         ApiServiceMinh.apiService.danhGiaChoPhong(idTaiKhoan, phongTroOfChuTroList.get(position).getIdPhongTro(), rating).enqueue(new Callback<Integer>() {
                             @Override
                             public void onResponse(Call<Integer> call, Response<Integer> response) {
@@ -288,7 +310,7 @@ public class ListRoomFragment extends AbstractFragment {
         BottomSheetDialog bottomSheetComment = new BottomSheetDialog(getActivity(), R.style.BottomSheetDialogTheme);
         bottomSheetComment.setContentView(viewBottomSheetCommnent);
 
-        databaseReference.child("comment").addValueEventListener(new ValueEventListener() {
+        databaseReference.child("comment").child(phongTroOfChuTroList.get(position).getIdPhongTro()+"").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 getCommentFromAPI(position);
@@ -309,14 +331,16 @@ public class ListRoomFragment extends AbstractFragment {
         imgSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                edtComment.onEditorAction(EditorInfo.IME_ACTION_DONE);
                 if (edtComment.length() > 0 && edtComment.length() <= 255) {
                     ApiServiceMinh.apiService.themBinhLuanChoPhong(phongTroOfChuTroList.get(position).getIdPhongTro(), idTaiKhoan, edtComment.getText().toString().trim()).enqueue(new Callback<PhongBinhLuan>() {
                         @Override
                         public void onResponse(Call<PhongBinhLuan> call, Response<PhongBinhLuan> response) {
                             if (response.code() == 201) {
                                 edtComment.setText("");
-                                edtComment.onEditorAction(EditorInfo.IME_ACTION_DONE);
-                                databaseReference.child("comment").child(response.body().getId()+"").setValue(response.body().getId()).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                listComment.addFirst(response.body());
+                                commentAdapter.notifyDataSetChanged();
+                                databaseReference.child("comment").child(phongTroOfChuTroList.get(position).getIdPhongTro()+"").child(response.body().getId()+"").setValue(response.body().getId()).addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
                                     public void onSuccess(Void unused) {
                                         Log.d("TAG", "onDataChange: NEW OK");
@@ -336,7 +360,7 @@ public class ListRoomFragment extends AbstractFragment {
                         }
                     });
                 } else {
-                    Toast.makeText(getContext(), "Bình luận tối đa 255 ký tự", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Bình luận tối đa 255 ký tự và phải nhập dữ liệu", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -363,15 +387,9 @@ public class ListRoomFragment extends AbstractFragment {
             @Override
             public void onResponse(Call<List<PhongBinhLuan>> call, Response<List<PhongBinhLuan>> response) {
                 if (response.code() == 200) {
-                    if (response.body() == null) {
-                        pageComment--;
-                        Toast.makeText(getContext(), "Đã hết bình luận", Toast.LENGTH_SHORT).show();
-                    } else {
                         listComment.clear();
                         listComment.addAll(response.body());
                         commentAdapter.notifyDataSetChanged();
-                    }
-
                 }
             }
 
@@ -388,7 +406,9 @@ public class ListRoomFragment extends AbstractFragment {
     private void anhXa(View fragmentLayout) {
         ntsvListRoom = fragmentLayout.findViewById(R.id.ntsvListRoom);
         pbLoadmoreRoom = fragmentLayout.findViewById(R.id.pbLoadmore);
+        pbReLoad = fragmentLayout.findViewById(R.id.pbReLoad);
         llAdd = fragmentLayout.findViewById(R.id.llAdd);
+        llSearch = fragmentLayout.findViewById(R.id.llSearch);
         rcvListMotelRoom = fragmentLayout.findViewById(R.id.rcvListMotelRoom);
         phongTroOfChuTroList = new LinkedList<>();
         layoutManager = new LinearLayoutManager(getContext());

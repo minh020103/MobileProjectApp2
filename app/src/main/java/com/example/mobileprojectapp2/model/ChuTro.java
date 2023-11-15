@@ -12,6 +12,8 @@ public class ChuTro {
     private String tenChuTaiKhoanNganHang;
     private int xacThuc;
 
+
+
     public ChuTro(int id, int idTaiKhoan, String hinh, String ten, String soDienThoai, int idGoi, String soTaiKhoanNganHang, String tenChuTaiKhoanNganHang, int xacThuc) {
         this.id = id;
         this.idTaiKhoan = idTaiKhoan;
@@ -24,7 +26,6 @@ public class ChuTro {
         this.xacThuc = xacThuc;
     }
     public ChuTro() {
-
     }
 
     public int getId() {

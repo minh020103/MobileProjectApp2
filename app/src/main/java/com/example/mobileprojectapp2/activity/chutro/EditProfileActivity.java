@@ -11,8 +11,10 @@ import androidx.appcompat.widget.AppCompatButton;
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -49,6 +51,8 @@ public class EditProfileActivity extends AppCompatActivity {
 
     private RoundedImageView imgViewProfileEdit;
     private EditText edtName, edtPhone, edtStkBank, edtNameBank;
+    private SharedPreferences sharedPreferences;
+    private int idTaiKhoan;
     private Uri mUri;
 
     Handler handler;
@@ -87,6 +91,9 @@ public class EditProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.edit_profile_layout);
 
+        sharedPreferences = EditProfileActivity.this.getSharedPreferences(Const.PRE_LOGIN, Context.MODE_PRIVATE);
+        idTaiKhoan = sharedPreferences.getInt("idTaiKhoan", -1);
+
         anhXa();
         getDataFormApi();
 
@@ -112,7 +119,7 @@ public class EditProfileActivity extends AppCompatActivity {
     }
 
     private void getDataFormApi() {
-        Call<ChuTro> call = ApiServicePhuc.apiService.getChuTroById(5);
+        Call<ChuTro> call = ApiServicePhuc.apiService.getChuTroById(idTaiKhoan);
         call.enqueue(new Callback<ChuTro>() {
             @Override
             public void onResponse(Call<ChuTro> call, Response<ChuTro> response) {
@@ -156,7 +163,7 @@ public class EditProfileActivity extends AppCompatActivity {
                     RequestBody numberBankChuTro = RequestBody.create(MediaType.parse("multipart/form-data"), numberBank);
                     RequestBody nameBankChuTro = RequestBody.create(MediaType.parse("multipart/form-data"), nameBank);
                     if (mUri == null) {
-                        Call<Integer> call = ApiServicePhuc.apiService.editProfileNoImage(5, nameChuTro, phoneChuTro, numberBankChuTro, nameBankChuTro);
+                        Call<Integer> call = ApiServicePhuc.apiService.editProfileNoImage(idTaiKhoan, nameChuTro, phoneChuTro, numberBankChuTro, nameBankChuTro);
                         call.enqueue(new Callback<Integer>() {
                             @Override
                             public void onResponse(Call<Integer> call, Response<Integer> response) {
@@ -186,7 +193,7 @@ public class EditProfileActivity extends AppCompatActivity {
                         File file = new File(strRealPath);
                         RequestBody requestBodyImage = RequestBody.create(MediaType.parse("multipart/form-data"), file);
                         MultipartBody.Part mulPart = MultipartBody.Part.createFormData("hinh", file.getName(), requestBodyImage);
-                        Call<Integer> call = ApiServicePhuc.apiService.editProfileImage(5, nameChuTro, phoneChuTro, numberBankChuTro, nameBankChuTro, mulPart);
+                        Call<Integer> call = ApiServicePhuc.apiService.editProfileImage(idTaiKhoan, nameChuTro, phoneChuTro, numberBankChuTro, nameBankChuTro, mulPart);
                         call.enqueue(new Callback<Integer>() {
                             @Override
                             public void onResponse(Call<Integer> call, Response<Integer> response) {

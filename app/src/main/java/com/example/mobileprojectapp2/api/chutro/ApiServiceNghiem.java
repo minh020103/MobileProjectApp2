@@ -1,5 +1,6 @@
 package com.example.mobileprojectapp2.api.chutro;
 
+import com.example.mobileprojectapp2.api.Const;
 import com.example.mobileprojectapp2.datamodel.ChinhSach;
 import com.example.mobileprojectapp2.datamodel.ChuTro;
 import com.example.mobileprojectapp2.datamodel.NguoiThue;
@@ -21,9 +22,9 @@ import retrofit2.http.Query;
 
 public interface ApiServiceNghiem {
 
-    String http = "http://192.168.2.128/3t/laravel/public/api/";
+    String doman = "http://192.168.1.231/3t/laravel/public/api/";
     ApiServiceNghiem apiService =new Retrofit.Builder()
-            .baseUrl(http)
+            .baseUrl(doman)
             .addConverterFactory(GsonConverterFactory.create())
             .build().create(ApiServiceNghiem.class);
     @GET("danhsachtinnhan")
@@ -37,14 +38,11 @@ public interface ApiServiceNghiem {
     Call<ChuTro> thongTinChiTietChuTro(@Query("idTaiKhoan") int idTaiKhoan);
     @GET("nguoithue/thongtinchitiet")
     Call<NguoiThue> thongTinChiTietNguoiThue(@Query("idTaiKhoan") int idTaiKhoan);
-
     @Multipart
     @POST("guitinnhan")
     Call<TinNhan> guiTinNhan(@Part("idPhong") int idPhong,
                              @Part("idTaiKhoan") int idTaiKhoan,
                              @Part("noiDung")RequestBody noiDung);
-
-
     @GET("danhsachtinnhantheoidtaikhoan")
     Call<ArrayList<PhongTinNhan>> danhSachTinNhanTheoIdTaiKhoan(@Query("idTaiKhoan") int idTaiKhoan);
 
@@ -88,4 +86,6 @@ public interface ApiServiceNghiem {
                                          @Part("idTaiKhoan2")RequestBody idTaiKhoan2
                                          );
 
+    @GET("layanhvatendoiphuong")
+    Call<TaiKhoan> callThongTinDoiPhuong(@Query("idSender") int idSender,@Query("idPhong") int idPhong,@Query("idDoiPhuong") int idDoiPhuong   );
 }

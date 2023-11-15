@@ -1,5 +1,6 @@
 package com.example.mobileprojectapp2.activity.chutro;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageView;
@@ -22,7 +23,13 @@ import com.example.mobileprojectapp2.datamodel.ChuTro;
 import com.example.mobileprojectapp2.datamodel.NguoiThue;
 import com.example.mobileprojectapp2.datamodel.TaiKhoan;
 import com.example.mobileprojectapp2.datamodel.TinNhan;
-import com.makeramen.roundedimageview.RoundedImageView;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
@@ -30,6 +37,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 import retrofit2.Call;
@@ -49,31 +57,99 @@ public class RoomMassageActivity extends AppCompatActivity {
     TextView textName;
     EditText inputMess;
     AppCompatImageView sendMess;
-    RoundedImageView avt_doiPhuong;
+    CircleImageView avt_doiPhuong;
     AppCompatImageView info;
     SharedPreferences sharedPreferences;
+
+    FirebaseDatabase firebaseDatabase;
+    DatabaseReference databaseReference;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_room_massage);
         anhXa();
         arrayList = new ArrayList<>();
+        khoiTaoFireBase();
         sharedPreferences = getApplicationContext().getSharedPreferences(Const.PRE_LOGIN,MODE_PRIVATE);
         senderId = sharedPreferences.getInt("idTaiKhoan", -1);
         idDoiPhuong= getIntent().getIntExtra("key",-1);
         idPhong=getIntent().getIntExtra("phong",-1);;
         trangThai = getIntent().getIntExtra("trangThai",-1);
+        tinNhanAdapter = new TinNhanAdapter(this,arrayList,R.layout.cardview_send_message,R.layout.cardview_recieve_message,senderId);
         if(idDoiPhuong==-1||idPhong==-1){
             thongBao("Xảy Ra Lỗi!");
         }else{
             setDuLieu();
         }
+        reloadDuLieu();
 
     }
 
+    private void khoiTaoFireBase(){
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        databaseReference = firebaseDatabase.getReference();
+    }
     @Override
     protected void onResume() {
         super.onResume();
+    }
+    private void thongBaoReset(String mes){
+        databaseReference.child("thongBaoReset").child(idDoiPhuong+"").setValue(mes).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void unused) {
+
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+
+            }
+        });
+        databaseReference.child("phongTinNhan").child(idPhong+"").setValue(mes).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void unused) {
+
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+
+            }
+        });
+    }
+    private void reloadDuLieu(){
+        databaseReference.child("phongTinNhan").child(idPhong+"").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                setLaiDuLieu();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+    private void setLaiDuLieu(){
+        arrayList.clear();
+        Call<ArrayList<TinNhan>> call = ApiServiceNghiem.apiService.layDanhSachTinNhan(idPhong);
+        call.enqueue(new Callback<ArrayList<TinNhan>>() {
+            @Override
+            public void onResponse(Call<ArrayList<TinNhan>> call, Response<ArrayList<TinNhan>> response) {
+                if(response.body().size()!=0){
+                    arrayList.addAll(response.body());
+                    tinNhanAdapter.notifyDataSetChanged();
+                    recyclerView.smoothScrollToPosition(arrayList.size()-1);
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<TinNhan>> call, Throwable t) {
+
+            }
+        });
+
     }
     private void capNhatTinNhanNew(int idPhong, String noiDung, String thoiGian){
         RequestBody noiDungAPi = RequestBody.create(MediaType.parse("multipart/form-data"),inputMess.getText().toString());
@@ -82,6 +158,7 @@ public class RoomMassageActivity extends AppCompatActivity {
         call.enqueue(new Callback<Integer>() {
             @Override
             public void onResponse(Call<Integer> call, Response<Integer> response) {
+                thongBaoReset(inputMess.getText().toString());
                 inputMess.setText("");
             }
 
@@ -98,38 +175,6 @@ public class RoomMassageActivity extends AppCompatActivity {
     }
 
 
-    private void handleLienTuc(ArrayList<TinNhan> arrayList){
-        Handler handler = new Handler();
-        final Runnable r = new Runnable() {
-            @Override
-            public void run() {
-                Call<ArrayList<TinNhan>> call = ApiServiceNghiem.apiService.layDanhSachTinNhan(idPhong);
-                call.enqueue(new Callback<ArrayList<TinNhan>>() {
-                    @Override
-                    public void onResponse(Call<ArrayList<TinNhan>> call, Response<ArrayList<TinNhan>> response) {
-                        ArrayList<TinNhan> arrNew = response.body();
-                        if(arrNew.size()>arrayList.size()){
-                            for (int i = arrayList.size()-1;i<arrNew.size(); i++){
-                                arrayList.add(arrNew.get(i));
-                            }
-                            recyclerView.smoothScrollToPosition(arrayList.size()-1);
-                            tinNhanAdapter.notifyDataSetChanged();
-                        }
-
-                    }
-
-                    @Override
-                    public void onFailure(Call<ArrayList<TinNhan>> call, Throwable t) {
-
-                    }
-                });
-
-                handler.postDelayed(this,3000);
-            }
-        };
-        handler.postDelayed(r,3000);
-
-    }
     private void setSuKienGuiTinNhan(){
         sendMess.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -149,14 +194,15 @@ public class RoomMassageActivity extends AppCompatActivity {
                                 TinNhan tinNhan = new TinNhan(arrayList.get(arrayList.size()-1).getId()+1,idPhong,senderId,inputMess.getText().toString(),tsTemp);
                                 arrayList.add(tinNhan);
                                 tinNhanAdapter.notifyDataSetChanged();
-                                recyclerView.smoothScrollToPosition(arrayList.size()-1);
+//                                recyclerView.smoothScrollToPosition(arrayList.size()-1);
                             }
                             else{
                                 TinNhan tinNhan = new TinNhan(1,idPhong,senderId,inputMess.getText().toString(),tsTemp);
                                 arrayList.add(tinNhan);
                                 tinNhanAdapter.notifyDataSetChanged();
-                                recyclerView.smoothScrollToPosition(arrayList.size()-1);
+//                                recyclerView.smoothScrollToPosition(arrayList.size()-1);
                             }
+                            recyclerView.smoothScrollToPosition(arrayList.size()-1);
                          capNhatTinNhanNew(idPhong,inputMess.getText().toString(),formatDate(response.body().getCreated_at()));
                         }
                         @Override
@@ -187,7 +233,6 @@ public class RoomMassageActivity extends AppCompatActivity {
             capNhatTrangThaiDaXem();
         }
         arrayList.clear();
-        tinNhanAdapter = new TinNhanAdapter(this,arrayList,R.layout.cardview_send_message,R.layout.cardview_recieve_message,senderId);
         Call<ArrayList<TinNhan>> call = ApiServiceNghiem.apiService.layDanhSachTinNhan(idPhong);
         call.enqueue(new Callback<ArrayList<TinNhan>>() {
             @Override
@@ -197,11 +242,13 @@ public class RoomMassageActivity extends AppCompatActivity {
                         arrayList.addAll(response.body());
                         tinNhanAdapter.notifyDataSetChanged();
                         recyclerView.smoothScrollToPosition(arrayList.size()-1);
+                        recyclerView.setAdapter(tinNhanAdapter);
                         layThongTinDoiPhuong(idDoiPhuong);
                         setSuKienGuiTinNhan();
 //                    handleLienTuc(arrayList);
                     }else{
                         tinNhanAdapter.notifyDataSetChanged();
+                        recyclerView.setAdapter(tinNhanAdapter);
                         layThongTinDoiPhuong(idDoiPhuong);
                         setSuKienGuiTinNhan();
                     }
@@ -216,7 +263,7 @@ public class RoomMassageActivity extends AppCompatActivity {
         });
 
 
-        recyclerView.setAdapter(tinNhanAdapter);
+
         layThongTinDoiPhuong(idDoiPhuong);
         ic_back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -252,7 +299,6 @@ public class RoomMassageActivity extends AppCompatActivity {
                 Glide.with(getApplicationContext()).load(Const.DOMAIN+response.body().getHinh()).into(avt_doiPhuong);
                 tinNhanAdapter.notifyDataSetChanged();
                 setTextName(response.body().getTen());
-
             }
 
             @Override
