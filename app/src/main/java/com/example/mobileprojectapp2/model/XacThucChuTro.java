@@ -7,6 +7,25 @@ public class XacThucChuTro {
     private String cccdMatSau;
     private int trangThaiXacThuc;
 
+    private int trangThaiCuaChuTro;
+
+    public XacThucChuTro(int id, int idChuTro, String cccdMatTruoc, String cccdMatSau, int trangThaiXacThuc, int trangThaiCuaChuTro) {
+        this.id = id;
+        this.idChuTro = idChuTro;
+        this.cccdMatTruoc = cccdMatTruoc;
+        this.cccdMatSau = cccdMatSau;
+        this.trangThaiXacThuc = trangThaiXacThuc;
+        this.trangThaiCuaChuTro = trangThaiCuaChuTro;
+    }
+
+    public int getTrangThaiCuaChuTro() {
+        return trangThaiCuaChuTro;
+    }
+
+    public void setTrangThaiCuaChuTro(int trangThaiCuaChuTro) {
+        this.trangThaiCuaChuTro = trangThaiCuaChuTro;
+    }
+
     public int getId() {
         return id;
     }
