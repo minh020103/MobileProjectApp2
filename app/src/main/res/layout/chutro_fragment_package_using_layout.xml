@@ -23,7 +23,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:text="Xin Chao: "
+            android:text="Xin Chào : "
             android:textSize="30sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -33,7 +33,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:text="Goi Dich vu hien tai"
+            android:text="Gói Dịch Vụ Hiện Tại :"
             android:textSize="20sp"
             app:layout_constraintStart_toStartOf="@+id/textView5"
             app:layout_constraintTop_toBottomOf="@+id/textView5" />
@@ -52,15 +52,15 @@
 
         <TextView
             android:id="@+id/goi_dang_dung"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:layout_marginTop="8dp"
+            android:gravity="center"
+            android:background="@color/background_gray"
             android:text="10 phong / 30 phong"
             android:textSize="34sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.532"
-            app:layout_constraintStart_toStartOf="@+id/textView7"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView7" />
 
         <TextView
@@ -70,7 +70,7 @@
             android:layout_margin="10dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="4dp"
-            android:text="Thoi Gian: "
+            android:text="Thời Gian: "
             android:textSize="24sp"
             app:layout_constraintStart_toStartOf="@+id/textView7"
             app:layout_constraintTop_toBottomOf="@+id/goi_dang_dung" />
@@ -88,8 +88,8 @@
             android:id="@+id/textView11"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Vui long tra tien de ban ei ban ei"
             android:layout_margin="10dp"
+            android:text="Vui long tra tien de ban ei ban ei"
             android:textSize="24sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -105,10 +105,13 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView11">
 
-            <Button
+            <ImageView
                 android:id="@+id/dang_ki_goi"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="300px"
+                android:layout_height="300px"
+                android:background="@color/black"
+                android:padding="5dp"
+                android:src="@drawable/dangkidichvu"
                 android:text="Dang ki goi"
                 android:visibility="gone" />
 
@@ -118,28 +121,37 @@
                 android:layout_height="match_parent"
                 android:visibility="visible">
 
-                <Button
+                <ImageView
                     android:id="@+id/nang_cap_goi"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="250px"
+                    android:layout_height="250px"
                     android:layout_margin="10dp"
                     android:layout_weight="3"
+                    android:background="@color/black"
+                    android:padding="5dp"
+                    android:src="@drawable/nangcapgoi"
                     android:text="nang cap goi" />
 
-                <Button
+                <ImageView
                     android:id="@+id/gia_han_lai"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="250px"
+                    android:layout_height="250px"
                     android:layout_margin="10dp"
                     android:layout_weight="3"
+                    android:background="@color/black"
+                    android:padding="5dp"
+                    android:src="@drawable/giahan"
                     android:text="gia han goi" />
 
-                <Button
+                <ImageView
                     android:id="@+id/huy_dich_vu"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="250px"
+                    android:layout_height="250px"
                     android:layout_margin="10dp"
                     android:layout_weight="3"
+                    android:background="@color/black"
+                    android:padding="5dp"
+                    android:src="@drawable/huydichvu"
                     android:text="huy goi" />
             </LinearLayout>
 

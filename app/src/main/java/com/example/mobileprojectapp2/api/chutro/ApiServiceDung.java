@@ -3,13 +3,18 @@ package com.example.mobileprojectapp2.api.chutro;
 import com.example.mobileprojectapp2.api.Const;
 import com.example.mobileprojectapp2.datamodel.ChuTro;
 import com.example.mobileprojectapp2.datamodel.Goi;
+import com.example.mobileprojectapp2.datamodel.YeuCauDKG;
+import com.example.mobileprojectapp2.model.Admin;
 
 import java.util.List;
 
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.GET;
+import retrofit2.http.Multipart;
 import retrofit2.http.PATCH;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
@@ -38,4 +43,11 @@ public interface ApiServiceDung {
     Call<Goi> updatePakage(@Query("id") int id,@Query("thoiHan") int thoiHan, @Query("soLuongPhongToiDa") int soLuongPhongToiDa, @Query("gia") int gia);
     @PATCH("api/chutro/xoadichvu")
     Call<ChuTro> xoagoidangdung(@Query("idTaiKhoan") int id);
+    @GET("api/thongtinadmin")
+    Call<Admin> layThongTinAdmin(@Query("id") int id);
+    @Multipart
+    @POST("api/yeucaudangkygoi/create")
+    Call<YeuCauDKG> yeucaudangkygoi(@Part("idChuTro") RequestBody idChuTro,
+                                    @Part("idGoi") RequestBody idGoi,
+                                    @Part MultipartBody.Part hinhAnhChuyenKhoan);
 }

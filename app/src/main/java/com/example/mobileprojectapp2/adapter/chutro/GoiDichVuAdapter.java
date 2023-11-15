@@ -44,8 +44,8 @@ public class GoiDichVuAdapter extends RecyclerView.Adapter<GoiDichVuAdapter.Dich
     @Override
     public void onBindViewHolder(@NonNull DichVuViewHolder holder, int position) {
         Goi data = list.get(position);
-        holder.phong.setText(String.valueOf(data.getSoLuongPhongToiDa()+ " Phong"));
-        holder.ngay.setText(String.valueOf(data.getThoiHan() +" Ngay"));
+        holder.phong.setText(String.valueOf(data.getSoLuongPhongToiDa()+ " Phòng"));
+        holder.ngay.setText(String.valueOf(data.getThoiHan() +" Ngày"));
         holder.onClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {

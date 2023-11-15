@@ -1,6 +1,8 @@
 package com.example.mobileprojectapp2.fragment.chutro;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Adapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -23,6 +26,7 @@ import com.example.mobileprojectapp2.R;
 import com.example.mobileprojectapp2.activity.chutro.MotelRoomOwnerActivity;
 import com.example.mobileprojectapp2.activity.chutro.ThanhToanGoiActivity;
 import com.example.mobileprojectapp2.adapter.chutro.GoiDichVuAdapter;
+import com.example.mobileprojectapp2.api.Const;
 import com.example.mobileprojectapp2.api.chutro.ApiServiceDung;
 import com.example.mobileprojectapp2.api.chutro.ApiServiceKiet;
 import com.example.mobileprojectapp2.api.chutro.ApiServicePhuc;
@@ -48,11 +52,11 @@ public class PackageUsingFragment extends AbstractFragment{
     TextView goi_dang_dung;
     TextView text;
     TextView text_buttomsheet;
-    Button dang_ki_goi;
+    ImageView dang_ki_goi;
     LinearLayout da_dang_ki;
-    Button nang_cap_goi;
-    Button gia_han_lai;
-    Button huy_dich_vu;
+    ImageView nang_cap_goi;
+    ImageView gia_han_lai;
+    ImageView huy_dich_vu;
     TextView thoi_gian;
     ViewGroup container;
     GoiDichVuAdapter goiDichVuAdapter;
@@ -60,6 +64,9 @@ public class PackageUsingFragment extends AbstractFragment{
 
     List<Goi> goiList;
     LinearLayoutManager layoutManager;
+    private SharedPreferences shared;
+    private int idTaiKhoan;
+
     int temp;
     @Nullable
     @Override
@@ -81,9 +88,12 @@ public class PackageUsingFragment extends AbstractFragment{
         huy_dich_vu = fragmentLayout.findViewById(R.id.huy_dich_vu);
         thoi_gian = fragmentLayout.findViewById(R.id.thoi_gian);
 
+        shared = getActivity().getSharedPreferences(Const.PRE_LOGIN, Context.MODE_PRIVATE);
+        idTaiKhoan = shared.getInt("idTaiKhoan", -1);
 
 
-        HostByIdApi(2);
+
+        HostByIdApi(idTaiKhoan);
         getGoiByIdAPI(temp);
 
         dang_ki_goi.setOnClickListener(new View.OnClickListener() {
@@ -104,14 +114,16 @@ public class PackageUsingFragment extends AbstractFragment{
         gia_han_lai.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent intent = new Intent(getActivity(), ThanhToanGoiActivity.class);
+                intent.putExtra("idGoi",temp);
+                startActivity(intent);
             }
         });
 
         huy_dich_vu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                HuyDichVu(2);
+                HuyDichVu(idTaiKhoan);
                 onResume();
             }
 
@@ -143,7 +155,7 @@ public class PackageUsingFragment extends AbstractFragment{
         text_buttomsheet.setText(text);
         recyclerView = view.findViewById(R.id.rcvDichvu);
         goiDichVuAdapter = new GoiDichVuAdapter(getActivity(), goiList, R.layout.cardview_goi_item);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+        layoutManager = new LinearLayoutManager(getContext());
         layoutManager.setOrientation(RecyclerView.VERTICAL);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(goiDichVuAdapter);
@@ -186,6 +198,8 @@ public class PackageUsingFragment extends AbstractFragment{
                 temp = chuTro.getIdGoi();
                 getGoiByIdAPI(temp);
                 if (chuTro.getIdGoi() == 0){
+                    thoi_gian.setVisibility(View.GONE);
+                    Ngay_het_han.setVisibility(View.GONE);
                     text.setText("Vui Lòng Đăng Kí Gói Để Có Thể Đăng Cho Thuê Phòng");
                     dang_ki_goi.setVisibility(View.VISIBLE);
                     da_dang_ki.setVisibility(View.GONE);
@@ -231,6 +245,6 @@ public class PackageUsingFragment extends AbstractFragment{
     public void onResume() {
         super.onResume();
         MotelRoomOwnerActivity.vp2Chutro.setUserInputEnabled(true);
-        HostByIdApi(2);
+        HostByIdApi(idTaiKhoan);
     }
 }
