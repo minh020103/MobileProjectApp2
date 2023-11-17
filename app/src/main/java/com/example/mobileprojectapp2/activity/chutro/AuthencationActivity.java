@@ -234,12 +234,20 @@ public class AuthencationActivity extends AppCompatActivity {
             openGallery();
             return;
         }
-        //Xin cap phep
-        if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
-            openGallery();
+        else if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
+            if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+                openGallery();
+            } else {
+                String[] permission = {Manifest.permission.READ_EXTERNAL_STORAGE};
+                requestPermissions(permission, MY_REQUEST_CODE);
+            }
         } else {
-            String[] permission = {Manifest.permission.READ_EXTERNAL_STORAGE};
-            requestPermissions(permission, MY_REQUEST_CODE);
+            if (checkSelfPermission(Manifest.permission.READ_MEDIA_IMAGES) == PackageManager.PERMISSION_GRANTED) {
+                openGallery();
+            } else {
+                String[] permission = {Manifest.permission.READ_MEDIA_IMAGES};
+                requestPermissions(permission, MY_REQUEST_CODE);
+            }
         }
     }
 

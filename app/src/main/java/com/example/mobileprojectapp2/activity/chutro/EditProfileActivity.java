@@ -32,7 +32,6 @@ import com.example.mobileprojectapp2.api.chutro.ApiServicePhuc;
 import com.example.mobileprojectapp2.api.Const;
 import com.example.mobileprojectapp2.R;
 import com.example.mobileprojectapp2.model.ChuTro;
-import com.makeramen.roundedimageview.RoundedImageView;
 
 import java.io.File;
 import java.io.IOException;
@@ -49,7 +48,7 @@ public class EditProfileActivity extends AppCompatActivity {
     private ImageView imgBack;
     private AppCompatButton btnCancel, btnAcceptEditProfile;
 
-    private RoundedImageView imgViewProfileEdit;
+    private ImageView imgViewProfileEdit;
     private EditText edtName, edtPhone, edtStkBank, edtNameBank;
     private SharedPreferences sharedPreferences;
     private int idTaiKhoan;
@@ -231,13 +230,20 @@ public class EditProfileActivity extends AppCompatActivity {
             openGallery();
             return;
         }
-        //Xin cap phep
-        if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
-            openGallery();
-
+        else if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
+            if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+                openGallery();
+            } else {
+                String[] permission = {Manifest.permission.READ_EXTERNAL_STORAGE};
+                requestPermissions(permission, MY_REQUEST_CODE);
+            }
         } else {
-            String[] permission = {Manifest.permission.READ_EXTERNAL_STORAGE};
-            requestPermissions(permission, MY_REQUEST_CODE);
+            if (checkSelfPermission(Manifest.permission.READ_MEDIA_IMAGES) == PackageManager.PERMISSION_GRANTED) {
+                openGallery();
+            } else {
+                String[] permission = {Manifest.permission.READ_MEDIA_IMAGES};
+                requestPermissions(permission, MY_REQUEST_CODE);
+            }
         }
     }
 

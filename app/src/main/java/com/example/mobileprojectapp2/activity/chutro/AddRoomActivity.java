@@ -573,11 +573,20 @@ public class AddRoomActivity extends AppCompatActivity {
             openGallery();
             return;
         }
-        if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
-            openGallery();
+        else if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
+            if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+                openGallery();
+            } else {
+                String[] permission = {Manifest.permission.READ_EXTERNAL_STORAGE};
+                requestPermissions(permission, RQ);
+            }
         } else {
-            String[] permission = {Manifest.permission.READ_EXTERNAL_STORAGE};
-            requestPermissions(permission, RQ);
+            if (checkSelfPermission(Manifest.permission.READ_MEDIA_IMAGES) == PackageManager.PERMISSION_GRANTED) {
+                openGallery();
+            } else {
+                String[] permission = {Manifest.permission.READ_MEDIA_IMAGES};
+                requestPermissions(permission, RQ);
+            }
         }
     }
 
@@ -620,6 +629,7 @@ public class AddRoomActivity extends AppCompatActivity {
 
 
                     }
+                    edtSoPhong.setSelectAllOnFocus(true);
                 }
             }
     );
