@@ -175,4 +175,7 @@ public class PhongTro {
     public void setTienNuoc(int tienNuoc) {
         this.tienNuoc = tienNuoc;
     }
+
+    public PhongTro() {
+    }
 }
