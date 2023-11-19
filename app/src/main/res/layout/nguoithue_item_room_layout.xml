@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="10dp">
+
+        <ImageView
+            android:id="@+id/imgPhong"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:src="@drawable/cccd"
+            android:scaleType="fitXY"/>
+        <TextView
+            android:id="@+id/tvMoTa"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Phòng trọ sáng đẹp ở thành phố thủ đức"
+            android:textStyle="bold"/>
+        <TextView
+            android:id="@+id/tvGioiTinh"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Nam"
+            android:textStyle="bold"/>
+        <TextView
+            android:id="@+id/tvGia"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="1000000 đồng"
+            android:textColor="@color/text_thongbao_chuaxem"/>
+        <TextView
+            android:id="@+id/tvDiaChi"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="đường 123 xóm 123 phường 123 quận 123, thành phố 123"
+            android:textColor="@color/black"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:id="@+id/llComment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/icon_comment" />
+
+                <TextView
+                    android:id="@+id/tvCountComment"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:gravity="top"
+                    android:text="0"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/llRating"
+                android:layout_marginLeft="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/icon_star"/>
+
+                <TextView
+                    android:id="@+id/tvTBRating"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:gravity="top"
+                    android:text="0"/>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>
