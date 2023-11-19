@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".activity.nguoithue.RenterActivity">
+
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bnvNguoiThue"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:menu="@menu/renter_menu"
+        app:itemBackground="@drawable/item_of_nav_check"
+        app:itemTextColor="@drawable/custom_chutro_navigation_selector"
+        app:itemIconTint="@drawable/custom_chutro_navigation_selector"/>
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/vp2NguoiThue"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"/>
+
+</LinearLayout>
