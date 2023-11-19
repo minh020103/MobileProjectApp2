@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-  
+    <item android:id="@+id/navHome" android:title="Trang chủ" android:icon="@drawable/home_selector"/>
+    <item android:id="@+id/navMyRoom" android:title="Phòng tôi" android:icon="@drawable/my_home_selector"/>
+    <item android:id="@+id/navNotification" android:title="Thông báo" android:icon="@drawable/notification_selector"/>
+    <item android:id="@+id/navMessage" android:title="Nhắn tin" android:icon="@drawable/message_selector"/>
+    <item android:id="@+id/navProfile" android:title="Thông tin" android:icon="@drawable/profile_selector"/>
 </menu>

@@ -1,4 +1,4 @@
-package com.example.mobileprojectapp2.fragment.chutro;
+package com.example.mobileprojectapp2.fragment.nguoithue;
 
 import androidx.fragment.app.Fragment;
 

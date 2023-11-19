@@ -15,6 +15,12 @@ import android.view.View;
 import com.example.mobileprojectapp2.R;
 import com.example.mobileprojectapp2.api.Const;
 import com.example.mobileprojectapp2.api.chutro.ApiServiceMinh;
+import com.example.mobileprojectapp2.fragment.chutro.AbstractFragment;
+import com.example.mobileprojectapp2.fragment.chutro.ListRoomFragment;
+import com.example.mobileprojectapp2.fragment.chutro.NotificationFragment;
+import com.example.mobileprojectapp2.fragment.chutro.PackageUsingFragment;
+import com.example.mobileprojectapp2.fragment.chutro.ProfileFragment;
+import com.example.mobileprojectapp2.fragment.chutro.TinNhanFragment;
 import com.example.mobileprojectapp2.viewpager2adapter.MotelRoomOwnerViewPager2Adapter;
 import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -25,6 +31,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import java.util.LinkedList;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -38,17 +46,26 @@ public class MotelRoomOwnerActivity extends AppCompatActivity {
     DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
     SharedPreferences sharedPreferences;
     private int idTaiKhoan;
+    LinkedList<AbstractFragment> fragments;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.motel_room_owner_layout);
+        fragments = new LinkedList<>();
         sharedPreferences = this.getSharedPreferences(Const.PRE_LOGIN, Context.MODE_PRIVATE);
         idTaiKhoan = sharedPreferences.getInt("idTaiKhoan", -1);
         vp2Chutro = findViewById(R.id.vp2ChuTro);
         bnvChuTro = findViewById(R.id.bnvChuTro);
         viewPager2Adapter = new MotelRoomOwnerViewPager2Adapter(this);
 
+        fragments.add(new ListRoomFragment());
+        fragments.add(new PackageUsingFragment());
+        fragments.add(new NotificationFragment());
+        fragments.add(new TinNhanFragment());
+        fragments.add(new ProfileFragment());
+
+        viewPager2Adapter.setFragments(fragments);
         vp2Chutro.setAdapter(viewPager2Adapter);
 
         // Đếm số lượng thông báo

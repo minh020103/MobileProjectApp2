@@ -8,10 +8,15 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-public class HomeFragment extends AbstractFragment{
+import com.example.mobileprojectapp2.R;
+
+public class MyRoomFragment extends AbstractFragment{
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return super.onCreateView(inflater, container, savedInstanceState);
+        View fragmentLayout = null;
+        fragmentLayout = inflater.inflate(R.layout.nguoithue_fragment_my_room_layout, container, false);
+
+        return fragmentLayout;
     }
 }
