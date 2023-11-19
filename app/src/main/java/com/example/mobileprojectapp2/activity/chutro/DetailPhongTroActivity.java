@@ -75,7 +75,7 @@ public class DetailPhongTro extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_detail_phong_tro);
+        setContentView(R.layout.chutro_activity_detail_phong_tro);
 
         listTienIch = new ArrayList<>();
         listHinhAnh = new ArrayList<>();
