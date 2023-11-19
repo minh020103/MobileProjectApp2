@@ -6,7 +6,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,10 +17,11 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatButton;
 
 import com.bumptech.glide.Glide;
+import com.example.mobileprojectapp2.activity.loginregister.LoginActivity;
 import com.example.mobileprojectapp2.api.chutro.ApiServicePhuc;
 import com.example.mobileprojectapp2.api.Const;
 import com.example.mobileprojectapp2.R;
-import com.example.mobileprojectapp2.activity.chutro.AuthencationActivity;
+import com.example.mobileprojectapp2.activity.chutro.AuthenticationActivity;
 import com.example.mobileprojectapp2.activity.chutro.ChangePasswordActivity;
 import com.example.mobileprojectapp2.activity.chutro.EditProfileActivity;
 import com.example.mobileprojectapp2.activity.chutro.MotelRoomOwnerActivity;
@@ -71,10 +71,20 @@ public class ProfileFragment extends AbstractFragment {
         btnAuthencation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getActivity(), AuthencationActivity.class));
+                startActivity(new Intent(getActivity(), AuthenticationActivity.class));
             }
         });
+        btnLogout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sharedPreferences = getContext().getSharedPreferences("SharedPreferencesLogin", Context.MODE_PRIVATE);
+                sharedPreferences.edit().remove("idTaiKhoan").commit();
+                sharedPreferences.edit().remove("idChuTro").commit();
+                sharedPreferences.edit().remove("trangThaiXacThuc").commit();
 
+                startActivity(new Intent(getActivity(), LoginActivity.class));
+            }
+        });
         return fragmentLayout;
     }
 
@@ -101,7 +111,7 @@ public class ProfileFragment extends AbstractFragment {
 
     private void anhXa(View fragment) {
         imgViewProfile = fragment.findViewById(R.id.imgView_profile);
-        tvName = fragment.findViewById(R.id.tv_nameChuTro);
+        tvName = fragment.findViewById(R.id.tv_nameNguoiThue);
         tvPhone = fragment.findViewById(R.id.tv_phone);
         btnEditProfile = fragment.findViewById(R.id.btn_Edit_Profile);
         btnChangePassWord = fragment.findViewById(R.id.btn_Change_Password);

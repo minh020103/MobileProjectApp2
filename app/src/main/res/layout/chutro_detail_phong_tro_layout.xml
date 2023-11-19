@@ -87,7 +87,7 @@
                 android:padding="5dp">
 
                 <TextView
-                    android:id="@+id/tv_detail_loai_phong"
+                    android:id="@+id/tv_detail_loai_phong_nguoi_thue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Loai phong"
@@ -104,7 +104,7 @@
                     android:textSize="@dimen/size_16sp" />
 
                 <TextView
-                    android:id="@+id/tv_detail_gio_tinh"
+                    android:id="@+id/tv_detail_gio_tinh_nguoi_thue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Gioi tinh"
@@ -132,7 +132,7 @@
                         android:textSize="@dimen/size_25sp" />
 
                     <TextView
-                        android:id="@+id/tv_detail_quan"
+                        android:id="@+id/tv_detail_quan_nguoi_thue"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="5dp"
@@ -159,7 +159,7 @@
                         android:textSize="@dimen/size_20sp" />
 
                     <TextView
-                        android:id="@+id/tv_detail_gia"
+                        android:id="@+id/tv_detail_gia_nguoi_thue"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:padding="5dp"
@@ -192,7 +192,7 @@
                         android:textSize="@dimen/size_16sp" />
 
                     <TextView
-                        android:id="@+id/tv_detail_so_luong_toi_da"
+                        android:id="@+id/tv_detail_so_luong_toi_da_nguoi_thue"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:padding="5dp"
@@ -217,7 +217,7 @@
                         android:textSize="@dimen/size_16sp" />
 
                     <TextView
-                        android:id="@+id/tv_detail_dien_tich"
+                        android:id="@+id/tv_detail_dien_tich_nguoi_thue"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:padding="5dp"
@@ -242,7 +242,7 @@
                         android:textSize="@dimen/size_16sp" />
 
                     <TextView
-                        android:id="@+id/tv_detail_tien_coc"
+                        android:id="@+id/tv_detail_tien_coc_nguoi_thue"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:padding="5dp"
@@ -283,7 +283,7 @@
                         android:src="@drawable/iconp_flash" />
 
                     <TextView
-                        android:id="@+id/tv_detail_tien_dien"
+                        android:id="@+id/tv_detail_tien_dien_nguoi_thue"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:padding="5dp"
@@ -306,7 +306,7 @@
                         android:src="@drawable/iconp_water" />
 
                     <TextView
-                        android:id="@+id/tv_detail_tien_nuoc"
+                        android:id="@+id/tv_detail_tien_nuoc_nguoi_thue"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:padding="5dp"
@@ -375,7 +375,7 @@
                         android:src="@drawable/iconp_info" />
 
                     <com.borjabravo.readmoretextview.ReadMoreTextView
-                        android:id="@+id/tv_detail_mo_ta"
+                        android:id="@+id/tv_detail_mo_ta_nguoi_thue"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:paddingStart="5dp"
@@ -424,7 +424,7 @@
                         android:src="@drawable/iconp_gps" />
 
                     <TextView
-                        android:id="@+id/tv_detail_dia_chi"
+                        android:id="@+id/tv_detail_dia_chi_nguoi_thue"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:padding="5dp"
@@ -468,7 +468,7 @@
                    />
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rcv_list_tien_ich"
+                    android:id="@+id/rcv_list_tien_ich_nguoi_thue"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_below="@+id/tv_tien_ich_rong"
@@ -481,7 +481,7 @@
                     android:layout_marginLeft="30dp"
                     android:layout_marginRight="30dp"
                     android:background="@color/text_gray"
-                    android:layout_below="@+id/rcv_list_tien_ich"/>
+                    android:layout_below="@+id/rcv_list_tien_ich_nguoi_thue"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -499,7 +499,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_below="@+id/rcv_list_tien_ich"
+                            android:layout_below="@+id/rcv_list_tien_ich_nguoi_thue"
                             android:gravity="center"
                             android:text="Xem thêm"
                             android:textColor="@color/up_down"
@@ -526,7 +526,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_below="@+id/rcv_list_tien_ich"
+                            android:layout_below="@+id/rcv_list_tien_ich_nguoi_thue"
                             android:gravity="center"
                             android:text="Thu gọn"
                             android:textColor="@color/up_down"

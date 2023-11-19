@@ -7,4 +7,34 @@ Giá 3,5tr - 5tr
 Tiện nghi: Có máy giặt, máy lạnh, máy nước nóng lạnh, tủ, bếp từ, giường niệm, bàn ghế làm việc, tủ lạnh, bồn tắm rất sạch sẽ. Phòng có cửa sổ rất thoáng mát.
 Thuận tiện: gần hàng xanh, trường đại học Hurtech, Hồng Bàng, bv Ung Bướu, gia định.. xung quanh có nhiều quán cf, quán ăn, Trung tâm thể dục, công viên, cty.... Đi ra Quận 1, gò Vấp, Phú Nhuận chỉ 5 phút. Hình thật.</string>
     <string name="test_dia_chi">188/1 Nguyễn Văn Hưởng , Phường Thảo Điền, Quận 2, Hồ Chí Minh</string>
+    <string name="xttt">Xác thực thông tin</string>
+    <string name="mtcccd">Mặt trước CCCD</string>
+    <string name="mscccd">Mặt sau CCCD</string>
+    <string name="cxt">Chưa xác thực</string>
+    <string name="dxt">Đã xác thực</string>
+    <string name="dcxt">Đang chờ xác thực</string>
+    <string name="dmk">Đổi mật khẩu</string>
+    <string name="mkht">Mật khẩu hiện tại</string>
+    <string name="mkm">Mật khẩu mới</string>
+    <string name="nlmk">Nhập lại mật khẩu mới</string>
+    <string name="cntt">Cập nhật thông tin</string>
+    <string name="gycxt">Gửi yêu cầu xác thực</string>
+    <string name="huy">Hủy</string>
+    <string name="stt">Sửa thông tin</string>
+    <string name="ful">File Upload</string>
+    <string name="tctk">Tên chủ tài khoản</string>
+    <string name="nt">Nhập tên</string>
+    <string name="sdt">Số điện thoại</string>
+    <string name="nsdt">Nhập số điện thoại</string>
+    <string name="stknh">Số tài khoản ngân hàng</string>
+    <string name="nstknh">Nhập số tài khoản ngân hàng</string>
+    <string name="tctknh">Tên chủ tài khoản ngân hàng</string>
+    <string name="ntctk">Nhập tên chủ tài khoản</string>
+    <string name="tkpt">Tìm kiếm phòng trọ</string>
+    <string name="kttnd">Không tìm thấy nội dung</string>
+    <string name="text_ten">Nguyen Hong Phuc</string>
+    <string name="text_sdt">0797517712</string>
+    <string name="xt">Xác thực</string>
+    <string name="dx">Đăng xuất</string>
+    <string name="hs">Hồ Sơ</string>
 </resources>

@@ -88,7 +88,7 @@ public class EditProfileActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.edit_profile_layout);
+        setContentView(R.layout.chutro_edit_profile_layout);
 
         sharedPreferences = EditProfileActivity.this.getSharedPreferences(Const.PRE_LOGIN, Context.MODE_PRIVATE);
         idTaiKhoan = sharedPreferences.getInt("idTaiKhoan", -1);
@@ -269,12 +269,12 @@ public class EditProfileActivity extends AppCompatActivity {
     private void anhXa() {
         imgBack = findViewById(R.id.img_back);
         btnCancel = findViewById(R.id.btn_cancel);
-        btnAcceptEditProfile = findViewById(R.id.btn_accept_edit_profile);
-        edtName = findViewById(R.id.edt_name);
-        edtPhone = findViewById(R.id.edt_phone);
-        edtNameBank = findViewById(R.id.edt_name_user_bank);
-        edtStkBank = findViewById(R.id.edt_number_bank);
-        imgViewProfileEdit = findViewById(R.id.imgView_profile_edit);
+        btnAcceptEditProfile = findViewById(R.id.btn_accept_edit_profile_nguoi_thue);
+        edtName = findViewById(R.id.edt_name_nguoi_thue);
+        edtPhone = findViewById(R.id.edt_phone_nguoi_thue);
+        edtNameBank = findViewById(R.id.edt_name_user_bank_nguoi_thue);
+        edtStkBank = findViewById(R.id.edt_number_bank_nguoi_thue);
+        imgViewProfileEdit = findViewById(R.id.imgView_profile_nguoi_thue);
     }
 
     private void alertFail(String s) {

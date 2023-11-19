@@ -1,39 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@color/background_gray">
+    android:background="@color/background_gray"
+    android:orientation="vertical">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white"
-        >
+        android:background="@color/white">
 
         <ImageView
             android:id="@+id/img_back"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/iconp_back" />
+            style="@style/imgView_back" />
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingLeft="5dp"
-            android:text="Xác thực thông tin"
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+            style="@style/tv_toolbar"
+            android:text="@string/xttt" />
 
     </androidx.appcompat.widget.Toolbar>
+
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
@@ -42,78 +35,70 @@
                 android:id="@+id/tv_not_authencation"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Chưa xác thực"
-                android:textStyle="bold"
-                android:textSize="18sp"
-                android:textColor="@color/text_do"
-                android:padding="10dp"
+                android:layout_centerHorizontal="true"
                 android:layout_marginStart="10dp"
-                android:visibility="visible"
-                android:layout_centerHorizontal="true"/>
+                android:padding="10dp"
+                android:text="@string/cxt"
+                android:textColor="@color/text_do"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:visibility="visible" />
 
             <TextView
                 android:id="@+id/tv_ok_authencation"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Đã xác thực"
-                android:textSize="18sp"
-                android:textColor="@color/text_xanh_la"
-                android:textStyle="bold"
-                android:padding="10dp"
+                android:layout_centerHorizontal="true"
                 android:layout_marginStart="10dp"
-                android:visibility="gone"
                 android:drawableLeft="@drawable/iconp_check"
                 android:drawablePadding="10dp"
-                android:layout_centerHorizontal="true"/>
+                android:padding="10dp"
+                android:text="@string/dxt"
+                android:textColor="@color/text_xanh_la"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/tv_dangcho_authencation"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Đang chờ xác thực"
-                android:textSize="18sp"
-                android:textColor="@color/vang"
-                android:textStyle="bold"
-                android:padding="10dp"
+                android:layout_centerHorizontal="true"
                 android:layout_marginStart="10dp"
-                android:visibility="gone"
                 android:drawablePadding="10dp"
-                android:layout_centerHorizontal="true"/>
+                android:padding="10dp"
+                android:text="@string/dcxt"
+                android:textColor="@color/vang"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/tv_mat_truoc_cccd"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Mặt trước CCCD"
-                android:textColor="@color/black"
+                style="@style/tv_18sp"
                 android:layout_marginTop="40dp"
-                android:textSize="18dp"
-                android:paddingLeft="18dp"
                 android:drawableRight="@drawable/iconp_star"
                 android:drawablePadding="5dp"
-                />
+                android:paddingLeft="18dp"
+                android:text="@string/mtcccd" />
 
             <ImageView
                 android:id="@+id/imgView_mat_truoc_cccd_nguoi_thue"
                 android:layout_width="match_parent"
                 android:layout_height="250dp"
                 android:layout_below="@+id/tv_mat_truoc_cccd"
-                android:src="@drawable/iconp_add"
                 android:padding="10dp"
                 android:scaleType="fitXY"
-                />
+                android:src="@drawable/iconp_add" />
 
             <TextView
                 android:id="@+id/tv_mat_sau_cccd"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Mặt sau CCCD"
-                android:textColor="@color/black"
-                android:textSize="18dp"
-                android:paddingLeft="18dp"
-                android:drawablePadding="5dp"
+                style="@style/tv_18sp"
                 android:layout_below="@+id/imgView_mat_truoc_cccd_nguoi_thue"
-                android:drawableRight="@drawable/iconp_star"/>
+                android:drawableRight="@drawable/iconp_star"
+                android:drawablePadding="5dp"
+                android:paddingLeft="18dp"
+                android:text="@string/mscccd" />
 
             <ImageView
                 android:id="@+id/imgView_mat_sau_cccd_nguoi_thue"
@@ -127,23 +112,15 @@
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn_accept_yeu_cau_xac_thuc_nguoi_thue"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                style="@style/btn1"
                 android:layout_below="@+id/imgView_mat_sau_cccd_nguoi_thue"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="10dp"
-                android:layout_marginBottom="10dp"
+                android:text="@string/gycxt"
                 android:background="@color/button_fb"
-                android:text="Gửi yêu cầu xác thực"
-                android:textAllCaps="false"
-                android:textColor="@color/white"
-                android:textSize="16sp" />
+                android:layout_marginTop="30dp"/>
         </RelativeLayout>
 
 
     </androidx.core.widget.NestedScrollView>
-
 
 
 </LinearLayout>

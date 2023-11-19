@@ -39,7 +39,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class DetailPhongTro extends AppCompatActivity {
+public class DetailPhongTroActivity extends AppCompatActivity {
 
 
     private TextView tvLoaiPhong, tvGioTinh, tvGia, tvSoLuongToiDa, tvDienTich,
@@ -75,7 +75,7 @@ public class DetailPhongTro extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.chutro_activity_detail_phong_tro);
+        setContentView(R.layout.chutro_detail_phong_tro_layout);
 
         listTienIch = new ArrayList<>();
         listHinhAnh = new ArrayList<>();
@@ -190,25 +190,25 @@ public class DetailPhongTro extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<PhongTro> call, Throwable t) {
-                Toast.makeText(DetailPhongTro.this, "Error not call Api", Toast.LENGTH_SHORT).show();
+                Toast.makeText(DetailPhongTroActivity.this, "Error not call Api", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
     private void anhXa() {
 
-        tvDienTich = findViewById(R.id.tv_detail_dien_tich);
-        tvQuan = findViewById(R.id.tv_detail_quan);
-        tvMoTa = findViewById(R.id.tv_detail_mo_ta);
-        tvGia = findViewById(R.id.tv_detail_gia);
-        tvLoaiPhong = findViewById(R.id.tv_detail_loai_phong);
-        tvSoLuongToiDa = findViewById(R.id.tv_detail_so_luong_toi_da);
-        tvTienCoc = findViewById(R.id.tv_detail_tien_coc);
-        tvTienDien = findViewById(R.id.tv_detail_tien_dien);
-        tvTienNuoc = findViewById(R.id.tv_detail_tien_nuoc);
-        tvGioTinh = findViewById(R.id.tv_detail_gio_tinh);
-        tvDiaChi = findViewById(R.id.tv_detail_dia_chi);
-        rcvListTienIch = findViewById(R.id.rcv_list_tien_ich);
+        tvDienTich = findViewById(R.id.tv_detail_dien_tich_nguoi_thue);
+        tvQuan = findViewById(R.id.tv_detail_quan_nguoi_thue);
+        tvMoTa = findViewById(R.id.tv_detail_mo_ta_nguoi_thue);
+        tvGia = findViewById(R.id.tv_detail_gia_nguoi_thue);
+        tvLoaiPhong = findViewById(R.id.tv_detail_loai_phong_nguoi_thue);
+        tvSoLuongToiDa = findViewById(R.id.tv_detail_so_luong_toi_da_nguoi_thue);
+        tvTienCoc = findViewById(R.id.tv_detail_tien_coc_nguoi_thue);
+        tvTienDien = findViewById(R.id.tv_detail_tien_dien_nguoi_thue);
+        tvTienNuoc = findViewById(R.id.tv_detail_tien_nuoc_nguoi_thue);
+        tvGioTinh = findViewById(R.id.tv_detail_gio_tinh_nguoi_thue);
+        tvDiaChi = findViewById(R.id.tv_detail_dia_chi_nguoi_thue);
+        rcvListTienIch = findViewById(R.id.rcv_list_tien_ich_nguoi_thue);
         llThuGon = findViewById(R.id.ll_thu_gon);
         llXemThem = findViewById(R.id.ll_xem_them);
         tvTienIchRong = findViewById(R.id.tv_tien_ich_rong);
@@ -216,13 +216,13 @@ public class DetailPhongTro extends AppCompatActivity {
 
         mViewPager2 = findViewById(R.id.view_pager_2);
         mCircleIndicator3 = findViewById(R.id.circle_indicator_3);
-        adapterHinhAnh = new HinhAnhAdapter(DetailPhongTro.this, listHinhAnh, R.layout.chutro_item_image_layout);
+        adapterHinhAnh = new HinhAnhAdapter(DetailPhongTroActivity.this, listHinhAnh, R.layout.chutro_item_image_layout);
         mViewPager2.setAdapter(adapterHinhAnh);
         mCircleIndicator3.setViewPager(mViewPager2);
 
 
-        adapterTienIch = new TienIchAdapter(DetailPhongTro.this, listTienIch, R.layout.cardview_item_tien_ich_layout);
-        layoutManagerTienIch = new LinearLayoutManager(DetailPhongTro.this);
+        adapterTienIch = new TienIchAdapter(DetailPhongTroActivity.this, listTienIch, R.layout.cardview_item_tien_ich_layout);
+        layoutManagerTienIch = new LinearLayoutManager(DetailPhongTroActivity.this);
         layoutManagerTienIch.setOrientation(RecyclerView.HORIZONTAL);
         layoutManagerTienIch = new GridLayoutManager(this, 4);
         rcvListTienIch.setLayoutManager(layoutManagerTienIch);

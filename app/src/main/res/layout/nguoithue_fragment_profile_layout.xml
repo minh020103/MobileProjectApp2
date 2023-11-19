@@ -1,12 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/background_gray"
+    android:orientation="vertical">
 
-    <TextView
+    <androidx.appcompat.widget.Toolbar
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="profile"
-        android:textSize="30sp"/>
+        android:layout_height="wrap_content">
+
+        <TextView
+            style="@style/tv_toolbar"
+            android:text="@string/hs" />
+    </androidx.appcompat.widget.Toolbar>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:background="@color/white"
+        android:padding="10dp">
+
+        <com.makeramen.roundedimageview.RoundedImageView
+            android:id="@+id/imgView_profile"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/avt"
+            app:riv_oval="true" />
+
+        <TextView
+            android:id="@+id/tv_nameNguoiThue"
+            style="@style/tv_18sp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="20dp"
+            android:layout_toRightOf="@+id/imgView_profile"
+            android:text="@string/text_ten"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tv_phone"
+            style="@style/tv_16sp"
+            android:layout_below="@+id/tv_nameNguoiThue"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_toRightOf="@+id/imgView_profile"
+            android:text="@string/text_sdt"
+            android:textSize="18sp" />
+
+    </RelativeLayout>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_Edit_Profile"
+        style="@style/btn2"
+        android:drawableRight="@drawable/iconp_edit_profile"
+        android:text="@string/stt" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_Change_Password"
+        style="@style/btn2"
+        android:drawableRight="@drawable/iconp_changepassword"
+        android:text="@string/dmk" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_Authencation"
+        style="@style/btn2"
+        android:drawableRight="@drawable/iconp_authencation"
+        android:text="@string/xt" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_Logout"
+        style="@style/btn2"
+        android:drawableRight="@drawable/iconp_logout"
+        android:text="@string/dx" />
+
+
 </LinearLayout>

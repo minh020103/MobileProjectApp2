@@ -36,7 +36,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.change_password_layout);
+        setContentView(R.layout.chutro_change_password_layout);
         sharedPreferences = ChangePasswordActivity.this.getSharedPreferences(Const.PRE_LOGIN, Context.MODE_PRIVATE);
         idTaiKhoan = sharedPreferences.getInt("idTaiKhoan", -1);
         anhXa();
@@ -134,10 +134,10 @@ public class ChangePasswordActivity extends AppCompatActivity {
 
     private void anhXa() {
         imgBack = findViewById(R.id.img_back);
-        edtPassNew = findViewById(R.id.edt_pass_new);
-        edtPassNow = findViewById(R.id.edt_pass_now);
-        edtPassConfirm = findViewById(R.id.edt_pass_confrim);
-        btnAcceptChangePass = findViewById(R.id.btn_accept_change_pass);
+        edtPassNew = findViewById(R.id.edt_pass_new_nguoi_thue);
+        edtPassNow = findViewById(R.id.edt_pass_now_nguoi_thue);
+        edtPassConfirm = findViewById(R.id.edt_pass_confrim_nguoi_thue);
+        btnAcceptChangePass = findViewById(R.id.btn_accept_change_pass_nguoi_thue);
         btnCancel = findViewById(R.id.btn_cancel);
     }
 
