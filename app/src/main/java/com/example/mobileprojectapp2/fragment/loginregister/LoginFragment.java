@@ -19,6 +19,7 @@ import androidx.appcompat.app.AlertDialog;
 
 import com.example.mobileprojectapp2.R;
 import com.example.mobileprojectapp2.activity.chutro.MotelRoomOwnerActivity;
+import com.example.mobileprojectapp2.activity.nguoithue.RenterActivity;
 import com.example.mobileprojectapp2.api.chutro.ApiServiceNghiem;
 import com.example.mobileprojectapp2.api.Const;
 import com.example.mobileprojectapp2.datamodel.TaiKhoan;
@@ -101,7 +102,8 @@ public class LoginFragment extends AbstractFragment{
                     startActivity(intent);
                 }else{
                     batTatProgessBar(1);
-                    thongBao("Đây là Tài khoản người thuê");
+                    Intent intent = new Intent(getContext(), RenterActivity.class);
+                    startActivity(intent);
                 }
 
             }
