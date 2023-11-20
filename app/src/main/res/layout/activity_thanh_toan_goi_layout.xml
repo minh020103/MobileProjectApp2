@@ -1,9 +1,160 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".activity.chutro.ThanhToanGoiActivity">
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/tbXacNhanTaiKhoan"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.5"
+        android:layout_marginBottom="2dp"
+        android:background="@color/white">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+            <ImageView
+                android:id="@+id/img_Back"
+                android:layout_width="50dp"
+                android:layout_height="34dp"
+                android:src="@drawable/icon_back" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="34dp"
+                android:textStyle="bold"
+                android:text="Thanh Toán Gói"
+                android:gravity="center"
+                android:textSize="25sp"/>
+        </RelativeLayout>
+    </androidx.appcompat.widget.Toolbar>
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="9"
+        android:layout_margin="10dp"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Số Phòng : "
+                        android:textSize="24sp"/>
+                    <TextView
+                        android:id="@+id/so_phong"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="30 Phòng"
+                        android:textSize="24sp"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Thời Hạn : "
+                        android:textSize="24sp"/>
+                    <TextView
+                        android:id="@+id/so_ngay"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="90 Ngày"
+                        android:textSize="24sp"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Giá : "
+                        android:textSize="24sp"/>
+                    <TextView
+                        android:id="@+id/gia"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="3000000"
+                        android:textSize="24sp"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Số tài Khoản Admin : "
+                        android:textSize="24sp"/>
+                    <TextView
+                        android:id="@+id/so_tai_khoan"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="1024753661"
+                        android:textSize="24sp"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Tên Admin Hưởng Thụ : "
+                        android:textSize="24sp"/>
+                    <TextView
+                        android:id="@+id/ten_admin"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Nguyen Tan Dung"
+                        android:textSize="24sp"/>
+                </LinearLayout>
+                <com.makeramen.roundedimageview.RoundedImageView
+                    android:id="@+id/imgCK"
+                    android:layout_width="match_parent"
+                    android:layout_height="4in"
+                    android:src="@drawable/iconp_add"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="20sp"
+                    android:text="Lưu ý khi sử dụng hình ảnh không có thật tài khoản sẽ bị khoá"
+                    android:textColor="#FF0000"/>
+            </LinearLayout>
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.8"
+        android:layout_margin="10dp">
+        <Button
+            android:id="@+id/btn_gui_goi"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Gửi"
+            android:textColor="#000000"
+            android:backgroundTint="@color/background_gray"/>
+    </LinearLayout>
+
+
+
+</LinearLayout>
