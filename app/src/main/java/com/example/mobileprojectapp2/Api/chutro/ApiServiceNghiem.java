@@ -22,70 +22,70 @@ import retrofit2.http.Query;
 
 public interface ApiServiceNghiem {
 
-    String doman = "http://192.168.1.231/3t/laravel/public/api/";
+    String doman = "http://192.168.1.103/3t/laravel/public/";
     ApiServiceNghiem apiService =new Retrofit.Builder()
-            .baseUrl(doman)
+            .baseUrl(Const.DOMAIN)
             .addConverterFactory(GsonConverterFactory.create())
             .build().create(ApiServiceNghiem.class);
-    @GET("danhsachtinnhan")
+    @GET("api/danhsachtinnhan")
     Call<ArrayList<TinNhan>> layDanhSachTinNhan(@Query("idPhong")int idPhong);
-    @GET("phongtinnhan")
+    @GET("api/phongtinnhan")
     Call<Integer> layIdPhongTinNhan(@Query("idTaiKhoan1")int idTaiKhoan1,@Query("idTaiKhoan2")int idTaiKhoan2 );
 
-    @GET("laytaikhoandoiphuong")
+    @GET("api/laytaikhoandoiphuong")
     Call<TaiKhoan> layTaiKhoanDoiPhuong(@Query("idDoiPhuong") int idDoiPhuong);
-    @GET("chutro/thongtinchitiet")
+    @GET("api/chutro/thongtinchitiet")
     Call<ChuTro> thongTinChiTietChuTro(@Query("idTaiKhoan") int idTaiKhoan);
-    @GET("nguoithue/thongtinchitiet")
+    @GET("api/nguoithue/thongtinchitiet")
     Call<NguoiThue> thongTinChiTietNguoiThue(@Query("idTaiKhoan") int idTaiKhoan);
     @Multipart
-    @POST("guitinnhan")
+    @POST("api/guitinnhan")
     Call<TinNhan> guiTinNhan(@Part("idPhong") int idPhong,
                              @Part("idTaiKhoan") int idTaiKhoan,
                              @Part("noiDung")RequestBody noiDung);
-    @GET("danhsachtinnhantheoidtaikhoan")
+    @GET("api/danhsachtinnhantheoidtaikhoan")
     Call<ArrayList<PhongTinNhan>> danhSachTinNhanTheoIdTaiKhoan(@Query("idTaiKhoan") int idTaiKhoan);
 
     @Multipart
-    @POST("capnhattinnhanmoinhat")
+    @POST("api/capnhattinnhanmoinhat")
     Call<Integer> capNhatTinNhanMoiNhat(@Part("idTaiKhoan") int idTaiKhoan,
                                         @Part("id") int idPhong,
                                         @Part("tinNhanMoiNhat")RequestBody noiDung,
                                         @Part("thoiGian")RequestBody thoiGian);
     @Multipart
-    @POST("capnhattrangthaidaxem")
+    @POST("api/capnhattrangthaidaxem")
     Call<Integer> capNhatTrangThaiDaXem(@Part("idPhong") int idPhong,
                                         @Part("idTaiKhoan")int idTaiKhoan);
 
-    @GET("kiemtradangnhap")
+    @GET("api/kiemtradangnhap")
     Call<TaiKhoan> kiemTraDangNhap(@Query("tenTaiKhoan") String tenTaiKhoan, @Query("matKhau") String matKhau );
 
-    @GET("taikhoan/dangnhap")
+    @GET("api/taikhoan/dangnhap")
     Call<TaiKhoan> dangNhap(@Query("tenTaiKhoan") String tenTaiKhoan, @Query("matKhau") String matKhau );
 
     @Multipart
-    @POST("taotaikhoanchutro")
+    @POST("api/taotaikhoanchutro")
     Call<ChuTro> taoTaiKhoanChuTro(@Part("ten") RequestBody ten,
                                    @Part("tenTaiKhoan")RequestBody tenTaiKhoan,
                                    @Part("matKhau")RequestBody matKhau,
                                    @Part("email")RequestBody email);
     @Multipart
-    @POST("taotaikhoannguoithue")
+    @POST("api/taotaikhoannguoithue")
     Call<NguoiThue> taoTaiKhoanNguoiThue(@Part("ten") RequestBody ten,
                                    @Part("tenTaiKhoan")RequestBody tenTaiKhoan,
                                    @Part("matKhau")RequestBody matKhau,
                                    @Part("email")RequestBody email,
                                     @Part("gioiTinh") RequestBody gioiTinh);
-    @GET("chinhsach")
+    @GET("api/chinhsach")
     Call<ChinhSach> xemChinhSach(@Query("id") int id);
-    @GET("tatcataikhoan")
+    @GET("api/tatcataikhoan")
     Call<ArrayList<TaiKhoan>> layTatCaTaiKhoan();
     @Multipart
-    @POST("taophongtinnhan")
+    @POST("api/taophongtinnhan")
     Call<PhongTinNhan> taoPhongTinNhan(@Part("idTaiKhoan1") RequestBody idTaiKhoan1,
                                          @Part("idTaiKhoan2")RequestBody idTaiKhoan2
                                          );
 
-    @GET("layanhvatendoiphuong")
+    @GET("api/layanhvatendoiphuong")
     Call<TaiKhoan> callThongTinDoiPhuong(@Query("idSender") int idSender,@Query("idPhong") int idPhong,@Query("idDoiPhuong") int idDoiPhuong   );
 }

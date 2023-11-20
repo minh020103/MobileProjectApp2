@@ -1,14 +1,23 @@
 package com.example.mobileprojectapp2.fragment.thongbao;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
-public class YeuCauFragment extends AppCompatActivity {
+import com.example.mobileprojectapp2.R;
 
+public class YeuCauFragment extends AbstractFragment {
+    @Nullable
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_yeu_cau_fragment);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View fragmentLayout = null;
+        fragmentLayout = inflater.inflate(R.layout.activity_yeu_cau_fragment, container, false);
+
+        return fragmentLayout;
     }
 }
