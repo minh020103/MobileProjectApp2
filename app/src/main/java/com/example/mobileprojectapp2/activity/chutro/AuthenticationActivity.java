@@ -33,8 +33,11 @@ import com.example.mobileprojectapp2.api.Const;
 import com.example.mobileprojectapp2.api.chutro.ApiServicePhuc;
 import com.example.mobileprojectapp2.model.XacThucChuTro;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.io.File;
 import java.io.IOException;
@@ -63,7 +66,9 @@ public class AuthenticationActivity extends AppCompatActivity {
     private Uri cccdMT = null;
     private Uri cccdMS = null;
     private int viewID = -1;
-    DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+
+    FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+    DatabaseReference databaseReference = firebaseDatabase.getReference();
 
     private ActivityResultLauncher<Intent> mActivityResultLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
@@ -155,7 +160,7 @@ public class AuthenticationActivity extends AppCompatActivity {
                     tvNotAuthencation.setVisibility(View.GONE);
                     tvOkAuthencation.setVisibility(View.GONE);
                     btnAcceptYeuCauXacThuc.setVisibility(View.GONE);
-                    databaseReference.child("notification_admin").child(idTaiKhoan+"").setValue(0).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    databaseReference.child("notification_admin").child(idChuTro + "").setValue(0).addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void unused) {
                             Log.d(TAG, "onSuccess: PUSH NOTIFICATION REALTIME");
@@ -197,6 +202,22 @@ public class AuthenticationActivity extends AppCompatActivity {
                     tvOkAuthencation.setVisibility(View.VISIBLE);
                     btnAcceptYeuCauXacThuc.setVisibility(View.GONE);
                 }
+                databaseReference.child("notification_admin").addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        Glide.with(AuthenticationActivity.this.getLayoutInflater().getContext()).load(Const.DOMAIN + response.body().getCccdMatTruoc()).into(imageViewMatTruocCCCD);
+                        Glide.with(AuthenticationActivity.this.getLayoutInflater().getContext()).load(Const.DOMAIN + response.body().getCccdMatSau()).into(imageViewMatSauCCCD);
+                        tvNotAuthencation.setVisibility(View.GONE);
+                        tvOkAuthencation.setVisibility(View.VISIBLE);
+                        btnAcceptYeuCauXacThuc.setVisibility(View.GONE);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+
             }
 
             @Override
@@ -208,6 +229,7 @@ public class AuthenticationActivity extends AppCompatActivity {
 
         });
     }
+
     private void onClickCanDuLieu(int xacThuc) {
         if (xacThuc == CHUA_XAC_THUC) {
             imageViewMatTruocCCCD.setOnClickListener(new View.OnClickListener() {
@@ -221,7 +243,7 @@ public class AuthenticationActivity extends AppCompatActivity {
             imageViewMatSauCCCD.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Log.d(TAG, "onClick: "+v.toString());
+                    Log.d(TAG, "onClick: " + v.toString());
                     onClickRequestPermission();
                     viewID = v.getId();
                 }
@@ -233,8 +255,7 @@ public class AuthenticationActivity extends AppCompatActivity {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
             openGallery();
             return;
-        }
-        else if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
+        } else if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
             if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
                 openGallery();
             } else {
