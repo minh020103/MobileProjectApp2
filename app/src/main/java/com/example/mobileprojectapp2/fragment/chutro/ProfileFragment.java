@@ -111,7 +111,7 @@ public class ProfileFragment extends AbstractFragment {
 
     private void anhXa(View fragment) {
         imgViewProfile = fragment.findViewById(R.id.imgView_profile);
-        tvName = fragment.findViewById(R.id.tv_nameNguoiThue);
+        tvName = fragment.findViewById(R.id.tv_name);
         tvPhone = fragment.findViewById(R.id.tv_phone);
         btnEditProfile = fragment.findViewById(R.id.btn_Edit_Profile);
         btnChangePassWord = fragment.findViewById(R.id.btn_Change_Password);

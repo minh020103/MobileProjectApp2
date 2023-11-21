@@ -4,12 +4,15 @@ import static com.example.mobileprojectapp2.api.Const.MALE_GENDERS;
 import static com.example.mobileprojectapp2.api.Const.PHONG_DON;
 import static com.example.mobileprojectapp2.api.Const.PHONG_TRONG;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,23 +26,27 @@ import com.borjabravo.readmoretextview.ReadMoreTextView;
 import com.example.mobileprojectapp2.R;
 import com.example.mobileprojectapp2.activity.chutro.ZoomOutPageTransformer;
 import com.example.mobileprojectapp2.api.chutro.ApiServicePhuc;
+import com.example.mobileprojectapp2.api.nguoithue.ApiServicePhuc2;
+
 import com.example.mobileprojectapp2.datamodel.HinhAnh;
+import com.example.mobileprojectapp2.datamodel.PhongNguoiThue;
 import com.example.mobileprojectapp2.model.HinhAnh2;
-import com.example.mobileprojectapp2.model.NguoiThue2;
 import com.example.mobileprojectapp2.model.PhongTro;
 import com.example.mobileprojectapp2.model.TienIch;
 import com.example.mobileprojectapp2.recyclerviewadapter.chutro.HinhAnhAdapter;
+import com.example.mobileprojectapp2.recyclerviewadapter.chutro.PhongTroChuTroAdapter;
 import com.example.mobileprojectapp2.recyclerviewadapter.chutro.TienIchAdapter;
 import com.example.mobileprojectapp2.recyclerviewadapter.nguoithue.NguoiThueAdapter;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class DetailPhongTroActivity extends AppCompatActivity {
+public class DetailPhongTroNguoiThueActivity extends AppCompatActivity {
 
 
     private TextView tvLoaiPhongNguoiThue, tvGioTinhNguoiThue, tvGiaNguoiThue, tvSoLuongToiDaNguoiThue, tvDienTichNguoiThue,
@@ -47,18 +54,19 @@ public class DetailPhongTroActivity extends AppCompatActivity {
     private ReadMoreTextView tvMoTaNguoiThue;
     private TienIchAdapter adapterTienIch;
     private ImageView imageBack;
-    private LinearLayoutManager layoutManagerTienIch = new LinearLayoutManager(DetailPhongTroActivity.this);
-    private LinearLayoutManager layoutManagerNguoiThue = new LinearLayoutManager(DetailPhongTroActivity.this);
-    private RecyclerView rcvListTienIch, rcvListNguoiThue;
+    private LinearLayoutManager layoutManagerTienIch = new LinearLayoutManager(DetailPhongTroNguoiThueActivity.this);
+    private LinearLayoutManager layoutManagerNguoiThue = new LinearLayoutManager(DetailPhongTroNguoiThueActivity.this);
+    private RecyclerView rcvListTienIchNguoiThue, rcvListNguoiThue;
     private HinhAnhAdapter adapterHinhAnh;
     private ViewPager2 mViewPager2;
     private List<TienIch> listTienIch;
-    private List<NguoiThue2> listNguoiThue;
     private List<HinhAnh> listHinhAnh;
+    private List<PhongNguoiThue> listNguoiThue;
     private NguoiThueAdapter adapterNguoiThue;
+    private RelativeLayout rlt_tren_dsnt;
     private int idPhong = 2;
 
-    private LinearLayout llXemThem, llThuGon;
+    private LinearLayout llXemThem, llThuGon,ll_dsnt;
     private Handler handler = new Handler();
     private Runnable runnable = new Runnable() {
         @Override
@@ -72,8 +80,6 @@ public class DetailPhongTroActivity extends AppCompatActivity {
 
         }
     };
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,13 +87,14 @@ public class DetailPhongTroActivity extends AppCompatActivity {
 
         listTienIch = new ArrayList<>();
         listHinhAnh = new ArrayList<>();
-        listNguoiThue = new ArrayList<>();
+        listNguoiThue = new LinkedList<>();
 
 //        Intent intent = getIntent();
 //        idPhong = intent.getIntExtra("idPhong", 0);
 
         anhXa();
-//        getDataFromApi();
+        getDataFromApi();
+//        getNguoiThue();
         imageBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -106,6 +113,13 @@ public class DetailPhongTroActivity extends AppCompatActivity {
         });
 
         mViewPager2.setPageTransformer(new ZoomOutPageTransformer());
+
+        adapterNguoiThue.setMyOnClickListener(new PhongTroChuTroAdapter.MyOnClickListener() {
+            @Override
+            public void OnClickItem(int position, View v) {
+                alertSuccess("Nhắn tin");
+            }
+        });
     }
 
     private void getDataFromApi() {
@@ -120,8 +134,13 @@ public class DetailPhongTroActivity extends AppCompatActivity {
                     tvLoaiPhongNguoiThue.setText("Phòng trống");
                 } else if (response.body().getLoaiPhong() == PHONG_DON) {
                     tvLoaiPhongNguoiThue.setText("Phòng đơn");
+                    ll_dsnt.setVisibility(View.GONE);
+                    rlt_tren_dsnt.setVisibility(View.GONE);
                 } else {
                     tvLoaiPhongNguoiThue.setText("Phòng ghép");
+                    ll_dsnt.setVisibility(View.VISIBLE);
+                    getNguoiThue();
+                    rlt_tren_dsnt.setVisibility(View.VISIBLE);
                 }
                 tvMoTaNguoiThue.setText(response.body().getMoTa());
                 if (response.body().getGioiTinh() == MALE_GENDERS) {
@@ -135,7 +154,7 @@ public class DetailPhongTroActivity extends AppCompatActivity {
                 tvSoLuongToiDaNguoiThue.setText(response.body().getSoLuongToiDa() + " người");
                 tvDiaChiNguoiThue.setText(response.body().getDiaChiChiTiet());
 
-                Log.d("TAG", "onResponse: "+ response.body().getHinhAnhPhongTro().size());
+//                Log.d("TAG", "onResponse: "+ response.body().getHinhAnhPhongTro().size());
 
                 if (response.body().getHinhAnhPhongTro().size() == 0){
                     tvHinhAnhRong.setVisibility(View.VISIBLE);
@@ -189,17 +208,36 @@ public class DetailPhongTroActivity extends AppCompatActivity {
                         llThuGon.setVisibility(View.GONE);
                     }
                 });
-            }
 
+            }
             @Override
             public void onFailure(Call<PhongTro> call, Throwable t) {
-                Toast.makeText(DetailPhongTroActivity.this, "Error not call Api", Toast.LENGTH_SHORT).show();
+                Toast.makeText(DetailPhongTroNguoiThueActivity.this, "Error not call Api", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
-    private void anhXa() {
+    private void getNguoiThue(){
+      Call<List<PhongNguoiThue>> call = ApiServicePhuc2.apiService.getNguoiThueTheoPhong(idPhong);
+      call.enqueue(new Callback<List<PhongNguoiThue>>() {
+          @Override
+          public void onResponse(Call<List<PhongNguoiThue>> call, Response<List<PhongNguoiThue>> response) {
+              Log.d("TAG", "onResponse: "+ response.body());
+              if (response.code() == 200) {
+                  listNguoiThue.clear();
+                  listNguoiThue.addAll(response.body());
+                  adapterNguoiThue.notifyDataSetChanged();
+              }
+          }
+          @Override
+          public void onFailure(Call<List<PhongNguoiThue>> call, Throwable t) {
 
+          }
+      });
+
+    }
+
+    private void anhXa() {
         tvDienTichNguoiThue = findViewById(R.id.tv_detail_dien_tich_nguoi_thue);
         tvQuanNguoiThue = findViewById(R.id.tv_detail_quan_nguoi_thue);
         tvMoTaNguoiThue = findViewById(R.id.tv_detail_mo_ta_nguoi_thue);
@@ -211,36 +249,35 @@ public class DetailPhongTroActivity extends AppCompatActivity {
         tvTienNuocNguoiThue = findViewById(R.id.tv_detail_tien_nuoc_nguoi_thue);
         tvGioTinhNguoiThue = findViewById(R.id.tv_detail_gio_tinh_nguoi_thue);
         tvDiaChiNguoiThue = findViewById(R.id.tv_detail_dia_chi_nguoi_thue);
-        rcvListTienIch = findViewById(R.id.rcv_list_tien_ich);
+        rcvListTienIchNguoiThue = findViewById(R.id.rcv_list_tien_ich_nguoi_thue);
         rcvListNguoiThue = findViewById(R.id.rcv_list_nguoi_thue);
+        rlt_tren_dsnt = findViewById(R.id.rlt_tren_dsnt);
+
         llThuGon = findViewById(R.id.ll_thu_gon);
         llXemThem = findViewById(R.id.ll_xem_them);
+        ll_dsnt = findViewById(R.id.ll_dsnt);
         tvTienIchRong = findViewById(R.id.tv_tien_ich_rong);
         tvHinhAnhRong = findViewById(R.id.tv_hinh_anh_rong);
 
-        mViewPager2 = findViewById(R.id.view_pager_2);
-        adapterHinhAnh = new HinhAnhAdapter(DetailPhongTroActivity.this, listHinhAnh, R.layout.chutro_item_image_layout);
+        mViewPager2 = findViewById(R.id.view_pager_2_nguoi_thue);
+        adapterHinhAnh = new HinhAnhAdapter(DetailPhongTroNguoiThueActivity.this, listHinhAnh, R.layout.chutro_item_image_layout);
         mViewPager2.setAdapter(adapterHinhAnh);
 
-
-        adapterTienIch = new TienIchAdapter(DetailPhongTroActivity.this, listTienIch, R.layout.cardview_item_tien_ich_layout);
-        layoutManagerTienIch = new LinearLayoutManager(DetailPhongTroActivity.this);
+        adapterTienIch = new TienIchAdapter(DetailPhongTroNguoiThueActivity.this, listTienIch, R.layout.cardview_item_tien_ich_layout);
+        layoutManagerTienIch = new LinearLayoutManager(DetailPhongTroNguoiThueActivity.this);
         layoutManagerTienIch.setOrientation(RecyclerView.HORIZONTAL);
         layoutManagerTienIch = new GridLayoutManager(this, 4);
-        rcvListTienIch.setLayoutManager(layoutManagerTienIch);
-        rcvListTienIch.setAdapter(adapterTienIch);
+        rcvListTienIchNguoiThue.setLayoutManager(layoutManagerTienIch);
+        rcvListTienIchNguoiThue.setAdapter(adapterTienIch);
         imageBack = findViewById(R.id.img_back_detail);
 
-
-        listNguoiThue = getListNguoiThue();
-        adapterNguoiThue = new NguoiThueAdapter(DetailPhongTroActivity.this, listNguoiThue, R.layout.nguoithue_cardview_item_nguoi_o_ghep_layout);
-        rcvListNguoiThue.setLayoutManager(layoutManagerNguoiThue);
+//        listNguoiThue2 = getListNguoiThue2();
+        adapterNguoiThue = new NguoiThueAdapter(DetailPhongTroNguoiThueActivity.this, listNguoiThue, R.layout.nguoithue_cardview_item_nguoi_thue_layout);
+        layoutManagerNguoiThue = new LinearLayoutManager(DetailPhongTroNguoiThueActivity.this);
         layoutManagerNguoiThue.setOrientation(RecyclerView.VERTICAL);
         rcvListNguoiThue.setLayoutManager(layoutManagerNguoiThue);
         rcvListNguoiThue.setAdapter(adapterNguoiThue);
-
     }
-
 
     private List<HinhAnh2> getListPhoto() {
         List<HinhAnh2> list = new ArrayList<>();
@@ -250,15 +287,17 @@ public class DetailPhongTroActivity extends AppCompatActivity {
 
         return list;
     }
-
-    private List<NguoiThue2> getListNguoiThue(){
-        List<NguoiThue2> list = new ArrayList<>();
-        list.add(new NguoiThue2(1,1,R.drawable.avt,"Nguyen A","12313",1));
-        list.add(new NguoiThue2(1,1,R.drawable.avt,"Nguyen A","12313",1));
-        list.add(new NguoiThue2(1,1,R.drawable.avt,"Nguyen A","12313",1));
-        list.add(new NguoiThue2(1,1,R.drawable.avt,"Nguyen A","12313",1));
-        list.add(new NguoiThue2(1,1,R.drawable.avt,"Nguyen A","12313",1));
-        return list;
+    private void alertSuccess(String s) {
+        new AlertDialog.Builder(this)
+                .setTitle("Thông báo")
+                .setMessage(s)
+                .setIcon(R.drawable.iconp_check)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                }).show();
     }
 
 }

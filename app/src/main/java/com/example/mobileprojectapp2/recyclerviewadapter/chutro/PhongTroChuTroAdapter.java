@@ -109,13 +109,13 @@ public class PhongTroChuTroAdapter extends RecyclerView.Adapter<PhongTroChuTroAd
             itemView.setOnClickListener(this);
 
 
-            gioiTinh = itemView.findViewById(R.id.tv_detail_gio_tinh_nguoi_thue);
-            soLuongToiDa = itemView.findViewById(R.id.tv_detail_gio_tinh_nguoi_thue);
-            tienCoc = itemView.findViewById(R.id.tv_detail_gio_tinh_nguoi_thue);
-            tienNuoc = itemView.findViewById(R.id.tv_detail_gio_tinh_nguoi_thue);
-            tienDien = itemView.findViewById(R.id.tv_detail_gio_tinh_nguoi_thue);
-            moTaChiTiet = itemView.findViewById(R.id.tv_detail_gio_tinh_nguoi_thue);
-            diaChi = itemView.findViewById(R.id.tv_detail_gio_tinh_nguoi_thue);
+            gioiTinh = itemView.findViewById(R.id.tv_detail_gio_tinh);
+            soLuongToiDa = itemView.findViewById(R.id.tv_detail_gio_tinh);
+            tienCoc = itemView.findViewById(R.id.tv_detail_gio_tinh);
+            tienNuoc = itemView.findViewById(R.id.tv_detail_gio_tinh);
+            tienDien = itemView.findViewById(R.id.tv_detail_gio_tinh);
+            moTaChiTiet = itemView.findViewById(R.id.tv_detail_gio_tinh);
+            diaChi = itemView.findViewById(R.id.tv_detail_gio_tinh);
 
         }
 

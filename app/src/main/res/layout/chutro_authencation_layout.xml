@@ -81,7 +81,7 @@
                 android:text="@string/mtcccd" />
 
             <ImageView
-                android:id="@+id/imgView_mat_truoc_cccd_nguoi_thue"
+                android:id="@+id/imgView_mat_truoc_cccd"
                 android:layout_width="match_parent"
                 android:layout_height="250dp"
                 android:layout_below="@+id/tv_mat_truoc_cccd"
@@ -92,18 +92,18 @@
             <TextView
                 android:id="@+id/tv_mat_sau_cccd"
                 style="@style/tv_18sp"
-                android:layout_below="@+id/imgView_mat_truoc_cccd_nguoi_thue"
+                android:layout_below="@+id/imgView_mat_truoc_cccd"
                 android:drawableRight="@drawable/iconp_star"
                 android:drawablePadding="5dp"
                 android:paddingLeft="18dp"
                 android:text="@string/mscccd" />
 
             <ImageView
-                android:id="@+id/imgView_mat_sau_cccd_nguoi_thue"
+                android:id="@+id/imgView_mat_sau_cccd"
                 android:layout_width="match_parent"
                 android:layout_height="250dp"
                 android:layout_below="@+id/tv_mat_sau_cccd"
-                android:layout_marginTop="-5dp"
+                android:layout_marginTop="-6dp"
                 android:padding="10dp"
                 android:scaleType="fitXY"
                 android:src="@drawable/iconp_add" />
@@ -111,7 +111,7 @@
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn_accept_yeu_cau_xac_thuc_nguoi_thue"
                 style="@style/btn1"
-                android:layout_below="@+id/imgView_mat_sau_cccd_nguoi_thue"
+                android:layout_below="@+id/imgView_mat_sau_cccd"
                 android:text="@string/gycxt"
                 android:background="@color/button_fb"
                 android:layout_marginTop="30dp"/>

@@ -37,4 +37,24 @@ Thuận tiện: gần hàng xanh, trường đại học Hurtech, Hồng Bàng, 
     <string name="xt">Xác thực</string>
     <string name="dx">Đăng xuất</string>
     <string name="hs">Hồ Sơ</string>
+    <string name="ctp">Chi tiết phòng</string>
+    <string name="pccha">Phòng chưa có hình ảnh</string>
+    <string name="lp">Loai phong</string>
+    <string name="gt">Gioi tinh</string>
+    <string name="sltd">Số lượng tối đa</string>
+    <string name="dt">Diện tích</string>
+    <string name="text_dien_tich">50 ㎡</string>
+    <string name="text_sltd">10</string>
+    <string name="text_tien_coc">1 Tháng</string>
+    <string name="text_tien_dien">3.5K</string>
+    <string name="text_tien_nuoc">100K</string>
+    <string name="text_free_wf">Free</string>
+    <string name="tc">Tiền cọc</string>
+    <string name="gia">Giá:</string>
+    <string name="ct">Chi tiết</string>
+    <string name="dc">Địa chỉ</string>
+    <string name="ti">Tiện ích</string>
+    <string name="ccti">Chưa có tiện ích</string>
+    <string name="xthem">Xem thêm</string>
+    <string name="dsnt">Danh sách người thuê</string>
 </resources>

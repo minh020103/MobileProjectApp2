@@ -1,4 +1,6 @@
-package com.example.mobileprojectapp2.viewpager2adapter;
+package com.example.mobileprojectapp2.recyclerviewadapter.nguoithue;
+
+import static com.example.mobileprojectapp2.api.Const.MALE_GENDERS;
 
 import android.app.Activity;
 import android.view.LayoutInflater;
@@ -11,17 +13,21 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.mobileprojectapp2.R;
+import com.example.mobileprojectapp2.api.Const;
 import com.example.mobileprojectapp2.datamodel.NguoiThue;
-import com.example.mobileprojectapp2.model.NguoiThue2;
+import com.example.mobileprojectapp2.datamodel.PhongNguoiThue;
 import com.example.mobileprojectapp2.recyclerviewadapter.chutro.PhongTroChuTroAdapter;
 
 import java.util.List;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class NguoiThueAdapter extends RecyclerView.Adapter<NguoiThueAdapter.MyViewHolder> {
 
     private Activity activity;
-    private List<NguoiThue2> list;
+    private List<PhongNguoiThue> list;
     private int layoutID;
 
     private PhongTroChuTroAdapter.MyOnClickListener myOnClickListener;
@@ -31,7 +37,7 @@ public class NguoiThueAdapter extends RecyclerView.Adapter<NguoiThueAdapter.MyVi
         this.myOnClickListener = myOnClickListener;
     }
 
-    public NguoiThueAdapter(Activity activity, List<NguoiThue2> list, int layoutID) {
+    public NguoiThueAdapter(Activity activity, List<PhongNguoiThue> list, int layoutID) {
         this.activity = activity;
         this.list = list;
         this.layoutID = layoutID;
@@ -40,20 +46,22 @@ public class NguoiThueAdapter extends RecyclerView.Adapter<NguoiThueAdapter.MyVi
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        LayoutInflater inflater = activity.getLayoutInflater();
-        LinearLayout view = (LinearLayout) inflater.inflate(layoutID, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(layoutID, parent, false);
         return new MyViewHolder(view);
+
+
     }
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        NguoiThue2 nguoiThue = list.get(position);
-        if (nguoiThue == null) {
+        PhongNguoiThue phongNguoiThue = list.get(position);
+        if (phongNguoiThue == null) {
             return;
         }
-        holder.imageViewNguoiOGhep.setImageResource(nguoiThue.getHinh());
-        holder.tvTenNguoiOGhep.setText(nguoiThue.getTen());
-        holder.tvGioiTinhNguoiOGhep.setText(nguoiThue.getGioiTinh());
+
+        Glide.with(activity.getLayoutInflater().getContext()).load(Const.DOMAIN + phongNguoiThue.getNguoiThue().getHinh()).into(holder.imageViewNguoiThue);
+        holder.tvTenNguoiThue.setText(phongNguoiThue.getNguoiThue().getTen()+"");
+        holder.tvGioiTinhNguoiThue.setText(phongNguoiThue.getNguoiThue().getGioiTinh() == MALE_GENDERS ? "Nam" : "Nữ");
         holder.onClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -73,14 +81,15 @@ public class NguoiThueAdapter extends RecyclerView.Adapter<NguoiThueAdapter.MyVi
 
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         View.OnClickListener onClickListener;
-        private ImageView imageViewNguoiOGhep;
-        private TextView tvTenNguoiOGhep, tvGioiTinhNguoiOGhep;
+        private CircleImageView imageViewNguoiThue;
+        private TextView tvTenNguoiThue, tvGioiTinhNguoiThue;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
-            imageViewNguoiOGhep = itemView.findViewById(R.id.imgView_nguoi_o_ghep);
-            tvTenNguoiOGhep = itemView.findViewById(R.id.tv_ten_nguoi_o_ghep);
-            tvGioiTinhNguoiOGhep = itemView.findViewById(R.id.tv_gio_tinh_nguoi_o_ghep);
+            imageViewNguoiThue = itemView.findViewById(R.id.imgView_nguoi_thue);
+            tvTenNguoiThue = itemView.findViewById(R.id.tv_ten_nguoi_thue);
+            tvGioiTinhNguoiThue = itemView.findViewById(R.id.tv_gio_tinh_nguoi_thue);
+            itemView.setOnClickListener(this);
         }
 
         @Override

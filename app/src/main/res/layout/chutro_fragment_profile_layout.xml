@@ -33,7 +33,7 @@
             app:riv_oval="true" />
 
         <TextView
-            android:id="@+id/tv_nameNguoiThue"
+            android:id="@+id/tv_name"
             style="@style/tv_18sp"
             android:layout_marginStart="10dp"
             android:layout_marginTop="20dp"
@@ -45,7 +45,7 @@
         <TextView
             android:id="@+id/tv_phone"
             style="@style/tv_16sp"
-            android:layout_below="@+id/tv_nameNguoiThue"
+            android:layout_below="@+id/tv_name"
             android:layout_marginStart="10dp"
             android:layout_marginTop="5dp"
             android:layout_toRightOf="@+id/imgView_profile"

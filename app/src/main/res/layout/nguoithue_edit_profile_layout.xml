@@ -26,7 +26,7 @@
         android:layout_height="match_parent">
 
         <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/imgView_profile_nguoi_thue"
+            android:id="@+id/imgView_profile_edit"
             android:layout_width="120dp"
             android:layout_height="120dp"
             android:layout_centerHorizontal="true"
@@ -38,12 +38,12 @@
         <TextView
             android:id="@+id/tv_upload"
             style="@style/tv_18sp"
-            android:layout_below="@+id/imgView_profile_nguoi_thue"
+            android:layout_below="@+id/imgView_profile_edit"
             android:layout_centerHorizontal="true"
             android:text="@string/ful" />
 
         <TextView
-            android:id="@+id/tv_lb_ten"
+            android:id="@+id/tv_lb_ten_nguoi_thue"
             style="@style/tv_16sp"
             android:layout_below="@id/tv_upload"
             android:text="@string/tctk" />
@@ -51,11 +51,11 @@
         <EditText
             android:id="@+id/edt_name_nguoi_thue"
             style="@style/edt1"
-            android:layout_below="@+id/tv_lb_ten"
+            android:layout_below="@+id/tv_lb_ten_nguoi_thue"
             android:hint="@string/nt" />
 
         <TextView
-            android:id="@+id/tv_lb_phone"
+            android:id="@+id/tv_lb_phone_nguoi_thue"
             style="@style/tv_16sp"
             android:layout_below="@id/edt_name_nguoi_thue"
             android:text="@string/sdt" />
@@ -63,12 +63,12 @@
         <EditText
             android:id="@+id/edt_phone_nguoi_thue"
             style="@style/edt1"
-            android:layout_below="@+id/tv_lb_phone"
+            android:layout_below="@+id/tv_lb_phone_nguoi_thue"
             android:background="@color/white"
             android:hint="@string/nsdt" />
 
         <TextView
-            android:id="@+id/tv_lb_stk_bank"
+            android:id="@+id/tv_lb_stk_bank_nguoi_thue"
             style="@style/tv_16sp"
             android:layout_below="@id/edt_phone_nguoi_thue"
             android:text="@string/stknh" />
@@ -76,11 +76,11 @@
         <EditText
             android:id="@+id/edt_number_bank_nguoi_thue"
             style="@style/edt1"
-            android:layout_below="@+id/tv_lb_stk_bank"
+            android:layout_below="@+id/tv_lb_stk_bank_nguoi_thue"
             android:hint="@string/nstknh" />
 
         <TextView
-            android:id="@+id/tv_lb_name_bank"
+            android:id="@+id/tv_lb_name_bank_nguoi_thue"
             style="@style/tv_16sp"
             android:layout_below="@id/edt_number_bank_nguoi_thue"
             android:text="@string/tctknh" />
@@ -88,7 +88,7 @@
         <EditText
             android:id="@+id/edt_name_user_bank_nguoi_thue"
             style="@style/edt1"
-            android:layout_below="@+id/tv_lb_name_bank"
+            android:layout_below="@+id/tv_lb_name_bank_nguoi_thue"
             android:hint="@string/ntctk" />
 
         <androidx.appcompat.widget.AppCompatButton

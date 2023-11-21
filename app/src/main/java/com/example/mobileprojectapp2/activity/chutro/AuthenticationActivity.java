@@ -33,11 +33,8 @@ import com.example.mobileprojectapp2.api.Const;
 import com.example.mobileprojectapp2.api.chutro.ApiServicePhuc;
 import com.example.mobileprojectapp2.model.XacThucChuTro;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import java.io.File;
 import java.io.IOException;
@@ -85,11 +82,11 @@ public class AuthenticationActivity extends AppCompatActivity {
                         Uri uri = data.getData();
                         try {
                             Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
-                            if (viewID == R.id.imgView_mat_truoc_cccd_nguoi_thue) {
+                            if (viewID == R.id.imgView_mat_truoc_cccd) {
                                 cccdMT = uri;
                                 imageViewMatTruocCCCD.setImageBitmap(bitmap);
                             }
-                            if (viewID == R.id.imgView_mat_sau_cccd_nguoi_thue) {
+                            if (viewID == R.id.imgView_mat_sau_cccd) {
                                 cccdMS = uri;
                                 imageViewMatSauCCCD.setImageBitmap(bitmap);
                             }
@@ -114,6 +111,7 @@ public class AuthenticationActivity extends AppCompatActivity {
         anhXa();
         getDetailChuTro();
         onClickCanDuLieu(trangThaiXacThuc);
+
         btnAcceptYeuCauXacThuc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -129,8 +127,6 @@ public class AuthenticationActivity extends AppCompatActivity {
                 finish();
             }
         });
-
-
     }
 
     private void sendDataToApi() {
@@ -202,21 +198,8 @@ public class AuthenticationActivity extends AppCompatActivity {
                     tvOkAuthencation.setVisibility(View.VISIBLE);
                     btnAcceptYeuCauXacThuc.setVisibility(View.GONE);
                 }
-                databaseReference.child("notification_admin").addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        Glide.with(AuthenticationActivity.this.getLayoutInflater().getContext()).load(Const.DOMAIN + response.body().getCccdMatTruoc()).into(imageViewMatTruocCCCD);
-                        Glide.with(AuthenticationActivity.this.getLayoutInflater().getContext()).load(Const.DOMAIN + response.body().getCccdMatSau()).into(imageViewMatSauCCCD);
-                        tvNotAuthencation.setVisibility(View.GONE);
-                        tvOkAuthencation.setVisibility(View.VISIBLE);
-                        btnAcceptYeuCauXacThuc.setVisibility(View.GONE);
-                    }
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
 
-                    }
-                });
 
             }
 
@@ -293,8 +276,8 @@ public class AuthenticationActivity extends AppCompatActivity {
 
     private void anhXa() {
         imgViewBack = findViewById(R.id.img_back);
-        imageViewMatTruocCCCD = findViewById(R.id.imgView_mat_truoc_cccd_nguoi_thue);
-        imageViewMatSauCCCD = findViewById(R.id.imgView_mat_sau_cccd_nguoi_thue);
+        imageViewMatTruocCCCD = findViewById(R.id.imgView_mat_truoc_cccd);
+        imageViewMatSauCCCD = findViewById(R.id.imgView_mat_sau_cccd);
         tvNotAuthencation = findViewById(R.id.tv_not_authencation);
         tvOkAuthencation = findViewById(R.id.tv_ok_authencation);
         btnAcceptYeuCauXacThuc = findViewById(R.id.btn_accept_yeu_cau_xac_thuc_nguoi_thue);

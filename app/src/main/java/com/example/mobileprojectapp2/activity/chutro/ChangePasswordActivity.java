@@ -134,10 +134,10 @@ public class ChangePasswordActivity extends AppCompatActivity {
 
     private void anhXa() {
         imgBack = findViewById(R.id.img_back);
-        edtPassNew = findViewById(R.id.edt_pass_new_nguoi_thue);
-        edtPassNow = findViewById(R.id.edt_pass_now_nguoi_thue);
-        edtPassConfirm = findViewById(R.id.edt_pass_confrim_nguoi_thue);
-        btnAcceptChangePass = findViewById(R.id.btn_accept_change_pass_nguoi_thue);
+        edtPassNew = findViewById(R.id.edt_pass_new);
+        edtPassNow = findViewById(R.id.edt_pass_now);
+        edtPassConfirm = findViewById(R.id.edt_pass_confrim);
+        btnAcceptChangePass = findViewById(R.id.btn_accept_change_pass);
         btnCancel = findViewById(R.id.btn_cancel);
     }
 
