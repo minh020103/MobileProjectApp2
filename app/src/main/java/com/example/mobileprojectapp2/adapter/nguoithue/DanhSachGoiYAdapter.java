@@ -56,7 +56,7 @@ public class DanhSachGoiYAdapter extends RecyclerView.Adapter<DanhSachGoiYAdapte
             holder.gioiTinh.setText("Khác");
         }
         if(phongTro.getHinhAnhPhongTro().size()!=0){
-            Glide.with(activity.getLayoutInflater().getContext()).load(Const.DOMAIN+phongTro.getHinhAnhPhongTro().get(0)).into(holder.imgChuTro);
+            Glide.with(activity.getLayoutInflater().getContext()).load(Const.DOMAIN+phongTro.getHinhAnhPhongTro().get(0).getHinh()).into(holder.imgAnhGoiY);
         }
     }
 

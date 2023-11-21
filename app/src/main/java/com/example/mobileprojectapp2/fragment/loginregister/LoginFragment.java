@@ -103,7 +103,7 @@ public class LoginFragment extends AbstractFragment{
                     startActivity(intent);
                 }else{
                     batTatProgessBar(1);
-                    Intent intent = new Intent(getContext(), DanhSachPhongGoiYActivity.class);
+                    Intent intent = new Intent(getContext(), RenterActivity.class);
                     startActivity(intent);
                 }
 

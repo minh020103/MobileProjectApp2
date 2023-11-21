@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.mobileprojectapp2.R;
 import com.example.mobileprojectapp2.activity.chutro.PhongNhanTinActivity;
+import com.example.mobileprojectapp2.activity.nguoithue.DanhSachPhongGoiYActivity;
 import com.example.mobileprojectapp2.adapter.ListTinNhanAdapter;
 import com.example.mobileprojectapp2.api.Const;
 import com.example.mobileprojectapp2.api.chutro.ApiServiceNghiem;
@@ -59,6 +61,14 @@ public class TinNhanFragment extends AbstractFragment {
         linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
         recyclerView.setLayoutManager(linearLayoutManager);
         layDuLieu();
+//        TextView nguyHiem = fragmentLayout.findViewById(R.id.nguyHiem);
+//        nguyHiem.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent intent = new Intent(getContext(), DanhSachPhongGoiYActivity.class);
+//                startActivity(intent);
+//            }
+//        });
         return fragmentLayout;
     }
     @Override

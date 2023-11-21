@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.example.mobileprojectapp2.R;
 import com.example.mobileprojectapp2.adapter.nguoithue.DanhSachGoiYAdapter;
@@ -32,6 +33,7 @@ public class DanhSachPhongGoiYActivity extends AppCompatActivity {
     ImageView ic_back;
     SharedPreferences sharedPreferences;
     int idTaiKhoan;
+    TextView soLuongKetQua;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,7 +57,10 @@ public class DanhSachPhongGoiYActivity extends AppCompatActivity {
                 if(response!=null){
                     arrayList.clear();
                     arrayList.addAll(response.body());
+                    soLuongKetQua.setText(arrayList.size()+"");
                     danhSachGoiYAdapter.notifyDataSetChanged();
+                }else{
+                    soLuongKetQua.setText(0+"");
                 }
             }
 
@@ -79,5 +84,6 @@ public class DanhSachPhongGoiYActivity extends AppCompatActivity {
     private void anhXa(){
         recyclerView = findViewById(R.id.recyclerView);
         ic_back = findViewById(R.id.ic_back);
+        soLuongKetQua= findViewById(R.id.soLuongKetQua);
     }
 }
