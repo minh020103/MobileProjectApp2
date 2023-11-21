@@ -37,4 +37,8 @@
     <color name="text_gray2">#E4E3E3</color>
     <color name="up_down">#039BE5</color>
 
+    <color name="xanh_kuler">#CAF272</color>
+    <color name="nau_kuler">#D9A23D</color>
+    <color name="blue_kuler">#6A66D9</color>
+
 </resources>
