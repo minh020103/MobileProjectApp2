@@ -1,6 +1,8 @@
 package com.example.mobileprojectapp2.recyclerviewadapter.nguoithue;
 
 import android.app.Activity;
+import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -8,14 +10,16 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.CustomTarget;
+import com.bumptech.glide.request.transition.Transition;
 import com.example.mobileprojectapp2.R;
 import com.example.mobileprojectapp2.api.Const;
 import com.example.mobileprojectapp2.datamodel.PhongTro;
-import com.example.mobileprojectapp2.datamodel.Quan;
 
 import java.util.List;
 
@@ -45,16 +49,21 @@ public class PhongAdaprer extends RecyclerView.Adapter<PhongAdaprer.MyViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-//        PhongTro phongTro = list.get(position);
-//        if (phongTro != null) {
-//            if (phongTro.getHinhAnhPhongTro().size() > 0) {
-//                Glide.with(activity.getLayoutInflater().getContext()).load(Const.DOMAIN + phongTro.getHinhAnhPhongTro().get(0).getHinh()).load(holder.imgPhong);
-//            }
-//            holder.tvMoTa.setText(phongTro.getMoTa());
-//            holder.tvGioiTinh.setText(phongTro.getGioiTinh() == Const.ALL_GENDERS? "Giới tính: Tất cả":phongTro.getGioiTinh() == Const.MALE_GENDERS?"Giới tính: Nam":"Giới tính: Nữ");
-//            holder.tvGia.setText(phongTro.getGia());
-//            holder.tvDiaChi.setText(phongTro.getDiaChiChiTiet());
-//        }
+        PhongTro phongTro = list.get(position);
+        if (phongTro != null) {
+            if (phongTro.getHinhAnhPhongTro().size() > 0) {
+                Glide.with(activity.getLayoutInflater().getContext()).load(Const.DOMAIN+phongTro.getHinhAnhPhongTro().get(0).getHinh()).placeholder(R.drawable.not_found).into(holder.imgPhong);
+            }
+            else {
+                holder.imgPhong.setImageDrawable(activity.getResources().getDrawable(R.drawable.not_image, activity.getTheme()));
+            }
+            holder.tvMoTa.setText(phongTro.getMoTa());
+            holder.tvGioiTinh.setText(phongTro.getGioiTinh() == Const.ALL_GENDERS? "Giới tính: Tất cả":phongTro.getGioiTinh() == Const.MALE_GENDERS?"Giới tính: Nam":"Giới tính: Nữ");
+            holder.tvGia.setText(phongTro.getGia()+" đồng");
+            holder.tvDiaChi.setText(phongTro.getDiaChiChiTiet());
+            holder.tvCountComment.setText(phongTro.getBinhLuan()+"");
+            holder.tvTBRating.setText(phongTro.getDanhGia()+"");
+        }
 
         holder.onClickListener = new View.OnClickListener() {
             @Override
@@ -88,7 +97,7 @@ public class PhongAdaprer extends RecyclerView.Adapter<PhongAdaprer.MyViewHolder
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         LinearLayout llComment, llRating;
         ImageView imgPhong;
-        TextView tvMoTa, tvGioiTinh, tvGia, tvDiaChi;
+        TextView tvMoTa, tvGioiTinh, tvGia, tvDiaChi, tvCountComment, tvTBRating;
         View.OnClickListener onClickListener;
 
         public MyViewHolder(@NonNull View itemView) {
@@ -100,6 +109,8 @@ public class PhongAdaprer extends RecyclerView.Adapter<PhongAdaprer.MyViewHolder
             tvGioiTinh = itemView.findViewById(R.id.tvGioiTinh);
             tvGia = itemView.findViewById(R.id.tvGia);
             tvDiaChi = itemView.findViewById(R.id.tvDiaChi);
+            tvCountComment = itemView.findViewById(R.id.tvCountComment);
+            tvTBRating = itemView.findViewById(R.id.tvTBRating);
 
             llComment.setOnClickListener(this);
             itemView.setOnClickListener(this);

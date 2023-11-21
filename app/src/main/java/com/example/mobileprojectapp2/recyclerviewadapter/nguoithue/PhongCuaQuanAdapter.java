@@ -18,14 +18,13 @@ import com.bumptech.glide.Glide;
 import com.example.mobileprojectapp2.R;
 import com.example.mobileprojectapp2.api.Const;
 import com.example.mobileprojectapp2.datamodel.PhongTro;
-import com.example.mobileprojectapp2.datamodel.PhongTroChuTro;
 import com.example.mobileprojectapp2.viewpager2adapter.ChuTroImageSlideViewPager2Adapter;
 
 import java.util.List;
 
 import me.relex.circleindicator.CircleIndicator3;
 
-public class RoomAdapter extends RecyclerView.Adapter<RoomAdapter.MyViewHolder> {
+public class PhongCuaQuanAdapter extends RecyclerView.Adapter<PhongCuaQuanAdapter.MyViewHolder> {
 
     private Activity activity;
     private List<PhongTro> list;
@@ -34,7 +33,7 @@ public class RoomAdapter extends RecyclerView.Adapter<RoomAdapter.MyViewHolder> 
     private int position=0;
 
 
-    public RoomAdapter(Activity activity, List<PhongTro> list, int layoutID) {
+    public PhongCuaQuanAdapter(Activity activity, List<PhongTro> list, int layoutID) {
         this.activity = activity;
         this.list = list;
         this.layoutID = layoutID;
@@ -67,7 +66,9 @@ public class RoomAdapter extends RecyclerView.Adapter<RoomAdapter.MyViewHolder> 
                             "Giới tính: " + (phongTro.getGioiTinh() == 0 ? "Tất cả" : phongTro.getGioiTinh() == 1 ? "Nam" : phongTro.getGioiTinh() == 2 ? "Nữ" : "Null");
             holder.tvNoiDungPhong.setText(content);
         }
-        holder.tvTenChuTro.setText(phongTro.getPhongTroChuTro().getTen());
+        if (phongTro.getPhongTroChuTro() != null) {
+            holder.tvTenChuTro.setText(phongTro.getPhongTroChuTro().getTen());
+        }
         if (phongTro.getBinhLuan() > 0) {
             holder.tvCountComment.setText(phongTro.getBinhLuan() + "");
         } else {
@@ -79,7 +80,7 @@ public class RoomAdapter extends RecyclerView.Adapter<RoomAdapter.MyViewHolder> 
             holder.tvTBRating.setText("0");
         }
         if (phongTro.getPhongTroChuTro() != null && phongTro.getPhongTroChuTro().getHinh() != null){
-            Glide.with(activity.getLayoutInflater().getContext()).load(Const.DOMAIN+phongTro.getPhongTroChuTro().getHinh()).into(holder.imgAnhChuTro);
+            Glide.with(activity.getLayoutInflater().getContext()).load(Const.DOMAIN+phongTro.getPhongTroChuTro().getHinh()).placeholder(R.drawable.not_found).into(holder.imgAnhChuTro);
         }
 
         ChuTroImageSlideViewPager2Adapter adapter = null;

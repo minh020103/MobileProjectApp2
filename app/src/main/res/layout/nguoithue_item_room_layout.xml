@@ -2,7 +2,9 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="5dp">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_margin="5dp"
+    app:cardElevation="0dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -10,18 +12,57 @@
         android:orientation="vertical"
         android:padding="10dp">
 
-        <ImageView
-            android:id="@+id/imgPhong"
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:src="@drawable/cccd"
-            android:scaleType="fitXY"/>
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="10dp"
+            app:cardElevation="0dp">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:id="@+id/imgPhong"
+                    android:layout_width="match_parent"
+                    android:layout_height="120dp"
+                    android:src="@drawable/nhatro"
+                    android:scaleType="fitXY"/>
+                <LinearLayout
+                    android:id="@+id/llRating"
+                    android:layout_margin="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:background="@drawable/bg_a_black_circle"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:gravity="center">
+
+                    <TextView
+                        android:id="@+id/tvTBRating"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="5dp"
+                        android:gravity="top"
+                        android:textColor="@color/white"
+                        android:textStyle="bold"
+                        android:textSize="20sp"
+                        android:text="0"/>
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:src="@drawable/icon_star_selected"/>
+                </LinearLayout>
+            </RelativeLayout>
+
+        </androidx.cardview.widget.CardView>
         <TextView
             android:id="@+id/tvMoTa"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Phòng trọ sáng đẹp ở thành phố thủ đức"
-            android:textStyle="bold"/>
+            android:textStyle="bold"
+            android:textColor="@color/black"/>
         <TextView
             android:id="@+id/tvGioiTinh"
             android:layout_width="match_parent"
@@ -39,7 +80,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="đường 123 xóm 123 phường 123 quận 123, thành phố 123"
-            android:textColor="@color/black"/>
+            android:textColor="@color/text_gray"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -66,25 +107,7 @@
                     android:text="0"/>
             </LinearLayout>
 
-            <LinearLayout
-                android:id="@+id/llRating"
-                android:layout_marginLeft="10dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
 
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:src="@drawable/icon_star"/>
-
-                <TextView
-                    android:id="@+id/tvTBRating"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:gravity="top"
-                    android:text="0"/>
-            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 

@@ -23,7 +23,7 @@ public class MotelRoomOwnerViewPager2Adapter extends FragmentStateAdapter {
     public static final int PACKAGE_USING = 1;
     public static final int NOTIFICATION =2;
     public static final int MESSAGE = 3;
-    public static final int PROFILE =4;
+    public static final int PROFILE = 4;
 
     private LinkedList<AbstractFragment> fragments;
     private FragmentActivity fragmentActivity;
@@ -47,6 +47,5 @@ public class MotelRoomOwnerViewPager2Adapter extends FragmentStateAdapter {
     public int getItemCount() {
         return fragments.size();
     }
-
 
 }

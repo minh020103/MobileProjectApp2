@@ -59,35 +59,6 @@
             </LinearLayout>
 
 
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="3"
-                android:gravity="right">
-
-                <ImageView
-                    android:id="@+id/imgDanhSachNguoiThue"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_marginRight="15dp"
-                    android:src="@drawable/icon_list_person" />
-
-                <ImageView
-                    android:id="@+id/imgChinhSua"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_marginRight="15dp"
-                    android:src="@drawable/icon_edit" />
-
-                <ImageView
-                    android:id="@+id/imgXoa"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:src="@drawable/icon_close" />
-            </LinearLayout>
-
-
         </LinearLayout>
 
         <TextView
@@ -107,7 +78,7 @@
             <androidx.viewpager2.widget.ViewPager2
                 android:id="@+id/vp2SlideImage"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"/>
 
             <me.relex.circleindicator.CircleIndicator3
                 android:id="@+id/ci3SlideImage"
@@ -115,6 +86,34 @@
                 android:layout_height="40dp"
                 android:layout_alignParentBottom="true"
                 app:ci_drawable="@drawable/bg_indicator_3" />
+
+            <LinearLayout
+                android:id="@+id/llRating"
+                android:layout_margin="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:background="@drawable/bg_a_black_circle"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:gravity="center">
+
+                <TextView
+                    android:id="@+id/tvTBRating"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="5dp"
+                    android:gravity="top"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+                    android:textSize="20sp"
+                    android:text="0"/>
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/icon_star_selected"/>
+            </LinearLayout>
         </RelativeLayout>
 
         <LinearLayout
@@ -142,25 +141,7 @@
                     android:text="0"/>
             </LinearLayout>
 
-            <LinearLayout
-                android:id="@+id/llRating"
-                android:layout_marginLeft="10dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
 
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:src="@drawable/icon_star"/>
-
-                <TextView
-                    android:id="@+id/tvTBRating"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:gravity="top"
-                    android:text="0"/>
-            </LinearLayout>
         </LinearLayout>
 
     </LinearLayout>

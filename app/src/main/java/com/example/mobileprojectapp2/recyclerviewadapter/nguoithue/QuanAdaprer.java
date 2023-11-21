@@ -44,18 +44,18 @@ public class QuanAdaprer extends RecyclerView.Adapter<QuanAdaprer.MyViewHolder> 
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-//        Quan quan = list.get(position);
-//        if (quan != null){
-//            Glide.with(activity.getLayoutInflater().getContext()).load(Const.DOMAIN+quan.getHinh()).into(holder.imgQuan);
-//            holder.tvQuan.setText(quan.getTenQuan());
-//        }
-//
-//        holder.onClickListener = new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                onClick.onClickItemListenner(position, view);
-//            }
-//        };
+        Quan quan = list.get(position);
+        if (quan != null){
+            Glide.with(activity.getLayoutInflater().getContext()).load(Const.DOMAIN+quan.getHinh()).placeholder(R.drawable.not_found).into(holder.imgQuan);
+            holder.tvQuan.setText(quan.getTenQuan());
+        }
+
+        holder.onClickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onClick.onClickItemListenner(position, view);
+            }
+        };
 
 
     }
