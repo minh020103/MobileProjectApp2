@@ -25,7 +25,7 @@ import java.util.List;
 
 public class RenterActivity extends AppCompatActivity {
 
-    private ViewPager2 viewPager2NguoiThue;
+    public static ViewPager2 viewPager2NguoiThue;
     private BottomNavigationView bottomNavigationViewNguoiThue;
     private RenterViewPage2Adapter adapter;
     private LinkedList<AbstractFragment> list;

@@ -36,5 +36,7 @@
     <color name="xanh3">#a1b8c5</color>
     <color name="text_gray2">#E4E3E3</color>
     <color name="up_down">#039BE5</color>
+    <color name="blacka">#B3000000</color>
+    <color name="no_color">#00000000</color>
 
 </resources>
