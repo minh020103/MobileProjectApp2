@@ -15,6 +15,7 @@ import com.example.mobileprojectapp2.fragment.nguoithue.MessageFragment;
 import com.example.mobileprojectapp2.fragment.nguoithue.MyRoomFragment;
 import com.example.mobileprojectapp2.fragment.nguoithue.NotificationFragment;
 import com.example.mobileprojectapp2.fragment.nguoithue.ProfileFragment;
+import com.example.mobileprojectapp2.fragment.nguoithue.TinNhanFragment;
 import com.example.mobileprojectapp2.viewpager2adapter.RenterViewPage2Adapter;
 import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -48,9 +49,9 @@ public class RenterActivity extends AppCompatActivity {
         list.add(new HomeFragment());
         list.add(new MyRoomFragment());
         list.add(new NotificationFragment());
-        list.add(new MessageFragment());
+//        list.add(new MessageFragment());
+        list.add(new TinNhanFragment());
         list.add(new ProfileFragment());
-
         adapter.setFragments(list);
         viewPager2NguoiThue.setAdapter(adapter);
         viewPager2NguoiThue.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {

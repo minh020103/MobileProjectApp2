@@ -1,15 +1,15 @@
-package com.example.mobileprojectapp2.model;
+package com.example.mobileprojectapp2.datamodels;
 
+import com.example.mobileprojectapp2.datamodel.ChuTro;
 import com.example.mobileprojectapp2.datamodel.HinhAnh;
-import com.example.mobileprojectapp2.datamodel.PhongTroChuTro;
 import com.example.mobileprojectapp2.datamodel.Quan;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 public class PhongTro {
     private int id;
     private int soPhong;
-    private String tenPhong;
     private int gia;
     private int dienTich;
     private String moTa;
@@ -20,9 +20,28 @@ public class PhongTro {
     private int soLuongToiDa;
     private int tienCoc;
     private int gioiTinh;
+    private Timestamp created_at;
     private int tienDien;
     private int tienNuoc;
     private Quan quan;
+    private List<HinhAnh> hinhAnhPhongTro;
+    private ChuTro chuTro;
+
+    public ChuTro getChuTro() {
+        return chuTro;
+    }
+
+    public void setChuTro(ChuTro chuTro) {
+        this.chuTro = chuTro;
+    }
+
+    public List<HinhAnh> getHinhAnhPhongTro() {
+        return hinhAnhPhongTro;
+    }
+
+    public void setHinhAnhPhongTro(List<HinhAnh> hinhAnhPhongTro) {
+        this.hinhAnhPhongTro = hinhAnhPhongTro;
+    }
 
     public Quan getQuan() {
         return quan;
@@ -32,31 +51,6 @@ public class PhongTro {
         this.quan = quan;
     }
 
-    private List<TienIch> danhSachTienIch;
-    private List<HinhAnh> hinhAnhPhongTro;
-
-    private PhongTroChuTro phongTroChuTro;
-
-    public PhongTro(int id, int soPhong, String tenPhong, int gia, int dienTich, String moTa, int idQuan, int idPhuong, String diaChiChiTiet, int loaiPhong, int soLuongToiDa, int tienCoc, int gioiTinh, int tienDien, int tienNuoc, List<TienIch> danhSachTienIch, List<HinhAnh> hinhAnhPhongTro, PhongTroChuTro phongTroChuTro) {
-        this.id = id;
-        this.soPhong = soPhong;
-        this.tenPhong = tenPhong;
-        this.gia = gia;
-        this.dienTich = dienTich;
-        this.moTa = moTa;
-        this.idQuan = idQuan;
-        this.idPhuong = idPhuong;
-        this.diaChiChiTiet = diaChiChiTiet;
-        this.loaiPhong = loaiPhong;
-        this.soLuongToiDa = soLuongToiDa;
-        this.tienCoc = tienCoc;
-        this.gioiTinh = gioiTinh;
-        this.tienDien = tienDien;
-        this.tienNuoc = tienNuoc;
-        this.danhSachTienIch = danhSachTienIch;
-        this.hinhAnhPhongTro = hinhAnhPhongTro;
-        this.phongTroChuTro = phongTroChuTro;
-    }
 
     public int getId() {
         return id;
@@ -72,14 +66,6 @@ public class PhongTro {
 
     public void setSoPhong(int soPhong) {
         this.soPhong = soPhong;
-    }
-
-    public String getTenPhong() {
-        return tenPhong;
-    }
-
-    public void setTenPhong(String tenPhong) {
-        this.tenPhong = tenPhong;
     }
 
     public int getGia() {
@@ -154,6 +140,14 @@ public class PhongTro {
         this.tienCoc = tienCoc;
     }
 
+    public Timestamp getCreated_at() {
+        return created_at;
+    }
+
+    public void setCreated_at(Timestamp created_at) {
+        this.created_at = created_at;
+    }
+
     public int getGioiTinh() {
         return gioiTinh;
     }
@@ -176,29 +170,5 @@ public class PhongTro {
 
     public void setTienNuoc(int tienNuoc) {
         this.tienNuoc = tienNuoc;
-    }
-
-    public List<TienIch> getDanhSachTienIch() {
-        return danhSachTienIch;
-    }
-
-    public void setDanhSachTienIch(List<TienIch> danhSachTienIch) {
-        this.danhSachTienIch = danhSachTienIch;
-    }
-
-    public List<HinhAnh> getHinhAnhPhongTro() {
-        return hinhAnhPhongTro;
-    }
-
-    public void setHinhAnhPhongTro(List<HinhAnh> hinhAnhPhongTro) {
-        this.hinhAnhPhongTro = hinhAnhPhongTro;
-    }
-
-    public PhongTroChuTro getPhongTroChuTro() {
-        return phongTroChuTro;
-    }
-
-    public void setPhongTroChuTro(PhongTroChuTro phongTroChuTro) {
-        this.phongTroChuTro = phongTroChuTro;
     }
 }

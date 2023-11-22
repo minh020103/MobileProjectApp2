@@ -19,9 +19,17 @@ import androidx.appcompat.app.AlertDialog;
 
 import com.example.mobileprojectapp2.R;
 import com.example.mobileprojectapp2.activity.chutro.MotelRoomOwnerActivity;
+import com.example.mobileprojectapp2.activity.nguoithue.DanhSachPhongGoiYActivity;
+import com.example.mobileprojectapp2.activity.nguoithue.RenterActivity;
 import com.example.mobileprojectapp2.api.chutro.ApiServiceNghiem;
 import com.example.mobileprojectapp2.api.Const;
 import com.example.mobileprojectapp2.datamodel.TaiKhoan;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -35,6 +43,7 @@ public class LoginFragment extends AbstractFragment{
     Float v = 0.0f;
     SharedPreferences sharedPreferences;
     ProgressBar progressBar;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -87,31 +96,74 @@ public class LoginFragment extends AbstractFragment{
 //            thongBao("Tài Khoản Hoặc Mật Khẩu Không Đúng!");
 //            }
 //        });
+//
+//        Call<TaiKhoan> call = ApiServiceNghiem.apiService.dangNhap(tenTaiKhoan,matKhau);
+//        call.enqueue(new Callback<TaiKhoan>() {
+//            @Override
+//            public void onResponse(Call<TaiKhoan> call, Response<TaiKhoan> response) {
+//                sharedPreferences.edit().putInt("idTaiKhoan", response.body().getId()).commit();
+//                if(response.body().getLoaiTaiKhoan()==1){
+//                    sharedPreferences.edit().putInt("idChuTro", response.body().getNguoiDangNhap().getId()).commit();
+//                    sharedPreferences.edit().putInt("trangThaiXacThuc", response.body().getNguoiDangNhap().getXacThuc()).commit();
+//                    batTatProgessBar(1);
+//                    Intent intent = new Intent(getContext(), MotelRoomOwnerActivity.class);
+//                    startActivity(intent);
+//                }else{
+//                    batTatProgessBar(1);
+//                    Intent intent = new Intent(getContext(), RenterActivity.class);
+//                    startActivity(intent);
+//                }
+//
+//            }
+//
+//            @Override
+//            public void onFailure(Call<TaiKhoan> call, Throwable t) {
+//                batTatProgessBar(1);
+//                thongBao("Tài Khoản Hoặc Mật Khẩu Không Đúng!");
+//            }
+//        });
 
-        Call<TaiKhoan> call = ApiServiceNghiem.apiService.dangNhap(tenTaiKhoan,matKhau);
+
+        Call<TaiKhoan> call = ApiServiceNghiem.apiService.dangNhapFB(tenTaiKhoan);
         call.enqueue(new Callback<TaiKhoan>() {
             @Override
             public void onResponse(Call<TaiKhoan> call, Response<TaiKhoan> response) {
-                sharedPreferences.edit().putInt("idTaiKhoan", response.body().getId()).commit();
-                if(response.body().getLoaiTaiKhoan()==1){
-                    sharedPreferences.edit().putInt("idChuTro", response.body().getNguoiDangNhap().getId()).commit();
-                    sharedPreferences.edit().putInt("trangThaiXacThuc", response.body().getNguoiDangNhap().getXacThuc()).commit();
+                FirebaseAuth firebaseAuth;
+                firebaseAuth = FirebaseAuth.getInstance();
+                firebaseAuth.signInWithEmailAndPassword(tenTaiKhoan,matKhau).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
+                    @Override
+                    public void onSuccess(AuthResult authResult) {
+                        sharedPreferences.edit().putInt("idTaiKhoan", response.body().getId()).commit();
+                        if(response.body().getLoaiTaiKhoan()==1){
+                        sharedPreferences.edit().putInt("idChuTro", response.body().getNguoiDangNhap().getId()).commit();
+                        sharedPreferences.edit().putInt("trangThaiXacThuc", response.body().getNguoiDangNhap().getXacThuc()).commit();
+                        batTatProgessBar(1);
+                        Intent intent = new Intent(getContext(), MotelRoomOwnerActivity.class);
+                        startActivity(intent);
+                        }
+                        else{
                     batTatProgessBar(1);
-                    Intent intent = new Intent(getContext(), MotelRoomOwnerActivity.class);
+                    Intent intent = new Intent(getContext(), RenterActivity.class);
                     startActivity(intent);
-                }else{
-                    batTatProgessBar(1);
-                    thongBao("Đây là Tài khoản người thuê");
-                }
+                                }
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
 
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        batTatProgessBar(1);
+                        thongBao("Tài Khoản Hoặc Mật Khẩu Không Đúng 1");
+                    }
+                });
             }
 
             @Override
             public void onFailure(Call<TaiKhoan> call, Throwable t) {
                 batTatProgessBar(1);
-                thongBao("Tài Khoản Hoặc Mật Khẩu Không Đúng!");
+                thongBao("Tài Khoản Hoặc Mật Khẩu Không Đúng");
             }
         });
+
     }
     private boolean kiemTraRong(){
         if(!tenTaiKhoan.getText().toString().isEmpty()&&!matKhau.getText().toString().isEmpty()){

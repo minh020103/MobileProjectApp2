@@ -1,4 +1,4 @@
-package com.example.mobileprojectapp2.fragment.chutro;
+package com.example.mobileprojectapp2.fragment.nguoithue;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,15 +18,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.mobileprojectapp2.R;
 import com.example.mobileprojectapp2.activity.chutro.PhongNhanTinActivity;
-import com.example.mobileprojectapp2.activity.chutro.RoomMassageActivity;
+import com.example.mobileprojectapp2.activity.nguoithue.DanhSachPhongGoiYActivity;
 import com.example.mobileprojectapp2.adapter.ListTinNhanAdapter;
-import com.example.mobileprojectapp2.adapter.TinNhanAdapter;
 import com.example.mobileprojectapp2.api.Const;
 import com.example.mobileprojectapp2.api.chutro.ApiServiceNghiem;
 import com.example.mobileprojectapp2.datamodel.PhongTinNhan;
 import com.example.mobileprojectapp2.datamodel.TaiKhoan;
-import com.example.mobileprojectapp2.datamodel.TinNhan;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -38,7 +36,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class TinNhanFragment extends AbstractFragment{
+public class TinNhanFragment extends AbstractFragment {
 
 
     FirebaseDatabase firebaseDatabase;
@@ -120,12 +118,10 @@ public class TinNhanFragment extends AbstractFragment{
         });
     }
     private void layDuLieu(){
-
         databaseReference.child("thongBaoReset").child(senderId+"").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 arrayList.clear();
-
                 Call<ArrayList<PhongTinNhan>> call = ApiServiceNghiem.apiService.danhSachTinNhanTheoIdTaiKhoan(senderId);
                 call.enqueue(new Callback<ArrayList<PhongTinNhan>>() {
                     @Override

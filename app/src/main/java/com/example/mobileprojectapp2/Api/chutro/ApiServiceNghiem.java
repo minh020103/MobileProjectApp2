@@ -22,7 +22,7 @@ import retrofit2.http.Query;
 
 public interface ApiServiceNghiem {
 
-    String doman = "http://192.168.2.128/3t/laravel/public/api/";
+    String doman = "http://192.168.190.1/3t/laravel/public/api/";
     ApiServiceNghiem apiService =new Retrofit.Builder()
             .baseUrl(doman)
             .addConverterFactory(GsonConverterFactory.create())
@@ -62,7 +62,8 @@ public interface ApiServiceNghiem {
 
     @GET("taikhoan/dangnhap")
     Call<TaiKhoan> dangNhap(@Query("tenTaiKhoan") String tenTaiKhoan, @Query("matKhau") String matKhau );
-
+    @GET("taikhoan/dangnhapfb")
+    Call<TaiKhoan> dangNhapFB(@Query("email") String tenTaiKhoan );
     @Multipart
     @POST("taotaikhoanchutro")
     Call<ChuTro> taoTaiKhoanChuTro(@Part("ten") RequestBody ten,
