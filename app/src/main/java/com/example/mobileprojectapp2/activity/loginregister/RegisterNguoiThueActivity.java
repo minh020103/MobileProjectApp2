@@ -7,6 +7,7 @@ import androidx.appcompat.widget.AppCompatImageView;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -112,6 +113,7 @@ public class RegisterNguoiThueActivity extends AppCompatActivity {
                                             @Override
                                             public void onFailure(Call<NguoiThue> call, Throwable t) {
                                                 thongBao("Tạo tài Khoản Thất Bại");
+
                                             }
                                         });
 
@@ -147,6 +149,9 @@ public class RegisterNguoiThueActivity extends AppCompatActivity {
 
     private void addUserFireBase(String email, String password){
         FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+        Log.d("TAG_DK1", "addUserFireBase: "+firebaseAuth);
+        Log.d("TAG_DK2", "addUserFireBase: "+firebaseAuth.getLanguageCode());
+        Log.d("TAG_DK3", "addUserFireBase: "+firebaseAuth.getUid());
         firebaseAuth.createUserWithEmailAndPassword(email,password).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
             @Override
             public void onSuccess(AuthResult authResult) {
@@ -161,6 +166,7 @@ public class RegisterNguoiThueActivity extends AppCompatActivity {
             @Override
             public void onFailure(@NonNull Exception e) {
                 thongBao("Lỗi Hệ Thống!");
+                Log.d("TAG_DK", "onFailure: "+e);
             }
         });
     }
