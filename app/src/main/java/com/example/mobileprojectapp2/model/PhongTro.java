@@ -2,6 +2,7 @@ package com.example.mobileprojectapp2.model;
 
 import com.example.mobileprojectapp2.datamodel.HinhAnh;
 import com.example.mobileprojectapp2.datamodel.PhongTroChuTro;
+import com.example.mobileprojectapp2.datamodel.Quan;
 
 import java.util.List;
 
@@ -25,8 +26,9 @@ public class PhongTro {
     private List<TienIch> danhSachTienIch;
     private List<HinhAnh> hinhAnhPhongTro;
     private ChuTro phongTroChuTro;
+    private Quan quan;
 
-    public PhongTro(int id, int soPhong, String tenPhong, int gia, int dienTich, String moTa, int idQuan, int idPhuong, String diaChiChiTiet, int loaiPhong, int soLuongToiDa, int tienCoc, int gioiTinh, int tienDien, int tienNuoc, List<TienIch> danhSachTienIch, List<HinhAnh> hinhAnhPhongTro, ChuTro phongTroChuTro) {
+    public PhongTro(int id, int soPhong, String tenPhong, int gia, int dienTich, String moTa, int idQuan, int idPhuong, String diaChiChiTiet, int loaiPhong, int soLuongToiDa, int tienCoc, int gioiTinh, int tienDien, int tienNuoc, List<TienIch> danhSachTienIch, List<HinhAnh> hinhAnhPhongTro, ChuTro phongTroChuTro, Quan quan) {
         this.id = id;
         this.soPhong = soPhong;
         this.tenPhong = tenPhong;
@@ -45,6 +47,7 @@ public class PhongTro {
         this.danhSachTienIch = danhSachTienIch;
         this.hinhAnhPhongTro = hinhAnhPhongTro;
         this.phongTroChuTro = phongTroChuTro;
+        this.quan = quan;
     }
 
     public int getId() {
@@ -189,5 +192,13 @@ public class PhongTro {
 
     public void setPhongTroChuTro(ChuTro phongTroChuTro) {
         this.phongTroChuTro = phongTroChuTro;
+    }
+
+    public Quan getQuan() {
+        return quan;
+    }
+
+    public void setQuan(Quan quan) {
+        this.quan = quan;
     }
 }

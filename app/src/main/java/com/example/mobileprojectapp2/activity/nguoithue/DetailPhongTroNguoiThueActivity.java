@@ -6,6 +6,8 @@ import static com.example.mobileprojectapp2.api.Const.PHONG_TRONG;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -25,7 +27,6 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.borjabravo.readmoretextview.ReadMoreTextView;
 import com.bumptech.glide.Glide;
 import com.example.mobileprojectapp2.R;
-import com.example.mobileprojectapp2.activity.chutro.EditProfileActivity;
 import com.example.mobileprojectapp2.activity.chutro.ZoomOutPageTransformer;
 import com.example.mobileprojectapp2.api.Const;
 import com.example.mobileprojectapp2.api.chutro.ApiServicePhuc;
@@ -39,10 +40,10 @@ import com.example.mobileprojectapp2.model.TienIch;
 import com.example.mobileprojectapp2.recyclerviewadapter.chutro.HinhAnhAdapter;
 import com.example.mobileprojectapp2.recyclerviewadapter.chutro.PhongTroChuTroAdapter;
 import com.example.mobileprojectapp2.recyclerviewadapter.chutro.TienIchAdapter;
+import com.example.mobileprojectapp2.recyclerviewadapter.nguoithue.PhucDanhSachPhongGoiYAdapter;
 import com.example.mobileprojectapp2.recyclerviewadapter.nguoithue.PhucNguoiThueAdapter;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -53,23 +54,29 @@ public class DetailPhongTroNguoiThueActivity extends AppCompatActivity {
 
 
     private TextView tvLoaiPhongNguoiThue, tvGioTinhNguoiThue, tvGiaNguoiThue, tvSoLuongToiDaNguoiThue, tvDienTichNguoiThue,
-            tvTienCocNguoiThue, tvTienDienNguoiThue, tvTienNuocNguoiThue, tvQuanNguoiThue, tvDiaChiNguoiThue, tvTienIchRong, tvHinhAnhRong, tvTenChuTro;
+            tvTienCocNguoiThue, tvTienDienNguoiThue, tvTienNuocNguoiThue, tvQuanNguoiThue, tvDiaChiNguoiThue, tvTienIchRong, tvHinhAnhRong,
+            tvTenChuTro, tvSDTNguoiThue;
     private ReadMoreTextView tvMoTaNguoiThue;
     private TienIchAdapter adapterTienIch;
     private ImageView imageBack, imageViewChuTro;
     private LinearLayoutManager layoutManagerTienIch = new LinearLayoutManager(DetailPhongTroNguoiThueActivity.this);
     private LinearLayoutManager layoutManagerNguoiThue = new LinearLayoutManager(DetailPhongTroNguoiThueActivity.this);
-    private RecyclerView rcvListTienIchNguoiThue, rcvListNguoiThue;
+    private LinearLayoutManager layoutManagerPhongGoiY = new LinearLayoutManager(DetailPhongTroNguoiThueActivity.this);
+
+    private RecyclerView rcvListTienIchNguoiThue, rcvListNguoiThue, rcvDSPhongGoiY;
     private HinhAnhAdapter adapterHinhAnh;
     private ViewPager2 mViewPager2;
     private List<TienIch> listTienIch;
     private List<HinhAnh> listHinhAnh;
     private List<PhongNguoiThue> listNguoiThue;
     private PhucNguoiThueAdapter adapterNguoiThue;
+    private List<PhongTro> listPhongGoiY;
+    private PhucDanhSachPhongGoiYAdapter adapterPhongGoiY;
     private RelativeLayout rlt_tren_dsnt;
     private int idPhong = 2;
+    private int idTaiKhoan = 3;
 
-    private LinearLayout llXemThem, llThuGon,ll_dsnt;
+    private LinearLayout llXemThem, llThuGon,ll_dsnt, llDatCoc,llGoi,llChat;
     private Handler handler = new Handler();
     private Runnable runnable = new Runnable() {
         @Override
@@ -90,7 +97,8 @@ public class DetailPhongTroNguoiThueActivity extends AppCompatActivity {
 
         listTienIch = new ArrayList<>();
         listHinhAnh = new ArrayList<>();
-        listNguoiThue = new LinkedList<>();
+        listNguoiThue = new ArrayList<>();
+        listPhongGoiY = new ArrayList<>();
 
 //        Intent intent = getIntent();
 //        idPhong = intent.getIntExtra("idPhong", 0);
@@ -123,6 +131,8 @@ public class DetailPhongTroNguoiThueActivity extends AppCompatActivity {
                 alertSuccess("Nhắn tin");
             }
         });
+
+        getDanhSachPhongGoiY();
     }
 
     private void getDataFromApi() {
@@ -142,7 +152,7 @@ public class DetailPhongTroNguoiThueActivity extends AppCompatActivity {
                 } else {
                     tvLoaiPhongNguoiThue.setText("Phòng ghép");
                     ll_dsnt.setVisibility(View.VISIBLE);
-                    getNguoiThue();
+                    getDanhSachNguoiThueGoiY();
                     rlt_tren_dsnt.setVisibility(View.VISIBLE);
                 }
                 tvMoTaNguoiThue.setText(response.body().getMoTa());
@@ -213,8 +223,20 @@ public class DetailPhongTroNguoiThueActivity extends AppCompatActivity {
                 });
 
                 tvTenChuTro.setText(response.body().getPhongTroChuTro().getTen());
+                tvSDTNguoiThue.setText(response.body().getPhongTroChuTro().getSoDienThoai());
+
                 Glide.with(DetailPhongTroNguoiThueActivity.this.getLayoutInflater().getContext()).load(Const.DOMAIN + response.body().getPhongTroChuTro().getHinh()).into(imageViewChuTro);
 
+
+                llGoi.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String phone = "tel:"+ tvSDTNguoiThue.getText();
+                        Intent callIntent = new Intent(Intent.ACTION_DIAL);
+                        callIntent.setData(Uri.parse(phone));
+                        startActivity(callIntent);
+                    }
+                });
 
             }
             @Override
@@ -224,12 +246,12 @@ public class DetailPhongTroNguoiThueActivity extends AppCompatActivity {
         });
     }
 
-    private void getNguoiThue(){
+    private void getDanhSachNguoiThueGoiY(){
       Call<List<PhongNguoiThue>> call = ApiServicePhuc2.apiService.getNguoiThueTheoPhong(idPhong);
       call.enqueue(new Callback<List<PhongNguoiThue>>() {
           @Override
           public void onResponse(Call<List<PhongNguoiThue>> call, Response<List<PhongNguoiThue>> response) {
-              Log.d("TAG", "onResponse: "+ response.body());
+              Log.d("TAG", "onResponse1: "+ response.body());
               if (response.code() == 200) {
                   listNguoiThue.clear();
                   listNguoiThue.addAll(response.body());
@@ -242,6 +264,26 @@ public class DetailPhongTroNguoiThueActivity extends AppCompatActivity {
           }
       });
 
+    }
+
+    private void getDanhSachPhongGoiY(){
+        Call<List<PhongTro>> call = ApiServicePhuc2.apiService.getDanhSachPhongGoiY(idTaiKhoan);
+        call.enqueue(new Callback<List<PhongTro>>() {
+            @Override
+            public void onResponse(Call<List<PhongTro>> call, Response<List<PhongTro>> response) {
+                Log.d("TAG", "onResponse: "+ response.body().size());
+                if (response.code() == 200) {
+                    listPhongGoiY.clear();
+                    listPhongGoiY.addAll(response.body());
+                    adapterPhongGoiY.notifyDataSetChanged();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<PhongTro>> call, Throwable t) {
+
+            }
+        });
     }
 
     private void anhXa() {
@@ -259,12 +301,17 @@ public class DetailPhongTroNguoiThueActivity extends AppCompatActivity {
         rcvListTienIchNguoiThue = findViewById(R.id.rcv_list_tien_ich_nguoi_thue);
         rcvListNguoiThue = findViewById(R.id.rcv_list_nguoi_thue);
         rlt_tren_dsnt = findViewById(R.id.rlt_tren_dsnt);
+        rcvDSPhongGoiY = findViewById(R.id.rcv_list_ds_phong_goi_y);
         imageViewChuTro = findViewById(R.id.imgView_chu_tro);
         tvTenChuTro = findViewById(R.id.tv_ten_chu_tro);
+        tvSDTNguoiThue = findViewById(R.id.tv_sdt_chu_tro);
 
         llThuGon = findViewById(R.id.ll_thu_gon);
         llXemThem = findViewById(R.id.ll_xem_them);
         ll_dsnt = findViewById(R.id.ll_dsnt);
+        llChat = findViewById(R.id.ll_chat);
+        llDatCoc = findViewById(R.id.ll_dat_coc);
+        llGoi = findViewById(R.id.ll_goi);
         tvTienIchRong = findViewById(R.id.tv_tien_ich_rong);
         tvHinhAnhRong = findViewById(R.id.tv_hinh_anh_rong);
 
@@ -286,6 +333,15 @@ public class DetailPhongTroNguoiThueActivity extends AppCompatActivity {
         layoutManagerNguoiThue.setOrientation(RecyclerView.VERTICAL);
         rcvListNguoiThue.setLayoutManager(layoutManagerNguoiThue);
         rcvListNguoiThue.setAdapter(adapterNguoiThue);
+
+        adapterPhongGoiY = new PhucDanhSachPhongGoiYAdapter(DetailPhongTroNguoiThueActivity.this, listPhongGoiY,R.layout.nguoi_thue_cardview_item_phong_goi_y);
+        layoutManagerPhongGoiY = new LinearLayoutManager(DetailPhongTroNguoiThueActivity.this);
+        layoutManagerPhongGoiY.setOrientation(RecyclerView.HORIZONTAL);
+        layoutManagerPhongGoiY = new GridLayoutManager(this,2);
+        rcvDSPhongGoiY.setLayoutManager(layoutManagerPhongGoiY);
+        rcvDSPhongGoiY.setAdapter(adapterPhongGoiY);
+
+
     }
 
     private List<HinhAnh2> getListPhoto() {
@@ -296,6 +352,8 @@ public class DetailPhongTroNguoiThueActivity extends AppCompatActivity {
 
         return list;
     }
+
+
     private void alertSuccess(String s) {
         new AlertDialog.Builder(this)
                 .setTitle("Thông báo")

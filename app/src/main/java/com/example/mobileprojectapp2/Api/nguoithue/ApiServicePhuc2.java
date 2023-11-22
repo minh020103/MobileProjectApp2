@@ -3,6 +3,7 @@ package com.example.mobileprojectapp2.api.nguoithue;
 import com.example.mobileprojectapp2.api.Const;
 import com.example.mobileprojectapp2.datamodel.NguoiThue;
 import com.example.mobileprojectapp2.datamodel.PhongNguoiThue;
+import com.example.mobileprojectapp2.model.PhongTro;
 
 import java.util.List;
 
@@ -22,4 +23,7 @@ public interface ApiServicePhuc2 {
 
     @GET("api/phongnguoithue/all")
     Call<List<PhongNguoiThue>> getNguoiThueTheoPhong(@Query("idPhong") int idPhong);
+
+    @GET("api/nguoithue/danhsachphonggoiy")
+    Call<List<PhongTro>> getDanhSachPhongGoiY(@Query("idTaiKhoan") int idTaiKhoan);
 }
