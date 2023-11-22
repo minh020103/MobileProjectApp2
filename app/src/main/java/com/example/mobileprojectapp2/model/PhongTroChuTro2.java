@@ -9,7 +9,6 @@ public class PhongTroChuTro2 implements Serializable {
     private int id;
     private int idChuTro;
     private int idPhongTro;
-
     private PhongTro phongTro;
 
     public PhongTroChuTro2() {

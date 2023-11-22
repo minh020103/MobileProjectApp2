@@ -3,11 +3,10 @@ package com.example.mobileprojectapp2.recyclerviewadapter.nguoithue;
 import static com.example.mobileprojectapp2.api.Const.MALE_GENDERS;
 
 import android.app.Activity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -16,7 +15,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.mobileprojectapp2.R;
 import com.example.mobileprojectapp2.api.Const;
-import com.example.mobileprojectapp2.datamodel.NguoiThue;
 import com.example.mobileprojectapp2.datamodel.PhongNguoiThue;
 import com.example.mobileprojectapp2.recyclerviewadapter.chutro.PhongTroChuTroAdapter;
 
@@ -24,7 +22,7 @@ import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class NguoiThueAdapter extends RecyclerView.Adapter<NguoiThueAdapter.MyViewHolder> {
+public class PhucNguoiThueAdapter extends RecyclerView.Adapter<PhucNguoiThueAdapter.MyViewHolder> {
 
     private Activity activity;
     private List<PhongNguoiThue> list;
@@ -37,7 +35,7 @@ public class NguoiThueAdapter extends RecyclerView.Adapter<NguoiThueAdapter.MyVi
         this.myOnClickListener = myOnClickListener;
     }
 
-    public NguoiThueAdapter(Activity activity, List<PhongNguoiThue> list, int layoutID) {
+    public PhucNguoiThueAdapter(Activity activity, List<PhongNguoiThue> list, int layoutID) {
         this.activity = activity;
         this.list = list;
         this.layoutID = layoutID;
@@ -58,8 +56,8 @@ public class NguoiThueAdapter extends RecyclerView.Adapter<NguoiThueAdapter.MyVi
         if (phongNguoiThue == null) {
             return;
         }
-
-        Glide.with(activity.getLayoutInflater().getContext()).load(Const.DOMAIN + phongNguoiThue.getNguoiThue().getHinh()).into(holder.imageViewNguoiThue);
+        Log.d("TAG", "onBindViewHolder: "+Const.DOMAIN + phongNguoiThue.getNguoiThue().getHinh());
+        Glide.with(activity.getLayoutInflater().getContext()).load(Const.DOMAIN + phongNguoiThue.getNguoiThue().getHinh()).placeholder(R.drawable.anhdaidien).into(holder.imageViewNguoiThue);
         holder.tvTenNguoiThue.setText(phongNguoiThue.getNguoiThue().getTen()+"");
         holder.tvGioiTinhNguoiThue.setText(phongNguoiThue.getNguoiThue().getGioiTinh() == MALE_GENDERS ? "Nam" : "Nữ");
         holder.onClickListener = new View.OnClickListener() {

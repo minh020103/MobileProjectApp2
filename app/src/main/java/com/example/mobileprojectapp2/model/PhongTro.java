@@ -24,10 +24,9 @@ public class PhongTro {
 
     private List<TienIch> danhSachTienIch;
     private List<HinhAnh> hinhAnhPhongTro;
+    private ChuTro phongTroChuTro;
 
-    private PhongTroChuTro phongTroChuTro;
-
-    public PhongTro(int id, int soPhong, String tenPhong, int gia, int dienTich, String moTa, int idQuan, int idPhuong, String diaChiChiTiet, int loaiPhong, int soLuongToiDa, int tienCoc, int gioiTinh, int tienDien, int tienNuoc, List<TienIch> danhSachTienIch, List<HinhAnh> hinhAnhPhongTro, PhongTroChuTro phongTroChuTro) {
+    public PhongTro(int id, int soPhong, String tenPhong, int gia, int dienTich, String moTa, int idQuan, int idPhuong, String diaChiChiTiet, int loaiPhong, int soLuongToiDa, int tienCoc, int gioiTinh, int tienDien, int tienNuoc, List<TienIch> danhSachTienIch, List<HinhAnh> hinhAnhPhongTro, ChuTro phongTroChuTro) {
         this.id = id;
         this.soPhong = soPhong;
         this.tenPhong = tenPhong;
@@ -184,11 +183,11 @@ public class PhongTro {
         this.hinhAnhPhongTro = hinhAnhPhongTro;
     }
 
-    public PhongTroChuTro getPhongTroChuTro() {
+    public ChuTro getPhongTroChuTro() {
         return phongTroChuTro;
     }
 
-    public void setPhongTroChuTro(PhongTroChuTro phongTroChuTro) {
+    public void setPhongTroChuTro(ChuTro phongTroChuTro) {
         this.phongTroChuTro = phongTroChuTro;
     }
 }

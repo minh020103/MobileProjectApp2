@@ -23,8 +23,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.borjabravo.readmoretextview.ReadMoreTextView;
+import com.bumptech.glide.Glide;
 import com.example.mobileprojectapp2.R;
+import com.example.mobileprojectapp2.activity.chutro.EditProfileActivity;
 import com.example.mobileprojectapp2.activity.chutro.ZoomOutPageTransformer;
+import com.example.mobileprojectapp2.api.Const;
 import com.example.mobileprojectapp2.api.chutro.ApiServicePhuc;
 import com.example.mobileprojectapp2.api.nguoithue.ApiServicePhuc2;
 
@@ -36,7 +39,7 @@ import com.example.mobileprojectapp2.model.TienIch;
 import com.example.mobileprojectapp2.recyclerviewadapter.chutro.HinhAnhAdapter;
 import com.example.mobileprojectapp2.recyclerviewadapter.chutro.PhongTroChuTroAdapter;
 import com.example.mobileprojectapp2.recyclerviewadapter.chutro.TienIchAdapter;
-import com.example.mobileprojectapp2.recyclerviewadapter.nguoithue.NguoiThueAdapter;
+import com.example.mobileprojectapp2.recyclerviewadapter.nguoithue.PhucNguoiThueAdapter;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -50,10 +53,10 @@ public class DetailPhongTroNguoiThueActivity extends AppCompatActivity {
 
 
     private TextView tvLoaiPhongNguoiThue, tvGioTinhNguoiThue, tvGiaNguoiThue, tvSoLuongToiDaNguoiThue, tvDienTichNguoiThue,
-            tvTienCocNguoiThue, tvTienDienNguoiThue, tvTienNuocNguoiThue, tvQuanNguoiThue, tvDiaChiNguoiThue, tvTienIchRong, tvHinhAnhRong;
+            tvTienCocNguoiThue, tvTienDienNguoiThue, tvTienNuocNguoiThue, tvQuanNguoiThue, tvDiaChiNguoiThue, tvTienIchRong, tvHinhAnhRong, tvTenChuTro;
     private ReadMoreTextView tvMoTaNguoiThue;
     private TienIchAdapter adapterTienIch;
-    private ImageView imageBack;
+    private ImageView imageBack, imageViewChuTro;
     private LinearLayoutManager layoutManagerTienIch = new LinearLayoutManager(DetailPhongTroNguoiThueActivity.this);
     private LinearLayoutManager layoutManagerNguoiThue = new LinearLayoutManager(DetailPhongTroNguoiThueActivity.this);
     private RecyclerView rcvListTienIchNguoiThue, rcvListNguoiThue;
@@ -62,7 +65,7 @@ public class DetailPhongTroNguoiThueActivity extends AppCompatActivity {
     private List<TienIch> listTienIch;
     private List<HinhAnh> listHinhAnh;
     private List<PhongNguoiThue> listNguoiThue;
-    private NguoiThueAdapter adapterNguoiThue;
+    private PhucNguoiThueAdapter adapterNguoiThue;
     private RelativeLayout rlt_tren_dsnt;
     private int idPhong = 2;
 
@@ -209,6 +212,10 @@ public class DetailPhongTroNguoiThueActivity extends AppCompatActivity {
                     }
                 });
 
+                tvTenChuTro.setText(response.body().getPhongTroChuTro().getTen());
+                Glide.with(DetailPhongTroNguoiThueActivity.this.getLayoutInflater().getContext()).load(Const.DOMAIN + response.body().getPhongTroChuTro().getHinh()).into(imageViewChuTro);
+
+
             }
             @Override
             public void onFailure(Call<PhongTro> call, Throwable t) {
@@ -252,6 +259,8 @@ public class DetailPhongTroNguoiThueActivity extends AppCompatActivity {
         rcvListTienIchNguoiThue = findViewById(R.id.rcv_list_tien_ich_nguoi_thue);
         rcvListNguoiThue = findViewById(R.id.rcv_list_nguoi_thue);
         rlt_tren_dsnt = findViewById(R.id.rlt_tren_dsnt);
+        imageViewChuTro = findViewById(R.id.imgView_chu_tro);
+        tvTenChuTro = findViewById(R.id.tv_ten_chu_tro);
 
         llThuGon = findViewById(R.id.ll_thu_gon);
         llXemThem = findViewById(R.id.ll_xem_them);
@@ -272,7 +281,7 @@ public class DetailPhongTroNguoiThueActivity extends AppCompatActivity {
         imageBack = findViewById(R.id.img_back_detail);
 
 //        listNguoiThue2 = getListNguoiThue2();
-        adapterNguoiThue = new NguoiThueAdapter(DetailPhongTroNguoiThueActivity.this, listNguoiThue, R.layout.nguoithue_cardview_item_nguoi_thue_layout);
+        adapterNguoiThue = new PhucNguoiThueAdapter(DetailPhongTroNguoiThueActivity.this, listNguoiThue, R.layout.nguoithue_cardview_item_nguoi_thue_layout);
         layoutManagerNguoiThue = new LinearLayoutManager(DetailPhongTroNguoiThueActivity.this);
         layoutManagerNguoiThue.setOrientation(RecyclerView.VERTICAL);
         rcvListNguoiThue.setLayoutManager(layoutManagerNguoiThue);
