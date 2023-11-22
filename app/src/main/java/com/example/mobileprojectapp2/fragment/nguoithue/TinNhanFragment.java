@@ -61,14 +61,6 @@ public class TinNhanFragment extends AbstractFragment {
         linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
         recyclerView.setLayoutManager(linearLayoutManager);
         layDuLieu();
-//        TextView nguyHiem = fragmentLayout.findViewById(R.id.nguyHiem);
-//        nguyHiem.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent intent = new Intent(getContext(), DanhSachPhongGoiYActivity.class);
-//                startActivity(intent);
-//            }
-//        });
         return fragmentLayout;
     }
     @Override

@@ -62,7 +62,8 @@ public interface ApiServiceNghiem {
 
     @GET("taikhoan/dangnhap")
     Call<TaiKhoan> dangNhap(@Query("tenTaiKhoan") String tenTaiKhoan, @Query("matKhau") String matKhau );
-
+    @GET("taikhoan/dangnhapfb")
+    Call<TaiKhoan> dangNhapFB(@Query("email") String tenTaiKhoan );
     @Multipart
     @POST("taotaikhoanchutro")
     Call<ChuTro> taoTaiKhoanChuTro(@Part("ten") RequestBody ten,
