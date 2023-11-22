@@ -32,6 +32,9 @@
                 android:value="" />
         </activity>
         <activity
+            android:name=".activity.chutro.ThanhToanGoiActivity"
+            android:exported="false" />
+        <activity
             android:name=".activity.chutro.DetailPhongTro"
             android:exported="false" />
         <activity
