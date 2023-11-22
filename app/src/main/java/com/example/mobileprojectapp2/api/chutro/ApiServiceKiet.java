@@ -36,4 +36,9 @@ public interface ApiServiceKiet {
     Call<ThongBao> getChiTietThongBaoTheoId(@Query("id") int id);
     @GET("api/thongbao/xoa")
     Call<ThongBao> xoaThongBaoTheoId(@Query("id") int id);
+    @GET("api/thongbao/demthongbaocuataikhoan")
+    Call<Integer> demThongBaoKQCuaTaiKhoan(@Query("idTaiKhoan") int idTaiKhoan);
+    @GET("api/thongbao/demyeucaudatphong")
+    Call<Integer> demThongBaoYCCuaTaiKhoan(@Query("idTaiKhoan") int idTaiKhoan);
+
 }

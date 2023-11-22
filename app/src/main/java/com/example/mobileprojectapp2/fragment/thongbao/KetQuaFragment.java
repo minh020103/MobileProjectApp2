@@ -43,6 +43,7 @@ public class KetQuaFragment extends AbstractFragment {
     List<ThongBao> list;
     ThongBaoAdapter thongBaoAdapter;
     LinearLayoutManager layoutManager;
+    SharedPreferences sharedPreferences;
 
     FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
     DatabaseReference databaseReference = firebaseDatabase.getReference();
@@ -54,8 +55,9 @@ public class KetQuaFragment extends AbstractFragment {
         fragmentLayout = inflater.inflate(R.layout.activity_ket_qua_fragment, container, false);
         shared = getActivity().getSharedPreferences(Const.PRE_LOGIN, Context.MODE_PRIVATE);
         idTaiKhoan = shared.getInt("idTaiKhoan", -1);
-        recyclerView = fragmentLayout.findViewById(R.id.rvThongBao);
-        ImageView imgRefresh = fragmentLayout.findViewById(R.id.imgRefresh);
+        recyclerView = fragmentLayout.findViewById(R.id.rvThongBaoKQ);
+
+
         layoutManager = new LinearLayoutManager(getActivity());
         layoutManager.setOrientation(RecyclerView.VERTICAL);
         recyclerView.setLayoutManager(layoutManager);
@@ -73,14 +75,6 @@ public class KetQuaFragment extends AbstractFragment {
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
-            }
-        });
-
-
-        imgRefresh.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                listThongBaoTheoIdTaiKhoan();
             }
         });
 
