@@ -19,7 +19,7 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".QuanMatKhauActivity"
+            android:name=".activity.loginregister.QuenMatKhauActivity"
             android:exported="false" />
         <activity
             android:name=".activity.nguoithue.DanhSachPhongGoiYActivity"
@@ -42,19 +42,6 @@
             android:name=".activity.nguoithue.RenterActivity"
             android:exported="false">
 
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
-        </activity>
-        <activity
-            android:name=".YeuCauFragment"
-            android:exported="false" />
-        <activity
-            android:name=".KetQuaFragment"
-            android:exported="false" />
-        <activity
-            android:name=".activity.nguoithue.RenterActivity"
-            android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
