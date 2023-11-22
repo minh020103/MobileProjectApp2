@@ -43,7 +43,7 @@ public class LoginFragment extends AbstractFragment{
     Float v = 0.0f;
     SharedPreferences sharedPreferences;
     ProgressBar progressBar;
-    FirebaseAuth firebaseAuth;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -123,12 +123,13 @@ public class LoginFragment extends AbstractFragment{
 //            }
 //        });
 
-        firebaseAuth = FirebaseAuth.getInstance();
 
         Call<TaiKhoan> call = ApiServiceNghiem.apiService.dangNhapFB(tenTaiKhoan);
         call.enqueue(new Callback<TaiKhoan>() {
             @Override
             public void onResponse(Call<TaiKhoan> call, Response<TaiKhoan> response) {
+                FirebaseAuth firebaseAuth;
+                firebaseAuth = FirebaseAuth.getInstance();
                 firebaseAuth.signInWithEmailAndPassword(tenTaiKhoan,matKhau).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                     @Override
                     public void onSuccess(AuthResult authResult) {
@@ -139,17 +140,19 @@ public class LoginFragment extends AbstractFragment{
                         batTatProgessBar(1);
                         Intent intent = new Intent(getContext(), MotelRoomOwnerActivity.class);
                         startActivity(intent);
-                }else{
+                        }
+                        else{
                     batTatProgessBar(1);
                     Intent intent = new Intent(getContext(), RenterActivity.class);
                     startActivity(intent);
-                }
+                                }
                     }
                 }).addOnFailureListener(new OnFailureListener() {
+
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         batTatProgessBar(1);
-                        thongBao("Tài Khoản Hoặc Mật Khẩu Không Đúng 1!");
+                        thongBao("Tài Khoản Hoặc Mật Khẩu Không Đúng 1");
                     }
                 });
             }
@@ -157,7 +160,7 @@ public class LoginFragment extends AbstractFragment{
             @Override
             public void onFailure(Call<TaiKhoan> call, Throwable t) {
                 batTatProgessBar(1);
-                thongBao("Tài Khoản Hoặc Mật Khẩu Không Đúng 1!");
+                thongBao("Tài Khoản Hoặc Mật Khẩu Không Đúng");
             }
         });
 

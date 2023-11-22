@@ -106,7 +106,7 @@ public class RegisterNguoiThueActivity extends AppCompatActivity {
                                         call1.enqueue(new Callback<NguoiThue>() {
                                             @Override
                                             public void onResponse(Call<NguoiThue> call, Response<NguoiThue> response) {
-                                                addUserFireBase(edtEmail.getText().toString(),edtEmail.getText().toString());
+                                                addUserFireBase(edtEmail.getText().toString(),edtMatKhau.getText().toString());
                                             }
 
                                             @Override
