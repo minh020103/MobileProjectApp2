@@ -19,6 +19,7 @@ public class PhongTro {
     private Timestamp created_at;
     private int tienDien;
     private int tienNuoc;
+    private int hoatDong;
     private Quan quan;
     private Phuong phuong;
     private List<TienIch> tienIch;
@@ -26,6 +27,15 @@ public class PhongTro {
     private ChuTro phongTroChuTro;
     private int binhLuan;
     private int danhGia;
+
+
+    public int getHoatDong() {
+        return hoatDong;
+    }
+
+    public void setHoatDong(int hoatDong) {
+        this.hoatDong = hoatDong;
+    }
 
     public ChuTro getPhongTroChuTro() {
         return phongTroChuTro;

@@ -13,6 +13,7 @@ import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.GET;
+import retrofit2.http.PATCH;
 import retrofit2.http.Query;
 
 public interface ApiServiceMinh {
@@ -31,4 +32,6 @@ public interface ApiServiceMinh {
     Call<List<PhongTro>> layTatCaPhongTrongQuan(@Query("idQuan") int idQuan,@Query("arrange") String arrange);
     @GET("api/phongtro/random")
     Call<List<PhongTro>> randomRoom();
+    @PATCH("api/phongtro/hoatdong")
+    Call<Integer> updateHoatDong(@Query("idPhong") int idPhong, @Query("hoatDong") int hoatDong,  @Query("idChuTro") int idChuTro);
 }

@@ -15,4 +15,10 @@ public class Const {
     public static final String LON_DEN_NHO = "DESC";
     public static final String NHO_DEN_LON = "ASC";
 
+    public static final int KHONG_HOAT_DONG = 0;
+    public static final int HOAT_DONG = 1;
+
+    public static final int PHONG_DA_CO_NGUOI_THUE = 100;
+    public static final int DA_DAT_SO_LUONG_PHONG_TOI_DA = 101;
+    public static final int CHUA_DANG_KY_DICH_VU = 102;
 }
