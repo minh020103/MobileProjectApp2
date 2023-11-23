@@ -73,6 +73,7 @@
                     android:layout_marginRight="15dp"
                     android:src="@drawable/icon_list_person" />
 
+
                 <ImageView
                     android:id="@+id/imgChinhSua"
                     android:layout_width="20dp"
@@ -160,6 +161,27 @@
                     android:layout_marginLeft="10dp"
                     android:gravity="top"
                     android:text="0"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/llControls"
+                android:layout_marginLeft="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/imgControls"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/icon_off"/>
+
+                <TextView
+                    android:id="@+id/tvControls"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:gravity="top"
+                    android:text="Đang tắt"/>
             </LinearLayout>
         </LinearLayout>
 
