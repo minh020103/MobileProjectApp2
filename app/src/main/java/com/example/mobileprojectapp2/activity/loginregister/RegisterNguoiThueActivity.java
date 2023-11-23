@@ -1,11 +1,13 @@
 package com.example.mobileprojectapp2.activity.loginregister;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageView;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -20,6 +22,10 @@ import com.example.mobileprojectapp2.api.chutro.ApiServiceNghiem;
 import com.example.mobileprojectapp2.datamodel.ChinhSach;
 import com.example.mobileprojectapp2.datamodel.NguoiThue;
 import com.example.mobileprojectapp2.datamodel.TaiKhoan;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 
@@ -33,7 +39,6 @@ public class RegisterNguoiThueActivity extends AppCompatActivity {
 
     Spinner spinner;
     EditText edtTen;
-    EditText edtTenTaiKhoan;
     EditText edtMatKhau;
     EditText edtEmail;
     CheckBox checkBox;
@@ -79,57 +84,55 @@ public class RegisterNguoiThueActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if(kiemTraRong()){
-                    if(kiemTraCheckBox()){
-                        Call<ArrayList<TaiKhoan>> call = ApiServiceNghiem.apiService.layTatCaTaiKhoan();
-                        call.enqueue(new Callback<ArrayList<TaiKhoan>>() {
-                            @Override
-                            public void onResponse(Call<ArrayList<TaiKhoan>> call, Response<ArrayList<TaiKhoan>> response) {
-                                boolean kt = true;
+                    if(edtMatKhau.getText().toString().length()>5){
+                        if(kiemTraCheckBox()){
+                            Call<ArrayList<TaiKhoan>> call = ApiServiceNghiem.apiService.layTatCaTaiKhoan();
+                            call.enqueue(new Callback<ArrayList<TaiKhoan>>() {
+                                @Override
+                                public void onResponse(Call<ArrayList<TaiKhoan>> call, Response<ArrayList<TaiKhoan>> response) {
+                                    boolean kt = true;
 
-                                for (TaiKhoan taiKhoan:
-                                        response.body()) {
-                                    if(edtTenTaiKhoan.getText().toString().equals(taiKhoan.getTenTaiKhoan())){
-                                        kt= false;
+                                    for (TaiKhoan taiKhoan:
+                                            response.body()) {
+                                        if(edtEmail.getText().toString().equals(taiKhoan.getEmail())){
+                                            kt= false;
+                                        }
+                                    }
+                                    if(kt==true){
+                                        RequestBody ten = RequestBody.create(MediaType.parse("multipart/form-data"),edtTen.getText().toString());
+                                        RequestBody matKhau = RequestBody.create(MediaType.parse("multipart/form-data"),edtMatKhau.getText().toString());
+                                        RequestBody email = RequestBody.create(MediaType.parse("multipart/form-data"),edtEmail.getText().toString());
+                                        RequestBody gioiTinhApi = RequestBody.create(MediaType.parse("multipart/form-data"),gioiTinh+"");
+                                        Call<NguoiThue> call1 = ApiServiceNghiem.apiService.taoTaiKhoanNguoiThue(ten,email,matKhau,email,gioiTinhApi);
+                                        call1.enqueue(new Callback<NguoiThue>() {
+                                            @Override
+                                            public void onResponse(Call<NguoiThue> call, Response<NguoiThue> response) {
+                                                addUserFireBase(edtEmail.getText().toString(),edtMatKhau.getText().toString());
+                                            }
+
+                                            @Override
+                                            public void onFailure(Call<NguoiThue> call, Throwable t) {
+                                                thongBao("Tạo tài Khoản Thất Bại");
+
+                                            }
+                                        });
+
+
+                                    }else{
+                                        thongBao("Email Đã Có!");
                                     }
                                 }
-                                if(kt==true){
-                                    RequestBody ten = RequestBody.create(MediaType.parse("multipart/form-data"),edtTen.getText().toString());
-                                    RequestBody tenTaiKhoan = RequestBody.create(MediaType.parse("multipart/form-data"),edtTenTaiKhoan.getText().toString());
-                                    RequestBody matKhau = RequestBody.create(MediaType.parse("multipart/form-data"),edtMatKhau.getText().toString());
-                                    RequestBody email = RequestBody.create(MediaType.parse("multipart/form-data"),edtEmail.getText().toString());
-                                    RequestBody gioiTinhApi = RequestBody.create(MediaType.parse("multipart/form-data"),gioiTinh+"");
-                                    Call<NguoiThue> call1 = ApiServiceNghiem.apiService.taoTaiKhoanNguoiThue(ten,tenTaiKhoan,matKhau,email,gioiTinhApi);
-                                    call1.enqueue(new Callback<NguoiThue>() {
-                                        @Override
-                                        public void onResponse(Call<NguoiThue> call, Response<NguoiThue> response) {
-                                            thongBao("Tạo Tài Khoản Thành Công");
-                                            edtTen.setText("");
-                                            edtTenTaiKhoan.setText("");
-                                            edtMatKhau.setText("");
-                                            edtEmail.setText("");
-                                            checkBox.setChecked(false);
-                                            spinner.setSelection(0);
-                                        }
 
-                                        @Override
-                                        public void onFailure(Call<NguoiThue> call, Throwable t) {
-                                            thongBao("Tạo tài Khoản Thất Bại");
-                                        }
-                                    });
-
-
-                                }else{
-                                    thongBao("Tên Tài Khoản Đã Có!");
+                                @Override
+                                public void onFailure(Call<ArrayList<TaiKhoan>> call, Throwable t) {
+                                    thongBao("Lỗi!");
                                 }
-                            }
-
-                            @Override
-                            public void onFailure(Call<ArrayList<TaiKhoan>> call, Throwable t) {
-                                thongBao("Lấy Tất Cả Tài Khoản Sai");
-                            }
-                        });
+                            });
+                        }else{
+                            thongBao("Bạn Chưa Đồng Ý Với Điều Kiên!");
+                        }
                     }else{
-                        thongBao("Bạn Chưa Đồng Ý Với Điều Kiên!");
+                            thongBao("Mật Khẩu Tối Thiểu 6 Kí Tự");
                     }
                 }else{
                     thongBao("Không Được Để Trống Thông Tin!");
@@ -143,6 +146,30 @@ public class RegisterNguoiThueActivity extends AppCompatActivity {
             }
         });
     }
+
+    private void addUserFireBase(String email, String password){
+        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+        Log.d("TAG_DK1", "addUserFireBase: "+firebaseAuth);
+        Log.d("TAG_DK2", "addUserFireBase: "+firebaseAuth.getLanguageCode());
+        Log.d("TAG_DK3", "addUserFireBase: "+firebaseAuth.getUid());
+        firebaseAuth.createUserWithEmailAndPassword(email,password).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
+            @Override
+            public void onSuccess(AuthResult authResult) {
+                thongBao("Tạo Tài Khoản Thành Công");
+                edtTen.setText("");
+                edtMatKhau.setText("");
+                edtEmail.setText("");
+                checkBox.setChecked(false);
+                spinner.setSelection(0);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                thongBao("Lỗi Hệ Thống!");
+                Log.d("TAG_DK", "onFailure: "+e);
+            }
+        });
+    }
     private boolean kiemTraCheckBox(){
         if(checkBox.isChecked()){
             return true;
@@ -150,7 +177,7 @@ public class RegisterNguoiThueActivity extends AppCompatActivity {
         return false;
     }
     private boolean kiemTraRong(){
-        if(!edtTen.getText().toString().isEmpty()&&!edtTenTaiKhoan.getText().toString().isEmpty()&&!edtMatKhau.getText().toString().isEmpty()&&!edtEmail.getText().toString().isEmpty()){
+        if(!edtTen.getText().toString().isEmpty()&&!edtMatKhau.getText().toString().isEmpty()&&!edtEmail.getText().toString().isEmpty()){
             return true;
         }return false;
     }
@@ -187,7 +214,6 @@ public class RegisterNguoiThueActivity extends AppCompatActivity {
     }
     private void anhXa(){
         edtTen = findViewById(R.id.hoTenNguoiDung);
-        edtTenTaiKhoan = findViewById(R.id.tenTaiKhoan);
         edtMatKhau = findViewById(R.id.matKhau);
         edtEmail = findViewById(R.id.email);
         checkBox = findViewById(R.id.checkBox);

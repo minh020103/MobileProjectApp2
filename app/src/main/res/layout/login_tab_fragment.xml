@@ -11,7 +11,7 @@
         android:id="@+id/tenTaiKhoan"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:hint="Tên Tài Khoản"
+        android:hint="Email"
         android:paddingLeft="20dp"
         android:paddingTop="10dp"
         android:paddingBottom="10dp"

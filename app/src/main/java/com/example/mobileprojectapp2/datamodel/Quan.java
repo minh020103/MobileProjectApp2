@@ -37,4 +37,7 @@ public class Quan {
     public void setTrangThai(String trangThai) {
         this.trangThai = trangThai;
     }
+
+    public Quan() {
+    }
 }

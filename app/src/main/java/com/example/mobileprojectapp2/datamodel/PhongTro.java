@@ -23,6 +23,33 @@ public class PhongTro {
     private Phuong phuong;
     private List<TienIch> tienIch;
     private List<HinhAnh> hinhAnhPhongTro;
+    private ChuTro phongTroChuTro;
+    private int binhLuan;
+    private int danhGia;
+
+    public ChuTro getPhongTroChuTro() {
+        return phongTroChuTro;
+    }
+
+    public void setPhongTroChuTro(ChuTro phongTroChuTro) {
+        this.phongTroChuTro = phongTroChuTro;
+    }
+
+    public int getBinhLuan() {
+        return binhLuan;
+    }
+
+    public void setBinhLuan(int binhLuan) {
+        this.binhLuan = binhLuan;
+    }
+
+    public int getDanhGia() {
+        return danhGia;
+    }
+
+    public void setDanhGia(int danhGia) {
+        this.danhGia = danhGia;
+    }
 
     public List<TienIch> getTienIch() {
         return tienIch;
@@ -174,5 +201,8 @@ public class PhongTro {
 
     public void setTienNuoc(int tienNuoc) {
         this.tienNuoc = tienNuoc;
+    }
+
+    public PhongTro() {
     }
 }

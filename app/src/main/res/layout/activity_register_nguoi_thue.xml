@@ -77,12 +77,13 @@
             app:layout_constraintTop_toBottomOf="@+id/title" />
         <EditText
             android:maxLines="1"
-            android:id="@+id/tenTaiKhoan"
+            android:id="@+id/email"
             android:layout_width="320dp"
             android:layout_height="44dp"
             android:layout_marginTop="20dp"
+            android:inputType="textEmailAddress"
             android:background="@drawable/background_edt_login"
-            android:hint="Tên Tài Khoản"
+            android:hint="Email"
             android:paddingLeft="20dp"
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
@@ -105,22 +106,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tenTaiKhoan" />
-        <EditText
-            android:maxLines="1"
-            android:id="@+id/email"
-            android:layout_width="320dp"
-            android:layout_height="44dp"
-            android:layout_marginTop="20dp"
-            android:background="@drawable/background_edt_login"
-            android:hint="Email"
-            android:paddingLeft="20dp"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/matKhau" />
+            app:layout_constraintTop_toBottomOf="@+id/email" />
+
 
         <TextView
             android:id="@+id/selectNamNu"
@@ -132,7 +119,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.1"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/email"
+            app:layout_constraintTop_toBottomOf="@+id/matKhau"
              />
         <Spinner
             android:id="@+id/spinner"
@@ -143,7 +130,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.9"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/email"
+            app:layout_constraintTop_toBottomOf="@+id/matKhau"
             />
 
         <CheckBox

@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.example.mobileprojectapp2.R;
+import com.example.mobileprojectapp2.activity.nguoithue.RenterActivity;
 
 public class NotificationFragment extends AbstractFragment{
     @Nullable
@@ -18,5 +19,10 @@ public class NotificationFragment extends AbstractFragment{
         fragmentLayout = inflater.inflate(R.layout.nguoithue_fragment_notification_layout, container, false);
 
         return fragmentLayout;
+    }
+    @Override
+    public void onResume() {
+        super.onResume();
+        RenterActivity.viewPager2NguoiThue.setUserInputEnabled(true);
     }
 }
