@@ -1,5 +1,6 @@
 package com.example.mobileprojectapp2.api.nguoithue;
 
+import com.example.mobileprojectapp2.api.Const;
 import com.example.mobileprojectapp2.datamodel.ChinhSach;
 import com.example.mobileprojectapp2.datamodel.ChuTro;
 import com.example.mobileprojectapp2.datamodel.NguoiThue;
@@ -22,7 +23,7 @@ import retrofit2.http.Query;
 
 public interface ApiServiceNghiem {
 
-    String doman = "http://192.168.190.1/3t/laravel/public/api/";
+    String doman = Const.DOMAIN+"api/";
     ApiServiceNghiem apiService =new Retrofit.Builder()
             .baseUrl(doman)
             .addConverterFactory(GsonConverterFactory.create())

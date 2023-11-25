@@ -98,6 +98,9 @@
             android:name=".activity.loginregister.RegisterChuTroActivity"
             android:exported="false" />
         <activity
+            android:name=".activity.loginregister.QuenMatKhauActivity"
+            android:exported="false" />
+        <activity
             android:name=".activity.loginregister.RegisterNguoiThueActivity"
             android:exported="false" />
         <activity
