@@ -19,6 +19,7 @@ import androidx.appcompat.app.AlertDialog;
 
 import com.example.mobileprojectapp2.R;
 import com.example.mobileprojectapp2.activity.chutro.MotelRoomOwnerActivity;
+import com.example.mobileprojectapp2.activity.loginregister.QuenMatKhauActivity;
 import com.example.mobileprojectapp2.activity.nguoithue.DanhSachPhongGoiYActivity;
 import com.example.mobileprojectapp2.activity.nguoithue.RenterActivity;
 import com.example.mobileprojectapp2.api.chutro.ApiServiceNghiem;
@@ -70,6 +71,14 @@ public class LoginFragment extends AbstractFragment{
                     batTatProgessBar(1);
                     thongBao("Không Được Để Trống!");
                 }
+            }
+        });
+
+        quenMatKhau.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), QuenMatKhauActivity.class);
+                startActivity(intent);
             }
         });
 

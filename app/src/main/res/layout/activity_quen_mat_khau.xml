@@ -51,7 +51,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
-        android:text="Tài Khoản Chủ Trọ"
+        android:text="Quên Mật Khẩu"
         android:textSize="20sp"
         android:textColor="@color/black"
         android:textStyle="bold"
@@ -60,101 +60,60 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <EditText
-        android:maxLines="1"
-        android:id="@+id/hoTenNguoiDung"
+
+    <TextView
+        android:id="@+id/textView4"
         android:layout_width="320dp"
-        android:layout_height="44dp"
-        android:layout_marginTop="100dp"
-        android:background="@drawable/background_edt_login"
-        android:hint="Họ Tên Người Dùng"
-        android:paddingLeft="20dp"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="104dp"
+        android:gravity="center"
+        android:text="Nhập email mà bạn đã đăng ký để chúng tôi tiến hành gửi mail xác nhận"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/title" />
+
     <EditText
-        android:maxLines="1"
         android:id="@+id/email"
-        android:inputType="textEmailAddress"
         android:layout_width="320dp"
         android:layout_height="44dp"
         android:layout_marginTop="20dp"
         android:background="@drawable/background_edt_login"
         android:hint="Email"
+        android:inputType="textEmailAddress"
+        android:maxLines="1"
         android:paddingLeft="20dp"
         android:paddingTop="10dp"
         android:paddingBottom="10dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_bias="0.509"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/hoTenNguoiDung" />
-    <EditText
-        android:maxLines="1"
-        android:id="@+id/matKhau"
+        app:layout_constraintTop_toBottomOf="@+id/textView4" />
+
+    <Button
+        android:id="@+id/btnXacNhan"
         android:layout_width="320dp"
         android:layout_height="44dp"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/background_edt_login"
-        android:hint="Mật Khẩu"
-        android:inputType="textPassword"
-        android:paddingLeft="20dp"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/button_gradient"
+        android:text="Xác Nhận"
+        app:backgroundTint="@null"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+
+        app:layout_constraintHorizontal_bias="0.509"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/email" />
 
-
-    <CheckBox
-        android:id="@+id/checkBox"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <ProgressBar
+        android:id="@+id/progessbar"
+        android:layout_width="302dp"
+        android:layout_height="67dp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.04"
+        app:layout_constraintHorizontal_bias="0.492"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/matKhau" />
-
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="Đồng ý với chính sách?"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.3"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/checkBox"
-        />
-    <TextView
-        android:id="@+id/chinhSach"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:textColor="@color/text_do"
-        android:text="Xem"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.9"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/matKhau"
-        />
-
-    <Button
-        android:id="@+id/btnChapNhan"
-        android:layout_width="320dp"
-        android:layout_height="44dp"
-        android:layout_marginTop="28dp"
-        android:text="Đăng Ký"
-        android:background="@drawable/button_gradient"
-        app:backgroundTint="@null"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/textView" />
+        app:layout_constraintTop_toTopOf="@+id/title"
+        app:layout_constraintVertical_bias="0.607" />
   </androidx.constraintlayout.widget.ConstraintLayout>
 
 
