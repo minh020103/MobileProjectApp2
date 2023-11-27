@@ -13,7 +13,8 @@
 
         <TextView
             style="@style/tv_toolbar"
-            android:text="@string/hs" />
+            android:text="@string/hs"
+            android:layout_gravity="center"/>
     </androidx.appcompat.widget.Toolbar>
 
     <RelativeLayout

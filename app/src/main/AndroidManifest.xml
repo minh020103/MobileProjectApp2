@@ -57,7 +57,9 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".activity.nguoithue.RenterActivity"
+            android:name=".activity.loading.LoadingActivity"
+
+
             android:exported="false">
 
             <meta-data
@@ -113,7 +115,8 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".activity.loading.LoadingActivity"
+            android:name=".activity.nguoithue.RenterActivity"
+
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

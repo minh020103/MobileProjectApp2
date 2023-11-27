@@ -80,7 +80,6 @@ public class ChangePasswordActivity extends AppCompatActivity {
             if (edtPassNew.getText().toString().equals(edtPassConfirm.getText().toString())){
 //              FireBase Kiểm Tra Mật Khẩu Hiện tại
                 reAuthentication(edtPassNew.getText().toString());
-
             }
             else {
                 alertFail("Nhập lại mật khẩu không đúng");

@@ -103,7 +103,8 @@ public class ProfileFragment extends AbstractFragment {
 
             @Override
             public void onFailure(Call<ChuTro> call, Throwable t) {
-                Toast.makeText(getActivity(), "Url Api error", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getActivity(), "Url Api error", Toast.LENGTH_SHORT).show();
+                alertFail("Url Api error");
             }
         });
     }
@@ -129,7 +130,7 @@ public class ProfileFragment extends AbstractFragment {
     private void alertFail(String s) {
         new AlertDialog.Builder(getActivity())
                 .setTitle("Failed")
-                .setIcon(R.drawable.icon_profile)
+                .setIcon(R.drawable.iconp_fail)
                 .setMessage(s)
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
