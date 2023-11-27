@@ -44,7 +44,8 @@ public class ChuTroImageSlideViewPager2Adapter extends RecyclerView.Adapter<ChuT
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         HinhAnh hinhAnh = list.get(position);
 //        holder.imgItem.setImageDrawable(activity.getResources().getDrawable(R.drawable.phong_tro, activity.getTheme()));
-        Glide.with(activity.getLayoutInflater().getContext()).load(Const.DOMAIN+hinhAnh.getHinh()).into(holder.imgItem);
+
+        Glide.with(activity.getLayoutInflater().getContext()).load(Const.DOMAIN+hinhAnh.getHinh()).placeholder(R.drawable.not_found).into(holder.imgItem);
 
     }
 

@@ -1,5 +1,6 @@
 package com.example.mobileprojectapp2.activity.chutro;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 
@@ -17,6 +18,13 @@ import android.widget.ImageView;
 import com.example.mobileprojectapp2.api.Const;
 import com.example.mobileprojectapp2.api.chutro.ApiServicePhuc;
 import com.example.mobileprojectapp2.R;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.EmailAuthCredential;
+import com.google.firebase.auth.EmailAuthProvider;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -70,36 +78,9 @@ public class ChangePasswordActivity extends AppCompatActivity {
         if (checklength(edtPassNow, edtPassNew, edtPassConfirm)) {
 
             if (edtPassNew.getText().toString().equals(edtPassConfirm.getText().toString())){
-                Call call = ApiServicePhuc.apiService.changePassWord(idTaiKhoan, edtPassNow.getText().toString(), edtPassNew.getText().toString());
-                call.enqueue(new Callback() {
-                    @Override
-                    public void onResponse(Call call, Response response) {
-                        int intResponse = Integer.parseInt(response.body().toString());
-                        if (intResponse == 0 ){
-                        alertFail("Mật khẩu hiện tại sai");
-                        edtPassNow.setText("");
-                        edtPassNew.setText("");
-                        edtPassConfirm.setText("");
-                        }else {
-                            alertSuccess("Cập nhật Thành Công");
-                        edtPassNow.setText("");
-                        edtPassNew.setText("");
-                        edtPassConfirm.setText("");
-                        handler = new Handler();
-                        handler.postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                handler.postDelayed(this, 2000);
-                                finish();
-                            }
-                        }, 2000);
-                        }
-                    }
-                    @Override
-                    public void onFailure(Call call, Throwable t) {
+//              FireBase Kiểm Tra Mật Khẩu Hiện tại
+                reAuthentication(edtPassNew.getText().toString());
 
-                    }
-                });
             }
             else {
                 alertFail("Nhập lại mật khẩu không đúng");
@@ -115,6 +96,45 @@ public class ChangePasswordActivity extends AppCompatActivity {
         }
     }
 
+    private void reAuthentication(String matKhauMoi){
+        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+        FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+        AuthCredential authCredential = EmailAuthProvider.getCredential(firebaseUser.getEmail(),edtPassNow.getText().toString());
+        firebaseUser.reauthenticate(authCredential).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void unused) {
+
+                firebaseUser.updatePassword(matKhauMoi).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        alertSuccess("Cập Nhật Mật Khẩu Thành Công!");
+                        edtPassNow.setText("");
+                        edtPassNew.setText("");
+                        edtPassConfirm.setText("");
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        alertFail("Cập Nhật Mật Khẩu Thất Bại Thành Công!");
+                        edtPassNow.setText("");
+                        edtPassNew.setText("");
+                        edtPassConfirm.setText("");
+                    }
+                });
+
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                alertFail("Mật Khẩu Hiện Tại Không Đúng!");
+                edtPassNow.setText("");
+                edtPassNew.setText("");
+                edtPassConfirm.setText("");
+            }
+        });
+
+
+    }
     private boolean checkPassEmpty(EditText edtPassNow, EditText edtPassNew, EditText edtPassConfirm) {
         if (!edtPassNow.getText().toString().isEmpty() && !edtPassNew.getText().toString().isEmpty() && !edtPassConfirm.getText().toString().isEmpty()) {
             return true;

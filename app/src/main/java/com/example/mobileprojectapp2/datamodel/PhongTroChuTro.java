@@ -5,6 +5,16 @@ import java.util.List;
 public class PhongTroChuTro {
     private int id;
     private int idChuTro;
+    private int ten;
+
+    public int getTen() {
+        return ten;
+    }
+
+    public void setTen(int ten) {
+        this.ten = ten;
+    }
+
     private int idPhongTro;
     private ChuTro chuTro;
     private PhongTro phongTro;

@@ -2,6 +2,7 @@ package com.example.mobileprojectapp2.model;
 
 import com.example.mobileprojectapp2.datamodel.HinhAnh;
 import com.example.mobileprojectapp2.datamodel.PhongTroChuTro;
+import com.example.mobileprojectapp2.datamodel.Quan;
 
 import java.util.List;
 
@@ -21,6 +22,15 @@ public class PhongTro {
     private int gioiTinh;
     private int tienDien;
     private int tienNuoc;
+    private Quan quan;
+
+    public Quan getQuan() {
+        return quan;
+    }
+
+    public void setQuan(Quan quan) {
+        this.quan = quan;
+    }
 
     private List<TienIch> danhSachTienIch;
     private List<HinhAnh> hinhAnhPhongTro;

@@ -120,10 +120,12 @@ public class TinNhanFragment extends AbstractFragment{
         });
     }
     private void layDuLieu(){
+
         databaseReference.child("thongBaoReset").child(senderId+"").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 arrayList.clear();
+
                 Call<ArrayList<PhongTinNhan>> call = ApiServiceNghiem.apiService.danhSachTinNhanTheoIdTaiKhoan(senderId);
                 call.enqueue(new Callback<ArrayList<PhongTinNhan>>() {
                     @Override
