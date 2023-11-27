@@ -105,10 +105,9 @@ public class DanhSachPhongGoiYActivity extends AppCompatActivity {
                     soLuongKetQua.setText(0+"");
                 }
             }
-
             @Override
             public void onFailure(Call<ArrayList<PhongTro>> call, Throwable t) {
-                thongBao(call.request().toString());
+                thongBao("Thử Xem Phòng Nào ĐÓ");
             }
         });
 
