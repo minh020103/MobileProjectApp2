@@ -20,7 +20,7 @@ import com.example.mobileprojectapp2.model.PhongTro;
 
 import java.util.List;
 
-public class PhucDanhSachPhongGoiYAdapter extends RecyclerView.Adapter<PhucDanhSachPhongGoiYAdapter.PhongGoiYViewHolder>{
+public class PhucDanhSachPhongGoiYAdapter extends RecyclerView.Adapter<PhucDanhSachPhongGoiYAdapter.PhongGoiYViewHolder> {
     private Activity activity;
     private List<PhongTro> list;
     private int layoutID;
@@ -41,13 +41,16 @@ public class PhucDanhSachPhongGoiYAdapter extends RecyclerView.Adapter<PhucDanhS
     @Override
     public void onBindViewHolder(@NonNull PhongGoiYViewHolder holder, int position) {
         PhongTro phongTro = list.get(position);
-        if (phongTro == null){
+        if (phongTro == null) {
             return;
         }
-//        Glide.with(activity.getLayoutInflater().getContext()).load(Const.DOMAIN +phongTro.getHinhAnhPhongTro().get(0).getHinh()).placeholder(R.drawable.anhdaidien).into(holder.imgViewPhongGoiY);
+        if (phongTro.getHinhAnhPhongTro().size() > 0)
+            Glide.with(activity.getLayoutInflater().getContext()).load(Const.DOMAIN + phongTro.getHinhAnhPhongTro().get(0).getHinh()).placeholder(R.drawable.anhdaidien).into(holder.imgViewPhongGoiY);
+        else
+            holder.imgViewPhongGoiY.setImageResource(R.drawable.khongcoanh);
         holder.tvDiaChi.setText(phongTro.getDiaChiChiTiet());
-        holder.tvQuan.setText(phongTro.getQuan().getTenQuan()+"");
-        holder.tvGia.setText(phongTro.getGia()+"triệu VNĐ/tháng");
+        holder.tvQuan.setText(phongTro.getQuan().getTenQuan() + "");
+        holder.tvGia.setText(phongTro.getGia() + "triệu VNĐ/tháng");
         holder.tvLoaiPhong.setText(phongTro.getLoaiPhong() == PHONG_GHEP ? "Phòng ghép" : "Tìm người thuê");
         holder.tvGioiTinh.setText(phongTro.getGioiTinh() == MALE_GENDERS ? "Nam" : "Nữ");
 
@@ -58,7 +61,7 @@ public class PhucDanhSachPhongGoiYAdapter extends RecyclerView.Adapter<PhucDanhS
         return list.size();
     }
 
-    public class PhongGoiYViewHolder extends RecyclerView.ViewHolder{
+    public class PhongGoiYViewHolder extends RecyclerView.ViewHolder {
 
         private ImageView imgViewPhongGoiY;
         private TextView tvLoaiPhong, tvGioiTinh, tvGia, tvDiaChi, tvQuan;

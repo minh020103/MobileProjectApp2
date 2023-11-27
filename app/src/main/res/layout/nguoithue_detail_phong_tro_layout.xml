@@ -46,15 +46,21 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/tv_hinh_anh_rong"
+<!--                <TextView-->
+<!--                    android:id="@+id/tv_hinh_anh_rong"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="match_parent"-->
+<!--                    android:gravity="center_vertical|center_horizontal"-->
+<!--                    android:text="@string/pccha"-->
+<!--                    android:textColor="@color/black"-->
+<!--                    android:textSize="@dimen/size_20sp"-->
+<!--                    android:visibility="gone" />-->
+                <ImageView
+                    android:id="@+id/img_hinh_anh_rong"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center_vertical|center_horizontal"
-                    android:text="@string/pccha"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/size_20sp"
-                    android:visibility="gone" />
+                    android:layout_height="220dp"
+                    android:src="@drawable/khongcoanh"
+                    android:visibility="gone"/>
 
                 <androidx.viewpager2.widget.ViewPager2
                     android:id="@+id/view_pager_2_nguoi_thue"
@@ -389,7 +395,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="35dp"
                         android:layout_below="@+id/ll_gray_2"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        android:visibility="visible"
+                        >
 
                         <LinearLayout
                             android:id="@+id/ll_xem_them"
@@ -457,6 +465,7 @@
                     android:orientation="vertical">
 
                     <TextView
+                        android:id="@+id/tv_dsnt"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@color/white"
@@ -659,16 +668,17 @@
             android:layout_weight="1"
             android:background="@drawable/bg_p2"
             android:gravity="center_horizontal|center_vertical"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+         >
 
             <TextView
                 style="@style/tv_20sp"
-                android:text="Đặt cọc"
+                android:text="@string/dp"
                 android:textColor="@color/main_color_app_light" />
 
             <ImageView
-                android:layout_width="25dp"
-                android:layout_height="25dp"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
                 android:layout_marginStart="5dp"
                 android:src="@drawable/iconp_datcoc" />
         </LinearLayout>
