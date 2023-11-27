@@ -39,14 +39,20 @@
         android:orientation="vertical">
         
         <TextView
+            android:id="@+id/tvTieuDeThongBaoChiTiet"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tieu de thong bao"
+            android:textStyle="bold"
+            android:textSize="30sp"/>
+
+        <TextView
             android:id="@+id/tvNoiDungThongBaoChiTiet"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Noi dung thong bao"
             android:textStyle="bold"
             android:textSize="20sp"/>
-
-
         
     </LinearLayout>
 

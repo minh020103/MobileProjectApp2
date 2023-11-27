@@ -32,6 +32,7 @@ public class NotificationDetailActivity extends AppCompatActivity {
 
     ImageView imgBack;
     Button btnXoaThongBaoChiTiet;
+    TextView tvTieuDeThongBaoChiTiet;
     TextView tvNoiDungThongBaoChiTiet;
     private int idTaiKhoan;
     private SharedPreferences sharedPreferences;
@@ -53,6 +54,7 @@ public class NotificationDetailActivity extends AppCompatActivity {
         });
         imgBack = findViewById(R.id.imgBack);
         btnXoaThongBaoChiTiet = findViewById(R.id.btnXoaThongBaoChiTiet);
+        tvTieuDeThongBaoChiTiet = findViewById(R.id.tvTieuDeThongBaoChiTiet);
         tvNoiDungThongBaoChiTiet = findViewById(R.id.tvNoiDungThongBaoChiTiet);
 
         imgBack.setOnClickListener(new View.OnClickListener() {
@@ -78,6 +80,7 @@ public class NotificationDetailActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<ThongBao> call, Response<ThongBao> response) {
                 ThongBao notify = response.body();
+                tvTieuDeThongBaoChiTiet.setText(notify.getTieuDe());
                 tvNoiDungThongBaoChiTiet.setText(notify.getNoiDung());
             }
 
