@@ -41,6 +41,7 @@ public class YeuCauFragment extends AbstractFragment {
     List<ThongBao> list;
     ThongBaoAdapter thongBaoAdapter;
     LinearLayoutManager layoutManager;
+    SharedPreferences sharedPreferences;
 
     FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
     DatabaseReference databaseReference = firebaseDatabase.getReference();
@@ -50,8 +51,68 @@ public class YeuCauFragment extends AbstractFragment {
         View fragmentLayout = null;
         fragmentLayout = inflater.inflate(R.layout.activity_yeu_cau_fragment, container, false);
 
+        shared = getActivity().getSharedPreferences(Const.PRE_LOGIN, Context.MODE_PRIVATE);
+        idTaiKhoan = shared.getInt("idTaiKhoan", -1);
+        recyclerView = fragmentLayout.findViewById(R.id.rvThongBaoYC);
+
+        layoutManager = new LinearLayoutManager(getActivity());
+        layoutManager.setOrientation(RecyclerView.VERTICAL);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setAdapter(thongBaoAdapter);
+        list = new ArrayList<>();
+
+        databaseReference.child("notification").child(idTaiKhoan+"").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                listThongBaoTheoIdTaiKhoan();
+                Log.d("TAG", "onDataChange: GET OK");
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
 
         return fragmentLayout;
     }
 
+    private void listThongBaoTheoIdTaiKhoan(){
+        ApiServiceKiet.apiServiceKiet.getListThongBaoTheoIdTaiKhoan(3).enqueue(new Callback<List<ThongBao>>() {
+            @Override
+            public void onResponse(Call<List<ThongBao>> call, Response<List<ThongBao>> response) {
+                list = response.body();
+                thongBaoAdapter = new ThongBaoAdapter(getActivity(), list, R.layout.cardview_danh_sach_thong_bao);
+                recyclerView.setAdapter(thongBaoAdapter);
+                thongBaoAdapter.setOnClickItemListener(new ThongBaoAdapter.OnClickItemListener() {
+                    @Override
+                    public void onClickItem(int position, View v) {
+                        nextActivity(list.get(position).getId());
+                    }
+                });
+            }
+
+            @Override
+            public void onFailure(Call<List<ThongBao>> call, Throwable t) {
+
+            }
+        });
+    }
+
+    private void nextActivity(int id)
+    {
+        Intent intent = new Intent(getActivity(), NotificationDetailActivity.class);
+        intent.putExtra("id", id);
+        //intent.putExtra("thongBao",  thongBao());
+        // trangthaithongbao = 1
+        startActivity(intent);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        listThongBaoTheoIdTaiKhoan();
+    }
 }
