@@ -16,17 +16,19 @@ import com.bumptech.glide.Glide;
 import com.example.mobileprojectapp2.R;
 import com.example.mobileprojectapp2.api.Const;
 import com.example.mobileprojectapp2.datamodel.ThongBao;
+import com.example.mobileprojectapp2.datamodel.YeuCauDatPhong;
 
 import java.util.List;
 
-public class ThongBaoAdapter extends RecyclerView.Adapter<ThongBaoAdapter.MyViewHolder> {
+public class ThongBaoYeuCauDatPhongAdapter extends RecyclerView.Adapter<ThongBaoYeuCauDatPhongAdapter.MyViewHolder> {
+
     private Activity activity;
-    private List<ThongBao> list;
+    private List<YeuCauDatPhong> list;
     private int layoutID;
 
     OnClickItemListener onClickItemListener;
 
-    public ThongBaoAdapter(Activity activity, List<ThongBao> list, int layoutID) {
+    public ThongBaoYeuCauDatPhongAdapter(Activity activity, List<YeuCauDatPhong> list, int layoutID) {
         this.activity = activity;
         this.list = list;
         this.layoutID = layoutID;
@@ -46,11 +48,11 @@ public class ThongBaoAdapter extends RecyclerView.Adapter<ThongBaoAdapter.MyView
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        ThongBao data =list.get(position);
-        Glide.with(activity.getLayoutInflater().getContext()).load(Const.DOMAIN + list.get(position).getNguoiGui().getHinh()).into(holder.imgNguoiGuiThongBao);
-        holder.tvTenNguoiGuiThongBao.setText(data.getNguoiGui().getTen());
-        holder.tvTieuDeThongBao.setText(data.getTieuDe());
-        if (data.getTrangThai() == 0)
+        YeuCauDatPhong data =list.get(position);
+        Glide.with(activity.getLayoutInflater().getContext()).load(Const.DOMAIN + list.get(position).getNguoiThue().getHinh()).into(holder.imgNguoiGuiThongBao);
+        holder.tvTenNguoiGuiThongBao.setText(data.getNguoiThue().getTen());
+        holder.tvTieuDeThongBao.setText("Yêu cầu đặt phòng số " + data.getPhong().getSoPhong());
+        if (data.getTrangThaiThongBao() == 0)
         {
             holder.bgItemthongBao.setBackgroundColor(0xFFBDFDA7);
             holder.tvTieuDeThongBao.setTextColor(0xFF000000);
@@ -69,7 +71,6 @@ public class ThongBaoAdapter extends RecyclerView.Adapter<ThongBaoAdapter.MyView
                 onClickItemListener.onClickItem(position, v);
             }
         };
-
     }
 
     @Override
@@ -95,10 +96,10 @@ public class ThongBaoAdapter extends RecyclerView.Adapter<ThongBaoAdapter.MyView
         View.OnClickListener onClickListener;
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
-            bgItemthongBao = itemView.findViewById(R.id.bg_itemThongBao);
-            imgNguoiGuiThongBao = itemView.findViewById(R.id.imgNguoiGuiThongBao);
-            tvTenNguoiGuiThongBao = itemView.findViewById(R.id.tvNguoiGuiThongBao);
-            tvTieuDeThongBao = itemView.findViewById(R.id.tvTieuDeThongBao);
+            bgItemthongBao = itemView.findViewById(R.id.bg_itemThongBaoYC);
+            imgNguoiGuiThongBao = itemView.findViewById(R.id.imgNguoiGuiThongBaoYC);
+            tvTenNguoiGuiThongBao = itemView.findViewById(R.id.tvNguoiGuiThongBaoYC);
+            tvTieuDeThongBao = itemView.findViewById(R.id.tvTieuDeThongBaoYC);
 
             itemView.setOnClickListener(this);
         }

@@ -24,7 +24,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="34dp"
                 android:textStyle="bold"
-                android:text="Chi tiết thông báo"
+                android:text="Chi tiết yêu cầu"
                 android:gravity="center"
                 android:textSize="25sp"/>
         </RelativeLayout>
@@ -37,9 +37,9 @@
         android:paddingLeft="20dp"
         android:paddingTop="30dp"
         android:orientation="vertical">
-        
+
         <TextView
-            android:id="@+id/tvTieuDeThongBaoChiTiet"
+            android:id="@+id/tvTieuDeYCThongBaoChiTiet"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Tieu de thong bao"
@@ -47,29 +47,72 @@
             android:textSize="30sp"/>
 
         <TextView
-            android:id="@+id/tvNoiDungThongBaoChiTiet"
+            android:id="@+id/tvNoiDungYCThongBaoChiTiet1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Noi dung thong bao"
             android:textStyle="bold"
             android:textSize="20sp"/>
-        
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="*Thông tin người gửi*"
+            android:textStyle="bold"
+            android:textSize="20sp"/>
+
+        <TextView
+            android:id="@+id/tvNoiDungYCThongBaoChiTiet2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Noi dung thong bao"
+            android:textStyle="bold"
+            android:textSize="20sp"/>
+        <TextView
+            android:id="@+id/tvNoiDungYCThongBaoChiTiet3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Noi dung thong bao"
+            android:textStyle="bold"
+            android:textSize="20sp"/>
+        <TextView
+            android:id="@+id/tvNoiDungYCThongBaoChiTiet4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Noi dung thong bao"
+            android:textStyle="bold"
+            android:textSize="20sp"/>
+
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:gravity="center">
+        android:gravity="center"
+        android:orientation="horizontal">
 
         <Button
-            android:id="@+id/btnXoaThongBaoChiTiet"
-            android:layout_width="wrap_content"
+            android:id="@+id/btnChiTietPhong"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="3"
             android:textSize="10sp"
-            android:text="Xoa thong bao"
-            android:paddingLeft="50dp"
-            android:paddingRight="50dp"/>
+            android:text="Chi tiết phòng" />
+        <Button
+            android:id="@+id/btnTuChoiYC"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="3"
+            android:textSize="10sp"
+            android:text="Từ chối" />
+        <Button
+            android:id="@+id/btnChapNhanYC"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="3"
+            android:textSize="10sp"
+            android:text="Chấp nhận" />
 
 
 
