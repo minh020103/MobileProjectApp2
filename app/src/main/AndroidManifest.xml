@@ -23,10 +23,12 @@
             android:exported="false" />
         <activity
             android:name=".fragment.thongbao.KetQuaFragment"
-            android:name=".activity.loginregister.QuenMatKhauActivity"
             android:exported="false" />
         <activity
             android:name=".activity.nguoithue.RoomOfDistrictActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.loginregister.QuenMatKhauActivity"
             android:exported="false" />
         <activity
             android:name=".activity.nguoithue.DanhSachPhongGoiYActivity"

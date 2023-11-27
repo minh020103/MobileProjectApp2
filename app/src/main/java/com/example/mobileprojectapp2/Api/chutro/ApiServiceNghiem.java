@@ -27,7 +27,7 @@ public interface ApiServiceNghiem {
     String doman = Const.DOMAIN+"api/";
 
     ApiServiceNghiem apiService =new Retrofit.Builder()
-            .baseUrl(Const.DOMAIN)
+            .baseUrl(doman)
             .addConverterFactory(GsonConverterFactory.create())
             .build().create(ApiServiceNghiem.class);
     @GET("danhsachtinnhan")
