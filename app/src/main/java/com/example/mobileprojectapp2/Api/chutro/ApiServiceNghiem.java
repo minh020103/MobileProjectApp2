@@ -24,7 +24,7 @@ public interface ApiServiceNghiem {
 
     String doman = "http://192.168.2.128/3t/laravel/public/api/";
     ApiServiceNghiem apiService =new Retrofit.Builder()
-            .baseUrl(doman)
+            .baseUrl(Const.DOMAIN)
             .addConverterFactory(GsonConverterFactory.create())
             .build().create(ApiServiceNghiem.class);
     @GET("danhsachtinnhan")
