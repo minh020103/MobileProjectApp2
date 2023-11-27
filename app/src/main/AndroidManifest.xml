@@ -19,10 +19,16 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".activity.loginregister.QuenMatKhauActivity"
+            android:name=".fragment.thongbao.YeuCauFragment"
+            android:exported="false" />
+        <activity
+            android:name=".fragment.thongbao.KetQuaFragment"
             android:exported="false" />
         <activity
             android:name=".activity.nguoithue.RoomOfDistrictActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.loginregister.QuenMatKhauActivity"
             android:exported="false" />
         <activity
             android:name=".activity.nguoithue.DanhSachPhongGoiYActivity"
