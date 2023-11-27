@@ -1,6 +1,8 @@
 package com.example.mobileprojectapp2.fragment.nguoithue;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -24,6 +26,7 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.mobileprojectapp2.R;
 import com.example.mobileprojectapp2.activity.nguoithue.DanhSachPhongGhepActivity;
+import com.example.mobileprojectapp2.activity.nguoithue.DanhSachPhongGoiYActivity;
 import com.example.mobileprojectapp2.activity.nguoithue.RenterActivity;
 import com.example.mobileprojectapp2.activity.nguoithue.RoomOfDistrictActivity;
 import com.example.mobileprojectapp2.activity.nguoithue.RoomRandomActivity;
@@ -74,6 +77,7 @@ public class HomeFragment extends AbstractFragment {
 
     FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
     DatabaseReference databaseReference = firebaseDatabase.getReference();
+    SharedPreferences sharedPreferences;
 
     @Nullable
     @Override
@@ -81,6 +85,8 @@ public class HomeFragment extends AbstractFragment {
         View fragmentLayout = null;
         fragmentLayout = inflater.inflate(R.layout.nguoithue_fragment_home_layout, container, false);
         anhXa(fragmentLayout);
+        sharedPreferences = getContext().getSharedPreferences(Const.PRE_LOGIN, Context.MODE_PRIVATE);
+        idTaiKhoan = sharedPreferences.getInt("idTaiKhoan", -1);
         this.container = container;
         listQuan = new LinkedList<>();
         listPhong = new LinkedList<>();
@@ -240,7 +246,8 @@ public class HomeFragment extends AbstractFragment {
         llReComment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                    Intent intent = new Intent(getContext(), DanhSachPhongGoiYActivity.class);
+                    startActivity(intent);
             }
         });
         llRandom.setOnClickListener(new View.OnClickListener() {
