@@ -88,7 +88,7 @@ public class EditProfileActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.edit_profile_layout);
+        setContentView(R.layout.chutro_edit_profile_layout);
 
         sharedPreferences = EditProfileActivity.this.getSharedPreferences(Const.PRE_LOGIN, Context.MODE_PRIVATE);
         idTaiKhoan = sharedPreferences.getInt("idTaiKhoan", -1);

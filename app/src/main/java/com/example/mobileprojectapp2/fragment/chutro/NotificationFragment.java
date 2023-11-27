@@ -69,27 +69,27 @@ public class NotificationFragment extends AbstractFragment{
         View fragmentLayout = null;
         fragmentLayout = inflater.inflate(R.layout.chutro_fragment_notification_layout, container, false);
 
-//        recyclerView = fragmentLayout.findViewById(R.id.rvThongBao);
-//        ImageView imgRefresh = fragmentLayout.findViewById(R.id.imgRefresh);
-//        layoutManager = new LinearLayoutManager(getActivity());
-//        layoutManager.setOrientation(RecyclerView.VERTICAL);
-//        recyclerView.setLayoutManager(layoutManager);
-//        recyclerView.setAdapter(thongBaoAdapter);
-//        list = new ArrayList<>();
+    //        recyclerView = fragmentLayout.findViewById(R.id.rvThongBao);
+    //        ImageView imgRefresh = fragmentLayout.findViewById(R.id.imgRefresh);
+    //        layoutManager = new LinearLayoutManager(getActivity());
+    //        layoutManager.setOrientation(RecyclerView.VERTICAL);
+    //        recyclerView.setLayoutManager(layoutManager);
+    //        recyclerView.setAdapter(thongBaoAdapter);
+    //        list = new ArrayList<>();
 
-//        databaseReference.child("notification").child(idTaiKhoan+"").addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                listThongBaoTheoIdTaiKhoan();
-//                Log.d("TAG", "onDataChange: GET OK");
-//
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError error) {
-//
-//            }
-//        });
+    //        databaseReference.child("notification").child(idTaiKhoan+"").addValueEventListener(new ValueEventListener() {
+    //            @Override
+    //            public void onDataChange(@NonNull DataSnapshot snapshot) {
+    //                listThongBaoTheoIdTaiKhoan();
+    //                Log.d("TAG", "onDataChange: GET OK");
+    //
+    //            }
+    //
+    //            @Override
+    //            public void onCancelled(@NonNull DatabaseError error) {
+    //
+    //            }
+    //        });
 
 
 //        imgRefresh.setOnClickListener(new View.OnClickListener() {

@@ -19,6 +19,15 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".activity.nguoithue.DetailPhongTroNguoiThueActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.nguoithue.ChangePasswordActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.nguoithue.EditProfileActivity"
+            android:exported="false" />
+        <activity
             android:name=".fragment.thongbao.YeuCauFragment"
             android:exported="false" />
         <activity
@@ -59,7 +68,7 @@
             android:name=".activity.chutro.ThanhToanGoiActivity"
             android:exported="false" />
         <activity
-            android:name=".activity.chutro.DetailPhongTro"
+            android:name=".activity.chutro.DetailPhongTroActivity"
             android:exported="false" />
         <activity
             android:name=".activity.chutro.SearchActivity"
@@ -79,7 +88,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".activity.chutro.AuthencationActivity"
+            android:name=".activity.chutro.AuthenticationActivity"
             android:exported="false" />
         <activity
             android:name=".activity.chutro.ChangePasswordActivity"
@@ -120,9 +129,6 @@
         <!-- android:exported="false" /> -->
         <activity
             android:name=".activity.loginregister.RegisterChuTroActivity"
-            android:exported="false" />
-        <activity
-            android:name=".activity.loginregister.QuenMatKhauActivity"
             android:exported="false" />
         <activity
             android:name=".activity.loginregister.RegisterNguoiThueActivity"

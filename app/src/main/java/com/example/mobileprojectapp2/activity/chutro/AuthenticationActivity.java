@@ -46,7 +46,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class AuthencationActivity extends AppCompatActivity {
+public class AuthenticationActivity extends AppCompatActivity {
 
 
     private static final int CHUA_XAC_THUC = 0;
@@ -58,12 +58,14 @@ public class AuthencationActivity extends AppCompatActivity {
     private int idTaiKhoan;
     private int idChuTro;
     private int trangThaiXacThuc;
-    public static final String TAG = AuthencationActivity.class.getName();
+    public static final String TAG = AuthenticationActivity.class.getName();
     private static final int MY_REQUEST_CODE = 10;
     private Uri cccdMT = null;
     private Uri cccdMS = null;
     private int viewID = -1;
-    DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+
+    FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+    DatabaseReference databaseReference = firebaseDatabase.getReference();
 
     private ActivityResultLauncher<Intent> mActivityResultLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
@@ -100,8 +102,8 @@ public class AuthencationActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.authencation_layout);
-        sharedPreferences = AuthencationActivity.this.getSharedPreferences(Const.PRE_LOGIN, Context.MODE_PRIVATE);
+        setContentView(R.layout.chutro_authencation_layout);
+        sharedPreferences = AuthenticationActivity.this.getSharedPreferences(Const.PRE_LOGIN, Context.MODE_PRIVATE);
         idTaiKhoan = sharedPreferences.getInt("idTaiKhoan", -1);
         idChuTro = sharedPreferences.getInt("idChuTro", -1);
         trangThaiXacThuc = sharedPreferences.getInt("trangThaiXacThuc", -1);
@@ -109,6 +111,7 @@ public class AuthencationActivity extends AppCompatActivity {
         anhXa();
         getDetailChuTro();
         onClickCanDuLieu(trangThaiXacThuc);
+
         btnAcceptYeuCauXacThuc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -124,8 +127,6 @@ public class AuthencationActivity extends AppCompatActivity {
                 finish();
             }
         });
-
-
     }
 
     private void sendDataToApi() {
@@ -155,7 +156,7 @@ public class AuthencationActivity extends AppCompatActivity {
                     tvNotAuthencation.setVisibility(View.GONE);
                     tvOkAuthencation.setVisibility(View.GONE);
                     btnAcceptYeuCauXacThuc.setVisibility(View.GONE);
-                    databaseReference.child("notification_admin").child(idTaiKhoan+"").setValue(0).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    databaseReference.child("notification_admin").child(idChuTro + "").setValue(0).addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void unused) {
                             Log.d(TAG, "onSuccess: PUSH NOTIFICATION REALTIME");
@@ -182,8 +183,8 @@ public class AuthencationActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<XacThucChuTro> call, Response<XacThucChuTro> response) {
                 if (response.body().getTrangThaiXacThuc() == 0) {
-                    Glide.with(AuthencationActivity.this.getLayoutInflater().getContext()).load(Const.DOMAIN + response.body().getCccdMatTruoc()).into(imageViewMatTruocCCCD);
-                    Glide.with(AuthencationActivity.this.getLayoutInflater().getContext()).load(Const.DOMAIN + response.body().getCccdMatSau()).into(imageViewMatSauCCCD);
+                    Glide.with(AuthenticationActivity.this.getLayoutInflater().getContext()).load(Const.DOMAIN + response.body().getCccdMatTruoc()).into(imageViewMatTruocCCCD);
+                    Glide.with(AuthenticationActivity.this.getLayoutInflater().getContext()).load(Const.DOMAIN + response.body().getCccdMatSau()).into(imageViewMatSauCCCD);
                     tvDangChoAuthencation.setVisibility(View.VISIBLE);
                     tvNotAuthencation.setVisibility(View.GONE);
                     tvOkAuthencation.setVisibility(View.GONE);
@@ -191,12 +192,15 @@ public class AuthencationActivity extends AppCompatActivity {
                     onClickCanDuLieu(trangThaiXacThuc);
                 }
                 if (response.body().getTrangThaiXacThuc() == 1) {
-                    Glide.with(AuthencationActivity.this.getLayoutInflater().getContext()).load(Const.DOMAIN + response.body().getCccdMatTruoc()).into(imageViewMatTruocCCCD);
-                    Glide.with(AuthencationActivity.this.getLayoutInflater().getContext()).load(Const.DOMAIN + response.body().getCccdMatSau()).into(imageViewMatSauCCCD);
+                    Glide.with(AuthenticationActivity.this.getLayoutInflater().getContext()).load(Const.DOMAIN + response.body().getCccdMatTruoc()).into(imageViewMatTruocCCCD);
+                    Glide.with(AuthenticationActivity.this.getLayoutInflater().getContext()).load(Const.DOMAIN + response.body().getCccdMatSau()).into(imageViewMatSauCCCD);
                     tvNotAuthencation.setVisibility(View.GONE);
                     tvOkAuthencation.setVisibility(View.VISIBLE);
                     btnAcceptYeuCauXacThuc.setVisibility(View.GONE);
                 }
+
+
+
             }
 
             @Override
@@ -208,6 +212,7 @@ public class AuthencationActivity extends AppCompatActivity {
 
         });
     }
+
     private void onClickCanDuLieu(int xacThuc) {
         if (xacThuc == CHUA_XAC_THUC) {
             imageViewMatTruocCCCD.setOnClickListener(new View.OnClickListener() {
@@ -221,7 +226,7 @@ public class AuthencationActivity extends AppCompatActivity {
             imageViewMatSauCCCD.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Log.d(TAG, "onClick: "+v.toString());
+                    Log.d(TAG, "onClick: " + v.toString());
                     onClickRequestPermission();
                     viewID = v.getId();
                 }
@@ -233,8 +238,7 @@ public class AuthencationActivity extends AppCompatActivity {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
             openGallery();
             return;
-        }
-        else if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
+        } else if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
             if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
                 openGallery();
             } else {
@@ -276,7 +280,7 @@ public class AuthencationActivity extends AppCompatActivity {
         imageViewMatSauCCCD = findViewById(R.id.imgView_mat_sau_cccd);
         tvNotAuthencation = findViewById(R.id.tv_not_authencation);
         tvOkAuthencation = findViewById(R.id.tv_ok_authencation);
-        btnAcceptYeuCauXacThuc = findViewById(R.id.btn_accept_yeu_cau_xac_thuc);
+        btnAcceptYeuCauXacThuc = findViewById(R.id.btn_accept_yeu_cau_xac_thuc_nguoi_thue);
         tvDangChoAuthencation = findViewById(R.id.tv_dangcho_authencation);
     }
 

@@ -39,7 +39,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class DetailPhongTro extends AppCompatActivity {
+public class DetailPhongTroActivity extends AppCompatActivity {
 
 
     private TextView tvLoaiPhong, tvGioTinh, tvGia, tvSoLuongToiDa, tvDienTich,
@@ -52,7 +52,6 @@ public class DetailPhongTro extends AppCompatActivity {
     private RecyclerView rcvListTienIch;
     private HinhAnhAdapter adapterHinhAnh;
     private ViewPager2 mViewPager2;
-    private CircleIndicator3 mCircleIndicator3;
     private List<HinhAnh> listHinhAnh;
     private int idPhong;
 
@@ -75,7 +74,7 @@ public class DetailPhongTro extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_detail_phong_tro);
+        setContentView(R.layout.chutro_detail_phong_tro_layout);
 
         listTienIch = new ArrayList<>();
         listHinhAnh = new ArrayList<>();
@@ -190,7 +189,7 @@ public class DetailPhongTro extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<PhongTro> call, Throwable t) {
-                Toast.makeText(DetailPhongTro.this, "Error not call Api", Toast.LENGTH_SHORT).show();
+                Toast.makeText(DetailPhongTroActivity.this, "Error not call Api", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -215,14 +214,12 @@ public class DetailPhongTro extends AppCompatActivity {
         tvHinhAnhRong = findViewById(R.id.tv_hinh_anh_rong);
 
         mViewPager2 = findViewById(R.id.view_pager_2);
-        mCircleIndicator3 = findViewById(R.id.circle_indicator_3);
-        adapterHinhAnh = new HinhAnhAdapter(DetailPhongTro.this, listHinhAnh, R.layout.chutro_item_image_layout);
+        adapterHinhAnh = new HinhAnhAdapter(DetailPhongTroActivity.this, listHinhAnh, R.layout.chutro_item_image_layout);
         mViewPager2.setAdapter(adapterHinhAnh);
-        mCircleIndicator3.setViewPager(mViewPager2);
 
 
-        adapterTienIch = new TienIchAdapter(DetailPhongTro.this, listTienIch, R.layout.cardview_item_tien_ich_layout);
-        layoutManagerTienIch = new LinearLayoutManager(DetailPhongTro.this);
+        adapterTienIch = new TienIchAdapter(DetailPhongTroActivity.this, listTienIch, R.layout.cardview_item_tien_ich_layout);
+        layoutManagerTienIch = new LinearLayoutManager(DetailPhongTroActivity.this);
         layoutManagerTienIch.setOrientation(RecyclerView.HORIZONTAL);
         layoutManagerTienIch = new GridLayoutManager(this, 4);
         rcvListTienIch.setLayoutManager(layoutManagerTienIch);

@@ -116,7 +116,6 @@ public class RegisterChuTroActivity extends AppCompatActivity {
 //                                            FireBase Nằm Ở đây
                                                 addUserFireBase(edtEmail.getText().toString(),edtMatKhau.getText().toString());
                                             }
-
                                             @Override
                                             public void onFailure(Call<ChuTro> call, Throwable t) {
                                                 thongBao("Tạo Tài Khoản Thất Bại");
