@@ -43,7 +43,7 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/tv_phone"
+            android:id="@+id/tv_phone_nguoi_thue"
             style="@style/tv_16sp"
             android:layout_below="@+id/tv_name_nguoi_thue"
             android:layout_marginStart="10dp"
@@ -65,12 +65,6 @@
         style="@style/btn2"
         android:drawableRight="@drawable/iconp_changepassword"
         android:text="@string/dmk" />
-
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btn_Authencation_nguoi_thue"
-        style="@style/btn2"
-        android:drawableRight="@drawable/iconp_authencation"
-        android:text="@string/xt" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn_Logout_nguoi_thue"
