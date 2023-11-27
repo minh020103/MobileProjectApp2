@@ -4,6 +4,7 @@ import com.example.mobileprojectapp2.api.Const;
 import com.example.mobileprojectapp2.datamodel.NguoiThue;
 import com.example.mobileprojectapp2.datamodel.PhongNguoiThue;
 import com.example.mobileprojectapp2.model.PhongTro;
+import com.example.mobileprojectapp2.model.YeuCauDatPhong;
 
 import java.util.List;
 
@@ -41,11 +42,16 @@ public interface ApiServicePhuc2 {
                                     @Part("ten") RequestBody ten,
                                     @Part("soDienThoai") RequestBody soDienThoai,
                                     @Part MultipartBody.Part hinh);
-
     @Multipart
     @POST("api/capnhatthongtinnguoithuekhonghinh")
     Call<Integer> editProfileKhongHinh(@Part("idTaiKhoan") int idTaiKhoan,
                                        @Part("ten") RequestBody ten,
                                        @Part("soDienThoai") RequestBody soDienThoai);
+
+    @POST("api/yeucaudatphong/them")
+    Call<YeuCauDatPhong> yeuCauDatPhong(@Query("idTaiKhoanGui") int idTaiKhoanGui,
+                                        @Query("idTaiKhoanNhan") int idTaiKhoanNhan,
+                                        @Query("idPhong") int idPhong);
+
 
 }

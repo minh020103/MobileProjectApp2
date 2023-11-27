@@ -33,7 +33,7 @@ import retrofit2.Response;
 public class ProfileFragment extends AbstractFragment {
 
     private RoundedImageView imgViewProfileNguoiThue;
-    private TextView tvNameNguoiThue, tvPhoneNguoiThue;
+    private TextView tvNameNguoiThue, tvPhoneNguoiThue, tv_phone_nguoi_thue_chua_dl;
     private AppCompatButton btnEditProfileNguoiThue, btnChangePassWordNguoiThue, btnLogoutNguoiThue;
     private int idTaiKhoan;
     private SharedPreferences sharedPreferences;
@@ -87,8 +87,18 @@ public class ProfileFragment extends AbstractFragment {
             public void onResponse(Call<NguoiThue> call, Response<NguoiThue> response) {
                 if (response.body().getHinh() != null)
                     Glide.with(com.example.mobileprojectapp2.fragment.nguoithue.ProfileFragment.this.getLayoutInflater().getContext()).load(Const.DOMAIN + response.body().getHinh()).into(imgViewProfileNguoiThue);
-
-                tvPhoneNguoiThue.setText(response.body().getSoDienThoai());
+                else {
+                imgViewProfileNguoiThue.setImageResource(R.drawable.khongcoanh);
+                }
+                if (response.body().getSoDienThoai() != null ) {
+                    tvPhoneNguoiThue.setText(response.body().getSoDienThoai());
+                    tv_phone_nguoi_thue_chua_dl.setVisibility(View.GONE);
+                    tvPhoneNguoiThue.setVisibility(View.VISIBLE);
+                }
+                else {
+                    tv_phone_nguoi_thue_chua_dl.setVisibility(View.VISIBLE);
+                    tvPhoneNguoiThue.setVisibility(View.GONE);
+                }
                 tvNameNguoiThue.setText(response.body().getTen());
             }
 
@@ -103,6 +113,7 @@ public class ProfileFragment extends AbstractFragment {
         imgViewProfileNguoiThue = fragment.findViewById(R.id.imgView_profile_nguoi_thue);
         tvNameNguoiThue = fragment.findViewById(R.id.tv_name_nguoi_thue);
         tvPhoneNguoiThue = fragment.findViewById(R.id.tv_phone_nguoi_thue);
+        tv_phone_nguoi_thue_chua_dl = fragment.findViewById(R.id.tv_phone_nguoi_thue_chua_dl);
         btnEditProfileNguoiThue = fragment.findViewById(R.id.btn_Edit_Profile_nguoi_thue);
         btnChangePassWordNguoiThue = fragment.findViewById(R.id.btn_Change_Password_nguoi_thue);
         btnLogoutNguoiThue = fragment.findViewById(R.id.btn_Logout_nguoi_thue);
@@ -114,6 +125,7 @@ public class ProfileFragment extends AbstractFragment {
         RenterActivity.viewPager2NguoiThue.setUserInputEnabled(true);
         getFromDataApi();
     }
+
     private void alertFail(String s) {
         new AlertDialog.Builder(getActivity())
                 .setTitle("Failed")

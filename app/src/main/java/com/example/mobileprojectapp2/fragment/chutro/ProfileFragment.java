@@ -35,7 +35,7 @@ import retrofit2.Response;
 public class ProfileFragment extends AbstractFragment {
 
     private RoundedImageView imgViewProfile;
-    private TextView tvName, tvPhone;
+    private TextView tvName, tvPhone, tv_phone_nguoi_thue_chua_dl;
     private AppCompatButton btnEditProfile, btnChangePassWord, btnAuthencation, btnLogout;
     private int idTaiKhoan;
     private SharedPreferences sharedPreferences;
@@ -96,8 +96,17 @@ public class ProfileFragment extends AbstractFragment {
             public void onResponse(Call<ChuTro> call, Response<ChuTro> response) {
                 if (response.body().getHinh() != null)
                     Glide.with(ProfileFragment.this.getLayoutInflater().getContext()).load(Const.DOMAIN + response.body().getHinh()).into(imgViewProfile);
-
-                tvPhone.setText(response.body().getSoDienThoai());
+                else {
+                    imgViewProfile.setImageResource(R.drawable.khongcoanh);
+                }
+                if (response.body().getSoDienThoai() != null){
+                    tvPhone.setText(response.body().getSoDienThoai());
+                    tvPhone.setVisibility(View.VISIBLE);
+                    tv_phone_nguoi_thue_chua_dl.setVisibility(View.GONE);
+                }else {
+                    tv_phone_nguoi_thue_chua_dl.setVisibility(View.VISIBLE);
+                    tvPhone.setVisibility(View.GONE);
+                }
                 tvName.setText(response.body().getTen());
             }
 
@@ -114,6 +123,7 @@ public class ProfileFragment extends AbstractFragment {
         imgViewProfile = fragment.findViewById(R.id.imgView_profile);
         tvName = fragment.findViewById(R.id.tv_name);
         tvPhone = fragment.findViewById(R.id.tv_phone);
+        tv_phone_nguoi_thue_chua_dl = fragment.findViewById(R.id.tv_phone_nguoi_thue_chua_dl_chu_tro);
         btnEditProfile = fragment.findViewById(R.id.btn_Edit_Profile);
         btnChangePassWord = fragment.findViewById(R.id.btn_Change_Password);
         btnAuthencation = fragment.findViewById(R.id.btn_Authencation);

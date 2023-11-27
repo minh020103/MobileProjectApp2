@@ -123,7 +123,11 @@ public class EditProfileActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<ChuTro> call, Response<ChuTro> response) {
                 ChuTro chuTro = response.body();
+                if (response.body().getHinh() != null)
                 Glide.with(EditProfileActivity.this.getLayoutInflater().getContext()).load(Const.DOMAIN + response.body().getHinh()).into(imgViewProfileEdit);
+                else {
+                    imgViewProfileEdit.setImageResource(R.drawable.khongcoanh);
+                }
                 edtName.setText(response.body().getTen());
                 edtPhone.setText(response.body().getSoDienThoai());
                 edtNameBank.setText(response.body().getTenChuTaiKhoanNganHang());

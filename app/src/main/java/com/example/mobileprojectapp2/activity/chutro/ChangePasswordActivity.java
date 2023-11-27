@@ -110,6 +110,14 @@ public class ChangePasswordActivity extends AppCompatActivity {
                         edtPassNow.setText("");
                         edtPassNew.setText("");
                         edtPassConfirm.setText("");
+                        handler = new Handler();
+                        handler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                handler.postDelayed(this, 2000);
+                                finish();
+                            }
+                        }, 2000);
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override

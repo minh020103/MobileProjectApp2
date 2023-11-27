@@ -88,8 +88,8 @@ public class EditProfileActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.nguoithue_edit_profile_layout);
-//        sharedPreferences = EditProfileActivity.this.getSharedPreferences(Const.PRE_LOGIN, Context.MODE_PRIVATE);
-//        idTaiKhoan = sharedPreferences.getInt("idTaiKhoan", -1);
+        sharedPreferences = EditProfileActivity.this.getSharedPreferences(Const.PRE_LOGIN, Context.MODE_PRIVATE);
+        idTaiKhoan = sharedPreferences.getInt("idTaiKhoan", -1);
         anhXa();
         getDataFormApi();
 
@@ -121,7 +121,11 @@ public class EditProfileActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<NguoiThue> call, Response<NguoiThue> response) {
                 NguoiThue nguoiThue = response.body();
+                if(response.body().getHinh() != null)
                 Glide.with(EditProfileActivity.this.getLayoutInflater().getContext()).load(Const.DOMAIN + response.body().getHinh()).into(imgViewProfileEditNguoiThue);
+                else {
+                    imgViewProfileEditNguoiThue.setImageResource(R.drawable.khongcoanh);
+                }
                 edtNameNguoiThue.setText(response.body().getTen());
                 edtPhoneNguoiThue.setText(response.body().getSoDienThoai());
                 editPrFile(nguoiThue);
