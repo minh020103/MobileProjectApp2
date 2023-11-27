@@ -6,6 +6,7 @@ public class ThongBao {
     private int idTaiKhoanNhan;
     private String noiDung;
     private int trangThai;
+    private int trangThaiNhan;
     private NguoiGuiThongBao nguoiGui;
     private NguoiNhanThongBao taiKhoanNhan;
 
@@ -17,6 +18,14 @@ public class ThongBao {
         this.trangThai = trangThai;
         this.nguoiGui = nguoiGui;
         this.taiKhoanNhan = taiKhoanNhan;
+    }
+
+    public int getTrangThaiNhan() {
+        return trangThaiNhan;
+    }
+
+    public void setTrangThaiNhan(int trangThaiNhan) {
+        this.trangThaiNhan = trangThaiNhan;
     }
 
     public ThongBao() {

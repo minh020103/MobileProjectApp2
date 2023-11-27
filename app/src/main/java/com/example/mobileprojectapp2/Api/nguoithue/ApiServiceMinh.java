@@ -6,6 +6,7 @@ import com.example.mobileprojectapp2.datamodel.Banner;
 import com.example.mobileprojectapp2.datamodel.PhongTro;
 import com.example.mobileprojectapp2.datamodel.PhongTroChuTro;
 import com.example.mobileprojectapp2.datamodel.Quan;
+import com.example.mobileprojectapp2.datamodel.ThongBao;
 
 import java.util.List;
 
@@ -34,4 +35,6 @@ public interface ApiServiceMinh {
     Call<List<PhongTro>> randomRoom();
     @PATCH("api/phongtro/hoatdong")
     Call<Integer> updateHoatDong(@Query("idPhong") int idPhong, @Query("hoatDong") int hoatDong,  @Query("idChuTro") int idChuTro);
+    @GET("api/banner/all")
+    Call<List<ThongBao>> layTatCaThongBao(@Query("idTaiKhoanNhan") int idTaiKhoanNhan);
 }

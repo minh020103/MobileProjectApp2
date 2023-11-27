@@ -2,34 +2,50 @@ package com.example.mobileprojectapp2.activity.nguoithue;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
+import androidx.core.app.NotificationCompat;
+import androidx.core.content.ContextCompat;
 import androidx.viewpager2.widget.ViewPager2;
 
+import android.Manifest;
+import android.app.Activity;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.content.Context;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
 
 import com.example.mobileprojectapp2.R;
 import com.example.mobileprojectapp2.fragment.nguoithue.AbstractFragment;
 import com.example.mobileprojectapp2.fragment.nguoithue.HomeFragment;
-import com.example.mobileprojectapp2.fragment.nguoithue.MessageFragment;
 import com.example.mobileprojectapp2.fragment.nguoithue.MyRoomFragment;
 import com.example.mobileprojectapp2.fragment.nguoithue.NotificationFragment;
 import com.example.mobileprojectapp2.fragment.nguoithue.ProfileFragment;
 import com.example.mobileprojectapp2.fragment.nguoithue.TinNhanFragment;
+import com.example.mobileprojectapp2.receivers.MyNotification;
 import com.example.mobileprojectapp2.viewpager2adapter.RenterViewPage2Adapter;
 import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.LinkedList;
-import java.util.List;
 
 public class RenterActivity extends AppCompatActivity {
-
+    private int idTaiKhoan = 15;
+    private int iconNotification = R.drawable.icon_notification_selected;
     public static ViewPager2 viewPager2NguoiThue;
     private BottomNavigationView bottomNavigationViewNguoiThue;
     private RenterViewPage2Adapter adapter;
     private LinkedList<AbstractFragment> list;
+    private Activity activity = RenterActivity.this;
+    FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+    DatabaseReference databaseReference = firebaseDatabase.getReference();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +61,17 @@ public class RenterActivity extends AppCompatActivity {
         badgeMessage.setVisible(true);
         badgeMessage.setNumber(10);
         adapter = new RenterViewPage2Adapter(this);
+        databaseReference.child("notification").child(idTaiKhoan+"").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                requestPermisstion(R.drawable.icon_notification_selected, "Title", "content", 1);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
 
         list.add(new HomeFragment());
         list.add(new MyRoomFragment());
@@ -102,5 +129,48 @@ public class RenterActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void notification(int icon, String title, String content, int id){
+
+            Notification notification = new NotificationCompat.Builder(activity, MyNotification.CHANNEL_ID)
+                    .setContentTitle("Title")
+                    .setContentText("Noi dung")
+                    .setSmallIcon(icon)
+                    .setColor(getResources().getColor(R.color.main_color_app_light, activity.getTheme()))
+                    .build();
+            NotificationManager notificationManager = (NotificationManager) activity.getSystemService(Context.NOTIFICATION_SERVICE);
+            if (notificationManager != null) {
+                notificationManager.notify(id, notification);
+            }
+    }
+//    private ActivityResultLauncher<String> requestPermissionLauncher =
+//            registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
+//                if (isGranted) {
+//                    // Permission is granted. Continue the action or workflow in your
+//                    // app.
+//                } else {
+//                    // Explain to the user that the feature is unavailable because the
+//                    // feature requires a permission that the user has denied. At the
+//                    // same time, respect the user's decision. Don't link to system
+//                    // settings in an effort to convince the user to change their
+//                    // decision.
+//                }
+//            });
+    private void requestPermisstion(int icon, String title, String content, int id){
+        notification(icon, title, content, id);
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
+
+        }
+        else {
+            if (ContextCompat.checkSelfPermission(
+                    activity, Manifest.permission.POST_NOTIFICATIONS) ==
+                    PackageManager.PERMISSION_GRANTED){
+                notification(icon, title, content, id);
+            }
+            else {
+                requestPermissions(new String[]{Manifest.permission.POST_NOTIFICATIONS}, 111);
+            }
+        }
     }
 }
