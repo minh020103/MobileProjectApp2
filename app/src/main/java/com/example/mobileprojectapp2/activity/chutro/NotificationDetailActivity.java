@@ -37,7 +37,6 @@ public class NotificationDetailActivity extends AppCompatActivity {
     private int idTaiKhoan;
     private SharedPreferences sharedPreferences;
     int id;
-    DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,12 +45,6 @@ public class NotificationDetailActivity extends AppCompatActivity {
         idTaiKhoan = sharedPreferences.getInt("idTaiKhoan", -1);
         Intent intent = getIntent();
         id = intent.getIntExtra("id", 0);
-        databaseReference.child("notification").child(idTaiKhoan+"").child(id+"").setValue(1).addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void unused) {
-
-            }
-        });
         imgBack = findViewById(R.id.imgBack);
         btnXoaThongBaoChiTiet = findViewById(R.id.btnXoaThongBaoChiTiet);
         tvTieuDeThongBaoChiTiet = findViewById(R.id.tvTieuDeThongBaoChiTiet);

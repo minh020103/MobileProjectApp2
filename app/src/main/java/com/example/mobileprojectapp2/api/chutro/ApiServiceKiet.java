@@ -1,9 +1,11 @@
 package com.example.mobileprojectapp2.api.chutro;
 
+import com.example.mobileprojectapp2.adapter.chutro.ThongBaoYeuCauDatPhongAdapter;
 import com.example.mobileprojectapp2.api.Const;
 import com.example.mobileprojectapp2.datamodel.NguoiThue;
 import com.example.mobileprojectapp2.datamodel.PhongNguoiThue;
 import com.example.mobileprojectapp2.datamodel.ThongBao;
+import com.example.mobileprojectapp2.datamodel.YeuCauDatPhong;
 
 import java.util.List;
 
@@ -40,5 +42,9 @@ public interface ApiServiceKiet {
     Call<Integer> demThongBaoKQCuaTaiKhoan(@Query("idTaiKhoan") int idTaiKhoan);
     @GET("api/thongbao/demyeucaudatphong")
     Call<Integer> demThongBaoYCCuaTaiKhoan(@Query("idTaiKhoan") int idTaiKhoan);
+    @GET("api/yeucaudatphong/all")
+    Call<List<YeuCauDatPhong>> getListYeuCauDangKiPhong(@Query("idTaiKhoan") int idTaiKhoan);
+    @GET("api/yeucaudatphong/chitiet")
+    Call<YeuCauDatPhong> getYeuCauDangKiPhongById(@Query("id") int id);
 
 }

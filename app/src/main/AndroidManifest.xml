@@ -19,6 +19,9 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".activity.chutro.YeuCauDatPhongChiTietActivity"
+            android:exported="false" />
+        <activity
             android:name=".activity.nguoithue.DetailPhongTroNguoiThueActivity"
             android:exported="false" />
         <activity
@@ -42,14 +45,14 @@
         <activity
             android:name=".activity.nguoithue.DanhSachPhongGoiYActivity"
             android:exported="false" />
-         <activity
+        <activity
             android:name=".activity.nguoithue.RoomRandomActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
-         <activity
+        <activity
             android:name=".activity.nguoithue.DanhSachPhongGhepActivity"
             android:exported="false">
             <meta-data
@@ -59,7 +62,6 @@
         <activity
             android:name=".activity.nguoithue.RenterActivity"
             android:exported="false">
-
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />

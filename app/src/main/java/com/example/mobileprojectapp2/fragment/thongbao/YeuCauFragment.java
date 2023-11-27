@@ -17,10 +17,12 @@ import android.view.ViewGroup;
 
 import com.example.mobileprojectapp2.R;
 import com.example.mobileprojectapp2.activity.chutro.NotificationDetailActivity;
+import com.example.mobileprojectapp2.activity.chutro.YeuCauDatPhongChiTietActivity;
 import com.example.mobileprojectapp2.adapter.chutro.ThongBaoAdapter;
+import com.example.mobileprojectapp2.adapter.chutro.ThongBaoYeuCauDatPhongAdapter;
 import com.example.mobileprojectapp2.api.Const;
 import com.example.mobileprojectapp2.api.chutro.ApiServiceKiet;
-import com.example.mobileprojectapp2.datamodel.ThongBao;
+import com.example.mobileprojectapp2.datamodel.YeuCauDatPhong;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -38,8 +40,8 @@ public class YeuCauFragment extends AbstractFragment {
     private SharedPreferences shared;
     private int idTaiKhoan;
     RecyclerView recyclerView;
-    List<ThongBao> list;
-    ThongBaoAdapter thongBaoAdapter;
+    List<YeuCauDatPhong> list;
+    ThongBaoYeuCauDatPhongAdapter thongBaoYeuCauDatPhongAdapter;
     LinearLayoutManager layoutManager;
     SharedPreferences sharedPreferences;
 
@@ -58,13 +60,13 @@ public class YeuCauFragment extends AbstractFragment {
         layoutManager = new LinearLayoutManager(getActivity());
         layoutManager.setOrientation(RecyclerView.VERTICAL);
         recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setAdapter(thongBaoAdapter);
+        recyclerView.setAdapter(thongBaoYeuCauDatPhongAdapter);
         list = new ArrayList<>();
 
         databaseReference.child("notification").child(idTaiKhoan+"").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                listThongBaoTheoIdTaiKhoan();
+                listYeuCauThongBaoTheoIdTaiKhoan();
                 Log.d("TAG", "onDataChange: GET OK");
 
             }
@@ -75,18 +77,21 @@ public class YeuCauFragment extends AbstractFragment {
             }
         });
 
+        listYeuCauThongBaoTheoIdTaiKhoan();
+
 
         return fragmentLayout;
     }
 
-    private void listThongBaoTheoIdTaiKhoan(){
-        ApiServiceKiet.apiServiceKiet.getListThongBaoTheoIdTaiKhoan(3).enqueue(new Callback<List<ThongBao>>() {
+    private void listYeuCauThongBaoTheoIdTaiKhoan(){
+        ApiServiceKiet.apiServiceKiet.getListYeuCauDangKiPhong(3).enqueue(new Callback<List<YeuCauDatPhong>>() {
             @Override
-            public void onResponse(Call<List<ThongBao>> call, Response<List<ThongBao>> response) {
+            public void onResponse(Call<List<YeuCauDatPhong>> call, Response<List<YeuCauDatPhong>> response) {
                 list = response.body();
-                thongBaoAdapter = new ThongBaoAdapter(getActivity(), list, R.layout.cardview_danh_sach_thong_bao);
-                recyclerView.setAdapter(thongBaoAdapter);
-                thongBaoAdapter.setOnClickItemListener(new ThongBaoAdapter.OnClickItemListener() {
+                thongBaoYeuCauDatPhongAdapter = new ThongBaoYeuCauDatPhongAdapter(getActivity(), list, R.layout.cardview_yeu_cau_dat_phong);
+                recyclerView.setAdapter(thongBaoYeuCauDatPhongAdapter);
+
+                thongBaoYeuCauDatPhongAdapter.setOnClickItemListener(new ThongBaoYeuCauDatPhongAdapter.OnClickItemListener() {
                     @Override
                     public void onClickItem(int position, View v) {
                         nextActivity(list.get(position).getId());
@@ -95,7 +100,7 @@ public class YeuCauFragment extends AbstractFragment {
             }
 
             @Override
-            public void onFailure(Call<List<ThongBao>> call, Throwable t) {
+            public void onFailure(Call<List<YeuCauDatPhong>> call, Throwable t) {
 
             }
         });
@@ -103,7 +108,7 @@ public class YeuCauFragment extends AbstractFragment {
 
     private void nextActivity(int id)
     {
-        Intent intent = new Intent(getActivity(), NotificationDetailActivity.class);
+        Intent intent = new Intent(getActivity(), YeuCauDatPhongChiTietActivity.class);
         intent.putExtra("id", id);
         //intent.putExtra("thongBao",  thongBao());
         // trangthaithongbao = 1
@@ -113,6 +118,6 @@ public class YeuCauFragment extends AbstractFragment {
     @Override
     public void onResume() {
         super.onResume();
-        listThongBaoTheoIdTaiKhoan();
+        listYeuCauThongBaoTheoIdTaiKhoan();
     }
 }
