@@ -26,7 +26,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.mobileprojectapp2.R;
 import com.example.mobileprojectapp2.activity.chutro.AddRoomActivity;
-import com.example.mobileprojectapp2.activity.chutro.AuthencationActivity;
+import com.example.mobileprojectapp2.activity.chutro.AuthenticationActivity;
 import com.example.mobileprojectapp2.activity.chutro.EditRoomActivity;
 import com.example.mobileprojectapp2.activity.chutro.MotelRoomOwnerActivity;
 import com.example.mobileprojectapp2.activity.chutro.RenterListActivity;
@@ -492,7 +492,7 @@ public class ListRoomFragment extends AbstractFragment {
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        Intent intent = new Intent(getActivity(), AuthencationActivity.class);
+                        Intent intent = new Intent(getActivity(), AuthenticationActivity.class);
                         startActivity(intent);
                     }
                 })

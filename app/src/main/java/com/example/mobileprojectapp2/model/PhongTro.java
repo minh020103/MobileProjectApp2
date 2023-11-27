@@ -24,18 +24,9 @@ public class PhongTro {
     private int tienNuoc;
     private Quan quan;
 
-    public Quan getQuan() {
-        return quan;
-    }
-
-    public void setQuan(Quan quan) {
-        this.quan = quan;
-    }
-
     private List<TienIch> danhSachTienIch;
     private List<HinhAnh> hinhAnhPhongTro;
     private ChuTro phongTroChuTro;
-    private Quan quan;
 
     public PhongTro(int id, int soPhong, String tenPhong, int gia, int dienTich, String moTa, int idQuan, int idPhuong, String diaChiChiTiet, int loaiPhong, int soLuongToiDa, int tienCoc, int gioiTinh, int tienDien, int tienNuoc, List<TienIch> danhSachTienIch, List<HinhAnh> hinhAnhPhongTro, ChuTro phongTroChuTro, Quan quan) {
         this.id = id;
