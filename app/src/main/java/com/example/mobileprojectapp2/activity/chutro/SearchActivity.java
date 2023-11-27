@@ -44,7 +44,7 @@ public class SearchActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.search_layout);
+        setContentView(R.layout.chutro_search_phong_tro_layout);
 
         sharedPreferences = SearchActivity.this.getSharedPreferences(Const.PRE_LOGIN, Context.MODE_PRIVATE);
         idChuTro = sharedPreferences.getInt("idChuTro", -1);
@@ -87,7 +87,7 @@ public class SearchActivity extends AppCompatActivity {
             @Override
             public void OnClickItem(int position, View v) {
                 Log.d("TAG", "OnClickItem: "+mList.get(position).getId());
-                Intent intent = new Intent(SearchActivity.this, DetailPhongTro.class);
+                Intent intent = new Intent(SearchActivity.this, DetailPhongTroActivity.class);
                 intent.putExtra("idPhong",mList.get(position).getIdPhongTro());
                 startActivity(intent);
 
