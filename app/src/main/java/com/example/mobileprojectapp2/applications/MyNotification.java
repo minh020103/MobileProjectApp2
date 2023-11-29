@@ -1,4 +1,4 @@
-package com.example.mobileprojectapp2.receivers;
+package com.example.mobileprojectapp2.applications;
 
 import android.app.Application;
 import android.app.NotificationChannel;
