@@ -12,7 +12,7 @@
         android:background="@color/white">
 
         <ImageView
-            android:id="@+id/img_back"
+            android:id="@+id/img_back_nguoi_thue"
             style="@style/imgView_back" />
 
         <TextView
@@ -26,7 +26,7 @@
         android:layout_height="match_parent">
 
         <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/imgView_profile_edit"
+            android:id="@+id/imgView_profile_edit_nguoi_thue"
             android:layout_width="120dp"
             android:layout_height="120dp"
             android:layout_centerHorizontal="true"
@@ -38,7 +38,7 @@
         <TextView
             android:id="@+id/tv_upload"
             style="@style/tv_18sp"
-            android:layout_below="@+id/imgView_profile_edit"
+            android:layout_below="@+id/imgView_profile_edit_nguoi_thue"
             android:layout_centerHorizontal="true"
             android:text="@string/ful" />
 
@@ -67,40 +67,17 @@
             android:background="@color/white"
             android:hint="@string/nsdt" />
 
-        <TextView
-            android:id="@+id/tv_lb_stk_bank_nguoi_thue"
-            style="@style/tv_16sp"
-            android:layout_below="@id/edt_phone_nguoi_thue"
-            android:text="@string/stknh" />
-
-        <EditText
-            android:id="@+id/edt_number_bank_nguoi_thue"
-            style="@style/edt1"
-            android:layout_below="@+id/tv_lb_stk_bank_nguoi_thue"
-            android:hint="@string/nstknh" />
-
-        <TextView
-            android:id="@+id/tv_lb_name_bank_nguoi_thue"
-            style="@style/tv_16sp"
-            android:layout_below="@id/edt_number_bank_nguoi_thue"
-            android:text="@string/tctknh" />
-
-        <EditText
-            android:id="@+id/edt_name_user_bank_nguoi_thue"
-            style="@style/edt1"
-            android:layout_below="@+id/tv_lb_name_bank_nguoi_thue"
-            android:hint="@string/ntctk" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_accept_edit_profile_nguoi_thue"
             style="@style/btn1"
-            android:layout_below="@+id/edt_name_user_bank_nguoi_thue"
+            android:layout_below="@+id/edt_phone_nguoi_thue"
             android:layout_marginTop="30dp"
             android:background="@color/button_fb"
             android:text="@string/cntt" />
 
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btn_cancel"
+            android:id="@+id/btn_cancel_nguoi_thue"
             style="@style/btn1"
             android:layout_below="@+id/btn_accept_edit_profile_nguoi_thue"
             android:layout_marginTop="5dp"

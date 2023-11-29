@@ -661,7 +661,7 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/ll_dat_coc"
+            android:id="@+id/ll_dat_phong"
             android:layout_width="0dp"
             android:layout_height="50dp"
             android:layout_margin="5dp"
