@@ -6,8 +6,10 @@ import static com.example.mobileprojectapp2.api.Const.PHONG_TRONG;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -28,13 +30,17 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.borjabravo.readmoretextview.ReadMoreTextView;
 import com.bumptech.glide.Glide;
 import com.example.mobileprojectapp2.R;
+import com.example.mobileprojectapp2.activity.chutro.PhongNhanTinActivity;
+import com.example.mobileprojectapp2.activity.chutro.RenterDetailActivity;
 import com.example.mobileprojectapp2.activity.chutro.ZoomOutPageTransformer;
 import com.example.mobileprojectapp2.api.Const;
+import com.example.mobileprojectapp2.api.chutro.ApiServiceNghiem;
 import com.example.mobileprojectapp2.api.chutro.ApiServicePhuc;
 import com.example.mobileprojectapp2.api.nguoithue.ApiServicePhuc2;
 
 import com.example.mobileprojectapp2.datamodel.HinhAnh;
 import com.example.mobileprojectapp2.datamodel.PhongNguoiThue;
+import com.example.mobileprojectapp2.datamodel.PhongTinNhan;
 import com.example.mobileprojectapp2.model.ChuTro;
 import com.example.mobileprojectapp2.model.PhongTro;
 import com.example.mobileprojectapp2.model.TienIch;
@@ -48,6 +54,8 @@ import com.example.mobileprojectapp2.recyclerviewadapter.nguoithue.PhucNguoiThue
 import java.util.ArrayList;
 import java.util.List;
 
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -81,6 +89,8 @@ public class DetailPhongTroNguoiThueActivity extends AppCompatActivity {
     private LinearLayout llXemThem, llThuGon, ll_dsnt, llDatPhong, llGoi, llChat;
     private int idTaiKhoanNhan;
     private ProgressDialog mProgressDialog;
+    SharedPreferences sharedPreferences;
+    Intent intent1;
 
     private Handler handler = new Handler();
     private Runnable runnable = new Runnable() {
@@ -101,6 +111,7 @@ public class DetailPhongTroNguoiThueActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.nguoithue_detail_phong_tro_layout);
 
+        intent1 = new Intent(DetailPhongTroNguoiThueActivity.this, PhongNhanTinActivity.class);
         listTienIch = new ArrayList<>();
         listHinhAnh = new ArrayList<>();
         listNguoiThue = new ArrayList<>();
@@ -109,8 +120,11 @@ public class DetailPhongTroNguoiThueActivity extends AppCompatActivity {
         mProgressDialog = new ProgressDialog(this);
         mProgressDialog.setMessage("Please wait ...");
 
-//        Intent intent = getIntent();
-//        idPhong = intent.getIntExtra("idPhong", 0);
+        sharedPreferences = this.getSharedPreferences(Const.PRE_LOGIN, Context.MODE_PRIVATE);
+        idTaiKhoan = sharedPreferences.getInt("idTaiKhoan", -1);
+
+        Intent intent = getIntent();
+        idPhong = intent.getIntExtra("idPhong", -1);
 
         anhXa();
         getDataFromApi();
@@ -137,7 +151,46 @@ public class DetailPhongTroNguoiThueActivity extends AppCompatActivity {
         adapterNguoiThue.setMyOnClickListener(new PhongTroChuTroAdapter.MyOnClickListener() {
             @Override
             public void OnClickItem(int position, View v) {
-                alertSuccess("Nhắn tin");
+                if(listNguoiThue.get(position).getNguoiThue().getIdTaiKhoan()!=idTaiKhoan){
+                    Call<Integer> call = ApiServiceNghiem.apiService.layIdPhongTinNhan(idTaiKhoan,listNguoiThue.get(position).getNguoiThue().getIdTaiKhoan());
+                    call.enqueue(new Callback<Integer>() {
+                        @Override
+                        public void onResponse(Call<Integer> call, Response<Integer> response) {
+                            if(response!=null){
+                                if(response.body()==-1){
+                                    RequestBody senderID = RequestBody.create(MediaType.parse("multipart/form-data"),idTaiKhoan+"");
+                                    RequestBody nguoiThueID = RequestBody.create(MediaType.parse("multipart/form-data"),listNguoiThue.get(position).getNguoiThue().getIdTaiKhoan()+"");
+                                        Call<PhongTinNhan> taoPhong = ApiServiceNghiem.apiService.taoPhongTinNhan(senderID,nguoiThueID);
+                                        taoPhong.enqueue(new Callback<PhongTinNhan>() {
+                                            @Override
+                                            public void onResponse(Call<PhongTinNhan> call, Response<PhongTinNhan> response) {
+                                                if(response!=null){
+                                                    intent1.putExtra("idPhong",response.body().getId());
+                                                }
+                                            }
+                                            @Override
+                                            public void onFailure(Call<PhongTinNhan> call, Throwable t) {
+
+                                            }
+                                        });
+                                }else{
+                                    intent1.putExtra("idPhong",response.body());
+                                }
+                                intent1.putExtra("idDoiPhuong",listNguoiThue.get(position).getNguoiThue().getIdTaiKhoan());
+                                intent1.putExtra("ten",listNguoiThue.get(position).getNguoiThue().getTen());
+                                intent1.putExtra("hinh",listNguoiThue.get(position).getNguoiThue().getHinh());
+                                startActivity(intent1);
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<Integer> call, Throwable t) {
+
+                        }
+                    });
+                }else{
+                    alertSuccess("Không Thể Nhắn Tin Cho Chính Bạn!");
+                }
             }
         });
 
@@ -149,7 +202,14 @@ public class DetailPhongTroNguoiThueActivity extends AppCompatActivity {
                 requestYeuCauDatPhong();
             }
         });
+        llChat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(intent1);
+            }
+        });
     }
+
 
 
 
@@ -192,7 +252,6 @@ public class DetailPhongTroNguoiThueActivity extends AppCompatActivity {
                 tvDienTichNguoiThue.setText(response.body().getDienTich() + "㎡");
                 tvQuanNguoiThue.setText(response.body().getIdQuan() + "");
                 tvGiaNguoiThue.setText(response.body().getGia() + " / tháng");
-
                 if (response.body().getLoaiPhong() == PHONG_DON || response.body().getLoaiPhong() == PHONG_TRONG) {
                     tvLoaiPhongNguoiThue.setText("Phòng đơn");
                     ll_dsnt.setVisibility(View.GONE);
@@ -273,13 +332,47 @@ public class DetailPhongTroNguoiThueActivity extends AppCompatActivity {
                         llThuGon.setVisibility(View.GONE);
                     }
                 });
+                if (response.body().getPhongTroChuTro()!=null){
+                    int idNhan = response.body().getPhongTroChuTro().getIdTaiKhoan();
+                    RequestBody senderID = RequestBody.create(MediaType.parse("multipart/form-data"),idTaiKhoan+"");
+                    RequestBody nguoiThueID = RequestBody.create(MediaType.parse("multipart/form-data"),idNhan+"");
+                    Call<Integer> calll = ApiServiceNghiem.apiService.layIdPhongTinNhan(idTaiKhoan,response.body().getPhongTroChuTro().getIdTaiKhoan());
+                    calll.enqueue(new Callback<Integer>() {
+                        @Override
+                        public void onResponse(Call<Integer> call, Response<Integer> response) {
+                            if(response.body()==-1){
+                                Call<PhongTinNhan> taoPhong = ApiServiceNghiem.apiService.taoPhongTinNhan(senderID,nguoiThueID);
+                                taoPhong.enqueue(new Callback<PhongTinNhan>() {
+                                    @Override
+                                    public void onResponse(Call<PhongTinNhan> call, Response<PhongTinNhan> response) {
+                                        if(response!=null){
+                                            intent1.putExtra("idPhong",response.body().getId());
+                                        }
+                                    }
+                                    @Override
+                                    public void onFailure(Call<PhongTinNhan> call, Throwable t) {
 
-                tvTenChuTro.setText(response.body().getPhongTroChuTro().getTen());
-                tvSDTChuTro.setText(response.body().getPhongTroChuTro().getSoDienThoai());
+                                    }
+                                });
+                            }else{
+                                intent1.putExtra("idPhong",response.body());
+                            }
 
-                idTaiKhoanNhan = response.body().getPhongTroChuTro().getId();
-                Glide.with(DetailPhongTroNguoiThueActivity.this.getLayoutInflater().getContext()).load(Const.DOMAIN + response.body().getPhongTroChuTro().getHinh()).into(imageViewChuTro);
+                        }
 
+                        @Override
+                        public void onFailure(Call<Integer> call, Throwable t) {
+
+                        }
+                    });
+                    tvTenChuTro.setText(response.body().getPhongTroChuTro().getTen());
+                    tvSDTChuTro.setText(response.body().getPhongTroChuTro().getSoDienThoai());
+                    idTaiKhoanNhan = response.body().getPhongTroChuTro().getId();
+                    Glide.with(DetailPhongTroNguoiThueActivity.this.getLayoutInflater().getContext()).load(Const.DOMAIN + response.body().getPhongTroChuTro().getHinh()).into(imageViewChuTro);
+                    intent1.putExtra("idDoiPhuong",response.body().getPhongTroChuTro().getIdTaiKhoan());
+                    intent1.putExtra("ten",response.body().getPhongTroChuTro().getTen());
+                    intent1.putExtra("hinh",response.body().getPhongTroChuTro().getHinh());
+                }
                 llGoi.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -299,7 +392,6 @@ public class DetailPhongTroNguoiThueActivity extends AppCompatActivity {
             }
         });
     }
-
     private void getDanhSachNguoiThueGoiY() {
         Call<List<PhongNguoiThue>> call = ApiServicePhuc2.apiService.getNguoiThueTheoPhong(idPhong);
         call.enqueue(new Callback<List<PhongNguoiThue>>() {

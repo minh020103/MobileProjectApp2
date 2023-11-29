@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.mobileprojectapp2.R;
+import com.example.mobileprojectapp2.adapter.chutro.PhongNguoiThueAdapter;
 import com.example.mobileprojectapp2.adapter.nguoithue.DanhSachGoiYAdapter;
 import com.example.mobileprojectapp2.api.Const;
 import com.example.mobileprojectapp2.api.nguoithue.ApiServiceMinh;
@@ -25,6 +26,7 @@ import com.example.mobileprojectapp2.datamodel.HinhAnh;
 import com.example.mobileprojectapp2.datamodels.PhongTro;
 import com.example.mobileprojectapp2.viewpager2adapter.NguoiThueImageSlideViewPager2Adapter;
 
+import java.net.Inet4Address;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -63,6 +65,7 @@ public class DanhSachPhongGoiYActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(danhSachGoiYAdapter);
         setDuLieu();
+        suKienXem();
         ic_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -90,6 +93,16 @@ public class DanhSachPhongGoiYActivity extends AppCompatActivity {
         });
         imagesAdapter.notifyDataSetChanged();
     }
+    private void suKienXem(){
+        danhSachGoiYAdapter.setOnClickItemListener(new PhongNguoiThueAdapter.OnClickItemListener() {
+            @Override
+            public void onClickItem(int position, View v) {
+                Intent intent = new Intent(getApplicationContext(),DetailPhongTroNguoiThueActivity.class);
+                intent.putExtra("idPhong",arrayList.get(position).getId());
+                startActivity(intent);
+            }
+        });
+    }
     private void setDuLieu(){
 
         Call<ArrayList<PhongTro>> call = ApiServiceNghiem.apiService.danhSachPhongGoiY(idTaiKhoan);
@@ -101,6 +114,7 @@ public class DanhSachPhongGoiYActivity extends AppCompatActivity {
                     arrayList.addAll(response.body());
                     soLuongKetQua.setText(arrayList.size()+"");
                     danhSachGoiYAdapter.notifyDataSetChanged();
+
                 }else{
                     soLuongKetQua.setText(0+"");
                 }
