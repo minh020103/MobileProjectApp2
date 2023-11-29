@@ -23,7 +23,7 @@ import com.example.mobileprojectapp2.fragment.nguoithue.MyRoomFragment;
 import com.example.mobileprojectapp2.fragment.nguoithue.NotificationFragment;
 import com.example.mobileprojectapp2.fragment.nguoithue.ProfileFragment;
 import com.example.mobileprojectapp2.fragment.nguoithue.TinNhanFragment;
-import com.example.mobileprojectapp2.receivers.MyNotification;
+import com.example.mobileprojectapp2.applications.MyNotification;
 import com.example.mobileprojectapp2.viewpager2adapter.RenterViewPage2Adapter;
 import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -135,7 +135,7 @@ public class RenterActivity extends AppCompatActivity {
 
             Notification notification = new NotificationCompat.Builder(activity, MyNotification.CHANNEL_ID)
                     .setContentTitle("Title")
-                    .setContentText("Noi dung")
+                    .setContentText("Noi dung thong bao")
                     .setSmallIcon(icon)
                     .setColor(getResources().getColor(R.color.main_color_app_light, activity.getTheme()))
                     .build();
@@ -144,23 +144,10 @@ public class RenterActivity extends AppCompatActivity {
                 notificationManager.notify(id, notification);
             }
     }
-//    private ActivityResultLauncher<String> requestPermissionLauncher =
-//            registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
-//                if (isGranted) {
-//                    // Permission is granted. Continue the action or workflow in your
-//                    // app.
-//                } else {
-//                    // Explain to the user that the feature is unavailable because the
-//                    // feature requires a permission that the user has denied. At the
-//                    // same time, respect the user's decision. Don't link to system
-//                    // settings in an effort to convince the user to change their
-//                    // decision.
-//                }
-//            });
     private void requestPermisstion(int icon, String title, String content, int id){
         notification(icon, title, content, id);
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
-
+            notification(icon, title, content, id);
         }
         else {
             if (ContextCompat.checkSelfPermission(

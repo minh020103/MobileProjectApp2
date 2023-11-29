@@ -16,6 +16,7 @@ public class MyNotification extends Application {
         createNotificationChannel();
 
     }
+    // Đăng ký channel id cho notification
     private void createNotificationChannel() {
         // Create the NotificationChannel, but only on API 26+ because
         // the NotificationChannel class is not in the Support Library.
