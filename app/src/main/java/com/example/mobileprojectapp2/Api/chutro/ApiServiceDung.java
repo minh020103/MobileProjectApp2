@@ -33,14 +33,6 @@ public interface ApiServiceDung {
     Call<List<Goi>> getListPakageAPI();
     @GET("api/goi/chitiet")
     Call<Goi> getPakageByIdAPI(@Query("id") int id);
-    @GET("api/goi/lock")
-    Call<Goi> lockPakageByIdAPI(@Query("id") int id);
-    @GET("api/goi/unLock")
-    Call<Goi> unLockPakageByIdAPI(@Query("id") int id);
-    @POST("api/goi/add")
-    Call<Goi> addPakage(@Query("thoiHan") int thoiHan, @Query("soLuongPhongToiDa") int soLuongPhongToiDa, @Query("gia") int gia);
-    @PUT("api/goi/update")
-    Call<Goi> updatePakage(@Query("id") int id,@Query("thoiHan") int thoiHan, @Query("soLuongPhongToiDa") int soLuongPhongToiDa, @Query("gia") int gia);
     @PATCH("api/chutro/xoadichvu")
     Call<ChuTro> xoagoidangdung(@Query("idTaiKhoan") int id);
     @GET("api/thongtinadmin")
@@ -51,3 +43,4 @@ public interface ApiServiceDung {
                                     @Part("idGoi") RequestBody idGoi,
                                     @Part MultipartBody.Part hinhAnhChuyenKhoan);
 }
+    
