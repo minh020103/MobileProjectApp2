@@ -3,7 +3,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-
     xmlns:tools="http://schemas.android.com/tools">
 
     <TextView
@@ -24,42 +23,37 @@
     <Button
         app:backgroundTint="@null"
         android:id="@+id/taiKhoanChuTro"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="@drawable/button_gradient"
-        android:paddingLeft="20dp"
-        android:paddingTop="10dp"
-        android:paddingRight="20dp"
-        android:paddingBottom="10dp"
+        android:background="@drawable/background_button_login"
         android:text="Chủ Trọ"
         android:textColor="@color/white"
-        android:textSize="20sp"
+        android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/chonLoaiTaiKhoan"
-        app:layout_constraintVertical_bias=".05" />
+        app:layout_constraintVertical_bias=".05"
+        app:layout_constraintWidth_percent="0.8"
+        />
 
     <Button
         app:backgroundTint="@null"
         android:id="@+id/taiKhoanNguoiThue"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="@drawable/button_gradient"
-        android:paddingLeft="20dp"
-        android:paddingTop="10dp"
-        android:paddingRight="20dp"
-        android:paddingBottom="10dp"
+        android:background="@drawable/background_button_login"
         android:text="Người Thuê"
         android:textColor="@color/white"
-        android:textSize="20sp"
+        android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/taiKhoanChuTro"
-        app:layout_constraintVertical_bias="0.04" />
+        app:layout_constraintVertical_bias="0.04"
+        app:layout_constraintWidth_percent="0.8"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

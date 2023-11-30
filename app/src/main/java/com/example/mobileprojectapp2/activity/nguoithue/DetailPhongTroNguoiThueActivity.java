@@ -90,7 +90,8 @@ public class DetailPhongTroNguoiThueActivity extends AppCompatActivity {
     private int idTaiKhoanNhan;
     private ProgressDialog mProgressDialog;
     SharedPreferences sharedPreferences;
-    Intent intent1;
+    Intent intentChuTro;
+    Intent intentNguoiThue;
 
     private Handler handler = new Handler();
     private Runnable runnable = new Runnable() {
@@ -106,12 +107,15 @@ public class DetailPhongTroNguoiThueActivity extends AppCompatActivity {
         }
     };
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.nguoithue_detail_phong_tro_layout);
 
-        intent1 = new Intent(DetailPhongTroNguoiThueActivity.this, PhongNhanTinActivity.class);
+        intentChuTro = new Intent(DetailPhongTroNguoiThueActivity.this, PhongNhanTinActivity.class);
+        intentNguoiThue = new Intent(DetailPhongTroNguoiThueActivity.this, PhongNhanTinActivity.class);
         listTienIch = new ArrayList<>();
         listHinhAnh = new ArrayList<>();
         listNguoiThue = new ArrayList<>();
@@ -165,7 +169,7 @@ public class DetailPhongTroNguoiThueActivity extends AppCompatActivity {
                                             @Override
                                             public void onResponse(Call<PhongTinNhan> call, Response<PhongTinNhan> response) {
                                                 if(response!=null){
-                                                    intent1.putExtra("idPhong",response.body().getId());
+                                                    intentNguoiThue.putExtra("idPhong",response.body().getId());
                                                 }
                                             }
                                             @Override
@@ -174,12 +178,12 @@ public class DetailPhongTroNguoiThueActivity extends AppCompatActivity {
                                             }
                                         });
                                 }else{
-                                    intent1.putExtra("idPhong",response.body());
+                                    intentNguoiThue.putExtra("idPhong",response.body());
                                 }
-                                intent1.putExtra("idDoiPhuong",listNguoiThue.get(position).getNguoiThue().getIdTaiKhoan());
-                                intent1.putExtra("ten",listNguoiThue.get(position).getNguoiThue().getTen());
-                                intent1.putExtra("hinh",listNguoiThue.get(position).getNguoiThue().getHinh());
-                                startActivity(intent1);
+                                intentNguoiThue.putExtra("idDoiPhuong",listNguoiThue.get(position).getNguoiThue().getIdTaiKhoan());
+                                intentNguoiThue.putExtra("ten",listNguoiThue.get(position).getNguoiThue().getTen());
+                                intentNguoiThue.putExtra("hinh",listNguoiThue.get(position).getNguoiThue().getHinh());
+                                startActivity(intentNguoiThue);
                             }
                         }
 
@@ -205,7 +209,7 @@ public class DetailPhongTroNguoiThueActivity extends AppCompatActivity {
         llChat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(intent1);
+                startActivity(intentChuTro);
             }
         });
     }
@@ -346,7 +350,7 @@ public class DetailPhongTroNguoiThueActivity extends AppCompatActivity {
                                     @Override
                                     public void onResponse(Call<PhongTinNhan> call, Response<PhongTinNhan> response) {
                                         if(response!=null){
-                                            intent1.putExtra("idPhong",response.body().getId());
+                                            intentChuTro.putExtra("idPhong",response.body().getId());
                                         }
                                     }
                                     @Override
@@ -355,7 +359,7 @@ public class DetailPhongTroNguoiThueActivity extends AppCompatActivity {
                                     }
                                 });
                             }else{
-                                intent1.putExtra("idPhong",response.body());
+                                intentChuTro.putExtra("idPhong",response.body());
                             }
 
                         }
@@ -369,9 +373,9 @@ public class DetailPhongTroNguoiThueActivity extends AppCompatActivity {
                     tvSDTChuTro.setText(response.body().getPhongTroChuTro().getSoDienThoai());
                     idTaiKhoanNhan = response.body().getPhongTroChuTro().getId();
                     Glide.with(DetailPhongTroNguoiThueActivity.this.getLayoutInflater().getContext()).load(Const.DOMAIN + response.body().getPhongTroChuTro().getHinh()).into(imageViewChuTro);
-                    intent1.putExtra("idDoiPhuong",response.body().getPhongTroChuTro().getIdTaiKhoan());
-                    intent1.putExtra("ten",response.body().getPhongTroChuTro().getTen());
-                    intent1.putExtra("hinh",response.body().getPhongTroChuTro().getHinh());
+                    intentChuTro.putExtra("idDoiPhuong",response.body().getPhongTroChuTro().getIdTaiKhoan());
+                    intentChuTro.putExtra("ten",response.body().getPhongTroChuTro().getTen());
+                    intentChuTro.putExtra("hinh",response.body().getPhongTroChuTro().getHinh());
                 }
                 llGoi.setOnClickListener(new View.OnClickListener() {
                     @Override
