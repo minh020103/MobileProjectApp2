@@ -61,17 +61,7 @@ public class RenterActivity extends AppCompatActivity {
         badgeMessage.setVisible(true);
         badgeMessage.setNumber(10);
         adapter = new RenterViewPage2Adapter(this);
-        databaseReference.child("notification").child(idTaiKhoan+"").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                requestPermisstion(R.drawable.icon_notification_selected, "Title", "content", 1);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
+        requestPermisstion();
 
         list.add(new HomeFragment());
         list.add(new MyRoomFragment());
@@ -131,29 +121,24 @@ public class RenterActivity extends AppCompatActivity {
 
     }
 
-    private void notification(int icon, String title, String content, int id){
-
-            Notification notification = new NotificationCompat.Builder(activity, MyNotification.CHANNEL_ID)
-                    .setContentTitle("Title")
-                    .setContentText("Noi dung thong bao")
-                    .setSmallIcon(icon)
-                    .setColor(getResources().getColor(R.color.main_color_app_light, activity.getTheme()))
-                    .build();
-            NotificationManager notificationManager = (NotificationManager) activity.getSystemService(Context.NOTIFICATION_SERVICE);
-            if (notificationManager != null) {
-                notificationManager.notify(id, notification);
-            }
-    }
-    private void requestPermisstion(int icon, String title, String content, int id){
-        notification(icon, title, content, id);
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
-            notification(icon, title, content, id);
-        }
-        else {
+//    private void notification(int icon, String title, String content, int id){
+//
+//            Notification notification = new NotificationCompat.Builder(activity, MyNotification.CHANNEL_ID)
+//                    .setContentTitle("Title")
+//                    .setContentText("Noi dung thong bao")
+//                    .setSmallIcon(icon)
+//                    .setColor(getResources().getColor(R.color.main_color_app_light, activity.getTheme()))
+//                    .build();
+//            NotificationManager notificationManager = (NotificationManager) activity.getSystemService(Context.NOTIFICATION_SERVICE);
+//            if (notificationManager != null) {
+//                notificationManager.notify(id, notification);
+//            }
+//    }
+    private void requestPermisstion(){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             if (ContextCompat.checkSelfPermission(
                     activity, Manifest.permission.POST_NOTIFICATIONS) ==
                     PackageManager.PERMISSION_GRANTED){
-                notification(icon, title, content, id);
             }
             else {
                 requestPermissions(new String[]{Manifest.permission.POST_NOTIFICATIONS}, 111);

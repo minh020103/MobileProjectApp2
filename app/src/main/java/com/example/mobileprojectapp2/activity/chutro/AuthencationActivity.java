@@ -29,8 +29,14 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.mobileprojectapp2.R;
+import com.example.mobileprojectapp2.api.ApiFCMService;
 import com.example.mobileprojectapp2.api.Const;
 import com.example.mobileprojectapp2.api.chutro.ApiServicePhuc;
+import com.example.mobileprojectapp2.api.nguoithue.ApiServiceMinh;
+import com.example.mobileprojectapp2.datamodel.FirebaseCloudMessaging;
+import com.example.mobileprojectapp2.datamodel.TaiKhoan;
+import com.example.mobileprojectapp2.datamodel.fcm.Notification;
+import com.example.mobileprojectapp2.datamodel.fcm.PushNotification;
 import com.example.mobileprojectapp2.model.XacThucChuTro;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseReference;
@@ -38,6 +44,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -147,10 +154,10 @@ public class AuthencationActivity extends AppCompatActivity {
             MultipartBody.Part partCccdMS = MultipartBody.Part.createFormData("cccdMatSau", fileMS.getName(), requestBodycccdMS);
 
 
-            Call<Integer> call = ApiServicePhuc.apiService.guiYeuCauXacThucChuTro(requestBodyIdChuTro, partCccdMT, partCccdMS);
-            call.enqueue(new Callback<Integer>() {
+            Call<XacThucChuTro> call = ApiServicePhuc.apiService.guiYeuCauXacThucChuTro(requestBodyIdChuTro, partCccdMT, partCccdMS);
+            call.enqueue(new Callback<XacThucChuTro>() {
                 @Override
-                public void onResponse(Call<Integer> call, Response<Integer> response) {
+                public void onResponse(Call<XacThucChuTro> call, Response<XacThucChuTro> responseXTCT) {
                     alertSuccess("Gửi yêu cầu xác nhận chủ trọ thành công");
                     tvNotAuthencation.setVisibility(View.GONE);
                     tvOkAuthencation.setVisibility(View.GONE);
@@ -161,10 +168,47 @@ public class AuthencationActivity extends AppCompatActivity {
                             Log.d(TAG, "onSuccess: PUSH NOTIFICATION REALTIME");
                         }
                     });
+                    ApiServiceMinh.apiService.layTatCaTaiKhoanTheoLoaiTaiKhoan(Const.ADMIN).enqueue(new Callback<List<TaiKhoan>>() {
+                        @Override
+                        public void onResponse(Call<List<TaiKhoan>> call, Response<List<TaiKhoan>> response) {
+                            if (response.code() == 200){
+                                if (response.body() != null){
+                                    for (TaiKhoan taikhoan:
+                                         response.body()) {
+                                        ApiServiceMinh.apiService.layTatCaTokenCuaTaiKhoan(taikhoan.getId()).enqueue(new Callback<List<FirebaseCloudMessaging>>() {
+                                            @Override
+                                            public void onResponse(Call<List<FirebaseCloudMessaging>> call, Response<List<FirebaseCloudMessaging>> responseToken) {
+                                                if (responseToken.code() == 200){
+                                                    for (FirebaseCloudMessaging firebaseCloudMessaging:
+                                                            responseToken.body()) {
+                                                        ApiFCMService.apiService.postNotification(new PushNotification(new Notification(responseXTCT.body().getId(), "Xác thực", "Yêu cầu xác thực chu trọ"), firebaseCloudMessaging.getToken()));
+                                                    }
+                                                }
+
+                                            }
+
+                                            @Override
+                                            public void onFailure(Call<List<FirebaseCloudMessaging>> call, Throwable t) {
+
+                                            }
+                                        });
+
+                                    }
+
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<List<TaiKhoan>> call, Throwable t) {
+
+                        }
+                    });
+
                 }
 
                 @Override
-                public void onFailure(Call<Integer> call, Throwable t) {
+                public void onFailure(Call<XacThucChuTro> call, Throwable t) {
                     alertFail("Gửi yêu cầu xác nhận chủ trọ thất bại");
                     tvNotAuthencation.setVisibility(View.VISIBLE);
                     tvOkAuthencation.setVisibility(View.GONE);

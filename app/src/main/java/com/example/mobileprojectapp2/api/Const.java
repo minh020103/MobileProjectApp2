@@ -23,7 +23,12 @@ public class Const {
     public static final int CHUA_DANG_KY_DICH_VU = 102;
 
     //Firebase notification (Firebase cloud messaging)
-    public static final String SERVER_KEY = "BGLBjmhwcHUOsCe8mPsAlaE2Z88ubp0K76AMGe_d1SiQ8knYP5J5n_9YnMwRlNsbD8PV8A5aukdzZ-46SifUP5A";
+    //Không được sửa mấy cái này nhe
+    public static final String SERVER_KEY = "AAAAfDFy5i0:APA91bGe3Y99w0mvfaDwtR03dvFu_-0rt-HoP0NhLNjNkyFIimiUNwOdfxjtTYOQVdnCKhDrHr1FeeCpm5XidQZUhWDXZRcI4lAM9gl6CjeZSyTDsy6MBxYASClwUTugYd14FcPx4HgR";
     public static final String BASE_URL = "https://fcm.googleapis.com";
     public static final String CONTENT_TYPE = "application/json";
+
+    public static final int NGUOI_THUE = 0;
+    public static final int CHU_TRO = 1;
+    public static final int ADMIN = 2;
 }

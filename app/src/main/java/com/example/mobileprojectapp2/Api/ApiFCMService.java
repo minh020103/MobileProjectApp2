@@ -16,9 +16,7 @@ public interface ApiFCMService {
             .build()
             .create(ApiFCMService.class);
 
-    public interface NotificationAPI {
         @Headers({"Authorization: key=" + Const.SERVER_KEY, "Content-Type:" + Const.CONTENT_TYPE})
         @POST("/fcm/send")
         Call postNotification(@Body PushNotification data);
-    }
 }

@@ -9,4 +9,5 @@ Thuận tiện: gần hàng xanh, trường đại học Hurtech, Hồng Bàng, 
     <string name="test_dia_chi">188/1 Nguyễn Văn Hưởng , Phường Thảo Điền, Quận 2, Hồ Chí Minh</string>
     <string name="channel_name">NOTIFICATION 3T</string>
     <string name="channel_description">DESCRIPTION 3T</string>
+    <string name="msg_token_fmt">lỗi token</string>
 </resources>
