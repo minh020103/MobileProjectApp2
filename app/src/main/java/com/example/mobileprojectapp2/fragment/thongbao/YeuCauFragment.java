@@ -84,7 +84,7 @@ public class YeuCauFragment extends AbstractFragment {
     }
 
     private void listYeuCauThongBaoTheoIdTaiKhoan(){
-        ApiServiceKiet.apiServiceKiet.getListYeuCauDangKiPhong(3).enqueue(new Callback<List<YeuCauDatPhong>>() {
+        ApiServiceKiet.apiServiceKiet.getListYeuCauDangKiPhong(18).enqueue(new Callback<List<YeuCauDatPhong>>() {
             @Override
             public void onResponse(Call<List<YeuCauDatPhong>> call, Response<List<YeuCauDatPhong>> response) {
                 list = response.body();

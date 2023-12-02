@@ -47,4 +47,7 @@ public interface ApiServiceKiet {
     @GET("api/yeucaudatphong/chitiet")
     Call<YeuCauDatPhong> getYeuCauDangKiPhongById(@Query("id") int id);
 
+    @PUT("api/yeucaudatphong/xacnhandatphong")
+    Call<Integer> xacNhanDatPhong(@Query("id") int id, @Query("idTaiKhoanGui") int idTaiKhoanGui, @Query("idNguoiThue") int idNguoiThue, @Query("myIdTaiKhoan") int myIdTaiKhoan, @Query("idPhong") int idPhong);
+
 }

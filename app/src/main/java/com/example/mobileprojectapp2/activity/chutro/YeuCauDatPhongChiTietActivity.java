@@ -2,15 +2,21 @@ package com.example.mobileprojectapp2.activity.chutro;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.mobileprojectapp2.R;
+import com.example.mobileprojectapp2.api.Const;
 import com.example.mobileprojectapp2.api.chutro.ApiServiceKiet;
 import com.example.mobileprojectapp2.datamodel.ThongBao;
 import com.example.mobileprojectapp2.datamodel.YeuCauDatPhong;
@@ -35,6 +41,8 @@ public class YeuCauDatPhongChiTietActivity extends AppCompatActivity {
     Button btnTuChoiYC;
 
     int idPhong;
+    int idTaiKhoanGui;
+    int idNguoiThue;
 
 
     private int idTaiKhoan;
@@ -49,6 +57,11 @@ public class YeuCauDatPhongChiTietActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         id = intent.getIntExtra("id", 0);
+
+        sharedPreferences = this.getSharedPreferences(Const.PRE_LOGIN, Context.MODE_PRIVATE);
+        idTaiKhoan = sharedPreferences.getInt("idTaiKhoan", -1);
+
+
         imgBack = findViewById(R.id.imgBack);
         tvTieuDeThongBaoChiTiet = findViewById(R.id.tvTieuDeYCThongBaoChiTiet);
         tvNoiDungThongBaoChiTiet1 = findViewById(R.id.tvNoiDungYCThongBaoChiTiet1);
@@ -63,6 +76,13 @@ public class YeuCauDatPhongChiTietActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 finish();
+            }
+        });
+
+        btnChapNhanYC.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openDialogXacNhanDatPhong();
             }
         });
 
@@ -87,6 +107,8 @@ public class YeuCauDatPhongChiTietActivity extends AppCompatActivity {
                 tvNoiDungThongBaoChiTiet2.setText("Tên: " + data.getNguoiThue().getTen());
                 tvNoiDungThongBaoChiTiet3.setText("SĐT: " + data.getNguoiThue().getSoDienThoai());
                 idPhong = data.getIdPhong();
+                idTaiKhoanGui = data.getIdTaiKhoanGui();
+                idNguoiThue = data.getNguoiThue().getId();
                 if (data.getNguoiThue().getGioiTinh() == 0)
                 {
                     tvNoiDungThongBaoChiTiet4.setText("Giới tính: Nam");
@@ -104,6 +126,34 @@ public class YeuCauDatPhongChiTietActivity extends AppCompatActivity {
             }
         });
     }
+
+    private void xacNhanDatPhongAPI()
+    {
+        Log.d("rrr", id +" "+ idTaiKhoanGui + " " + idNguoiThue + " " + idTaiKhoan + " " + idPhong);
+        ApiServiceKiet.apiServiceKiet.xacNhanDatPhong(id, idTaiKhoanGui, idNguoiThue, idTaiKhoan, idPhong).enqueue(new Callback<Integer>() {
+            @Override
+            public void onResponse(Call<Integer> call, Response<Integer> response) {
+                Log.d("rrr", "onResponse" + response.body()+"");
+            }
+
+            @Override
+            public void onFailure(Call<Integer> call, Throwable t) {
+                Log.d("rrr", t+"");
+            }
+        });
+    }
+
+    private void openDialogXacNhanDatPhong()
+    {
+        new AlertDialog.Builder(this).setMessage("Chấp nhận cho thuê phòng ?").setCancelable(false).setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                xacNhanDatPhongAPI();
+                Toast.makeText(YeuCauDatPhongChiTietActivity.this, "Chấp nhận thành công !", Toast.LENGTH_SHORT).show();
+            }
+        }).setNegativeButton("Cancle",null).show();
+    }
+
 
     private void goToChiTietPhong(int idPhong)
     {
