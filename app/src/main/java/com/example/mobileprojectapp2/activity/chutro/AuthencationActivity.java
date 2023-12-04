@@ -33,7 +33,9 @@ import com.example.mobileprojectapp2.api.ApiFCMService;
 import com.example.mobileprojectapp2.api.Const;
 import com.example.mobileprojectapp2.api.chutro.ApiServicePhuc;
 import com.example.mobileprojectapp2.api.nguoithue.ApiServiceMinh;
+import com.example.mobileprojectapp2.component.MFCM;
 import com.example.mobileprojectapp2.datamodel.FirebaseCloudMessaging;
+import com.example.mobileprojectapp2.datamodel.ResultFCM;
 import com.example.mobileprojectapp2.datamodel.TaiKhoan;
 import com.example.mobileprojectapp2.datamodel.fcm.Notification;
 import com.example.mobileprojectapp2.datamodel.fcm.PushNotification;
@@ -170,29 +172,13 @@ public class AuthencationActivity extends AppCompatActivity {
                     });
                     ApiServiceMinh.apiService.layTatCaTaiKhoanTheoLoaiTaiKhoan(Const.ADMIN).enqueue(new Callback<List<TaiKhoan>>() {
                         @Override
-                        public void onResponse(Call<List<TaiKhoan>> call, Response<List<TaiKhoan>> response) {
-                            if (response.code() == 200){
-                                if (response.body() != null){
+                        public void onResponse(Call<List<TaiKhoan>> call, Response<List<TaiKhoan>> responseTaiKhoan) {
+                            if (responseTaiKhoan.code() == 200){
+                                if (responseTaiKhoan.body() != null){
                                     for (TaiKhoan taikhoan:
-                                         response.body()) {
-                                        ApiServiceMinh.apiService.layTatCaTokenCuaTaiKhoan(taikhoan.getId()).enqueue(new Callback<List<FirebaseCloudMessaging>>() {
-                                            @Override
-                                            public void onResponse(Call<List<FirebaseCloudMessaging>> call, Response<List<FirebaseCloudMessaging>> responseToken) {
-                                                if (responseToken.code() == 200){
-                                                    for (FirebaseCloudMessaging firebaseCloudMessaging:
-                                                            responseToken.body()) {
-                                                        ApiFCMService.apiService.postNotification(new PushNotification(new Notification(responseXTCT.body().getId(), "Xác thực", "Yêu cầu xác thực chu trọ"), firebaseCloudMessaging.getToken()));
-                                                    }
-                                                }
-
-                                            }
-
-                                            @Override
-                                            public void onFailure(Call<List<FirebaseCloudMessaging>> call, Throwable t) {
-
-                                            }
-                                        });
-
+                                         responseTaiKhoan.body()) {
+                                        Log.d(TAG, "onResponse: "+taikhoan.getId());
+                                        MFCM.sendNotificationForAccountID(taikhoan.getId(), responseXTCT.body().getId(), "Xác thực chủ trọ", "Yêu cầu xác thực chủ trọ." );
                                     }
 
                                 }
