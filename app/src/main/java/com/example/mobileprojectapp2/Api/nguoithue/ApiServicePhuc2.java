@@ -3,7 +3,10 @@ package com.example.mobileprojectapp2.api.nguoithue;
 import com.example.mobileprojectapp2.api.Const;
 import com.example.mobileprojectapp2.datamodel.NguoiThue;
 import com.example.mobileprojectapp2.datamodel.PhongNguoiThue;
-import com.example.mobileprojectapp2.model.PhongTro;
+import com.example.mobileprojectapp2.datamodel.PhongTroChuTro;
+import com.example.mobileprojectapp2.datamodels.PhongTro;
+import com.example.mobileprojectapp2.model.PhongTroChuTro2;
+import com.example.mobileprojectapp2.model.PhongTroGoiY;
 import com.example.mobileprojectapp2.model.YeuCauDatPhong;
 
 import java.util.List;
@@ -30,8 +33,8 @@ public interface ApiServicePhuc2 {
     @GET("api/phongnguoithue/all")
     Call<List<PhongNguoiThue>> getNguoiThueTheoPhong(@Query("idPhong") int idPhong);
 
-    @GET("api/nguoithue/danhsachphonggoiy")
-    Call<List<PhongTro>> getDanhSachPhongGoiY(@Query("idTaiKhoan") int idTaiKhoan);
+    @GET("api/nguoithue/danhsachphonggoiytheoquan")
+    Call<List<PhongTro>> getDanhSachPhongGoiYTheoQuan(@Query("idTaiKhoan") int idTaiKhoan);
 
     @GET("api/nguoithue/thongtinchitiet")
     Call<NguoiThue> getThongTinNguoiThue(@Query("idTaiKhoan") int idTaiKhoan);
@@ -53,5 +56,15 @@ public interface ApiServicePhuc2 {
                                         @Query("idTaiKhoanNhan") int idTaiKhoanNhan,
                                         @Query("idPhong") int idPhong);
 
+
+    @Multipart
+    @POST("api/nguoithue/capnhatphonggoiy")
+    Call<Integer> capNhatPhongGoiY(@Part("idTaiKhoan") RequestBody idTaiKhoan,
+                                   @Part("idQuan") RequestBody idQuan,
+                                   @Part("tienCoc") RequestBody tienCoc,
+                                   @Part("gioiTinh") RequestBody gioiTinh);
+
+    @GET("api/phongtrochutro/all")
+    Call<List<PhongTroChuTro>> getALlListPhongTroTheoChuTro(@Query("idChuTro") int idChuTro);
 
 }
