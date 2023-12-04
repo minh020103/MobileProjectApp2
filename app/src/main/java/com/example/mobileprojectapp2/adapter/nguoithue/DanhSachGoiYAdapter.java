@@ -13,8 +13,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.mobileprojectapp2.R;
+import com.example.mobileprojectapp2.adapter.chutro.PhongNguoiThueAdapter;
 import com.example.mobileprojectapp2.api.Const;
 import com.example.mobileprojectapp2.datamodels.PhongTro;
+import com.example.mobileprojectapp2.recyclerviewadapter.chutro.PhongTroChuTroAdapter;
 import com.google.android.material.imageview.ShapeableImageView;
 
 import java.util.ArrayList;
@@ -24,6 +26,11 @@ public class DanhSachGoiYAdapter extends RecyclerView.Adapter<DanhSachGoiYAdapte
     Activity activity;
     int layoutId;
     ArrayList<PhongTro> arrayList;
+    PhongNguoiThueAdapter.OnClickItemListener onClickItemListener;
+
+    public void setOnClickItemListener(PhongNguoiThueAdapter.OnClickItemListener onClickItemListener) {
+        this.onClickItemListener = onClickItemListener;
+    }
 
     public DanhSachGoiYAdapter(Activity activity, int layoutId, ArrayList<PhongTro> arrayList) {
         this.activity = activity;
@@ -58,6 +65,12 @@ public class DanhSachGoiYAdapter extends RecyclerView.Adapter<DanhSachGoiYAdapte
         if(phongTro.getHinhAnhPhongTro().size()!=0){
             Glide.with(activity.getLayoutInflater().getContext()).load(Const.DOMAIN+phongTro.getHinhAnhPhongTro().get(0).getHinh()).into(holder.imgAnhGoiY);
         }
+        holder.onClickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onClickItemListener.onClickItem(position, v);
+            }
+        };
     }
 
     @Override
@@ -71,12 +84,19 @@ public class DanhSachGoiYAdapter extends RecyclerView.Adapter<DanhSachGoiYAdapte
         return layoutId;
     }
 
-    protected class MyViewHolder extends RecyclerView.ViewHolder {
+    public interface OnClickItemListener{
+        void onClickItem(int position, View v);
+    }
+    protected class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         ImageView imgChuTro;
         TextView tenChuTro;
         TextView gioiTinh;
         TextView tenQuan;
         ShapeableImageView imgAnhGoiY;
+
+        TextView xem;
+
+        View.OnClickListener onClickListener;
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             imgChuTro = itemView.findViewById(R.id.imgChuTro);
@@ -84,6 +104,13 @@ public class DanhSachGoiYAdapter extends RecyclerView.Adapter<DanhSachGoiYAdapte
             gioiTinh = itemView.findViewById(R.id.gioiTinh);
             tenQuan = itemView.findViewById(R.id.tenQuan);
             imgAnhGoiY = itemView.findViewById(R.id.imgAnhGoiY);
+            xem = itemView.findViewById(R.id.xemPhong);
+            xem.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View view) {
+            onClickListener.onClick(view);
         }
     }
 }

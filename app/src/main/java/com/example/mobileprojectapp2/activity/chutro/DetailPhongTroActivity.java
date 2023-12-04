@@ -212,12 +212,9 @@ public class DetailPhongTroActivity extends AppCompatActivity {
         llXemThem = findViewById(R.id.ll_xem_them);
         tvTienIchRong = findViewById(R.id.tv_tien_ich_rong);
         tvHinhAnhRong = findViewById(R.id.tv_hinh_anh_rong);
-
         mViewPager2 = findViewById(R.id.view_pager_2);
         adapterHinhAnh = new HinhAnhAdapter(DetailPhongTroActivity.this, listHinhAnh, R.layout.chutro_item_image_layout);
         mViewPager2.setAdapter(adapterHinhAnh);
-
-
         adapterTienIch = new TienIchAdapter(DetailPhongTroActivity.this, listTienIch, R.layout.cardview_item_tien_ich_layout);
         layoutManagerTienIch = new LinearLayoutManager(DetailPhongTroActivity.this);
         layoutManagerTienIch.setOrientation(RecyclerView.HORIZONTAL);
