@@ -13,7 +13,8 @@
 
         <TextView
             style="@style/tv_toolbar"
-            android:text="@string/hs" />
+            android:text="@string/hs"
+            android:layout_gravity="center"/>
     </androidx.appcompat.widget.Toolbar>
 
     <RelativeLayout
@@ -32,6 +33,8 @@
             android:src="@drawable/avt"
             app:riv_oval="true" />
 
+
+
         <TextView
             android:id="@+id/tv_name_nguoi_thue"
             style="@style/tv_18sp"
@@ -43,7 +46,7 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/tv_phone"
+            android:id="@+id/tv_phone_nguoi_thue"
             style="@style/tv_16sp"
             android:layout_below="@+id/tv_name_nguoi_thue"
             android:layout_marginStart="10dp"
@@ -51,6 +54,16 @@
             android:layout_toRightOf="@+id/imgView_profile_nguoi_thue"
             android:text="@string/text_sdt"
             android:textSize="18sp" />
+        <TextView
+            android:id="@+id/tv_phone_nguoi_thue_chua_dl"
+            style="@style/tv_16sp"
+            android:layout_below="@+id/tv_name_nguoi_thue"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_toRightOf="@+id/imgView_profile_nguoi_thue"
+            android:text="Chưa cập nhật"
+            android:textSize="18sp"
+            android:visibility="gone"/>
 
     </RelativeLayout>
 
@@ -65,12 +78,6 @@
         style="@style/btn2"
         android:drawableRight="@drawable/iconp_changepassword"
         android:text="@string/dmk" />
-
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btn_Authencation_nguoi_thue"
-        style="@style/btn2"
-        android:drawableRight="@drawable/iconp_authencation"
-        android:text="@string/xt" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn_Logout_nguoi_thue"

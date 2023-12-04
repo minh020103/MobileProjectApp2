@@ -13,7 +13,8 @@
 
         <TextView
             style="@style/tv_toolbar"
-            android:text="@string/hs" />
+            android:text="@string/hs"
+            android:layout_gravity="center"/>
     </androidx.appcompat.widget.Toolbar>
 
     <RelativeLayout
@@ -51,6 +52,16 @@
             android:layout_toRightOf="@+id/imgView_profile"
             android:text="@string/text_sdt"
             android:textSize="18sp" />
+        <TextView
+            android:id="@+id/tv_phone_nguoi_thue_chua_dl_chu_tro"
+            style="@style/tv_16sp"
+            android:layout_below="@+id/tv_name"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_toRightOf="@+id/imgView_profile"
+            android:text="Chưa cập nhật"
+            android:textSize="18sp"
+            android:visibility="gone"/>
 
     </RelativeLayout>
 

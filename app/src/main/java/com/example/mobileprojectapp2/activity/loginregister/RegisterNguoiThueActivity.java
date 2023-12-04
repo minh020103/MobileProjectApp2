@@ -149,9 +149,6 @@ public class RegisterNguoiThueActivity extends AppCompatActivity {
 
     private void addUserFireBase(String email, String password){
         FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
-        Log.d("TAG_DK1", "addUserFireBase: "+firebaseAuth);
-        Log.d("TAG_DK2", "addUserFireBase: "+firebaseAuth.getLanguageCode());
-        Log.d("TAG_DK3", "addUserFireBase: "+firebaseAuth.getUid());
         firebaseAuth.createUserWithEmailAndPassword(email,password).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
             @Override
             public void onSuccess(AuthResult authResult) {
@@ -166,7 +163,6 @@ public class RegisterNguoiThueActivity extends AppCompatActivity {
             @Override
             public void onFailure(@NonNull Exception e) {
                 thongBao("Lỗi Hệ Thống!");
-                Log.d("TAG_DK", "onFailure: "+e);
             }
         });
     }
@@ -183,16 +179,16 @@ public class RegisterNguoiThueActivity extends AppCompatActivity {
     }
     private void setDuLieuSpinner(){
         ArrayList arrayList = new ArrayList();
+        arrayList.add("Khác");
         arrayList.add("Nam");
         arrayList.add("Nữ");
-        arrayList.add("Khác");
+
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item,arrayList);
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 gioiTinh = i;
-
             }
 
             @Override

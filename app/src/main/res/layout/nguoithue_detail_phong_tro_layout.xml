@@ -655,13 +655,13 @@
 
             <ImageView
                 android:layout_width="25dp"
-                android:layout_height="25dp"
+                android:layout_height="21dp"
                 android:layout_marginStart="5dp"
                 android:src="@drawable/iconp_chat" />
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/ll_dat_coc"
+            android:id="@+id/ll_dat_phong"
             android:layout_width="0dp"
             android:layout_height="50dp"
             android:layout_margin="5dp"

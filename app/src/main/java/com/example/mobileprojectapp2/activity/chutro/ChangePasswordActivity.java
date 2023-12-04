@@ -80,7 +80,6 @@ public class ChangePasswordActivity extends AppCompatActivity {
             if (edtPassNew.getText().toString().equals(edtPassConfirm.getText().toString())){
 //              FireBase Kiểm Tra Mật Khẩu Hiện tại
                 reAuthentication(edtPassNew.getText().toString());
-
             }
             else {
                 alertFail("Nhập lại mật khẩu không đúng");
@@ -111,6 +110,14 @@ public class ChangePasswordActivity extends AppCompatActivity {
                         edtPassNow.setText("");
                         edtPassNew.setText("");
                         edtPassConfirm.setText("");
+                        handler = new Handler();
+                        handler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                handler.postDelayed(this, 2000);
+                                finish();
+                            }
+                        }, 2000);
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override

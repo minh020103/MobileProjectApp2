@@ -1,7 +1,7 @@
 package com.example.mobileprojectapp2.model;
 
 import com.example.mobileprojectapp2.datamodel.HinhAnh;
-import com.example.mobileprojectapp2.datamodel.PhongTroChuTro;
+import com.example.mobileprojectapp2.datamodel.ChuTro;
 import com.example.mobileprojectapp2.datamodel.Quan;
 
 import java.util.List;
