@@ -116,9 +116,7 @@ public class HomeFragment extends AbstractFragment {
         rcvPhong.setAdapter(phongAdaprer);
 
 
-        getDataForImages();
-        getDataForQuan();
-        getDataForPhong();
+
 
         batSuKienAdapterQuan();
         batSuKienPhong();
@@ -154,6 +152,9 @@ public class HomeFragment extends AbstractFragment {
     public void onResume() {
         super.onResume();
         RenterActivity.viewPager2NguoiThue.setUserInputEnabled(true);
+        getDataForImages();
+        getDataForQuan();
+        getDataForPhong();
     }
 
     private void getDataForImages() {
