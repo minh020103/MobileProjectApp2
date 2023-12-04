@@ -50,6 +50,9 @@ import com.example.mobileprojectapp2.recyclerviewadapter.chutro.PhongTroChuTroAd
 import com.example.mobileprojectapp2.recyclerviewadapter.chutro.TienIchAdapter;
 import com.example.mobileprojectapp2.recyclerviewadapter.nguoithue.PhucDanhSachPhongGoiYAdapter;
 import com.example.mobileprojectapp2.recyclerviewadapter.nguoithue.PhucNguoiThueAdapter;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -92,6 +95,8 @@ public class DetailPhongTroNguoiThueActivity extends AppCompatActivity {
     SharedPreferences sharedPreferences;
     Intent intentChuTro;
     Intent intentNguoiThue;
+    FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+    DatabaseReference databaseReference = firebaseDatabase.getReference();
 
     private Handler handler = new Handler();
     private Runnable runnable = new Runnable() {
@@ -198,14 +203,8 @@ public class DetailPhongTroNguoiThueActivity extends AppCompatActivity {
             }
         });
 
-        getDanhSachPhongGoiY();
-
-        llDatPhong.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                requestYeuCauDatPhong();
-            }
-        });
+        
+        
         llChat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -218,35 +217,50 @@ public class DetailPhongTroNguoiThueActivity extends AppCompatActivity {
 
 
 
-    private void requestYeuCauDatPhong() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(DetailPhongTroNguoiThueActivity.this);
-        builder.setMessage("Bạn chắc chắn muốn đặt phòng này ?")
-                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Call<YeuCauDatPhong> call = ApiServicePhuc2.apiService.yeuCauDatPhong(idTaiKhoan, idTaiKhoanNhan, idPhong);
-                        call.enqueue(new Callback<YeuCauDatPhong>() {
+   private void requestYeuCauDatPhong(int idNhan) {
+        llDatPhong.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(DetailPhongTroNguoiThueActivity.this);
+                builder.setMessage("Bạn chắc chắn muốn đặt phòng này ?")
+                        .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                             @Override
-                            public void onResponse(Call<YeuCauDatPhong> call, Response<YeuCauDatPhong> response) {
-                                alertSuccess("Bạn đã đặt phòng thành công!");
-                            }
+                            public void onClick(DialogInterface dialog, int which) {
+                                Call<YeuCauDatPhong> call = ApiServicePhuc2.apiService.yeuCauDatPhong(idTaiKhoan, idNhan, idPhong);
+                                call.enqueue(new Callback<YeuCauDatPhong>() {
+                                    @Override
+                                    public void onResponse(Call<YeuCauDatPhong> call, Response<YeuCauDatPhong> responseYC) {
+                                        databaseReference.child("notification").child(idNhan + "").child(responseYC.body().getId()+"").setValue(0).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void unused) {
+                                                Log.d("TAG", "onSuccess: PUSH NOTIFICATION REALTIME");
+                                            }
+                                        });
+                                        alertSuccess("Bạn đã đặt phòng thành công!");
+                                    }
 
+                                    @Override
+                                    public void onFailure(Call<YeuCauDatPhong> call, Throwable t) {
+                                        Toast.makeText(DetailPhongTroNguoiThueActivity.this, "Error not call Api", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                            }
+                        }).setNegativeButton("Hủy", new DialogInterface.OnClickListener() {
                             @Override
-                            public void onFailure(Call<YeuCauDatPhong> call, Throwable t) {
-                                Toast.makeText(DetailPhongTroNguoiThueActivity.this, "Error not call Api", Toast.LENGTH_SHORT).show();
+                            public void onClick(DialogInterface dialog, int which) {
+                                mProgressDialog.cancel();
                             }
                         });
-                    }
-                }).setNegativeButton("Hủy", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        mProgressDialog.cancel();
-                    }
-                });
-        builder.create();
-        builder.show();
+                builder.create();
+                builder.show();
+            }
+        });
+
+
+
 
     }
+
 
     private void getDataFromApi() {
         Call<PhongTro> call = ApiServicePhuc.apiService.getPhongTroByID(idPhong);
@@ -372,6 +386,8 @@ public class DetailPhongTroNguoiThueActivity extends AppCompatActivity {
                     tvTenChuTro.setText(response.body().getPhongTroChuTro().getTen());
                     tvSDTChuTro.setText(response.body().getPhongTroChuTro().getSoDienThoai());
                     idTaiKhoanNhan = response.body().getPhongTroChuTro().getId();
+ 					int idNhan = response.body().getPhongTroChuTro().getIdTaiKhoan();
+                    requestYeuCauDatPhong(idNhan);
                     Glide.with(DetailPhongTroNguoiThueActivity.this.getLayoutInflater().getContext()).load(Const.DOMAIN + response.body().getPhongTroChuTro().getHinh()).into(imageViewChuTro);
                     intentChuTro.putExtra("idDoiPhuong",response.body().getPhongTroChuTro().getIdTaiKhoan());
                     intentChuTro.putExtra("ten",response.body().getPhongTroChuTro().getTen());

@@ -4,6 +4,7 @@ import com.example.mobileprojectapp2.datamodel.ChuTro;
 import com.example.mobileprojectapp2.datamodel.NguoiThue;
 
 public class YeuCauDatPhong {
+    private int id;
     private int idTaiKhoanGui;
     private int idTaiKhoanNhan;
     private int idPhong;
@@ -11,13 +12,22 @@ public class YeuCauDatPhong {
     private int trangThaiThongBao;
     private int trangThaiNhan;
 
-    public YeuCauDatPhong(int idTaiKhoanGui, int idTaiKhoanNhan, int idPhong, int trangThaiXacThuc, int trangThaiThongBao, int trangThaiNhan) {
+    public YeuCauDatPhong(int id, int idTaiKhoanGui, int idTaiKhoanNhan, int idPhong, int trangThaiXacThuc, int trangThaiThongBao, int trangThaiNhan) {
+        this.id = id;
         this.idTaiKhoanGui = idTaiKhoanGui;
         this.idTaiKhoanNhan = idTaiKhoanNhan;
         this.idPhong = idPhong;
         this.trangThaiXacThuc = trangThaiXacThuc;
         this.trangThaiThongBao = trangThaiThongBao;
         this.trangThaiNhan = trangThaiNhan;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public int getIdTaiKhoanGui() {
