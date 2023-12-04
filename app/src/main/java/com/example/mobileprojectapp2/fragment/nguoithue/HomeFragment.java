@@ -32,6 +32,7 @@ import com.example.mobileprojectapp2.activity.nguoithue.RoomOfDistrictActivity;
 import com.example.mobileprojectapp2.activity.nguoithue.RoomRandomActivity;
 import com.example.mobileprojectapp2.api.Const;
 import com.example.mobileprojectapp2.api.nguoithue.ApiServiceMinh;
+import com.example.mobileprojectapp2.component.MComponent;
 import com.example.mobileprojectapp2.datamodel.Banner;
 import com.example.mobileprojectapp2.datamodel.PhongBinhLuan;
 import com.example.mobileprojectapp2.datamodel.PhongTro;
@@ -117,7 +118,6 @@ public class HomeFragment extends AbstractFragment {
 
 
 
-
         batSuKienAdapterQuan();
         batSuKienPhong();
         return fragmentLayout;
@@ -158,6 +158,7 @@ public class HomeFragment extends AbstractFragment {
     }
 
     private void getDataForImages() {
+        listHinh.clear();
         ApiServiceMinh.apiService.layTatCaBanner().enqueue(new Callback<List<Banner>>() {
             @Override
             public void onResponse(Call<List<Banner>> call, Response<List<Banner>> response) {
@@ -179,6 +180,7 @@ public class HomeFragment extends AbstractFragment {
     }
 
     private void getDataForPhong() {
+        listPhong.clear();
         ApiServiceMinh.apiService.layTatCaPhongTro(Const.PHONG_TRONG, Const.NHO_DEN_LON).enqueue(new Callback<List<PhongTro>>() {
             @Override
             public void onResponse(Call<List<PhongTro>> call, Response<List<PhongTro>> response) {
@@ -199,6 +201,7 @@ public class HomeFragment extends AbstractFragment {
     }
 
     private void getDataForQuan() {
+        listQuan.clear();
         ApiServiceMinh.apiService.layTatCaQuan().enqueue(new Callback<List<Quan>>() {
             @Override
             public void onResponse(Call<List<Quan>> call, Response<List<Quan>> response) {
@@ -277,98 +280,6 @@ public class HomeFragment extends AbstractFragment {
     }
 
     private void showBottomSheetComment(int position, View view) {
-        listComment.clear();
-        View viewBottomSheetCommnent = getLayoutInflater().inflate(R.layout.chutro_buttom_sheet_comment_layout, container, false);
-        BottomSheetDialog bottomSheetComment = new BottomSheetDialog(getActivity(), R.style.BottomSheetDialogTheme);
-        bottomSheetComment.setContentView(viewBottomSheetCommnent);
-
-        databaseReference.child("comment").child(listPhong.get(position).getId() + "").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                getCommentFromAPI(position);
-                Log.d("TAG", "onDataChange: GET OK");
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-
-        //Ánh xạ
-        ImageView imgSend = viewBottomSheetCommnent.findViewById(R.id.imgSend);
-        EditText edtComment = viewBottomSheetCommnent.findViewById(R.id.edtComment);
-        RecyclerView rcvComment = viewBottomSheetCommnent.findViewById(R.id.rcvComment);
-        // set
-        imgSend.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                edtComment.onEditorAction(EditorInfo.IME_ACTION_DONE);
-                if (edtComment.length() > 0 && edtComment.length() <= 255) {
-                    com.example.mobileprojectapp2.api.chutro.ApiServiceMinh.apiService.themBinhLuanChoPhong(listPhong.get(position).getId(), idTaiKhoan, edtComment.getText().toString().trim()).enqueue(new Callback<PhongBinhLuan>() {
-                        @Override
-                        public void onResponse(Call<PhongBinhLuan> call, Response<PhongBinhLuan> response) {
-                            if (response.code() == 201) {
-                                edtComment.setText("");
-                                listComment.addFirst(response.body());
-                                commentAdapter.notifyDataSetChanged();
-                                databaseReference.child("comment").child(listPhong.get(position).getId() + "").child(response.body().getId() + "").setValue(response.body().getId()).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                    @Override
-                                    public void onSuccess(Void unused) {
-                                        Log.d("TAG", "onDataChange: NEW OK");
-                                    }
-                                }).addOnFailureListener(new OnFailureListener() {
-                                    @Override
-                                    public void onFailure(@NonNull Exception e) {
-
-                                    }
-                                });
-                            }
-                        }
-
-                        @Override
-                        public void onFailure(Call<PhongBinhLuan> call, Throwable t) {
-
-                        }
-                    });
-                } else {
-                    Toast.makeText(getActivity(), "Bình luận tối đa 255 ký tự và phải nhập dữ liệu", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-
-        //recyclerview
-        rcvComment = viewBottomSheetCommnent.findViewById(R.id.rcvComment);
-        commentAdapter = new CommentAdapter(getActivity(), listComment, R.layout.chutro_cardview_comment_layout);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
-        layoutManager.setOrientation(RecyclerView.VERTICAL);
-        rcvComment.setLayoutManager(layoutManager);
-        rcvComment.setAdapter(commentAdapter);
-
-
-        bottomSheetComment.show();
-
-
-    }
-
-    private void getCommentFromAPI(int position) {
-        listComment.clear();
-        Log.d("TAG", "getCommentFromAPI: " + listPhong.get(position).getId());
-        com.example.mobileprojectapp2.api.chutro.ApiServiceMinh.apiService.layTatCaBinhLuanCuaPhong(listPhong.get(position).getId()).enqueue(new Callback<List<PhongBinhLuan>>() {
-            @Override
-            public void onResponse(Call<List<PhongBinhLuan>> call, Response<List<PhongBinhLuan>> response) {
-                if (response.code() == 200) {
-                    listComment.clear();
-                    listComment.addAll(response.body());
-                    commentAdapter.notifyDataSetChanged();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<PhongBinhLuan>> call, Throwable t) {
-
-            }
-        });
+        MComponent.comment(getActivity(), container, listPhong.get(position).getId(), listComment, idTaiKhoan);
     }
 }
