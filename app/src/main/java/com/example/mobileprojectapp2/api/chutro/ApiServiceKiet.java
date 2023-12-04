@@ -6,6 +6,7 @@ import com.example.mobileprojectapp2.datamodel.NguoiThue;
 import com.example.mobileprojectapp2.datamodel.PhongNguoiThue;
 import com.example.mobileprojectapp2.datamodel.ThongBao;
 import com.example.mobileprojectapp2.datamodel.YeuCauDatPhong;
+import com.example.mobileprojectapp2.datamodel.fcm.FCMThongBaoDatPhong;
 
 import java.util.List;
 
@@ -48,6 +49,6 @@ public interface ApiServiceKiet {
     Call<YeuCauDatPhong> getYeuCauDangKiPhongById(@Query("id") int id);
 
     @PUT("api/yeucaudatphong/xacnhandatphong")
-    Call<Integer> xacNhanDatPhong(@Query("id") int id, @Query("idTaiKhoanGui") int idTaiKhoanGui, @Query("idNguoiThue") int idNguoiThue, @Query("myIdTaiKhoan") int myIdTaiKhoan, @Query("idPhong") int idPhong);
+    Call<FCMThongBaoDatPhong> xacNhanDatPhong(@Query("id") int id, @Query("idTaiKhoanGui") int idTaiKhoanGui, @Query("idNguoiThue") int idNguoiThue, @Query("myIdTaiKhoan") int myIdTaiKhoan, @Query("idPhong") int idPhong);
 
 }

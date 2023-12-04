@@ -18,8 +18,11 @@ import android.widget.Toast;
 import com.example.mobileprojectapp2.R;
 import com.example.mobileprojectapp2.api.Const;
 import com.example.mobileprojectapp2.api.chutro.ApiServiceKiet;
+import com.example.mobileprojectapp2.component.MFCM;
+import com.example.mobileprojectapp2.datamodel.TaiKhoan;
 import com.example.mobileprojectapp2.datamodel.ThongBao;
 import com.example.mobileprojectapp2.datamodel.YeuCauDatPhong;
+import com.example.mobileprojectapp2.datamodel.fcm.FCMThongBaoDatPhong;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -130,15 +133,29 @@ public class YeuCauDatPhongChiTietActivity extends AppCompatActivity {
     private void xacNhanDatPhongAPI()
     {
         Log.d("rrr", id +" "+ idTaiKhoanGui + " " + idNguoiThue + " " + idTaiKhoan + " " + idPhong);
-        ApiServiceKiet.apiServiceKiet.xacNhanDatPhong(id, idTaiKhoanGui, idNguoiThue, idTaiKhoan, idPhong).enqueue(new Callback<Integer>() {
+        ApiServiceKiet.apiServiceKiet.xacNhanDatPhong(id, idTaiKhoanGui, idNguoiThue, idTaiKhoan, idPhong).enqueue(new Callback<FCMThongBaoDatPhong>() {
             @Override
-            public void onResponse(Call<Integer> call, Response<Integer> response) {
+            public void onResponse(Call<FCMThongBaoDatPhong> call, Response<FCMThongBaoDatPhong> response) {
                 Log.d("rrr", "onResponse" + response.body()+"");
+                if (response.body() != null)
+                {
+                    FCMThongBaoDatPhong data = response.body();
+                    if (data.getLoai() == 1)
+                    {
+                        MFCM.sendNotificationForAccountID(data.getThongBaoThanhCong().getIdTaiKhoanNhan(), response.body().getThongBaoThanhCong().getId(), data.getThongBaoThanhCong().getTieuDe(), data.getThongBaoThanhCong().getNoiDung());
+                    }
+                    if (data.getLoai() == 2)
+                    {
+                        MFCM.sendNotificationForAccountID(data.getThongBaoThanhCong().getIdTaiKhoanNhan(), response.body().getThongBaoThanhCong().getId(), data.getThongBaoThanhCong().getTieuDe(), data.getThongBaoThanhCong().getNoiDung());
+                        for (ThongBao thongBao : response.body().getThongBaoThatBai()) {
+                            MFCM.sendNotificationForAccountID(thongBao.getIdTaiKhoanNhan(), thongBao.getId(), thongBao.getTieuDe(), thongBao.getNoiDung() );
+                        }
+                    }
+                }
             }
 
             @Override
-            public void onFailure(Call<Integer> call, Throwable t) {
-                Log.d("rrr", t+"");
+            public void onFailure(Call<FCMThongBaoDatPhong> call, Throwable t) {
             }
         });
     }
