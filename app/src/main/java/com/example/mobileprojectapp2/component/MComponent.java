@@ -2,6 +2,7 @@ package com.example.mobileprojectapp2.component;
 
 import android.app.Activity;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
@@ -10,12 +11,15 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.mobileprojectapp2.R;
 import com.example.mobileprojectapp2.api.chutro.ApiServiceMinh;
 import com.example.mobileprojectapp2.datamodel.PhongBinhLuan;
+import com.example.mobileprojectapp2.datamodel.PhongDanhGia;
+import com.example.mobileprojectapp2.player.RatingPlayer;
 import com.example.mobileprojectapp2.recyclerviewadapter.chutro.CommentAdapter;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -131,6 +135,71 @@ public class MComponent {
             @Override
             public void onFailure(Call<List<PhongBinhLuan>> call, Throwable t) {
 
+            }
+        });
+    }
+
+    // Đánh giá (activity, idPhong, idTaiKhoan)
+    // activity là nếu ở trong fragment ghi getActivity, nếu ở activity thì ClassName.this
+    // idPhong là id phòng của phòng mình nhấn vào
+    // idTaiKhoan là idTaiKhoan mà mình đang đăng nhập
+    public static void rating(Activity activity, int idPhong, int idTaiKhoan){
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+        LayoutInflater inflater = activity.getLayoutInflater();
+        View viewDialog = inflater.inflate(R.layout.chutro_dialog_rating_layout, null);
+        builder.setView(viewDialog);
+        AlertDialog dialog = builder.create();
+
+
+        //builder.show();
+        dialog.show();
+        ImageView imgClose = viewDialog.findViewById(R.id.imgClose);
+        imgClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Close
+                dialog.hide();
+            }
+        });
+        RatingPlayer ratingPlayer = new RatingPlayer(viewDialog);
+        // đổi sao ra giao diện
+        ratingPlayer.setStarForRating(0);
+        ApiServiceMinh.apiService.layDanhGiaCuaNguoiDunngChoPhong(idTaiKhoan, idPhong).enqueue(new Callback<PhongDanhGia>() {
+            @Override
+            public void onResponse(Call<PhongDanhGia> call, Response<PhongDanhGia> response) {
+                if (response.code() == 200) {
+                    ratingPlayer.setStarForRating(response.body().getDanhGia());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<PhongDanhGia> call, Throwable t) {
+
+            }
+        });
+
+        // chọn sao
+        ratingPlayer.rating();
+        //  hàm sử lý số sao đã chọn được ủy quyền
+        ratingPlayer.setiRatingPlayer(new RatingPlayer.IRatingPlayer() {
+            @Override
+            public void layDanhGia(int rating) {
+                // được ủy quyền ra ngoài để lấy lượng đánh giá
+                Log.d("TAG", "setOnClickRating: " + rating);
+                ApiServiceMinh.apiService.danhGiaChoPhong(idTaiKhoan, idPhong, rating).enqueue(new Callback<Integer>() {
+                    @Override
+                    public void onResponse(Call<Integer> call, Response<Integer> response) {
+                        if (response.code() == 200) {
+                            Toast.makeText(activity, "Đánh giá thành công", Toast.LENGTH_SHORT).show();
+                            dialog.hide();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<Integer> call, Throwable t) {
+
+                    }
+                });
             }
         });
     }
