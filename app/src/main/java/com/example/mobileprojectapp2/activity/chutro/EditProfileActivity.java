@@ -194,6 +194,7 @@ public class EditProfileActivity extends AppCompatActivity {
                     } else {
                         String strRealPath = RealPathUtil.getRealPath(getApplicationContext(), mUri);
                         File file = new File(strRealPath);
+                        Log.d(TAG, "onClick: "+ file);
                         RequestBody requestBodyImage = RequestBody.create(MediaType.parse("multipart/form-data"), file);
                         MultipartBody.Part mulPart = MultipartBody.Part.createFormData("hinh", file.getName(), requestBodyImage);
                         Call<Integer> call = ApiServicePhuc.apiService.editProfileImage(idTaiKhoan, nameChuTro, phoneChuTro, numberBankChuTro, nameBankChuTro, mulPart);
