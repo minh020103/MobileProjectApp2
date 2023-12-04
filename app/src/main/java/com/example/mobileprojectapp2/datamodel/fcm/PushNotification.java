@@ -1,15 +1,15 @@
 package com.example.mobileprojectapp2.datamodel.fcm;
 
 public class PushNotification {
-    private Notification notification;
+    private Notification data;
     private String to;
 
-    public Notification getNotification() {
-        return notification;
+    public Notification getData() {
+        return data;
     }
 
-    public void setNotification(Notification notification) {
-        this.notification = notification;
+    public void setData(Notification data) {
+        this.data = data;
     }
 
     public String getTo() {
@@ -20,8 +20,8 @@ public class PushNotification {
         this.to = to;
     }
 
-    public PushNotification(Notification notification, String to) {
-        this.notification = notification;
+    public PushNotification(Notification data, String to) {
+        this.data = data;
         this.to = to;
     }
 }
