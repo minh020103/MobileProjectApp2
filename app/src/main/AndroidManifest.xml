@@ -28,11 +28,13 @@
             </intent-filter>
         </service>
         <activity
+            android:name=".activity.nguoithue.DanhSachPhongTheoChuTroActivity"
+            android:exported="false" />
+        <activity
             android:name=".activity.chutro.YeuCauDatPhongChiTietActivity"
             android:exported="false" />
         <activity
             android:name=".activity.nguoithue.DetailPhongTroNguoiThueActivity"
-
             android:exported="false" />
         <activity
             android:name=".activity.nguoithue.ChangePasswordActivity"
@@ -125,9 +127,7 @@
                 android:value="" />
         </activity>
         <activity
-
             android:name=".activity.loading.LoadingActivity"
-
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

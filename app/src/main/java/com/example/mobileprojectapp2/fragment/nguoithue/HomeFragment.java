@@ -132,6 +132,8 @@ public class HomeFragment extends AbstractFragment {
    				Intent intent = new Intent(getActivity(), DetailPhongTroNguoiThueActivity.class);
                 intent.putExtra("idPhong",listPhong.get(position).getId());
                 startActivity(intent);
+
+
             }
 
             @Override
