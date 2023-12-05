@@ -14,7 +14,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -34,11 +33,10 @@ import com.example.mobileprojectapp2.activity.chutro.SearchActivity;
 import com.example.mobileprojectapp2.api.Const;
 import com.example.mobileprojectapp2.api.chutro.ApiServiceMinh;
 import com.example.mobileprojectapp2.api.chutro.ApiServicePhuc;
+import com.example.mobileprojectapp2.component.MComponent;
 import com.example.mobileprojectapp2.datamodel.PhongBinhLuan;
-import com.example.mobileprojectapp2.datamodel.PhongDanhGia;
 import com.example.mobileprojectapp2.datamodel.PhongTroChuTro;
 import com.example.mobileprojectapp2.model.ChuTro;
-import com.example.mobileprojectapp2.player.RatingPlayer;
 import com.example.mobileprojectapp2.recyclerviewadapter.chutro.CommentAdapter;
 import com.example.mobileprojectapp2.recyclerviewadapter.chutro.MotelRoomAdapter;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -260,65 +258,7 @@ public class ListRoomFragment extends AbstractFragment {
 
             @Override
             public void setOnClickRating(int position, View view) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                LayoutInflater inflater = getLayoutInflater();
-                View viewDialog = inflater.inflate(R.layout.chutro_dialog_rating_layout, null);
-                builder.setView(viewDialog);
-                AlertDialog dialog = builder.create();
-
-
-                //builder.show();
-                dialog.show();
-                ImageView imgClose = viewDialog.findViewById(R.id.imgClose);
-                imgClose.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        // Close
-                        dialog.hide();
-                    }
-                });
-                RatingPlayer ratingPlayer = new RatingPlayer(viewDialog);
-                // đổi sao ra giao diện
-                ratingPlayer.setStarForRating(0);
-                ApiServiceMinh.apiService.layDanhGiaCuaNguoiDunngChoPhong(idTaiKhoan, phongTroOfChuTroList.get(position).getIdPhongTro()).enqueue(new Callback<PhongDanhGia>() {
-                    @Override
-                    public void onResponse(Call<PhongDanhGia> call, Response<PhongDanhGia> response) {
-                        if (response.code() == 200) {
-                            ratingPlayer.setStarForRating(response.body().getDanhGia());
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<PhongDanhGia> call, Throwable t) {
-
-                    }
-                });
-
-                // chọn sao
-                ratingPlayer.rating();
-                //  hàm sử lý số sao đã chọn được ủy quyền
-                ratingPlayer.setiRatingPlayer(new RatingPlayer.IRatingPlayer() {
-                    @Override
-                    public void layDanhGia(int rating) {
-                        // được ủy quyền ra ngoài để lấy lượng đánh giá
-                        Log.d("TAG", "setOnClickRating: " + rating);
-                        ApiServiceMinh.apiService.danhGiaChoPhong(idTaiKhoan, phongTroOfChuTroList.get(position).getIdPhongTro(), rating).enqueue(new Callback<Integer>() {
-                            @Override
-                            public void onResponse(Call<Integer> call, Response<Integer> response) {
-                                if (response.code() == 200) {
-                                    Toast.makeText(getContext(), "Đánh giá thành công", Toast.LENGTH_SHORT).show();
-                                    dialog.hide();
-                                }
-                            }
-
-                            @Override
-                            public void onFailure(Call<Integer> call, Throwable t) {
-
-                            }
-                        });
-                    }
-                });
-
+                MComponent.rating(getActivity(), phongTroOfChuTroList.get(position).getIdPhongTro(), idTaiKhoan);
             }
 
             @Override

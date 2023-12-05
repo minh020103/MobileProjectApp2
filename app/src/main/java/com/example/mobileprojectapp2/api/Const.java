@@ -1,7 +1,7 @@
 package com.example.mobileprojectapp2.api;
 
 public class Const {
-    public static String DOMAIN = "http://192.168.2.28/3t/laravel/public/";
+    public static String DOMAIN = "http://192.168.1.58/3t/laravel/public/";
     public static final String PRE_LOGIN = "SharedPreferencesLogin";
 	//Giới tính
     public static final int ALL_GENDERS = 0;
@@ -21,4 +21,14 @@ public class Const {
     public static final int PHONG_DA_CO_NGUOI_THUE = 100;
     public static final int DA_DAT_SO_LUONG_PHONG_TOI_DA = 101;
     public static final int CHUA_DANG_KY_DICH_VU = 102;
+
+    //Firebase notification (Firebase cloud messaging)
+    //Không được sửa mấy cái này nhe
+    public static final String SERVER_KEY = "AAAAfDFy5i0:APA91bGe3Y99w0mvfaDwtR03dvFu_-0rt-HoP0NhLNjNkyFIimiUNwOdfxjtTYOQVdnCKhDrHr1FeeCpm5XidQZUhWDXZRcI4lAM9gl6CjeZSyTDsy6MBxYASClwUTugYd14FcPx4HgR";
+    public static final String BASE_URL = "https://fcm.googleapis.com";
+    public static final String CONTENT_TYPE = "application/json";
+
+    public static final int NGUOI_THUE = 0;
+    public static final int CHU_TRO = 1;
+    public static final int ADMIN = 2;
 }

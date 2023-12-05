@@ -175,10 +175,9 @@ public class PhongNhanTinActivity extends AppCompatActivity {
     }
 
     private void thongBaoReset(String mes){
-        databaseReference.child("phongTinNhan").child(idPhong+"").setValue(mes).addOnSuccessListener(new OnSuccessListener<Void>() {
+        databaseReference.child("phongTinNhan").child(idPhong+"").setValue(System.currentTimeMillis()+"").addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {
-
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -186,7 +185,7 @@ public class PhongNhanTinActivity extends AppCompatActivity {
 
             }
         });
-        databaseReference.child("thongBaoReset").child(idDoiPhuong+"").setValue(mes).addOnSuccessListener(new OnSuccessListener<Void>() {
+        databaseReference.child("thongBaoReset").child(idDoiPhuong+"").setValue(System.currentTimeMillis()+"").addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {
 
