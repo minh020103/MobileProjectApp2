@@ -386,8 +386,8 @@ public class DetailPhongTroNguoiThueActivity extends AppCompatActivity {
                     tvTenChuTro.setText(response.body().getPhongTroChuTro().getTen());
                     tvSDTChuTro.setText(response.body().getPhongTroChuTro().getSoDienThoai());
                     idTaiKhoanNhan = response.body().getPhongTroChuTro().getId();
- 					int idNhan = response.body().getPhongTroChuTro().getIdTaiKhoan();
-                    requestYeuCauDatPhong(idNhan);
+ 					int idNhanYC = response.body().getPhongTroChuTro().getIdTaiKhoan();
+                    requestYeuCauDatPhong(idNhanYC);
                     Glide.with(DetailPhongTroNguoiThueActivity.this.getLayoutInflater().getContext()).load(Const.DOMAIN + response.body().getPhongTroChuTro().getHinh()).into(imageViewChuTro);
                     intentChuTro.putExtra("idDoiPhuong",response.body().getPhongTroChuTro().getIdTaiKhoan());
                     intentChuTro.putExtra("ten",response.body().getPhongTroChuTro().getTen());
