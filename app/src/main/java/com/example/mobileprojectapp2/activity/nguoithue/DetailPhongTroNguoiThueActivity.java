@@ -343,7 +343,7 @@ public class DetailPhongTroNguoiThueActivity extends AppCompatActivity {
                 if (response.body().getDanhSachTienIch().size() == 0) {
                     tvTienIchRong.setVisibility(View.VISIBLE);
                 }
-                if (response.body().getDanhSachTienIch().size() < 8) {
+                if (response.body().getDanhSachTienIch().size() <= 8) {
                     llXemThem.setVisibility(View.GONE);
                 }
                 int i = 0;

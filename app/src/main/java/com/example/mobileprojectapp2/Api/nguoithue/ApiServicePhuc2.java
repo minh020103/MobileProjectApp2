@@ -7,6 +7,7 @@ import com.example.mobileprojectapp2.datamodel.PhongTroChuTro;
 import com.example.mobileprojectapp2.datamodels.PhongTro;
 import com.example.mobileprojectapp2.model.PhongTroChuTro2;
 import com.example.mobileprojectapp2.model.PhongTroGoiY;
+import com.example.mobileprojectapp2.model.TienIch;
 import com.example.mobileprojectapp2.model.YeuCauDatPhong;
 
 import java.util.List;
@@ -66,5 +67,8 @@ public interface ApiServicePhuc2 {
 
     @GET("api/phongtrochutro/all")
     Call<List<PhongTroChuTro>> getALlListPhongTroTheoChuTro(@Query("idChuTro") int idChuTro);
+
+    @GET("api/tienich/all/hoatdong")
+    Call<List<TienIch>> getAllListTienIch();
 
 }

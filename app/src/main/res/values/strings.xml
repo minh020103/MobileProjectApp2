@@ -64,4 +64,5 @@ Thuận tiện: gần hàng xanh, trường đại học Hurtech, Hồng Bàng, 
     <string name="channel_name">NOTIFICATION 3T</string>
     <string name="channel_description">DESCRIPTION 3T</string>
     <string name="msg_token_fmt">lỗi token</string>
+    <string name="text1">Vui lòng chọn yêu cầu, sau đó bấm áp dụng để tìm kiếm</string>
 </resources>
