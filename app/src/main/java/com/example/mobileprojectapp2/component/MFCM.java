@@ -39,12 +39,17 @@ public class MFCM {
                         ).enqueue(new Callback<ResultFCM>() {
                             @Override
                             public void onResponse(Call<ResultFCM> call, Response<ResultFCM> response) {
+                                Log.d("TAG", "onResponse: idNoti: "+idNotification);
+                                Log.d("TAG", "onResponse: title: "+title);
+                                Log.d("TAG", "onResponse: content: "+content);
+                                Log.d("TAG", "onResponse: idTK: "+idTaiKhoan);
+                                Log.d("TAG", "onResponse: token: "+firebaseCloudMessaging.getToken());
 
                             }
 
                             @Override
                             public void onFailure(Call<ResultFCM> call, Throwable t) {
-
+                                Log.d("TAG", "onFailure: "+t);
                             }
                         });
                     }

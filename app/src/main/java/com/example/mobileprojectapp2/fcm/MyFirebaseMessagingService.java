@@ -39,6 +39,9 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         super.onMessageReceived(message);
         Map<String, String> stringMap = message.getData();
         Log.d("TAG", "onMessageReceived: id: " + stringMap.get("id") + " title: "+ stringMap.get("title"));
+        if (stringMap.get("id") == null){
+            return;
+        }
         int id = Integer.parseInt(stringMap.get("id"));
         String title = stringMap.get("title");
         String content = stringMap.get("content");

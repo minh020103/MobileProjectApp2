@@ -15,6 +15,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
+import android.webkit.WebChromeClient;
+import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -50,6 +52,7 @@ import com.example.mobileprojectapp2.recyclerviewadapter.chutro.PhongTroChuTroAd
 import com.example.mobileprojectapp2.recyclerviewadapter.chutro.TienIchAdapter;
 import com.example.mobileprojectapp2.recyclerviewadapter.nguoithue.PhucDanhSachPhongGoiYAdapter;
 import com.example.mobileprojectapp2.recyclerviewadapter.nguoithue.PhucNguoiThueAdapter;
+import com.google.android.material.button.MaterialButton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -92,6 +95,7 @@ public class DetailPhongTroNguoiThueActivity extends AppCompatActivity {
     SharedPreferences sharedPreferences;
     Intent intentChuTro;
     Intent intentNguoiThue;
+    MaterialButton reviewPhong;
 
     private Handler handler = new Handler();
     private Runnable runnable = new Runnable() {
@@ -103,7 +107,6 @@ public class DetailPhongTroNguoiThueActivity extends AppCompatActivity {
                 // Next sang page tiep theo
                 mViewPager2.setCurrentItem(mViewPager2.getCurrentItem() + 1);
             }
-
         }
     };
 
@@ -121,6 +124,8 @@ public class DetailPhongTroNguoiThueActivity extends AppCompatActivity {
         listNguoiThue = new ArrayList<>();
         listPhongGoiY = new ArrayList<>();
 
+
+
         mProgressDialog = new ProgressDialog(this);
         mProgressDialog.setMessage("Please wait ...");
 
@@ -131,6 +136,12 @@ public class DetailPhongTroNguoiThueActivity extends AppCompatActivity {
         idPhong = intent.getIntExtra("idPhong", -1);
 
         anhXa();
+        reviewPhong.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                thongBao();
+            }
+        });
         getDataFromApi();
 //        getNguoiThue();
         imageBack.setOnClickListener(new View.OnClickListener() {
@@ -214,6 +225,18 @@ public class DetailPhongTroNguoiThueActivity extends AppCompatActivity {
         });
     }
 
+    private void thongBao(){
+        AlertDialog.Builder review = new AlertDialog.Builder(this);
+        View view = DetailPhongTroNguoiThueActivity.this.getLayoutInflater().inflate(R.layout.activity_review_phong, null);
+        review.setView(view);
+        AlertDialog dialog = review.create();
+        WebView webView = view.findViewById(R.id.videoReview);
+        String video = "<iframe width=\"100%\" height=\"100%\" src=\"https://www.youtube.com/embed/KKC3nAMGaAo?si=hlQnjtxSVmWz9JRI\" title=\"YouTube video player\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" allowfullscreen></iframe>";
+        webView.loadData(video,"text/html","utf-8");
+        webView.getSettings().setJavaScriptEnabled(true);
+        webView.setWebChromeClient(new WebChromeClient());
+        dialog.show();
+    }
 
 
 
@@ -386,8 +409,6 @@ public class DetailPhongTroNguoiThueActivity extends AppCompatActivity {
                         startActivity(callIntent);
                     }
                 });
-
-
             }
 
             @Override
@@ -469,7 +490,6 @@ public class DetailPhongTroNguoiThueActivity extends AppCompatActivity {
         mViewPager2 = findViewById(R.id.view_pager_2_nguoi_thue);
         adapterHinhAnh = new HinhAnhAdapter(DetailPhongTroNguoiThueActivity.this, listHinhAnh, R.layout.chutro_item_image_layout);
         mViewPager2.setAdapter(adapterHinhAnh);
-
         adapterTienIch = new TienIchAdapter(DetailPhongTroNguoiThueActivity.this, listTienIch, R.layout.cardview_item_tien_ich_layout);
         layoutManagerTienIch = new LinearLayoutManager(DetailPhongTroNguoiThueActivity.this);
         layoutManagerTienIch.setOrientation(RecyclerView.HORIZONTAL);
@@ -491,7 +511,7 @@ public class DetailPhongTroNguoiThueActivity extends AppCompatActivity {
         layoutManagerPhongGoiY = new GridLayoutManager(this, 2);
         rcvDSPhongGoiY.setLayoutManager(layoutManagerPhongGoiY);
         rcvDSPhongGoiY.setAdapter(adapterPhongGoiY);
-
+        reviewPhong = findViewById(R.id.reviewPhong);
 
     }
 

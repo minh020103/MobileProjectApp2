@@ -30,6 +30,7 @@ import com.example.mobileprojectapp2.activity.chutro.AuthenticationActivity;
 import com.example.mobileprojectapp2.activity.chutro.EditRoomActivity;
 import com.example.mobileprojectapp2.activity.chutro.MotelRoomOwnerActivity;
 import com.example.mobileprojectapp2.activity.chutro.RenterListActivity;
+import com.example.mobileprojectapp2.activity.chutro.ReviewRoomActivity;
 import com.example.mobileprojectapp2.activity.chutro.SearchActivity;
 import com.example.mobileprojectapp2.api.Const;
 import com.example.mobileprojectapp2.api.chutro.ApiServiceMinh;
@@ -251,6 +252,13 @@ public class ListRoomFragment extends AbstractFragment {
 
                 AlertDialog alert11 = builder1.create();
                 alert11.show();
+            }
+
+            @Override
+            public void setOnClickVideoReview(int position, View view) {
+                Intent intent = new Intent(getActivity(), ReviewRoomActivity.class);
+                intent.putExtra("idPhong", phongTroOfChuTroList.get(position).getIdPhongTro());
+                startActivity(intent);
             }
 
             @Override

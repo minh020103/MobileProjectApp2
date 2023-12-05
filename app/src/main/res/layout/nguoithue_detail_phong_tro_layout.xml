@@ -68,7 +68,6 @@
                     android:layout_height="220dp"
                     android:visibility="visible" />
 
-
             </LinearLayout>
 
             <LinearLayout
@@ -96,6 +95,22 @@
                         android:drawableRight="@drawable/iconp_star"
                         android:drawablePadding="2dp"
                         android:text="@string/gt" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="end">
+                        <com.google.android.material.button.MaterialButton
+                            app:icon="@drawable/baseline_play_circle_outline_24"
+                            android:text="Review"
+                            android:id="@+id/reviewPhong"
+                            android:layout_gravity="end"
+                            android:gravity="center"
+                            android:layout_width="150dp"
+                            android:layout_height="50dp"/>
+
+                    </LinearLayout>
+
 
                 </LinearLayout>
 
