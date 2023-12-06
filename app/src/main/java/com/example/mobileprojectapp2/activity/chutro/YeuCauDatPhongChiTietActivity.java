@@ -1,5 +1,6 @@
 package com.example.mobileprojectapp2.activity.chutro;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
@@ -23,6 +24,9 @@ import com.example.mobileprojectapp2.datamodel.TaiKhoan;
 import com.example.mobileprojectapp2.datamodel.ThongBao;
 import com.example.mobileprojectapp2.datamodel.YeuCauDatPhong;
 import com.example.mobileprojectapp2.datamodel.fcm.FCMThongBaoDatPhong;
+import com.google.android.gms.common.api.Api;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -51,6 +55,7 @@ public class YeuCauDatPhongChiTietActivity extends AppCompatActivity {
     private int idTaiKhoan;
     private SharedPreferences sharedPreferences;
     int id;
+    int idTaiKhoanNguoiNhan;
     DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
 
     @Override
@@ -79,6 +84,13 @@ public class YeuCauDatPhongChiTietActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 finish();
+            }
+        });
+
+        btnTuChoiYC.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openDialogTuChoiDatPhong();
             }
         });
 
@@ -120,6 +132,7 @@ public class YeuCauDatPhongChiTietActivity extends AppCompatActivity {
                 {
                     tvNoiDungThongBaoChiTiet4.setText("Giới tính: Nữ");
                 }
+                idTaiKhoanNguoiNhan = data.getIdTaiKhoanGui();
 
             }
 
@@ -132,7 +145,6 @@ public class YeuCauDatPhongChiTietActivity extends AppCompatActivity {
 
     private void xacNhanDatPhongAPI()
     {
-        Log.d("rrr", id +" "+ idTaiKhoanGui + " " + idNguoiThue + " " + idTaiKhoan + " " + idPhong);
         ApiServiceKiet.apiServiceKiet.xacNhanDatPhong(id, idTaiKhoanGui, idNguoiThue, idTaiKhoan, idPhong).enqueue(new Callback<FCMThongBaoDatPhong>() {
             @Override
             public void onResponse(Call<FCMThongBaoDatPhong> call, Response<FCMThongBaoDatPhong> response) {
@@ -160,17 +172,56 @@ public class YeuCauDatPhongChiTietActivity extends AppCompatActivity {
         });
     }
 
+    private void tuChoiDatPhong()
+    {
+        ApiServiceKiet.apiServiceKiet.tuChoiDatPhong(id, idTaiKhoanGui, idTaiKhoan).enqueue(new Callback<ThongBao>() {
+            @Override
+            public void onResponse(Call<ThongBao> call, Response<ThongBao> response) {
+                ThongBao thongBao = response.body();
+                MFCM.sendNotificationForAccountID(thongBao.getIdTaiKhoanNhan(), thongBao.getId(), thongBao.getTieuDe(), thongBao.getNoiDung() );
+            }
+
+            @Override
+            public void onFailure(Call<ThongBao> call, Throwable t) {
+
+            }
+        });
+    }
+
     private void openDialogXacNhanDatPhong()
     {
         new AlertDialog.Builder(this).setMessage("Chấp nhận cho thuê phòng ?").setCancelable(false).setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 xacNhanDatPhongAPI();
+                realTimeThongBao();
                 Toast.makeText(YeuCauDatPhongChiTietActivity.this, "Chấp nhận thành công !", Toast.LENGTH_SHORT).show();
             }
         }).setNegativeButton("Cancle",null).show();
     }
 
+    private void openDialogTuChoiDatPhong()
+    {
+        new AlertDialog.Builder(this).setMessage("Từ chối cho thuê phòng ?").setCancelable(false).setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                tuChoiDatPhong();
+                realTimeThongBao();
+                Toast.makeText(YeuCauDatPhongChiTietActivity.this, "Từ chối thành công !", Toast.LENGTH_SHORT).show();
+            }
+        }).setNegativeButton("Cancle",null).show();
+    }
+
+    private void realTimeThongBao()
+    {
+        Log.d("REALTIME",  idTaiKhoanNguoiNhan + "");
+        databaseReference.child("notification").child(idTaiKhoanNguoiNhan + "").setValue(0).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void unused) {
+                Log.d("TAG", "onSuccess: PUSH NOTIFICATION REALTIME");
+            }
+        });
+    }
 
     private void goToChiTietPhong(int idPhong)
     {
