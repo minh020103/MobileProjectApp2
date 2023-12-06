@@ -1,5 +1,6 @@
 package com.example.mobileprojectapp2.activity.chutro;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
@@ -23,6 +24,8 @@ import com.example.mobileprojectapp2.datamodel.TaiKhoan;
 import com.example.mobileprojectapp2.datamodel.ThongBao;
 import com.example.mobileprojectapp2.datamodel.YeuCauDatPhong;
 import com.example.mobileprojectapp2.datamodel.fcm.FCMThongBaoDatPhong;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -166,11 +169,25 @@ public class YeuCauDatPhongChiTietActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 xacNhanDatPhongAPI();
+                realTimeThongBao();
                 Toast.makeText(YeuCauDatPhongChiTietActivity.this, "Chấp nhận thành công !", Toast.LENGTH_SHORT).show();
             }
         }).setNegativeButton("Cancle",null).show();
     }
 
+    private void realTimeThongBao()
+    {
+        databaseReference.child("notification").child(id+"").setValue(System.currentTimeMillis()+"").addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void unused) {
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+
+            }
+        });
+    }
 
     private void goToChiTietPhong(int idPhong)
     {

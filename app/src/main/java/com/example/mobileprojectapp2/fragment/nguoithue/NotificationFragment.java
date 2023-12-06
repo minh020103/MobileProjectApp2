@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,21 +51,16 @@ public class NotificationFragment extends AbstractFragment{
     FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
     DatabaseReference databaseReference = firebaseDatabase.getReference();
 
-//    private TabLayout mTablayout;
-//    private ViewPager2 mViewPager2;
-//    private NotifyViewPage2Adapter adapter;
-//
-//    DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
-//
-//    SharedPreferences sharedPreferences;
-//    private int idTaiKhoan;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View fragmentLayout = null;
         fragmentLayout = inflater.inflate(R.layout.nguoithue_fragment_notification_layout, container, false);
 
-                recyclerView = fragmentLayout.findViewById(R.id.rvThongBao);
+        shared = getActivity().getSharedPreferences(Const.PRE_LOGIN, Context.MODE_PRIVATE);
+        idTaiKhoan = shared.getInt("idTaiKhoan", -1);
+
+        recyclerView = fragmentLayout.findViewById(R.id.rvThongBao);
         layoutManager = new LinearLayoutManager(getActivity());
         layoutManager.setOrientation(RecyclerView.VERTICAL);
         recyclerView.setLayoutManager(layoutManager);
@@ -83,84 +79,6 @@ public class NotificationFragment extends AbstractFragment{
 
             }
         });
-
-//        mTablayout = fragmentLayout.findViewById(R.id.tab_layout_notify);
-//        mViewPager2 = fragmentLayout.findViewById(R.id.view_pager2_notify);
-//        sharedPreferences = getActivity().getSharedPreferences(Const.PRE_LOGIN, Context.MODE_PRIVATE);
-//        idTaiKhoan = sharedPreferences.getInt("idTaiKhoan", -1);
-//        adapter = new NotifyViewPage2Adapter(getActivity());
-//        mViewPager2.setAdapter(adapter);
-
-//        new TabLayoutMediator(mTablayout, mViewPager2, (tab, position) -> {
-//            switch (position) {
-//                case 0:
-//                    tab.setText("Kết quả");
-//                    BadgeDrawable badgeDrawableNotifyKQ = tab.getOrCreateBadge();
-//                    badgeDrawableNotifyKQ.setVisible(false);
-//
-//                    databaseReference.child("notification").child(idTaiKhoan + "").addValueEventListener(new ValueEventListener() {
-//                        @Override
-//                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                            ApiServiceKiet.apiServiceKiet.demThongBaoKQCuaTaiKhoan(idTaiKhoan).enqueue(new Callback<Integer>() {
-//                                @Override
-//                                public void onResponse(Call<Integer> call, Response<Integer> response) {
-//                                    if (response.code() == 200) {
-//                                        badgeDrawableNotifyKQ.setVisible(true);
-//                                        badgeDrawableNotifyKQ.setNumber(response.body());
-//                                        if (response.body() == 0)
-//                                            badgeDrawableNotifyKQ.setVisible(false);
-//                                    }
-//                                }
-//
-//                                @Override
-//                                public void onFailure(Call<Integer> call, Throwable t) {
-//
-//                                }
-//                            });
-//                        }
-//
-//                        @Override
-//                        public void onCancelled(@NonNull DatabaseError error) {
-//
-//                        }
-//                    });
-//
-//                    break;
-//                case 1:
-//                    tab.setText("Yêu cầu");
-//                    BadgeDrawable badgeDrawableNotifyYC = tab.getOrCreateBadge();
-//                    badgeDrawableNotifyYC.setVisible(false);
-//
-//                    databaseReference.child("notification").child(idTaiKhoan + "").addValueEventListener(new ValueEventListener() {
-//                        @Override
-//                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                            ApiServiceKiet.apiServiceKiet.demThongBaoYCCuaTaiKhoan(idTaiKhoan).enqueue(new Callback<Integer>() {
-//                                @Override
-//                                public void onResponse(Call<Integer> call, Response<Integer> response) {
-//                                    if (response.code() == 200) {
-//                                        badgeDrawableNotifyYC.setVisible(true);
-//                                        badgeDrawableNotifyYC.setNumber(response.body());
-//                                        if (response.body() == 0)
-//                                            badgeDrawableNotifyYC.setVisible(false);
-//                                    }
-//                                }
-//
-//                                @Override
-//                                public void onFailure(Call<Integer> call, Throwable t) {
-//
-//                                }
-//                            });
-//                        }
-//
-//                        @Override
-//                        public void onCancelled(@NonNull DatabaseError error) {
-//
-//                        }
-//                    });
-//
-//                    break;
-//            }
-//        }).attach();
 
         return fragmentLayout;
     }
