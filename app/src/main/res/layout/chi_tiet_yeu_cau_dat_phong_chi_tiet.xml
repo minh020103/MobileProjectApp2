@@ -98,6 +98,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="3"
             android:textSize="10sp"
+            android:backgroundTint="@color/vang"
             android:text="Chi tiết phòng" />
         <Button
             android:id="@+id/btnTuChoiYC"
@@ -105,6 +106,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="3"
             android:textSize="10sp"
+            android:backgroundTint="@color/text_do"
             android:text="Từ chối" />
         <Button
             android:id="@+id/btnChapNhanYC"

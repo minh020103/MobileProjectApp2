@@ -11,12 +11,14 @@ import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
 
 import com.example.mobileprojectapp2.R;
+import com.example.mobileprojectapp2.api.Const;
 import com.example.mobileprojectapp2.api.chutro.ApiServiceKiet;
 import com.example.mobileprojectapp2.fragment.nguoithue.AbstractFragment;
 import com.example.mobileprojectapp2.fragment.nguoithue.HomeFragment;
@@ -43,6 +45,8 @@ import retrofit2.Response;
 
 public class RenterActivity extends AppCompatActivity {
     private int idTaiKhoan = 15;
+    private SharedPreferences shared;
+
     private int iconNotification = R.drawable.icon_notification_selected;
     public static ViewPager2 viewPager2NguoiThue;
     private BottomNavigationView bottomNavigationViewNguoiThue;
@@ -56,6 +60,10 @@ public class RenterActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.renter_layout);
+
+        shared = getSharedPreferences(Const.PRE_LOGIN, Context.MODE_PRIVATE);
+        idTaiKhoan = shared.getInt("idTaiKhoan", -1);
+
         list = new LinkedList<>();
         viewPager2NguoiThue = findViewById(R.id.vp2NguoiThue);
         bottomNavigationViewNguoiThue = findViewById(R.id.bnvNguoiThue);
