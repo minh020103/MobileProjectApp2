@@ -17,6 +17,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 
 import com.example.mobileprojectapp2.R;
+import com.example.mobileprojectapp2.api.chutro.ApiServiceKiet;
 import com.example.mobileprojectapp2.fragment.nguoithue.AbstractFragment;
 import com.example.mobileprojectapp2.fragment.nguoithue.HomeFragment;
 import com.example.mobileprojectapp2.fragment.nguoithue.MyRoomFragment;
@@ -35,6 +36,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.LinkedList;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class RenterActivity extends AppCompatActivity {
     private int idTaiKhoan = 15;
@@ -55,8 +60,29 @@ public class RenterActivity extends AppCompatActivity {
         viewPager2NguoiThue = findViewById(R.id.vp2NguoiThue);
         bottomNavigationViewNguoiThue = findViewById(R.id.bnvNguoiThue);
         BadgeDrawable badgeNotification = bottomNavigationViewNguoiThue.getOrCreateBadge(R.id.navNotification);
-        badgeNotification.setVisible(true);
-        badgeNotification.setNumber(100);
+        databaseReference.child("notification").child(idTaiKhoan + "").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {ApiServiceKiet.apiServiceKiet.demThongBaoKQCuaTaiKhoan(idTaiKhoan).enqueue(new Callback<Integer>() {
+                @Override
+                public void onResponse(Call<Integer> call, Response<Integer> response) {
+                    if (response.code() == 200) {
+                        badgeNotification.setVisible(true);
+                        badgeNotification.setNumber(response.body());
+                        if (response.body() == 0)
+                            badgeNotification.setVisible(false);
+                    }
+                }
+                @Override
+                public void onFailure(Call<Integer> call, Throwable t) {
+
+                }
+            });
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
         BadgeDrawable badgeMessage = bottomNavigationViewNguoiThue.getOrCreateBadge(R.id.navMessage);
         badgeMessage.setVisible(true);
         badgeMessage.setNumber(10);

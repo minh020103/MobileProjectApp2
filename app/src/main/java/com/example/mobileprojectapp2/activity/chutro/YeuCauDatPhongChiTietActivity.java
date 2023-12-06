@@ -54,6 +54,7 @@ public class YeuCauDatPhongChiTietActivity extends AppCompatActivity {
     private int idTaiKhoan;
     private SharedPreferences sharedPreferences;
     int id;
+    int idTaiKhoanNguoiNhan;
     DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
 
     @Override
@@ -123,6 +124,7 @@ public class YeuCauDatPhongChiTietActivity extends AppCompatActivity {
                 {
                     tvNoiDungThongBaoChiTiet4.setText("Giới tính: Nữ");
                 }
+                idTaiKhoanNguoiNhan = data.getIdTaiKhoanGui();
 
             }
 
@@ -177,14 +179,11 @@ public class YeuCauDatPhongChiTietActivity extends AppCompatActivity {
 
     private void realTimeThongBao()
     {
-        databaseReference.child("notification").child(id+"").setValue(System.currentTimeMillis()+"").addOnSuccessListener(new OnSuccessListener<Void>() {
+        Log.d("REALTIME",  idTaiKhoanNguoiNhan + "");
+        databaseReference.child("notification").child(idTaiKhoanNguoiNhan + "").setValue(0).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-
+                Log.d("TAG", "onSuccess: PUSH NOTIFICATION REALTIME");
             }
         });
     }

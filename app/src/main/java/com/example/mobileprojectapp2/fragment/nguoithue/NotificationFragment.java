@@ -48,8 +48,7 @@ public class NotificationFragment extends AbstractFragment{
     ThongBaoAdapter thongBaoAdapter;
     LinearLayoutManager layoutManager;
 
-    FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-    DatabaseReference databaseReference = firebaseDatabase.getReference();
+    DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
 
     @Nullable
     @Override
@@ -66,10 +65,12 @@ public class NotificationFragment extends AbstractFragment{
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(thongBaoAdapter);
         list = new ArrayList<>();
+        Log.d("REALTIME", idTaiKhoan + "");
 
-        databaseReference.child("notification").child(idTaiKhoan+"").addValueEventListener(new ValueEventListener() {
+        databaseReference.child("notification").child(idTaiKhoan + "").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                Log.d("REALTIME", "onDataChange: realtime thanh cong ");
                 listThongBaoTheoIdTaiKhoan();
 
             }
