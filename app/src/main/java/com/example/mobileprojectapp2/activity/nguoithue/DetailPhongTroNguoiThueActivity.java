@@ -30,8 +30,9 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.borjabravo.readmoretextview.ReadMoreTextView;
 import com.bumptech.glide.Glide;
 import com.example.mobileprojectapp2.R;
+import com.example.mobileprojectapp2.activity.chutro.DetailPhongTroActivity;
 import com.example.mobileprojectapp2.activity.chutro.PhongNhanTinActivity;
-import com.example.mobileprojectapp2.activity.chutro.RenterDetailActivity;
+import com.example.mobileprojectapp2.activity.chutro.SearchActivity;
 import com.example.mobileprojectapp2.activity.chutro.ZoomOutPageTransformer;
 import com.example.mobileprojectapp2.api.Const;
 import com.example.mobileprojectapp2.api.chutro.ApiServiceNghiem;
@@ -43,6 +44,7 @@ import com.example.mobileprojectapp2.datamodel.PhongNguoiThue;
 import com.example.mobileprojectapp2.datamodel.PhongTinNhan;
 import com.example.mobileprojectapp2.model.ChuTro;
 import com.example.mobileprojectapp2.model.PhongTro;
+import com.example.mobileprojectapp2.model.PhongTroGoiY;
 import com.example.mobileprojectapp2.model.TienIch;
 import com.example.mobileprojectapp2.model.YeuCauDatPhong;
 import com.example.mobileprojectapp2.recyclerviewadapter.chutro.HinhAnhAdapter;
@@ -50,6 +52,9 @@ import com.example.mobileprojectapp2.recyclerviewadapter.chutro.PhongTroChuTroAd
 import com.example.mobileprojectapp2.recyclerviewadapter.chutro.TienIchAdapter;
 import com.example.mobileprojectapp2.recyclerviewadapter.nguoithue.PhucDanhSachPhongGoiYAdapter;
 import com.example.mobileprojectapp2.recyclerviewadapter.nguoithue.PhucNguoiThueAdapter;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -81,17 +86,19 @@ public class DetailPhongTroNguoiThueActivity extends AppCompatActivity {
     private List<HinhAnh> listHinhAnh;
     private List<PhongNguoiThue> listNguoiThue;
     private PhucNguoiThueAdapter adapterNguoiThue;
-    private List<PhongTro> listPhongGoiY;
+    private List<com.example.mobileprojectapp2.datamodels.PhongTro> listPhongGoiY;
     private PhucDanhSachPhongGoiYAdapter adapterPhongGoiY;
     private RelativeLayout rlt_tren_dsnt;
-    private int idPhong = 2;
-    private int idTaiKhoan = 3;
-    private LinearLayout llXemThem, llThuGon, ll_dsnt, llDatPhong, llGoi, llChat;
+    private int idPhong;
+    private int idTaiKhoan;
+    private LinearLayout llXemThem, llThuGon, ll_dsnt, llDatPhong, llGoi, llChat, ll_dsp_chu_tro;
     private int idTaiKhoanNhan;
     private ProgressDialog mProgressDialog;
     SharedPreferences sharedPreferences;
     Intent intentChuTro;
     Intent intentNguoiThue;
+    FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+    DatabaseReference databaseReference = firebaseDatabase.getReference();
 
     private Handler handler = new Handler();
     private Runnable runnable = new Runnable() {
@@ -106,7 +113,6 @@ public class DetailPhongTroNguoiThueActivity extends AppCompatActivity {
 
         }
     };
-
 
 
     @Override
@@ -133,6 +139,7 @@ public class DetailPhongTroNguoiThueActivity extends AppCompatActivity {
         anhXa();
         getDataFromApi();
 //        getNguoiThue();
+
         imageBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -155,34 +162,35 @@ public class DetailPhongTroNguoiThueActivity extends AppCompatActivity {
         adapterNguoiThue.setMyOnClickListener(new PhongTroChuTroAdapter.MyOnClickListener() {
             @Override
             public void OnClickItem(int position, View v) {
-                if(listNguoiThue.get(position).getNguoiThue().getIdTaiKhoan()!=idTaiKhoan){
-                    Call<Integer> call = ApiServiceNghiem.apiService.layIdPhongTinNhan(idTaiKhoan,listNguoiThue.get(position).getNguoiThue().getIdTaiKhoan());
+                if (listNguoiThue.get(position).getNguoiThue().getIdTaiKhoan() != idTaiKhoan) {
+                    Call<Integer> call = ApiServiceNghiem.apiService.layIdPhongTinNhan(idTaiKhoan, listNguoiThue.get(position).getNguoiThue().getIdTaiKhoan());
                     call.enqueue(new Callback<Integer>() {
                         @Override
                         public void onResponse(Call<Integer> call, Response<Integer> response) {
-                            if(response!=null){
-                                if(response.body()==-1){
-                                    RequestBody senderID = RequestBody.create(MediaType.parse("multipart/form-data"),idTaiKhoan+"");
-                                    RequestBody nguoiThueID = RequestBody.create(MediaType.parse("multipart/form-data"),listNguoiThue.get(position).getNguoiThue().getIdTaiKhoan()+"");
-                                        Call<PhongTinNhan> taoPhong = ApiServiceNghiem.apiService.taoPhongTinNhan(senderID,nguoiThueID);
-                                        taoPhong.enqueue(new Callback<PhongTinNhan>() {
-                                            @Override
-                                            public void onResponse(Call<PhongTinNhan> call, Response<PhongTinNhan> response) {
-                                                if(response!=null){
-                                                    intentNguoiThue.putExtra("idPhong",response.body().getId());
-                                                }
+                            if (response != null) {
+                                if (response.body() == -1) {
+                                    RequestBody senderID = RequestBody.create(MediaType.parse("multipart/form-data"), idTaiKhoan + "");
+                                    RequestBody nguoiThueID = RequestBody.create(MediaType.parse("multipart/form-data"), listNguoiThue.get(position).getNguoiThue().getIdTaiKhoan() + "");
+                                    Call<PhongTinNhan> taoPhong = ApiServiceNghiem.apiService.taoPhongTinNhan(senderID, nguoiThueID);
+                                    taoPhong.enqueue(new Callback<PhongTinNhan>() {
+                                        @Override
+                                        public void onResponse(Call<PhongTinNhan> call, Response<PhongTinNhan> response) {
+                                            if (response != null) {
+                                                intentNguoiThue.putExtra("idPhong", response.body().getId());
                                             }
-                                            @Override
-                                            public void onFailure(Call<PhongTinNhan> call, Throwable t) {
+                                        }
 
-                                            }
-                                        });
-                                }else{
-                                    intentNguoiThue.putExtra("idPhong",response.body());
+                                        @Override
+                                        public void onFailure(Call<PhongTinNhan> call, Throwable t) {
+
+                                        }
+                                    });
+                                } else {
+                                    intentNguoiThue.putExtra("idPhong", response.body());
                                 }
-                                intentNguoiThue.putExtra("idDoiPhuong",listNguoiThue.get(position).getNguoiThue().getIdTaiKhoan());
-                                intentNguoiThue.putExtra("ten",listNguoiThue.get(position).getNguoiThue().getTen());
-                                intentNguoiThue.putExtra("hinh",listNguoiThue.get(position).getNguoiThue().getHinh());
+                                intentNguoiThue.putExtra("idDoiPhuong", listNguoiThue.get(position).getNguoiThue().getIdTaiKhoan());
+                                intentNguoiThue.putExtra("ten", listNguoiThue.get(position).getNguoiThue().getTen());
+                                intentNguoiThue.putExtra("hinh", listNguoiThue.get(position).getNguoiThue().getHinh());
                                 startActivity(intentNguoiThue);
                             }
                         }
@@ -192,61 +200,100 @@ public class DetailPhongTroNguoiThueActivity extends AppCompatActivity {
 
                         }
                     });
-                }else{
+                } else {
                     alertSuccess("Không Thể Nhắn Tin Cho Chính Bạn!");
                 }
             }
         });
 
-        getDanhSachPhongGoiY();
-
-        llDatPhong.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                requestYeuCauDatPhong();
-            }
-        });
         llChat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(intentChuTro);
             }
         });
+
+        adapterPhongGoiY.setMyOnCLickListener(new PhucDanhSachPhongGoiYAdapter.MyOnCLickListener() {
+            @Override
+            public void OnClickItem(int position, View v) {
+                alertSuccess("ok");
+                Intent intent = new Intent(DetailPhongTroNguoiThueActivity.this,DetailPhongTroNguoiThueActivity.class);
+                intent.putExtra("idPhong",listPhongGoiY.get(position).getId());
+                startActivity(intent);
+            }
+        });
+
+
     }
 
+    private void capNhatPhongGoiY(int idTaiKhoan, int idQuan, int tienCoc, int gioiTinh) {
+        RequestBody idTaiKhoanApi = RequestBody.create(MediaType.parse("multipart/form-data"), idTaiKhoan+"");
+        RequestBody idQuanApi = RequestBody.create(MediaType.parse("multipart/form-data"), idQuan+"");
+        RequestBody tienCocApi = RequestBody.create(MediaType.parse("multipart/form-data"), tienCoc+"");
+        RequestBody gioiTinhApi = RequestBody.create(MediaType.parse("multipart/form-data"), gioiTinh+"");
+        Call<Integer> call = ApiServicePhuc2.apiService.capNhatPhongGoiY(idTaiKhoanApi,idQuanApi,tienCocApi,gioiTinhApi);
+        call.enqueue(new Callback<Integer>() {
+            @Override
+            public void onResponse(Call<Integer> call, Response<Integer> response) {
 
+            }
 
+            @Override
+            public void onFailure(Call<Integer> call, Throwable t) {
+                Toast.makeText(DetailPhongTroNguoiThueActivity.this, "gay r ba", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getDanhSachPhongGoiY();
+        adapterPhongGoiY.notifyDataSetChanged();
+    }
 
-    private void requestYeuCauDatPhong() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(DetailPhongTroNguoiThueActivity.this);
-        builder.setMessage("Bạn chắc chắn muốn đặt phòng này ?")
-                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Call<YeuCauDatPhong> call = ApiServicePhuc2.apiService.yeuCauDatPhong(idTaiKhoan, idTaiKhoanNhan, idPhong);
-                        call.enqueue(new Callback<YeuCauDatPhong>() {
+    private void requestYeuCauDatPhong(int idNhan) {
+        llDatPhong.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(DetailPhongTroNguoiThueActivity.this);
+                builder.setMessage("Bạn chắc chắn muốn đặt phòng này ?")
+                        .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                             @Override
-                            public void onResponse(Call<YeuCauDatPhong> call, Response<YeuCauDatPhong> response) {
-                                alertSuccess("Bạn đã đặt phòng thành công!");
+                            public void onClick(DialogInterface dialog, int which) {
+                                Call<YeuCauDatPhong> call = ApiServicePhuc2.apiService.yeuCauDatPhong(idTaiKhoan, idNhan, idPhong);
+                                call.enqueue(new Callback<YeuCauDatPhong>() {
+                                    @Override
+                                    public void onResponse(Call<YeuCauDatPhong> call, Response<YeuCauDatPhong> responseYC) {
+                                        databaseReference.child("notification").child(idNhan + "").child(responseYC.body().getId() + "").setValue(0).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void unused) {
+                                                Log.d("TAG", "onSuccess: PUSH NOTIFICATION REALTIME");
+                                            }
+                                        });
+                                        alertSuccess("Bạn đã đặt phòng thành công!");
+                                    }
+
+                                    @Override
+                                    public void onFailure(Call<YeuCauDatPhong> call, Throwable t) {
+                                        Toast.makeText(DetailPhongTroNguoiThueActivity.this, "Error not call Api", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
                             }
-
+                        }).setNegativeButton("Hủy", new DialogInterface.OnClickListener() {
                             @Override
-                            public void onFailure(Call<YeuCauDatPhong> call, Throwable t) {
-                                Toast.makeText(DetailPhongTroNguoiThueActivity.this, "Error not call Api", Toast.LENGTH_SHORT).show();
+                            public void onClick(DialogInterface dialog, int which) {
+                                mProgressDialog.cancel();
                             }
                         });
-                    }
-                }).setNegativeButton("Hủy", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        mProgressDialog.cancel();
-                    }
-                });
-        builder.create();
-        builder.show();
+                builder.create();
+                builder.show();
+            }
+        });
+
 
     }
+
 
     private void getDataFromApi() {
         Call<PhongTro> call = ApiServicePhuc.apiService.getPhongTroByID(idPhong);
@@ -336,30 +383,31 @@ public class DetailPhongTroNguoiThueActivity extends AppCompatActivity {
                         llThuGon.setVisibility(View.GONE);
                     }
                 });
-                if (response.body().getPhongTroChuTro()!=null){
+                if (response.body().getPhongTroChuTro() != null) {
                     int idNhan = response.body().getPhongTroChuTro().getIdTaiKhoan();
-                    RequestBody senderID = RequestBody.create(MediaType.parse("multipart/form-data"),idTaiKhoan+"");
-                    RequestBody nguoiThueID = RequestBody.create(MediaType.parse("multipart/form-data"),idNhan+"");
-                    Call<Integer> calll = ApiServiceNghiem.apiService.layIdPhongTinNhan(idTaiKhoan,response.body().getPhongTroChuTro().getIdTaiKhoan());
+                    RequestBody senderID = RequestBody.create(MediaType.parse("multipart/form-data"), idTaiKhoan + "");
+                    RequestBody nguoiThueID = RequestBody.create(MediaType.parse("multipart/form-data"), idNhan + "");
+                    Call<Integer> calll = ApiServiceNghiem.apiService.layIdPhongTinNhan(idTaiKhoan, response.body().getPhongTroChuTro().getIdTaiKhoan());
                     calll.enqueue(new Callback<Integer>() {
                         @Override
                         public void onResponse(Call<Integer> call, Response<Integer> response) {
-                            if(response.body()==-1){
-                                Call<PhongTinNhan> taoPhong = ApiServiceNghiem.apiService.taoPhongTinNhan(senderID,nguoiThueID);
+                            if (response.body() == -1) {
+                                Call<PhongTinNhan> taoPhong = ApiServiceNghiem.apiService.taoPhongTinNhan(senderID, nguoiThueID);
                                 taoPhong.enqueue(new Callback<PhongTinNhan>() {
                                     @Override
                                     public void onResponse(Call<PhongTinNhan> call, Response<PhongTinNhan> response) {
-                                        if(response!=null){
-                                            intentChuTro.putExtra("idPhong",response.body().getId());
+                                        if (response != null) {
+                                            intentChuTro.putExtra("idPhong", response.body().getId());
                                         }
                                     }
+
                                     @Override
                                     public void onFailure(Call<PhongTinNhan> call, Throwable t) {
 
                                     }
                                 });
-                            }else{
-                                intentChuTro.putExtra("idPhong",response.body());
+                            } else {
+                                intentChuTro.putExtra("idPhong", response.body());
                             }
 
                         }
@@ -372,10 +420,31 @@ public class DetailPhongTroNguoiThueActivity extends AppCompatActivity {
                     tvTenChuTro.setText(response.body().getPhongTroChuTro().getTen());
                     tvSDTChuTro.setText(response.body().getPhongTroChuTro().getSoDienThoai());
                     idTaiKhoanNhan = response.body().getPhongTroChuTro().getId();
+                    int idNhanYC = response.body().getPhongTroChuTro().getIdTaiKhoan();
+                    requestYeuCauDatPhong(idNhanYC);
                     Glide.with(DetailPhongTroNguoiThueActivity.this.getLayoutInflater().getContext()).load(Const.DOMAIN + response.body().getPhongTroChuTro().getHinh()).into(imageViewChuTro);
-                    intentChuTro.putExtra("idDoiPhuong",response.body().getPhongTroChuTro().getIdTaiKhoan());
-                    intentChuTro.putExtra("ten",response.body().getPhongTroChuTro().getTen());
-                    intentChuTro.putExtra("hinh",response.body().getPhongTroChuTro().getHinh());
+                    intentChuTro.putExtra("idDoiPhuong", response.body().getPhongTroChuTro().getIdTaiKhoan());
+                    intentChuTro.putExtra("ten", response.body().getPhongTroChuTro().getTen());
+                    intentChuTro.putExtra("hinh", response.body().getPhongTroChuTro().getHinh());
+                    capNhatPhongGoiY(idTaiKhoan, response.body().getIdQuan(), response.body().getTienCoc(), response.body().getGioiTinh());
+                    getDanhSachPhongGoiY();
+                    ll_dsp_chu_tro.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent intent = new Intent(DetailPhongTroNguoiThueActivity.this, DanhSachPhongTheoChuTroActivity.class);
+                            intent.putExtra("idTaiKhoan",response.body().getPhongTroChuTro().getIdTaiKhoan());
+                            Log.d("TAG", "onClick: "+ response.body().getPhongTroChuTro().getIdTaiKhoan());
+                            intent.putExtra("idChuTro",response.body().getPhongTroChuTro().getId());
+                            Log.d("TAG", "onClick: "+ response.body().getPhongTroChuTro().getId());
+
+
+
+                            startActivity(intent);
+                        }
+                    });
+                }
+                else{
+                    alertSuccess("Đéo có chủ trọ mà có phòng");
                 }
                 llGoi.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -396,6 +465,7 @@ public class DetailPhongTroNguoiThueActivity extends AppCompatActivity {
             }
         });
     }
+
     private void getDanhSachNguoiThueGoiY() {
         Call<List<PhongNguoiThue>> call = ApiServicePhuc2.apiService.getNguoiThueTheoPhong(idPhong);
         call.enqueue(new Callback<List<PhongNguoiThue>>() {
@@ -418,10 +488,10 @@ public class DetailPhongTroNguoiThueActivity extends AppCompatActivity {
     }
 
     private void getDanhSachPhongGoiY() {
-        Call<List<PhongTro>> call = ApiServicePhuc2.apiService.getDanhSachPhongGoiY(idTaiKhoan);
-        call.enqueue(new Callback<List<PhongTro>>() {
+        Call<List<com.example.mobileprojectapp2.datamodels.PhongTro>> call = ApiServicePhuc2.apiService.getDanhSachPhongGoiYTheoQuan(idTaiKhoan);
+        call.enqueue(new Callback<List<com.example.mobileprojectapp2.datamodels.PhongTro>>() {
             @Override
-            public void onResponse(Call<List<PhongTro>> call, Response<List<PhongTro>> response) {
+            public void onResponse(Call<List<com.example.mobileprojectapp2.datamodels.PhongTro>> call, Response<List<com.example.mobileprojectapp2.datamodels.PhongTro>> response) {
                 if (response.code() == 200) {
                     listPhongGoiY.clear();
                     listPhongGoiY.addAll(response.body());
@@ -430,8 +500,8 @@ public class DetailPhongTroNguoiThueActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<List<PhongTro>> call, Throwable t) {
-                Toast.makeText(DetailPhongTroNguoiThueActivity.this, "Error not call Api", Toast.LENGTH_SHORT).show();
+            public void onFailure(Call<List<com.example.mobileprojectapp2.datamodels.PhongTro>> call, Throwable t) {
+
             }
         });
     }
@@ -464,6 +534,7 @@ public class DetailPhongTroNguoiThueActivity extends AppCompatActivity {
         llChat = findViewById(R.id.ll_chat);
         llDatPhong = findViewById(R.id.ll_dat_phong);
         llGoi = findViewById(R.id.ll_goi);
+        ll_dsp_chu_tro = findViewById(R.id.ll_dsp_chu_tro);
         tvTienIchRong = findViewById(R.id.tv_tien_ich_rong);
 
         mViewPager2 = findViewById(R.id.view_pager_2_nguoi_thue);

@@ -25,6 +25,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.mobileprojectapp2.R;
+import com.example.mobileprojectapp2.activity.nguoithue.DetailPhongTroNguoiThueActivity;
 import com.example.mobileprojectapp2.activity.nguoithue.DanhSachPhongGhepActivity;
 import com.example.mobileprojectapp2.activity.nguoithue.DanhSachPhongGoiYActivity;
 import com.example.mobileprojectapp2.activity.nguoithue.RenterActivity;
@@ -128,6 +129,11 @@ public class HomeFragment extends AbstractFragment {
             @Override
             public void onClickItemListenner(int position, View view) {
                 //TODO: Chuyển qua màn hình chi tiết
+   				Intent intent = new Intent(getActivity(), DetailPhongTroNguoiThueActivity.class);
+                intent.putExtra("idPhong",listPhong.get(position).getId());
+                startActivity(intent);
+
+
             }
 
             @Override

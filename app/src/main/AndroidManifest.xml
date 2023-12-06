@@ -28,6 +28,9 @@
             </intent-filter>
         </service>
         <activity
+            android:name=".activity.nguoithue.DanhSachPhongTheoChuTroActivity"
+            android:exported="false" />
+        <activity
             android:name=".activity.chutro.YeuCauDatPhongChiTietActivity"
             android:exported="false" />
         <activity
