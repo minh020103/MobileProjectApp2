@@ -49,17 +49,17 @@ public class ThongBaoAdapter extends RecyclerView.Adapter<ThongBaoAdapter.MyView
         ThongBao data =list.get(position);
         Glide.with(activity.getLayoutInflater().getContext()).load(Const.DOMAIN + list.get(position).getNguoiGui().getHinh()).into(holder.imgNguoiGuiThongBao);
         holder.tvTenNguoiGuiThongBao.setText(data.getNguoiGui().getTen());
-        holder.tvNoiDungThongBao.setText(data.getNoiDung());
+        holder.tvTieuDeThongBao.setText(data.getTieuDe());
         if (data.getTrangThai() == 0)
         {
             holder.bgItemthongBao.setBackgroundColor(0xFFBDFDA7);
-            holder.tvNoiDungThongBao.setTextColor(0xFF000000);
+            holder.tvTieuDeThongBao.setTextColor(0xFF000000);
             holder.tvTenNguoiGuiThongBao.setTextColor(0xFF000000);
         }
         else
         {
             holder.bgItemthongBao.setBackgroundColor(0xFFFFFFFF);
-            holder.tvNoiDungThongBao.setTextColor(0xFF858383);
+            holder.tvTieuDeThongBao.setTextColor(0xFF858383);
             holder.tvTenNguoiGuiThongBao.setTextColor(0xFF858383);
         }
 
@@ -90,7 +90,7 @@ public class ThongBaoAdapter extends RecyclerView.Adapter<ThongBaoAdapter.MyView
         LinearLayout bgItemthongBao;
         ImageView imgNguoiGuiThongBao;
         TextView tvTenNguoiGuiThongBao;
-        TextView tvNoiDungThongBao;
+        TextView tvTieuDeThongBao;
 
         View.OnClickListener onClickListener;
         public MyViewHolder(@NonNull View itemView) {
@@ -98,7 +98,7 @@ public class ThongBaoAdapter extends RecyclerView.Adapter<ThongBaoAdapter.MyView
             bgItemthongBao = itemView.findViewById(R.id.bg_itemThongBao);
             imgNguoiGuiThongBao = itemView.findViewById(R.id.imgNguoiGuiThongBao);
             tvTenNguoiGuiThongBao = itemView.findViewById(R.id.tvNguoiGuiThongBao);
-            tvNoiDungThongBao = itemView.findViewById(R.id.tvNoiDungThongBao);
+            tvTieuDeThongBao = itemView.findViewById(R.id.tvTieuDeThongBao);
 
             itemView.setOnClickListener(this);
         }

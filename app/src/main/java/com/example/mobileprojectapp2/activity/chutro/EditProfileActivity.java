@@ -88,7 +88,7 @@ public class EditProfileActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.edit_profile_layout);
+        setContentView(R.layout.chutro_edit_profile_layout);
 
         sharedPreferences = EditProfileActivity.this.getSharedPreferences(Const.PRE_LOGIN, Context.MODE_PRIVATE);
         idTaiKhoan = sharedPreferences.getInt("idTaiKhoan", -1);
@@ -123,7 +123,11 @@ public class EditProfileActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<ChuTro> call, Response<ChuTro> response) {
                 ChuTro chuTro = response.body();
+                if (response.body().getHinh() != null)
                 Glide.with(EditProfileActivity.this.getLayoutInflater().getContext()).load(Const.DOMAIN + response.body().getHinh()).into(imgViewProfileEdit);
+                else {
+                    imgViewProfileEdit.setImageResource(R.drawable.khongcoanh);
+                }
                 edtName.setText(response.body().getTen());
                 edtPhone.setText(response.body().getSoDienThoai());
                 edtNameBank.setText(response.body().getTenChuTaiKhoanNganHang());
@@ -190,6 +194,7 @@ public class EditProfileActivity extends AppCompatActivity {
                     } else {
                         String strRealPath = RealPathUtil.getRealPath(getApplicationContext(), mUri);
                         File file = new File(strRealPath);
+                        Log.d(TAG, "onClick: "+ file);
                         RequestBody requestBodyImage = RequestBody.create(MediaType.parse("multipart/form-data"), file);
                         MultipartBody.Part mulPart = MultipartBody.Part.createFormData("hinh", file.getName(), requestBodyImage);
                         Call<Integer> call = ApiServicePhuc.apiService.editProfileImage(idTaiKhoan, nameChuTro, phoneChuTro, numberBankChuTro, nameBankChuTro, mulPart);

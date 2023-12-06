@@ -25,17 +25,18 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.mobileprojectapp2.R;
 import com.example.mobileprojectapp2.activity.chutro.AddRoomActivity;
+import com.example.mobileprojectapp2.activity.chutro.AuthenticationActivity;
 import com.example.mobileprojectapp2.activity.chutro.EditRoomActivity;
 import com.example.mobileprojectapp2.activity.chutro.MotelRoomOwnerActivity;
 import com.example.mobileprojectapp2.activity.chutro.RenterListActivity;
 import com.example.mobileprojectapp2.activity.chutro.SearchActivity;
 import com.example.mobileprojectapp2.api.Const;
 import com.example.mobileprojectapp2.api.chutro.ApiServiceMinh;
-import com.example.mobileprojectapp2.datamodel.Comment;
+import com.example.mobileprojectapp2.api.chutro.ApiServicePhuc;
+import com.example.mobileprojectapp2.component.MComponent;
 import com.example.mobileprojectapp2.datamodel.PhongBinhLuan;
-import com.example.mobileprojectapp2.datamodel.PhongDanhGia;
 import com.example.mobileprojectapp2.datamodel.PhongTroChuTro;
-import com.example.mobileprojectapp2.player.RatingPlayer;
+import com.example.mobileprojectapp2.model.ChuTro;
 import com.example.mobileprojectapp2.recyclerviewadapter.chutro.CommentAdapter;
 import com.example.mobileprojectapp2.recyclerviewadapter.chutro.MotelRoomAdapter;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -73,6 +74,7 @@ public class ListRoomFragment extends AbstractFragment {
     private final int quantityRoom = 5;
     private int pageComment = 1;
     private final int quantityComment = 10;
+    private boolean check = false;
 
     FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
     DatabaseReference databaseReference = firebaseDatabase.getReference();
@@ -97,7 +99,6 @@ public class ListRoomFragment extends AbstractFragment {
     }
 
 
-
     private void onScrollView() {
         ntsvListRoom.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
             @Override
@@ -109,7 +110,7 @@ public class ListRoomFragment extends AbstractFragment {
                     getDataFromAPI();
 
                 }
-                if(scrollY == 0){
+                if (scrollY == 0) {
                     pageRoom = 1;
                     pbReLoad.setVisibility(View.VISIBLE);
                     phongTroOfChuTroList.clear();
@@ -124,11 +125,29 @@ public class ListRoomFragment extends AbstractFragment {
         llAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), AddRoomActivity.class);
-                startActivity(intent);
+                // 22/11/2023: Kiểm tra tài khoản phải ở trạng thái xác thực thì mới được thêm phòng
+                ApiServicePhuc.apiService.getChuTroById(idTaiKhoan).enqueue(new Callback<ChuTro>() {
+                    @Override
+                    public void onResponse(Call<ChuTro> call, Response<ChuTro> response) {
+                        if (response.code() == 200) {
+                            if (response.body().getXacThuc() == 1) {
+                                Intent intent = new Intent(getActivity(), AddRoomActivity.class);
+                                startActivity(intent);
+                            } else {
+                                alertFailAddRoom("Bạn cần xác thực tài khoản trước khi thêm phòng.\nNhấn OK để chuyển qua màn hình xác thực.\nNhấn CANCAL để tắt thông báo.");
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<ChuTro> call, Throwable t) {
+
+                    }
+                });
+
             }
         });
-         llSearch.setOnClickListener(new View.OnClickListener() {
+        llSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(getActivity(), SearchActivity.class));
@@ -174,7 +193,7 @@ public class ListRoomFragment extends AbstractFragment {
         roomAdapter.setOnClickItemRoomListener(new MotelRoomAdapter.OnClickItemRoomListener() {
             @Override
             public void setOnClickListPerson(int position, View view) {
-				Intent intent = new Intent(getActivity(), RenterListActivity.class);
+                Intent intent = new Intent(getActivity(), RenterListActivity.class);
                 intent.putExtra("idPhong", phongTroOfChuTroList.get(position).getIdPhongTro());
                 intent.putExtra("soPhong", phongTroOfChuTroList.get(position).getPhongTro().getSoPhong());
                 startActivity(intent);
@@ -201,8 +220,8 @@ public class ListRoomFragment extends AbstractFragment {
                                 ApiServiceMinh.apiService.xoaPhongTroCuaChuTro(idChuTro, phongTroOfChuTroList.get(position).getIdPhongTro()).enqueue(new Callback<Integer>() {
                                     @Override
                                     public void onResponse(Call<Integer> call, Response<Integer> response) {
-                                        if (response.code() == 200){
-                                            if (response.body() == 1){
+                                        if (response.code() == 200) {
+                                            if (response.body() == 1) {
                                                 phongTroOfChuTroList.remove(phongTroOfChuTroList.get(position));
                                                 roomAdapter.notifyDataSetChanged();
                                                 Toast.makeText(getContext(), "Xóa thành công", Toast.LENGTH_SHORT).show();
@@ -213,8 +232,8 @@ public class ListRoomFragment extends AbstractFragment {
 
                                     @Override
                                     public void onFailure(Call<Integer> call, Throwable t) {
-                                        Log.d("TAG", "onFailure: "+call.request());
-                                        Log.d("TAG", "onFailure: "+t);
+                                        Log.d("TAG", "onFailure: " + call.request());
+                                        Log.d("TAG", "onFailure: " + t);
                                     }
                                 });
                             }
@@ -239,67 +258,54 @@ public class ListRoomFragment extends AbstractFragment {
 
             @Override
             public void setOnClickRating(int position, View view) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                LayoutInflater inflater = getLayoutInflater();
-                View viewDialog = inflater.inflate(R.layout.chutro_dialog_rating_layout, null);
-                builder.setView(viewDialog);
-                AlertDialog dialog = builder.create();
+                MComponent.rating(getActivity(), phongTroOfChuTroList.get(position).getIdPhongTro(), idTaiKhoan);
+            }
+
+            @Override
+            public void setOnClickControls(int position, View view, int trangThaiHoatDong) {
+                int theFirst = 1;
+                if (trangThaiHoatDong == Const.KHONG_HOAT_DONG && theFirst == 1) {
+                    callApiBatTatHoatDong(position, Const.HOAT_DONG);
+                    theFirst++;
+                    Log.d("TAG_check", "setOnClickControls:"+trangThaiHoatDong + " "+theFirst);
+                }
+                if(trangThaiHoatDong == Const.HOAT_DONG && theFirst == 1) {
+                    callApiBatTatHoatDong(position, Const.KHONG_HOAT_DONG);
+                    theFirst++;
+                    Log.d("TAG_check", "setOnClickControls:"+trangThaiHoatDong + " "+theFirst);
+                }
+            }
 
 
-                //builder.show();
-                dialog.show();
-                ImageView imgClose = viewDialog.findViewById(R.id.imgClose);
-                imgClose.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        // Close
-                        dialog.hide();
+        });
+    }
+    private void callApiBatTatHoatDong(int position, int hoatDong){
+        com.example.mobileprojectapp2.api.nguoithue.ApiServiceMinh.apiService.updateHoatDong(phongTroOfChuTroList.get(position).getIdPhongTro(), hoatDong, idChuTro).enqueue(new Callback<Integer>() {
+            @Override
+            public void onResponse(Call<Integer> call, Response<Integer> response) {
+                if (response.code() == 200) {
+                    if (response.body() == Const.PHONG_DA_CO_NGUOI_THUE) {
+                        alertFail("Phòng đã có người thuê không thể tắt hoạt động");
                     }
-                });
-                RatingPlayer ratingPlayer = new RatingPlayer(viewDialog);
-                // đổi sao ra giao diện
-                ratingPlayer.setStarForRating(0);
-                ApiServiceMinh.apiService.layDanhGiaCuaNguoiDunngChoPhong(idTaiKhoan, phongTroOfChuTroList.get(position).getIdPhongTro()).enqueue(new Callback<PhongDanhGia>() {
-                    @Override
-                    public void onResponse(Call<PhongDanhGia> call, Response<PhongDanhGia> response) {
-                        if (response.code() == 200) {
-                            ratingPlayer.setStarForRating(response.body().getDanhGia());
-                        }
+                    if (response.body() == Const.DA_DAT_SO_LUONG_PHONG_TOI_DA) {
+                        alertFail("Số lượng phòng hoạt động đã đạt tối đa gói dịch vụ không thể bật");
                     }
-
-                    @Override
-                    public void onFailure(Call<PhongDanhGia> call, Throwable t) {
-
+                    if (response.body() == Const.CHUA_DANG_KY_DICH_VU) {
+                        alertFail("Bạn chưa đăng ký dịch vụ hãy đăng ký dịch vụ để bật hoạt động phòng");
                     }
-                });
-
-                // chọn sao
-                ratingPlayer.rating();
-                //  hàm sử lý số sao đã chọn được ủy quyền
-                ratingPlayer.setiRatingPlayer(new RatingPlayer.IRatingPlayer() {
-                    @Override
-                    public void layDanhGia(int rating) {
-                        // được ủy quyền ra ngoài để lấy lượng đánh giá
-                        Log.d("TAG", "setOnClickRating: " + rating);
-                        ApiServiceMinh.apiService.danhGiaChoPhong(idTaiKhoan, phongTroOfChuTroList.get(position).getIdPhongTro(), rating).enqueue(new Callback<Integer>() {
-                            @Override
-                            public void onResponse(Call<Integer> call, Response<Integer> response) {
-                                if (response.code() == 200) {
-                                    Toast.makeText(getContext(), "Đánh giá thành công", Toast.LENGTH_SHORT).show();
-                                    dialog.hide();
-                                }
-                            }
-
-                            @Override
-                            public void onFailure(Call<Integer> call, Throwable t) {
-
-                            }
-                        });
+                    if (response.body() == 1){
+                        phongTroOfChuTroList.get(position).getPhongTro().setHoatDong(hoatDong);
+                        roomAdapter.notifyDataSetChanged();
                     }
-                });
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Integer> call, Throwable t) {
 
             }
         });
+
     }
 
     private void showBottomSheetComment(int position, View view) {
@@ -310,7 +316,7 @@ public class ListRoomFragment extends AbstractFragment {
         BottomSheetDialog bottomSheetComment = new BottomSheetDialog(getActivity(), R.style.BottomSheetDialogTheme);
         bottomSheetComment.setContentView(viewBottomSheetCommnent);
 
-        databaseReference.child("comment").child(phongTroOfChuTroList.get(position).getIdPhongTro()+"").addValueEventListener(new ValueEventListener() {
+        databaseReference.child("comment").child(phongTroOfChuTroList.get(position).getIdPhongTro() + "").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 getCommentFromAPI(position);
@@ -340,7 +346,7 @@ public class ListRoomFragment extends AbstractFragment {
                                 edtComment.setText("");
                                 listComment.addFirst(response.body());
                                 commentAdapter.notifyDataSetChanged();
-                                databaseReference.child("comment").child(phongTroOfChuTroList.get(position).getIdPhongTro()+"").child(response.body().getId()+"").setValue(response.body().getId()).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                databaseReference.child("comment").child(phongTroOfChuTroList.get(position).getIdPhongTro() + "").child(response.body().getId() + "").setValue(response.body().getId()).addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
                                     public void onSuccess(Void unused) {
                                         Log.d("TAG", "onDataChange: NEW OK");
@@ -387,9 +393,9 @@ public class ListRoomFragment extends AbstractFragment {
             @Override
             public void onResponse(Call<List<PhongBinhLuan>> call, Response<List<PhongBinhLuan>> response) {
                 if (response.code() == 200) {
-                        listComment.clear();
-                        listComment.addAll(response.body());
-                        commentAdapter.notifyDataSetChanged();
+                    listComment.clear();
+                    listComment.addAll(response.body());
+                    commentAdapter.notifyDataSetChanged();
                 }
             }
 
@@ -399,8 +405,6 @@ public class ListRoomFragment extends AbstractFragment {
             }
         });
     }
-
-
 
 
     private void anhXa(View fragmentLayout) {
@@ -418,6 +422,41 @@ public class ListRoomFragment extends AbstractFragment {
         rcvListMotelRoom.setAdapter(roomAdapter);
         listComment = new LinkedList<>();
 
+    }
+
+    private void alertFailAddRoom(String s) {
+        new android.app.AlertDialog.Builder(getContext())
+                .setTitle("Thông báo")
+                .setMessage(s)
+                .setIcon(R.drawable.iconp_fail)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Intent intent = new Intent(getActivity(), AuthenticationActivity.class);
+                        startActivity(intent);
+                    }
+                })
+                .setNegativeButton("Cancal", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                })
+                .show();
+    }
+
+    private void alertFail(String s) {
+        new android.app.AlertDialog.Builder(getContext())
+                .setTitle("Thông báo")
+                .setMessage(s)
+                .setIcon(R.drawable.iconp_fail)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                })
+                .show();
     }
 
 

@@ -1,6 +1,7 @@
 package com.example.mobileprojectapp2.fragment.chutro;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -87,7 +89,6 @@ public class PackageUsingFragment extends AbstractFragment{
         dang_ki_goi.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Log.d("test", "onClick: dang ki fgsdygfdsfgsgkhjedas");
                 ClickOpenButtomSheet("Đăng Kí Gói Dịch Vụ");
             }
         });
@@ -111,8 +112,7 @@ public class PackageUsingFragment extends AbstractFragment{
         huy_dich_vu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                HuyDichVu(idTaiKhoan);
-                onResume();
+                thongBao("Bạn Có Chắc Muốn Huỷ Gói ?");
             }
 
         });
@@ -227,7 +227,23 @@ public class PackageUsingFragment extends AbstractFragment{
         }
     }
 
+    private void thongBao(String mes){
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setMessage(mes).setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                HuyDichVu(idTaiKhoan);
+                onResume();
+            }
+        }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
 
+            }
+        });
+        builder.create();
+        builder.show();
+    }
 
     @Override
     public void onResume() {

@@ -1,9 +1,12 @@
 package com.example.mobileprojectapp2.api.chutro;
 
+import com.example.mobileprojectapp2.adapter.chutro.ThongBaoYeuCauDatPhongAdapter;
 import com.example.mobileprojectapp2.api.Const;
 import com.example.mobileprojectapp2.datamodel.NguoiThue;
 import com.example.mobileprojectapp2.datamodel.PhongNguoiThue;
 import com.example.mobileprojectapp2.datamodel.ThongBao;
+import com.example.mobileprojectapp2.datamodel.YeuCauDatPhong;
+import com.example.mobileprojectapp2.datamodel.fcm.FCMThongBaoDatPhong;
 
 import java.util.List;
 
@@ -36,4 +39,16 @@ public interface ApiServiceKiet {
     Call<ThongBao> getChiTietThongBaoTheoId(@Query("id") int id);
     @GET("api/thongbao/xoa")
     Call<ThongBao> xoaThongBaoTheoId(@Query("id") int id);
+    @GET("api/thongbao/demthongbaocuataikhoan")
+    Call<Integer> demThongBaoKQCuaTaiKhoan(@Query("idTaiKhoan") int idTaiKhoan);
+    @GET("api/thongbao/demyeucaudatphong")
+    Call<Integer> demThongBaoYCCuaTaiKhoan(@Query("idTaiKhoan") int idTaiKhoan);
+    @GET("api/yeucaudatphong/all")
+    Call<List<YeuCauDatPhong>> getListYeuCauDangKiPhong(@Query("idTaiKhoan") int idTaiKhoan);
+    @GET("api/yeucaudatphong/chitiet")
+    Call<YeuCauDatPhong> getYeuCauDangKiPhongById(@Query("id") int id);
+
+    @PUT("api/yeucaudatphong/xacnhandatphong")
+    Call<FCMThongBaoDatPhong> xacNhanDatPhong(@Query("id") int id, @Query("idTaiKhoanGui") int idTaiKhoanGui, @Query("idNguoiThue") int idNguoiThue, @Query("myIdTaiKhoan") int myIdTaiKhoan, @Query("idPhong") int idPhong);
+
 }

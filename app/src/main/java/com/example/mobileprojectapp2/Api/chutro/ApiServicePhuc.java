@@ -58,7 +58,7 @@ public interface ApiServicePhuc {
 
     @Multipart
     @POST("api/xacthucchutro/create")
-    Call<Integer> guiYeuCauXacThucChuTro(@Part("idChuTro") RequestBody idChuTro,
+    Call<XacThucChuTro> guiYeuCauXacThucChuTro(@Part("idChuTro") RequestBody idChuTro,
                                                @Part MultipartBody.Part cccdMatTruoc,
                                                @Part MultipartBody.Part cccdMatSau);
 

@@ -43,6 +43,7 @@ public class RenterDetailActivity extends AppCompatActivity {
     NguoiThue nguoiThue;
     SharedPreferences sharedPreferences;
     private int senderId;
+    String sdt;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -111,7 +112,7 @@ public class RenterDetailActivity extends AppCompatActivity {
         btnGoiDienNguoiThue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String phone = "tel:"+tvSDTNguoiThueChiTiet.getText();
+                String phone = "tel:"+ sdt;
                 Intent callIntent = new Intent(Intent.ACTION_DIAL);
                 callIntent.setData(Uri.parse(phone));
                 startActivity(callIntent);
@@ -157,6 +158,7 @@ public class RenterDetailActivity extends AppCompatActivity {
                 Glide.with(getApplicationContext()).load(Const.DOMAIN + renter.getHinh()).into(imgNguoiThueChiTiet);
                 tvTenNguoiThueChiTiet.setText(renter.getTen());
                 tvSDTNguoiThueChiTiet.setText(renter.getSoDienThoai());
+                sdt = renter.getSoDienThoai();
                 if (renter.getGioiTinh() == 1)
                 {
                     tvGioiTinhNguoiThueChiTiet.setText("Nu");

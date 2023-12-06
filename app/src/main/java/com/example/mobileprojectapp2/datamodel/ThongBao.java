@@ -4,19 +4,30 @@ public class ThongBao {
     private int id;
     private int idTaiKhoanGui;
     private int idTaiKhoanNhan;
+    private String tieuDe;
     private String noiDung;
     private int trangThai;
+    private int trangThaiNhan;
     private NguoiGuiThongBao nguoiGui;
     private NguoiNhanThongBao taiKhoanNhan;
 
-    public ThongBao(int id, int idTaiKhoanGui, int idTaiKhoanNhan, String noiDung, int trangThai, NguoiGuiThongBao nguoiGui, NguoiNhanThongBao taiKhoanNhan) {
+    public ThongBao(int id, int idTaiKhoanGui, int idTaiKhoanNhan, String tieuDe, String noiDung, int trangThai, NguoiGuiThongBao nguoiGui, NguoiNhanThongBao taiKhoanNhan) {
         this.id = id;
         this.idTaiKhoanGui = idTaiKhoanGui;
         this.idTaiKhoanNhan = idTaiKhoanNhan;
+        this.tieuDe = tieuDe;
         this.noiDung = noiDung;
         this.trangThai = trangThai;
         this.nguoiGui = nguoiGui;
         this.taiKhoanNhan = taiKhoanNhan;
+    }
+
+    public int getTrangThaiNhan() {
+        return trangThaiNhan;
+    }
+
+    public void setTrangThaiNhan(int trangThaiNhan) {
+        this.trangThaiNhan = trangThaiNhan;
     }
 
     public ThongBao() {
@@ -45,6 +56,14 @@ public class ThongBao {
 
     public void setIdTaiKhoanNhan(int idTaiKhoanNhan) {
         this.idTaiKhoanNhan = idTaiKhoanNhan;
+    }
+
+    public String getTieuDe() {
+        return tieuDe;
+    }
+
+    public void setTieuDe(String tieuDe) {
+        this.tieuDe = tieuDe;
     }
 
     public String getNoiDung() {
@@ -85,6 +104,7 @@ public class ThongBao {
                 "id=" + id +
                 ", idTaiKhoanGui=" + idTaiKhoanGui +
                 ", idTaiKhoanNhan=" + idTaiKhoanNhan +
+                ", tieuDe='" + tieuDe + '\'' +
                 ", noiDung='" + noiDung + '\'' +
                 ", trangThai=" + trangThai +
                 ", nguoiGui=" + nguoiGui +

@@ -5,12 +5,23 @@ import java.util.List;
 public class PhongTroChuTro {
     private int id;
     private int idChuTro;
+    private int ten;
+
+    public int getTen() {
+        return ten;
+    }
+
+    public void setTen(int ten) {
+        this.ten = ten;
+    }
+
     private int idPhongTro;
     private ChuTro chuTro;
     private PhongTro phongTro;
     private List<HinhAnh> hinhAnh;
     private int binhLuan;
     private double danhGia;
+    private Quan quan;
 
     public int getId() {
         return id;
@@ -76,17 +87,27 @@ public class PhongTroChuTro {
         this.danhGia = danhGia;
     }
 
+    public Quan getQuan() {
+        return quan;
+    }
+
+    public void setQuan(Quan quan) {
+        this.quan = quan;
+    }
+
     @Override
     public String toString() {
         return "PhongTroChuTro{" +
                 "id=" + id +
                 ", idChuTro=" + idChuTro +
+                ", ten=" + ten +
                 ", idPhongTro=" + idPhongTro +
                 ", chuTro=" + chuTro +
                 ", phongTro=" + phongTro +
                 ", hinhAnh=" + hinhAnh +
                 ", binhLuan=" + binhLuan +
                 ", danhGia=" + danhGia +
+                ", quan=" + quan +
                 '}';
     }
 }

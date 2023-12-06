@@ -1,7 +1,8 @@
 package com.example.mobileprojectapp2.model;
 
 import com.example.mobileprojectapp2.datamodel.HinhAnh;
-import com.example.mobileprojectapp2.datamodel.PhongTroChuTro;
+import com.example.mobileprojectapp2.datamodel.ChuTro;
+import com.example.mobileprojectapp2.datamodel.Quan;
 
 import java.util.List;
 
@@ -21,13 +22,13 @@ public class PhongTro {
     private int gioiTinh;
     private int tienDien;
     private int tienNuoc;
+    private Quan quan;
 
     private List<TienIch> danhSachTienIch;
     private List<HinhAnh> hinhAnhPhongTro;
+    private ChuTro phongTroChuTro;
 
-    private PhongTroChuTro phongTroChuTro;
-
-    public PhongTro(int id, int soPhong, String tenPhong, int gia, int dienTich, String moTa, int idQuan, int idPhuong, String diaChiChiTiet, int loaiPhong, int soLuongToiDa, int tienCoc, int gioiTinh, int tienDien, int tienNuoc, List<TienIch> danhSachTienIch, List<HinhAnh> hinhAnhPhongTro, PhongTroChuTro phongTroChuTro) {
+    public PhongTro(int id, int soPhong, String tenPhong, int gia, int dienTich, String moTa, int idQuan, int idPhuong, String diaChiChiTiet, int loaiPhong, int soLuongToiDa, int tienCoc, int gioiTinh, int tienDien, int tienNuoc, List<TienIch> danhSachTienIch, List<HinhAnh> hinhAnhPhongTro, ChuTro phongTroChuTro, Quan quan) {
         this.id = id;
         this.soPhong = soPhong;
         this.tenPhong = tenPhong;
@@ -46,6 +47,7 @@ public class PhongTro {
         this.danhSachTienIch = danhSachTienIch;
         this.hinhAnhPhongTro = hinhAnhPhongTro;
         this.phongTroChuTro = phongTroChuTro;
+        this.quan = quan;
     }
 
     public int getId() {
@@ -184,11 +186,19 @@ public class PhongTro {
         this.hinhAnhPhongTro = hinhAnhPhongTro;
     }
 
-    public PhongTroChuTro getPhongTroChuTro() {
+    public ChuTro getPhongTroChuTro() {
         return phongTroChuTro;
     }
 
-    public void setPhongTroChuTro(PhongTroChuTro phongTroChuTro) {
+    public void setPhongTroChuTro(ChuTro phongTroChuTro) {
         this.phongTroChuTro = phongTroChuTro;
+    }
+
+    public Quan getQuan() {
+        return quan;
+    }
+
+    public void setQuan(Quan quan) {
+        this.quan = quan;
     }
 }

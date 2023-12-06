@@ -6,8 +6,10 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
 
     <application
+        android:name=".applications.MyNotification"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -18,6 +20,57 @@
         android:theme="@style/Theme.MobileProjectApp2"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
+        <service
+            android:name=".fcm.MyFirebaseMessagingService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+        <activity
+            android:name=".activity.nguoithue.DanhSachPhongTheoChuTroActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.chutro.YeuCauDatPhongChiTietActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.nguoithue.DetailPhongTroNguoiThueActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.nguoithue.ChangePasswordActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.nguoithue.EditProfileActivity"
+            android:exported="false" />
+        <activity
+            android:name=".fragment.thongbao.YeuCauFragment"
+            android:exported="false" />
+        <activity
+            android:name=".fragment.thongbao.KetQuaFragment"
+            android:exported="false" />
+        <activity
+            android:name=".activity.nguoithue.RoomOfDistrictActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.loginregister.QuenMatKhauActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.nguoithue.DanhSachPhongGoiYActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.nguoithue.RoomRandomActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".activity.nguoithue.DanhSachPhongGhepActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
         <activity
             android:name=".activity.nguoithue.RenterActivity"
             android:exported="false">
@@ -29,7 +82,7 @@
             android:name=".activity.chutro.ThanhToanGoiActivity"
             android:exported="false" />
         <activity
-            android:name=".activity.chutro.DetailPhongTro"
+            android:name=".activity.chutro.DetailPhongTroActivity"
             android:exported="false" />
         <activity
             android:name=".activity.chutro.SearchActivity"
@@ -49,7 +102,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".activity.chutro.AuthencationActivity"
+            android:name=".activity.chutro.AuthenticationActivity"
             android:exported="false" />
         <activity
             android:name=".activity.chutro.ChangePasswordActivity"

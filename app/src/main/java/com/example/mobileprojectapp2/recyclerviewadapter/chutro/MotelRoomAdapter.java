@@ -62,6 +62,7 @@ public class MotelRoomAdapter extends RecyclerView.Adapter<MotelRoomAdapter.MyVi
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         PhongTroChuTro phongTroChuTro = list.get(position);
+
         if (phongTroChuTro.getPhongTro() != null) {
             String content =
                             "Giá: " + phongTroChuTro.getPhongTro().getGia() + "\n" +
@@ -93,6 +94,14 @@ public class MotelRoomAdapter extends RecyclerView.Adapter<MotelRoomAdapter.MyVi
         }else {
             holder.rlImages.setVisibility(View.GONE);
         }
+        if (phongTroChuTro.getPhongTro().getHoatDong() == Const.KHONG_HOAT_DONG){
+            holder.imgControls.setImageDrawable(activity.getResources().getDrawable(R.drawable.icon_off, activity.getTheme()));
+            holder.tvControls.setText("Phòng đang ẩn phía người thuê");
+        }
+        else {
+            holder.imgControls.setImageDrawable(activity.getResources().getDrawable(R.drawable.icon_open, activity.getTheme()));
+            holder.tvControls.setText("Phòng đang hiển thị phía người thuê");
+        }
 
 //        Log.d("TAGH", "onBindViewHolder: "+phongTroChuTro.getChuTro().getHinh());
 
@@ -120,6 +129,9 @@ public class MotelRoomAdapter extends RecyclerView.Adapter<MotelRoomAdapter.MyVi
                     case R.id.llRating:
                         onClickItemRoomListener.setOnClickRating(position, view);
                         break;
+                    case R.id.llControls:
+                        onClickItemRoomListener.setOnClickControls(position, view, phongTroChuTro.getPhongTro().getHoatDong());
+                        break;
                 }
             }
         };
@@ -136,7 +148,7 @@ public class MotelRoomAdapter extends RecyclerView.Adapter<MotelRoomAdapter.MyVi
         void setOnClickDelete(int position, View view);
         void setOnClickComment(int position, View view);
         void setOnClickRating(int position, View view);
-
+        void setOnClickControls(int position, View view, int trangThaiHoatDong);
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -144,14 +156,14 @@ public class MotelRoomAdapter extends RecyclerView.Adapter<MotelRoomAdapter.MyVi
         ViewPager2 vp2SlideImage;
         CircleIndicator3 ci3SlideImage;
 
-        ImageView  imgDanhSachNguoiThue, imgChinhSua, imgXoa;
+        ImageView  imgDanhSachNguoiThue, imgChinhSua, imgXoa,imgControls;
 
         LinearLayout llComment;
-        LinearLayout llRating;
+        LinearLayout llRating,  llControls;
         RelativeLayout rlImages;
 
         ImageView imgAnhChuTro;
-        TextView tvTenChuTro, tvNoiDungPhong, tvCountComment, tvTBRating;
+        TextView tvTenChuTro, tvNoiDungPhong, tvCountComment, tvTBRating, tvControls;
         View.OnClickListener onClickListener;
 
         public MyViewHolder(@NonNull View itemView) {
@@ -160,10 +172,11 @@ public class MotelRoomAdapter extends RecyclerView.Adapter<MotelRoomAdapter.MyVi
             imgDanhSachNguoiThue = itemView.findViewById(R.id.imgDanhSachNguoiThue);
             imgChinhSua = itemView.findViewById(R.id.imgChinhSua);
             imgXoa = itemView.findViewById(R.id.imgXoa);
-
+            imgControls = itemView.findViewById(R.id.imgControls);
 
             llComment = itemView.findViewById(R.id.llComment);
             llRating = itemView.findViewById(R.id.llRating);
+            llControls = itemView.findViewById(R.id.llControls);
             vp2SlideImage = itemView.findViewById(R.id.vp2SlideImage);
             ci3SlideImage = itemView.findViewById(R.id.ci3SlideImage);
 
@@ -172,6 +185,7 @@ public class MotelRoomAdapter extends RecyclerView.Adapter<MotelRoomAdapter.MyVi
             tvNoiDungPhong = itemView.findViewById(R.id.tvNoiDungPhong);
             tvCountComment = itemView.findViewById(R.id.tvCountComment);
             tvTBRating = itemView.findViewById(R.id.tvTBRating);
+            tvControls = itemView.findViewById(R.id.tvControls);
 //            ChuTroImageSlideViewPager2Adapter adapter = null;
 //            if (list.get(position++).getHinhAnh() != null){
 //                adapter = new ChuTroImageSlideViewPager2Adapter(activity, list.get(position++).getHinhAnh(), R.layout.chutro_item_image_layout);
@@ -192,6 +206,7 @@ public class MotelRoomAdapter extends RecyclerView.Adapter<MotelRoomAdapter.MyVi
             imgXoa.setOnClickListener(this);
             llComment.setOnClickListener(this);
             llRating.setOnClickListener(this);
+            llControls.setOnClickListener(this);
         }
 
         @Override

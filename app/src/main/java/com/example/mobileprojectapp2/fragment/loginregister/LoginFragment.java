@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,10 +21,21 @@ import androidx.appcompat.app.AlertDialog;
 
 import com.example.mobileprojectapp2.R;
 import com.example.mobileprojectapp2.activity.chutro.MotelRoomOwnerActivity;
+import com.example.mobileprojectapp2.activity.loginregister.QuenMatKhauActivity;
+import com.example.mobileprojectapp2.activity.nguoithue.DanhSachPhongGoiYActivity;
 import com.example.mobileprojectapp2.activity.nguoithue.RenterActivity;
 import com.example.mobileprojectapp2.api.chutro.ApiServiceNghiem;
 import com.example.mobileprojectapp2.api.Const;
+import com.example.mobileprojectapp2.api.nguoithue.ApiServiceMinh;
+import com.example.mobileprojectapp2.datamodel.FirebaseCloudMessaging;
 import com.example.mobileprojectapp2.datamodel.TaiKhoan;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -36,6 +49,7 @@ public class LoginFragment extends AbstractFragment{
     Float v = 0.0f;
     SharedPreferences sharedPreferences;
     ProgressBar progressBar;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -65,6 +79,14 @@ public class LoginFragment extends AbstractFragment{
             }
         });
 
+        quenMatKhau.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), QuenMatKhauActivity.class);
+                startActivity(intent);
+            }
+        });
+
 
     }
     private void kiemTraDangNhap(String tenTaiKhoan, String matKhau){
@@ -88,32 +110,101 @@ public class LoginFragment extends AbstractFragment{
 //            thongBao("Tài Khoản Hoặc Mật Khẩu Không Đúng!");
 //            }
 //        });
+//
+//        Call<TaiKhoan> call = ApiServiceNghiem.apiService.dangNhap(tenTaiKhoan,matKhau);
+//        call.enqueue(new Callback<TaiKhoan>() {
+//            @Override
+//            public void onResponse(Call<TaiKhoan> call, Response<TaiKhoan> response) {
+//                sharedPreferences.edit().putInt("idTaiKhoan", response.body().getId()).commit();
+//                if(response.body().getLoaiTaiKhoan()==1){
+//                    sharedPreferences.edit().putInt("idChuTro", response.body().getNguoiDangNhap().getId()).commit();
+//                    sharedPreferences.edit().putInt("trangThaiXacThuc", response.body().getNguoiDangNhap().getXacThuc()).commit();
+//                    batTatProgessBar(1);
+//                    Intent intent = new Intent(getContext(), MotelRoomOwnerActivity.class);
+//                    startActivity(intent);
+//                }else{
+//                    batTatProgessBar(1);
+//                    Intent intent = new Intent(getContext(), RenterActivity.class);
+//                    startActivity(intent);
+//                }
+//
+//            }
+//
+//            @Override
+//            public void onFailure(Call<TaiKhoan> call, Throwable t) {
+//                batTatProgessBar(1);
+//                thongBao("Tài Khoản Hoặc Mật Khẩu Không Đúng!");
+//            }
+//        });
 
-        Call<TaiKhoan> call = ApiServiceNghiem.apiService.dangNhap(tenTaiKhoan,matKhau);
+
+        Call<TaiKhoan> call = ApiServiceNghiem.apiService.dangNhapFB(tenTaiKhoan);
         call.enqueue(new Callback<TaiKhoan>() {
             @Override
             public void onResponse(Call<TaiKhoan> call, Response<TaiKhoan> response) {
-                sharedPreferences.edit().putInt("idTaiKhoan", response.body().getId()).commit();
-                if(response.body().getLoaiTaiKhoan()==1){
-                    sharedPreferences.edit().putInt("idChuTro", response.body().getNguoiDangNhap().getId()).commit();
-                    sharedPreferences.edit().putInt("trangThaiXacThuc", response.body().getNguoiDangNhap().getXacThuc()).commit();
-                    batTatProgessBar(1);
-                    Intent intent = new Intent(getContext(), MotelRoomOwnerActivity.class);
-                    startActivity(intent);
-                }else{
+                FirebaseAuth firebaseAuth;
+                firebaseAuth = FirebaseAuth.getInstance();
+                firebaseAuth.signInWithEmailAndPassword(tenTaiKhoan,matKhau).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
+                    @Override
+                    public void onSuccess(AuthResult authResult) {
+                        FirebaseMessaging.getInstance().getToken()
+                                .addOnCompleteListener(new OnCompleteListener<String>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<String> task) {
+                                        if (!task.isSuccessful()) {
+                                            Log.w("TAG", "Fetching FCM registration token failed", task.getException());
+                                            return;
+                                        }
+
+                                        // Get new FCM registration token
+                                        String token = task.getResult();
+
+                                        ApiServiceMinh.apiService.saveTokenDeviceOfAccount(token, response.body().getId()).enqueue(new Callback<FirebaseCloudMessaging>() {
+                                            @Override
+                                            public void onResponse(Call<FirebaseCloudMessaging> call, Response<FirebaseCloudMessaging> response) {
+                                                if (response.code() == 200){
+                                                    Log.d("TAG", "onResponse: SAVE TOKEN COMPLATED");
+                                                }
+                                            }
+
+                                            @Override
+                                            public void onFailure(Call<FirebaseCloudMessaging> call, Throwable t) {
+
+                                            }
+                                        });
+                                    }
+                                });
+                        sharedPreferences.edit().putInt("idTaiKhoan", response.body().getId()).commit();
+                        if(response.body().getLoaiTaiKhoan()==1){
+                        sharedPreferences.edit().putInt("idChuTro", response.body().getNguoiDangNhap().getId()).commit();
+                        sharedPreferences.edit().putInt("trangThaiXacThuc", response.body().getNguoiDangNhap().getXacThuc()).commit();
+                        batTatProgessBar(1);
+                        Intent intent = new Intent(getContext(), MotelRoomOwnerActivity.class);
+                        startActivity(intent);
+                        }
+                        else{
                     batTatProgessBar(1);
                     Intent intent = new Intent(getContext(), RenterActivity.class);
                     startActivity(intent);
-                }
+                                }
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
 
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        batTatProgessBar(1);
+                        thongBao("Tài Khoản Hoặc Mật Khẩu Không Đúng 1");
+                    }
+                });
             }
 
             @Override
             public void onFailure(Call<TaiKhoan> call, Throwable t) {
                 batTatProgessBar(1);
-                thongBao("Tài Khoản Hoặc Mật Khẩu Không Đúng!");
+                thongBao("Tài Khoản Hoặc Mật Khẩu Không Đúng");
             }
         });
+
     }
     private boolean kiemTraRong(){
         if(!tenTaiKhoan.getText().toString().isEmpty()&&!matKhau.getText().toString().isEmpty()){
