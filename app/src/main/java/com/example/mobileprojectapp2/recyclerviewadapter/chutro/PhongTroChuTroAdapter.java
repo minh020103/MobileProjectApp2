@@ -64,16 +64,6 @@ public class PhongTroChuTroAdapter extends RecyclerView.Adapter<PhongTroChuTroAd
                 myOnClickListener.OnClickItem(position, v);
             }
         };
-//
-//        holder.gioiTinh.setText(phongTroChuTro.getPhongTro().getGioiTinh());
-//        holder.tienCoc.setText(phongTroChuTro.getPhongTro().getTienCoc());
-//         holder.tienCoc.setText(phongTroChuTro.getPhongTro().getTienCoc());
-//        holder.moTaChiTiet.setText(phongTroChuTro.getPhongTro().getMoTa());
-//        holder.diaChi.setText(phongTroChuTro.getPhongTro().getDiaChiChiTiet());
-
-
-
-
     }
 
     @Override

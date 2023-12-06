@@ -2,7 +2,12 @@ package com.example.mobileprojectapp2.model;
 
 public class LoaiPhong {
     private int id;
-    private int value;
+    private int loaiPhong;
+
+    public LoaiPhong(int id, int loaiPhong) {
+        this.id = id;
+        this.loaiPhong = loaiPhong;
+    }
 
     public int getId() {
         return id;
@@ -12,11 +17,11 @@ public class LoaiPhong {
         this.id = id;
     }
 
-    public int getValue() {
-        return value;
+    public int getLoaiPhong() {
+        return loaiPhong;
     }
 
-    public void setValue(int value) {
-        this.value = value;
+    public void setLoaiPhong(int loaiPhong) {
+        this.loaiPhong = loaiPhong;
     }
 }

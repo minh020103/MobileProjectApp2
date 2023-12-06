@@ -1,10 +1,10 @@
 package com.example.mobileprojectapp2.recyclerviewadapter.nguoithue;
 
 import android.app.Activity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -15,16 +15,17 @@ import com.bumptech.glide.Glide;
 import com.example.mobileprojectapp2.R;
 import com.example.mobileprojectapp2.api.Const;
 import com.example.mobileprojectapp2.datamodel.Quan;
+import com.example.mobileprojectapp2.model.LoaiPhong;
 
 import java.util.List;
 
-public class QuanAdaprer extends RecyclerView.Adapter<QuanAdaprer.MyViewHolder> {
+public class LoaiPhongAdaprer extends RecyclerView.Adapter<LoaiPhongAdaprer.MyViewHolder> {
     private Activity activity;
-    private List<Quan> list;
+    private List<LoaiPhong> list;
     private int layoutID;
     private OnClick onClick;
 
-    public QuanAdaprer(Activity activity, List<Quan> list, int layoutID) {
+    public LoaiPhongAdaprer(Activity activity, List<LoaiPhong> list, int layoutID) {
         this.activity = activity;
         this.list = list;
         this.layoutID = layoutID;
@@ -37,17 +38,15 @@ public class QuanAdaprer extends RecyclerView.Adapter<QuanAdaprer.MyViewHolder> 
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        CardView view = (CardView) activity.getLayoutInflater().inflate(layoutID, parent,  false);
-
+        View view = LayoutInflater.from(parent.getContext()).inflate(layoutID, parent, false);
         return new MyViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        Quan quan = list.get(position);
-        if (quan != null){
-            Glide.with(activity.getLayoutInflater().getContext()).load(Const.DOMAIN+quan.getHinh()).placeholder(R.drawable.not_found).into(holder.imgQuan);
-            holder.tvQuan.setText(quan.getTenQuan());
+        LoaiPhong loaiPhong = list.get(position);
+        if (loaiPhong != null){
+            holder.tvLoaiPhong.setText(loaiPhong.getLoaiPhong());
         }
 
         holder.onClickListener = new View.OnClickListener() {
@@ -70,14 +69,12 @@ public class QuanAdaprer extends RecyclerView.Adapter<QuanAdaprer.MyViewHolder> 
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        TextView tvQuan;
-        ImageView imgQuan;
+        TextView tvLoaiPhong;
         View.OnClickListener onClickListener;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
-            tvQuan = itemView.findViewById(R.id.tvQuan);
-            imgQuan = itemView.findViewById(R.id.imgQuan);
+            tvLoaiPhong = itemView.findViewById(R.id.tv_loai_phong);
             itemView.setOnClickListener(this);
         }
 

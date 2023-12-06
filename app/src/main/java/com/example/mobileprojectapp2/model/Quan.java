@@ -1,4 +1,4 @@
-package com.example.mobileprojectapp2.datamodel;
+package com.example.mobileprojectapp2.model;
 
 public class Quan {
     private int id;
@@ -38,6 +38,5 @@ public class Quan {
         this.trangThai = trangThai;
     }
 
-    public Quan() {
-    }
+
 }

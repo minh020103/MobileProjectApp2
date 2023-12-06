@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     :cardUseCompatPadding="true"
     android:layout_width="match_parent"
-    android:layout_height="180dp"
+    android:layout_height="wrap_content"
     android:layout_gravity="center_vertical"
     android:layout_marginBottom="10dp"
     app:cardCornerRadius="10dp"
@@ -12,36 +12,16 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="5dp"
+        >
 
-        <ImageView
-            android:id="@+id/img_quan"
-            android:layout_width="match_parent"
-            android:layout_height="150dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/quanthuduc" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal"
-            android:layout_marginTop="5dp"
-            android:gravity="center_vertical">
-
-            <TextView
-                style="@style/tv_18sp"
-                android:text="Quận "
-                android:textStyle="bold"
-                android:textColor="@color/main_color_app_light"/>
-
-            <TextView
-                android:id="@+id/tv_ten_quan"
-                style="@style/tv_18sp"
-                android:text="Thủ Đức "
-                android:textStyle="bold"
-                android:textColor="@color/main_color_app_light"/>
-        </LinearLayout>
-
+        <TextView
+            android:id="@+id/tv_loai_phong"
+            style="@style/tv_20sp"
+            android:text="Phòng ghép"
+            android:textSize="25sp"
+            android:layout_marginStart="15dp"/>
 
     </LinearLayout>
 

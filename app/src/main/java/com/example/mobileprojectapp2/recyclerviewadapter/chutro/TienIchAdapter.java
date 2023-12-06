@@ -23,8 +23,13 @@ import java.util.List;
 public class TienIchAdapter extends RecyclerView.Adapter<TienIchAdapter.TienIchViewHolder> {
     private Activity activity;
     private List<TienIch> list;
-
     private int layoutID;
+
+    private MyOnCLickListener myOnCLickListener;
+
+    public void setMyOnCLickListener(MyOnCLickListener myOnCLickListener) {
+        this.myOnCLickListener = myOnCLickListener;
+    }
 
     public TienIchAdapter(Activity activity, List<TienIch> list, int layoutID) {
         this.activity = activity;
@@ -54,9 +59,16 @@ public class TienIchAdapter extends RecyclerView.Adapter<TienIchAdapter.TienIchV
 
         holder.tvTenTienIch.setText(tienIch.getTen());
         Glide.with(activity.getLayoutInflater().getContext()).load(Const.DOMAIN + tienIch.getHinh()).into(holder.imageTienIch);
-
+        holder.onClickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                myOnCLickListener.OnClickItem(position, v);
+            }
+        };
     }
-
+    public interface MyOnCLickListener {
+        void OnClickItem(int position, View v);
+    }
     @Override
     public int getItemCount() {
         if (list != null) {
@@ -65,7 +77,9 @@ public class TienIchAdapter extends RecyclerView.Adapter<TienIchAdapter.TienIchV
         return 0;
     }
 
-    public class TienIchViewHolder extends RecyclerView.ViewHolder {
+    public class TienIchViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+
+        View.OnClickListener onClickListener;
 
         private ImageView imageTienIch;
         private TextView tvTenTienIch;
@@ -75,6 +89,13 @@ public class TienIchAdapter extends RecyclerView.Adapter<TienIchAdapter.TienIchV
 
             imageTienIch = itemView.findViewById(R.id.img_tien_ich);
             tvTenTienIch = itemView.findViewById(R.id.tv_ten_tien_ich);
+            itemView.setOnClickListener(this);
+
+        }
+
+        @Override
+        public void onClick(View v) {
+            onClickListener.onClick(v);
         }
     }
 }

@@ -21,8 +21,11 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".activity.loading.LoadingActivity"
+            android:name=".activity.nguoithue.SearchBoLocActivity"
 
+            android:exported="false" />
+        <activity
+            android:name=".activity.loading.LoadingActivity"
             android:exported="false" />
 
         <service
@@ -133,7 +136,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".activity.nguoithue.SearchActivity"
+            android:name=".activity.nguoithue.SearchQuanActivity"
 
             android:exported="true">
             <intent-filter>

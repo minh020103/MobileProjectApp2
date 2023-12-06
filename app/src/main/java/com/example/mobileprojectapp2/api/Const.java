@@ -12,6 +12,7 @@ public class Const {
     public static final int PHONG_DON = 1;
     public static final int PHONG_GHEP = 2;
 
+
     public static final String LON_DEN_NHO = "DESC";
     public static final String NHO_DEN_LON = "ASC";
 
@@ -31,4 +32,13 @@ public class Const {
     public static final int NGUOI_THUE = 0;
     public static final int CHU_TRO = 1;
     public static final int ADMIN = 2;
+
+
+    public static final int GIA = 0;
+    public static final int TIEN_ICH = 1;
+    public static final int LOAI_PHONG = 2;
+    public static final int QUAN = 3;
+
+
+
 }

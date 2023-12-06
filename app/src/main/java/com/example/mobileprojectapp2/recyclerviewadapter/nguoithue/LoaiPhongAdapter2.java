@@ -1,4 +1,4 @@
-package com.example.mobileprojectapp2.recyclerviewadapter.chutro;
+package com.example.mobileprojectapp2.recyclerviewadapter.nguoithue;
 
 import android.app.Activity;
 import android.view.View;
@@ -14,7 +14,7 @@ import com.example.mobileprojectapp2.api.Const;
 
 import java.util.List;
 
-public class LoaiPhongAdapter extends RecyclerView.Adapter<LoaiPhongAdapter.MyViewHolder> {
+public class LoaiPhongAdapter2 extends RecyclerView.Adapter<LoaiPhongAdapter2.MyViewHolder> {
 
     private Activity activity;
     private int layoutID;
@@ -25,7 +25,7 @@ public class LoaiPhongAdapter extends RecyclerView.Adapter<LoaiPhongAdapter.MyVi
         this.onClick = onClick;
     }
 
-    public LoaiPhongAdapter(Activity activity, List<Integer> list, int layoutID) {
+    public LoaiPhongAdapter2(Activity activity, List<Integer> list, int layoutID) {
         this.activity = activity;
         this.layoutID = layoutID;
         this.list = list;
@@ -63,7 +63,7 @@ public class LoaiPhongAdapter extends RecyclerView.Adapter<LoaiPhongAdapter.MyVi
         View.OnClickListener onClickListener;
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
-            tvLoaiPhong = itemView.findViewById(R.id.tvLoaiPhong);
+            tvLoaiPhong = itemView.findViewById(R.id.tv_loai_phong);
             itemView.setOnClickListener(this);
         }
 
