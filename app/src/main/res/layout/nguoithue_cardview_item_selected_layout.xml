@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_vertical">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:padding="10dp"
+
+        >
+
+        <ImageView
+            android:id="@+id/img_tien_ich"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/iconp_television" />
+
+        <TextView
+            android:id="@+id/tv_ten_tien_ich"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/img_tien_ich"
+            android:layout_centerHorizontal="true"
+            android:text="TIvi"
+            android:textColor="@color/black"
+            android:textSize="@dimen/size_16sp" />
+
+
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>
