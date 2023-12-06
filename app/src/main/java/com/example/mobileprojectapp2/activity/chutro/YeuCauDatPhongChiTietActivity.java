@@ -1,6 +1,5 @@
 package com.example.mobileprojectapp2.activity.chutro;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
@@ -20,12 +19,9 @@ import com.example.mobileprojectapp2.R;
 import com.example.mobileprojectapp2.api.Const;
 import com.example.mobileprojectapp2.api.chutro.ApiServiceKiet;
 import com.example.mobileprojectapp2.component.MFCM;
-import com.example.mobileprojectapp2.datamodel.TaiKhoan;
 import com.example.mobileprojectapp2.datamodel.ThongBao;
 import com.example.mobileprojectapp2.datamodel.YeuCauDatPhong;
 import com.example.mobileprojectapp2.datamodel.fcm.FCMThongBaoDatPhong;
-import com.google.android.gms.common.api.Api;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -155,12 +151,15 @@ public class YeuCauDatPhongChiTietActivity extends AppCompatActivity {
                     if (data.getLoai() == 1)
                     {
                         MFCM.sendNotificationForAccountID(data.getThongBaoThanhCong().getIdTaiKhoanNhan(), response.body().getThongBaoThanhCong().getId(), data.getThongBaoThanhCong().getTieuDe(), data.getThongBaoThanhCong().getNoiDung());
+                        realTimeThongBao(response.body().getThongBaoThanhCong().getIdTaiKhoanNhan() ,response.body().getThongBaoThanhCong().getId());
                     }
                     if (data.getLoai() == 2)
                     {
                         MFCM.sendNotificationForAccountID(data.getThongBaoThanhCong().getIdTaiKhoanNhan(), response.body().getThongBaoThanhCong().getId(), data.getThongBaoThanhCong().getTieuDe(), data.getThongBaoThanhCong().getNoiDung());
+                        realTimeThongBao(response.body().getThongBaoThanhCong().getIdTaiKhoanNhan() ,response.body().getThongBaoThanhCong().getId());
                         for (ThongBao thongBao : response.body().getThongBaoThatBai()) {
                             MFCM.sendNotificationForAccountID(thongBao.getIdTaiKhoanNhan(), thongBao.getId(), thongBao.getTieuDe(), thongBao.getNoiDung() );
+                            realTimeThongBao(thongBao.getIdTaiKhoanNhan() ,thongBao.getId());
                         }
                     }
                 }
@@ -179,6 +178,7 @@ public class YeuCauDatPhongChiTietActivity extends AppCompatActivity {
             public void onResponse(Call<ThongBao> call, Response<ThongBao> response) {
                 ThongBao thongBao = response.body();
                 MFCM.sendNotificationForAccountID(thongBao.getIdTaiKhoanNhan(), thongBao.getId(), thongBao.getTieuDe(), thongBao.getNoiDung() );
+                realTimeThongBao(response.body().getIdTaiKhoanGui(), response.body().getId());
             }
 
             @Override
@@ -194,7 +194,6 @@ public class YeuCauDatPhongChiTietActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 xacNhanDatPhongAPI();
-                realTimeThongBao();
                 Toast.makeText(YeuCauDatPhongChiTietActivity.this, "Chấp nhận thành công !", Toast.LENGTH_SHORT).show();
             }
         }).setNegativeButton("Cancle",null).show();
@@ -206,16 +205,15 @@ public class YeuCauDatPhongChiTietActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 tuChoiDatPhong();
-                realTimeThongBao();
                 Toast.makeText(YeuCauDatPhongChiTietActivity.this, "Từ chối thành công !", Toast.LENGTH_SHORT).show();
             }
         }).setNegativeButton("Cancle",null).show();
     }
 
-    private void realTimeThongBao()
+    private void realTimeThongBao(int id, int i)
     {
         Log.d("REALTIME",  idTaiKhoanNguoiNhan + "");
-        databaseReference.child("notification").child(idTaiKhoanNguoiNhan + "").setValue(0).addOnSuccessListener(new OnSuccessListener<Void>() {
+        databaseReference.child("notification").child(idTaiKhoanNguoiNhan + "").child(id+"").setValue(0).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {
                 Log.d("TAG", "onSuccess: PUSH NOTIFICATION REALTIME");
