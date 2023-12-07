@@ -1,4 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-  
+
+
+
+<!--    Trạng thái khi nhấn-->
+    <item android:state_pressed="true">
+        <shape android:shape="rectangle">
+            //Mau bg
+            <solid android:color="#BAB6B6" />
+<!--            //Vien-->
+<!--            <stroke android:width="5dp" android:color="@color/main_color_app_light" />-->
+          //Bo tron-->
+            <corners android:radius="5dp" />
+
+<!--            <padding android:bottom="5dp" android:left="5dp" android:right="5dp" android:top="5dp" />-->
+        </shape>
+    </item>
+
+    <!--    Trạng thái bt-->
+    <item>
+        <shape android:shape="rectangle">
+            //Mau bg
+            <solid android:color="@color/white" />
+<!--            //Vien-->
+<!--            <stroke android:width="5dp" android:color="@color/text_gray2" />-->
+            //Bo tron
+            <corners android:radius="5dp" />
+
+<!--            <padding android:bottom="5dp" android:left="5dp" android:right="5dp" android:top="5dp" />-->
+        </shape>
+    </item>
 </selector>

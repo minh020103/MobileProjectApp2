@@ -39,8 +39,8 @@ Thuận tiện: gần hàng xanh, trường đại học Hurtech, Hồng Bàng, 
     <string name="hs">Hồ Sơ</string>
     <string name="ctp">Chi tiết phòng</string>
     <string name="pccha">Phòng chưa có hình ảnh</string>
-    <string name="lp">Loai phong</string>
-    <string name="gt">Gioi tinh</string>
+    <string name="lp">Loại phòng</string>
+    <string name="gt">Giới tính</string>
     <string name="sltd">Số lượng tối đa</string>
     <string name="dt">Diện tích</string>
     <string name="text_dien_tich">50 ㎡</string>
@@ -66,4 +66,6 @@ Thuận tiện: gần hàng xanh, trường đại học Hurtech, Hồng Bàng, 
     <string name="msg_token_fmt">lỗi token</string>
     <string name="text1">Vui lòng chọn yêu cầu, sau đó bấm áp dụng để tìm kiếm</string>
     <string name="error_unable_to_call_api">Error unable to call api</string>
+    <string name="dsq">Danh sách quận</string>
+    <string name="sn">Số người</string>
 </resources>

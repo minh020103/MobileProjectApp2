@@ -5,23 +5,26 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="center_vertical"
-    android:layout_marginBottom="10dp"
+    android:layout_marginBottom="5dp"
     app:cardCornerRadius="10dp"
-    app:cardElevation="5dp">
+    app:cardElevation="5dp"
+    >
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="50dp"
         android:orientation="vertical"
         android:padding="5dp"
+        android:background="@drawable/bgp"
         >
 
         <TextView
             android:id="@+id/tv_loai_phong"
             style="@style/tv_20sp"
+            android:layout_height="match_parent"
             android:text="Phòng ghép"
-            android:textSize="25sp"
-            android:layout_marginStart="15dp"/>
+            android:layout_marginStart="15dp"
+            android:gravity="center_vertical"/>
 
     </LinearLayout>
 
