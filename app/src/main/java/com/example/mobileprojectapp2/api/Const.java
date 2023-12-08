@@ -37,7 +37,7 @@ public class Const {
     public static final int GIA = 0;
     public static final int TIEN_ICH = 1;
     public static final int LOAI_PHONG = 2;
-    public static final int QUAN = 3;
+    public static final int GIOI_TINH = 3;
 
 
 

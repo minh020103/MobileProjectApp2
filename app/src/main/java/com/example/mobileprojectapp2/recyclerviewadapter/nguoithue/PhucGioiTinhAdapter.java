@@ -14,7 +14,7 @@ import com.example.mobileprojectapp2.api.Const;
 
 import java.util.List;
 
-public class LoaiPhongAdapter2 extends RecyclerView.Adapter<LoaiPhongAdapter2.MyViewHolder> {
+public class PhucGioiTinhAdapter extends RecyclerView.Adapter<PhucGioiTinhAdapter.MyViewHolder> {
 
     private Activity activity;
     private int layoutID;
@@ -25,7 +25,7 @@ public class LoaiPhongAdapter2 extends RecyclerView.Adapter<LoaiPhongAdapter2.My
         this.onClick = onClick;
     }
 
-    public LoaiPhongAdapter2(Activity activity, List<Integer> list, int layoutID) {
+    public PhucGioiTinhAdapter(Activity activity, List<Integer> list, int layoutID) {
         this.activity = activity;
         this.layoutID = layoutID;
         this.list = list;
@@ -40,7 +40,7 @@ public class LoaiPhongAdapter2 extends RecyclerView.Adapter<LoaiPhongAdapter2.My
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        holder.tvLoaiPhong.setText(list.get(position) == Const.PHONG_TRONG? "Phòng trống":list.get(position) == Const.PHONG_DON?"Phòng đơn":"Phòng ghép");
+        holder.tvGioiTinh.setText(list.get(position) == Const.ALL_GENDERS? "Tất cả":list.get(position) == Const.MALE_GENDERS?"Nam":"Nữ");
         holder.onClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -59,11 +59,11 @@ public class LoaiPhongAdapter2 extends RecyclerView.Adapter<LoaiPhongAdapter2.My
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        TextView tvLoaiPhong;
+        TextView tvGioiTinh;
         View.OnClickListener onClickListener;
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
-            tvLoaiPhong = itemView.findViewById(R.id.tv_loai_phong);
+            tvGioiTinh = itemView.findViewById(R.id.tv_gioi_tinh);
             itemView.setOnClickListener(this);
         }
 

@@ -14,7 +14,7 @@
 
         <LinearLayout
             android:id="@+id/ll_search_bo_loc"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
             android:layout_weight="1.5"
@@ -56,7 +56,7 @@
         android:layout_height="wrap_content">
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
@@ -65,17 +65,16 @@
                 android:id="@+id/ll_gia"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                >
+                android:orientation="horizontal">
 
                 <Button
                     android:id="@+id/btn_gia"
                     style="@style/Widget.AppCompat.Button.Borderless"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Giá"
+                    android:text="@string/gi"
                     android:textAllCaps="false"
-                    android:textColor="@color/black"  />
+                    android:textColor="@color/black" />
 
                 <ImageView
                     android:id="@+id/img_gia_down"
@@ -199,55 +198,194 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 
-
             </LinearLayout>
-
 
         </HorizontalScrollView>
 
     </LinearLayout>
 
-
-    <LinearLayout
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
+            <!--            Giao dien Tiện ích-->
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rcv_list_tien_ich"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/text_gray2" />
 
+            <!--            Giao diện Loại phòng-->
             <androidx.recyclerview.widget.RecyclerView
-                android:layout_marginTop="5dp"
-                android:padding="5dp"
                 android:id="@+id/rcv_list_loai_phong"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/text_gray2" />
+                android:layout_marginTop="5dp"
+                android:background="@color/text_gray2"
+                android:padding="5dp" />
 
-        </RelativeLayout>
+            <!--        Giao diện Giá-->
+            <LinearLayout
+                android:id="@+id/ll_seek_bar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-    </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
 
-    <Button
-        style="@style/btn1"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="5dp"
-        android:text="Áp dụng" />
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
 
-    <TextView
-        style="@style/tv_20sp"
-        android:layout_height="match_parent"
-        android:background="@color/text_gray2"
-        android:gravity="center_horizontal"
-        android:padding="10dp"
-        android:text="@string/text1" />
+                        <TextView
+                            android:id="@+id/tv_gia_start"
+                            style="@style/tv_16sp_3"
+                            android:layout_marginStart="5dp"
+                            android:text="@string/_5"
+                            android:textColor="@color/text_search" />
+
+                        <TextView
+                            style="@style/tv_16sp_3"
+                            android:text=" VND"
+                            android:textColor="@color/text_search" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="right"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/tv_gia_end"
+                            style="@style/tv_16sp_3"
+                            android:text="@string/_100"
+                            android:textColor="@color/text_search" />
+
+                        <TextView
+                            style="@style/tv_16sp_3"
+                            android:layout_marginEnd="5dp"
+                            android:text="@string/vnd"
+                            android:textColor="@color/text_search" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <com.google.android.material.slider.RangeSlider
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="20dp"
+                    android:stepSize="0.5"
+                    android:valueFrom="0"
+                    android:valueTo="15"
+                    app:values="@array/rangeSlide" />
+
+            </LinearLayout>
+
+            <!--        Giao diện Số người - Giới tính-->
+            <LinearLayout
+                android:id="@+id/ll_so_nguoi_gioi_tinh"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="10dp">
+
+                    <TextView
+                        style="@style/tv_16sp_2"
+                        android:text="@string/sn" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
+                        android:gravity="right"
+                        android:orientation="horizontal">
+
+                        <ImageButton
+                            android:id="@+id/img_bt_minus"
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
+                            android:background="@color/white"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/iconp_minus" />
+
+                        <TextView
+                            android:id="@+id/tv_so_nguoi"
+                            style="@style/tv_18sp"
+                            android:layout_width="wrap_content"
+                            android:layout_marginHorizontal="15dp"
+                            android:text="1" />
+
+                        <ImageButton
+                            android:id="@+id/img_bt_plus"
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
+                            android:background="@color/white"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/iconp_plus" />
+                    </LinearLayout>
 
 
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="5dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/tv_16sp_2"
+                        android:text="@string/gt" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="right"
+                        android:orientation="horizontal">
+
+                       <androidx.recyclerview.widget.RecyclerView
+                           android:id="@+id/rcv_list_gioi_tinh"
+                           android:layout_width="wrap_content"
+                           android:layout_height="wrap_content"/>
+                    </LinearLayout>
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+            <Button
+                style="@style/btn1"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:text="Áp dụng" />
+
+            <TextView
+                style="@style/tv_20sp"
+                android:layout_height="match_parent"
+                android:background="@color/text_gray2"
+                android:gravity="center_horizontal"
+                android:padding="10dp"
+                android:text="@string/text1" />
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
 </LinearLayout>

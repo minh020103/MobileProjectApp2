@@ -26,7 +26,8 @@ import com.example.mobileprojectapp2.model.Selected;
 import com.example.mobileprojectapp2.model.TienIch;
 import com.example.mobileprojectapp2.recyclerviewadapter.chutro.SelectedAdapter;
 import com.example.mobileprojectapp2.recyclerviewadapter.chutro.TienIchAdapter;
-import com.example.mobileprojectapp2.recyclerviewadapter.nguoithue.LoaiPhongAdapter2;
+import com.example.mobileprojectapp2.recyclerviewadapter.nguoithue.PhucGioiTinhAdapter;
+import com.example.mobileprojectapp2.recyclerviewadapter.nguoithue.PhucLoaiPhongAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,30 +42,32 @@ public class SearchBoLocActivity extends AppCompatActivity {
     //List call api
     private List<TienIch> listTienIch;
     private List<Integer> listLoaiPhong;
+    private List<Integer> listGioiTinh;
 
     //List luu data
     private List<TienIch> listTienIchSeleted;
     private List<Integer> listLoaiPhongSelected;
+    private List<Integer> listGioiTinhSelected;
 
     //List nguoi dung
     private List<Selected> listSelected;
     private ImageView imgDownTienIch, imgUpTienIch, imgClear, img_loai_phong_down, img_loai_phong_up,
             img_gia_down, img_gia_up, img_so_nguoi_down, img_so_nguoi_up;
-    private RecyclerView rcvListTienIch, rcvListSelected, rcvListLoaiPhong;
+    private RecyclerView rcvListTienIch, rcvListSelected, rcvListLoaiPhong, rcvListGioiTinh;
 
     private TienIchAdapter adapterTienIch;
-    private LoaiPhongAdapter2 adapterLoaiPhong;
+    private PhucLoaiPhongAdapter adapterLoaiPhong;
+    private PhucGioiTinhAdapter adapterGioiTinh;
     private SelectedAdapter adapterSelected;
-    private LinearLayoutManager layoutManagerTienIch, layoutManagerSelected, layoutManagerLoaiPhong;
-    private LinearLayout ll_list_Selected, llSearchBoLoc;
+    private LinearLayoutManager layoutManagerTienIch, layoutManagerSelected, layoutManagerLoaiPhong, layoutManagerGioiTinh;
+    private LinearLayout ll_list_Selected, llSearchBoLoc, ll_so_nguoi_gioi_tinh;
     private TextView tv_quan, tv_huy;
+    private LinearLayout llGiaSeekBar;
     private int flagTienIch = 0;
     private int flagLoaiPhong = 0;
     private int flagGia = 0;
     private int flagSoNguoi = 0;
-
     private int id;
-
     private RelativeLayout rlt_bg;
 
 
@@ -72,11 +75,8 @@ public class SearchBoLocActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.nguoithue_search_bo_loc_activity);
-        listTienIch = new ArrayList<>();
-        listTienIchSeleted = new ArrayList<>();
-        listSelected = new ArrayList<>();
-        listLoaiPhong = new ArrayList<>();
-        listLoaiPhongSelected = new ArrayList<>();
+
+        _Initialization();
 
         Intent intent = getIntent();
         id = intent.getIntExtra("idPhong", -1);
@@ -87,8 +87,19 @@ public class SearchBoLocActivity extends AppCompatActivity {
         notShowListSelected();
         getQuanById();
         rcvListLoaiPhong.setVisibility(View.GONE);
+        llGiaSeekBar.setVisibility(View.GONE);
+        ll_so_nguoi_gioi_tinh.setVisibility(View.GONE);
 
 
+    }
+    private void _Initialization(){
+        listTienIch = new ArrayList<>();
+        listTienIchSeleted = new ArrayList<>();
+        listSelected = new ArrayList<>();
+        listLoaiPhong = new ArrayList<>();
+        listLoaiPhongSelected = new ArrayList<>();
+        listGioiTinh = new ArrayList<>();
+        listGioiTinhSelected = new ArrayList<>();
     }
 
 
@@ -117,6 +128,10 @@ public class SearchBoLocActivity extends AppCompatActivity {
                     listLoaiPhongSelected.remove(listLoaiPhong.get(listSelected.get(position).getId()));
                     Log.d("TAG", "onClickListNguoiDung: " + listSelected.size());
                     Log.d("TAG", "onClickListData: " + listLoaiPhongSelected.size());
+                } else if(listSelected.get(position).getKey() == Const.GIOI_TINH){
+                    listGioiTinhSelected.remove(listGioiTinh.get(listSelected.get(position).getId()));
+                    Log.d("TAG", "onClickListNguoiDung: " + listSelected.size());
+                    Log.d("TAG", "onClickListData: " + listGioiTinhSelected.size());
                 }
                 listSelected.remove(listSelected.get(position));
                 adapterSelected.notifyDataSetChanged();
@@ -133,14 +148,14 @@ public class SearchBoLocActivity extends AppCompatActivity {
                     listTienIchSeleted.add(listTienIch.get(position));
                     adapterSelected.notifyDataSetChanged();
                     ll_list_Selected.setVisibility(View.VISIBLE);
-
-
+                    Log.d("TAG", "listNguoiDung: "+ listSelected.size());
+                    Log.d("TAG", "listTienIch: "+listTienIchSeleted.size());
 //                    rlt_bg.setBackground(getDrawable(R.drawable.btn_p4));
 
                 }
             }
         });
-        adapterLoaiPhong.setOnClick(new LoaiPhongAdapter2.OnClick() {
+        adapterLoaiPhong.setOnClick(new PhucLoaiPhongAdapter.OnClick() {
             @Override
             public void onClickItemListener(int position, View view) {
                 if (!listLoaiPhongSelected.contains(listLoaiPhong.get(position))) {
@@ -152,6 +167,8 @@ public class SearchBoLocActivity extends AppCompatActivity {
 
                         adapterSelected.notifyDataSetChanged();
                         ll_list_Selected.setVisibility(View.VISIBLE);
+                        Log.d("TAG", "listNguoiDung: "+ listSelected.size());
+                        Log.d("TAG", "listLoaiPhong: "+listLoaiPhongSelected.size());
                     } else {
                         //Xoa loai phong hien tai
 //                        listLoaiPhongSelected.remove(listLoaiPhong.get(listSelected.get(position).getId()));
@@ -168,17 +185,53 @@ public class SearchBoLocActivity extends AppCompatActivity {
                         adapterSelected.notifyDataSetChanged();
                         ll_list_Selected.setVisibility(View.VISIBLE);
 
-                        Log.d("TAG", "onClickListNguoiDung: " + listSelected.size());
-                        Log.d("TAG", "onClickListData: " + listLoaiPhongSelected.size());
+                        Log.d("TAG", "listNguoiDung: "+ listSelected.size());
+                        Log.d("TAG", "listLoaiPhong: "+listLoaiPhongSelected.size());
                     }
-
                 } else {
                     alertSuccess("da co");
                 }
-
             }
         });
+        adapterGioiTinh.setOnClick(new PhucGioiTinhAdapter.OnClick() {
+            @Override
+            public void onClickItemListener(int position, View view) {
+                if (!listGioiTinhSelected.contains(listGioiTinh.get(position))) {
+                    if (listGioiTinhSelected.size() == 0 || listGioiTinh.size() == 0) {
+                        //add moi vao list nguoi dung
+                        listSelected.add(new Selected(Const.GIOI_TINH, position, listGioiTinh.get(position) == Const.ALL_GENDERS ? "Tất cả" : listGioiTinh.get(position) == Const.MALE_GENDERS ? "Nam" : "Nữ"));
+                        //add moi vao list luu du lieu
+                        listGioiTinhSelected.add(listGioiTinh.get(position));
 
+                        adapterSelected.notifyDataSetChanged();
+                        ll_list_Selected.setVisibility(View.VISIBLE);
+                        Toast.makeText(SearchBoLocActivity.this, "Thêm mới", Toast.LENGTH_SHORT).show();
+                        Log.d("TAG", "listNguoiDung: "+ listSelected.size());
+                        Log.d("TAG", "listGioiTinh: "+listGioiTinhSelected.size());
+
+                    } else {
+                        //Xoa loai phong hien tai
+//                        listLoaiPhongSelected.remove(listLoaiPhong.get(listSelected.get(position).getId()));
+//                        listSelected.remove(listLoaiPhong.get(listSelected.get(position).getId()));
+
+                        //add moi vao list nguoi dung
+                        listSelected.add(new Selected(Const.GIOI_TINH, position, listGioiTinh.get(position) == Const.ALL_GENDERS ? "Tất cả" : listGioiTinh.get(position) == Const.MALE_GENDERS ? "Nam" : "Nữ"));
+                        //add moi vao list luu du lieu
+                        listGioiTinhSelected.add(listGioiTinh.get(position));
+
+                        adapterSelected.notifyDataSetChanged();
+                        ll_list_Selected.setVisibility(View.VISIBLE);
+                        Toast.makeText(SearchBoLocActivity.this, "Xóa -> Thêm", Toast.LENGTH_SHORT).show();
+
+
+                        Log.d("TAG", "listNguoiDung: " + listSelected.size());
+                        Log.d("TAG", "listGioiTinh: " + listGioiTinhSelected.size());
+                    }
+                } else {
+                    alertSuccess("da co");
+                }
+            }
+        });
     }
 
     private void onClickButton() {
@@ -220,8 +273,10 @@ public class SearchBoLocActivity extends AppCompatActivity {
                             img_so_nguoi_down.setVisibility(View.VISIBLE);
 
                             rcvListLoaiPhong.setVisibility(View.GONE);
-                            // Giao dien gia GONE
-                            // Giao dien so nguoi GONE
+                            llGiaSeekBar.setVisibility(View.GONE);
+                            ll_so_nguoi_gioi_tinh.setVisibility(View.GONE);
+                            Log.d("TAG", "listNguoiDung: "+ listSelected.size());
+                            Log.d("TAG", "listTienIch: "+listTienIchSeleted.size());
                             break;
                         case 1:
                             //Tat
@@ -257,8 +312,10 @@ public class SearchBoLocActivity extends AppCompatActivity {
                             img_so_nguoi_down.setVisibility(View.VISIBLE);
 
                             rcvListTienIch.setVisibility(View.GONE);
-                            // Giao dien gia GONE
-                            // Giao dien so nguoi GONE
+                            llGiaSeekBar.setVisibility(View.GONE);
+                            ll_so_nguoi_gioi_tinh.setVisibility(View.GONE);
+                            Log.d("TAG", "listNguoiDung: "+ listSelected.size());
+                            Log.d("TAG", "listLoaiPhong: "+listLoaiPhongSelected.size());
 
                             break;
                         case 1:
@@ -277,8 +334,8 @@ public class SearchBoLocActivity extends AppCompatActivity {
                         case 0:
                             img_gia_down.setVisibility(View.GONE);
                             img_gia_up.setVisibility(View.VISIBLE);
+                            llGiaSeekBar.setVisibility(View.VISIBLE);
                             flagGia = 1;
-                            //Giao dien gia VISIBLE
 
                             flagTienIch = 0;
                             flagLoaiPhong = 0;
@@ -293,14 +350,16 @@ public class SearchBoLocActivity extends AppCompatActivity {
 
                             rcvListLoaiPhong.setVisibility(View.GONE);
                             rcvListTienIch.setVisibility(View.GONE);
-                            // Giao dien so nguoi GONE
+                            ll_so_nguoi_gioi_tinh.setVisibility(View.GONE);
+
 
                             break;
                         case 1:
                             img_gia_down.setVisibility(View.VISIBLE);
                             img_gia_up.setVisibility(View.GONE);
+                            llGiaSeekBar.setVisibility(View.GONE);
+
                             flagGia = 0;
-                            //Giao dien gia GONE
 
                             break;
                     }
@@ -309,10 +368,18 @@ public class SearchBoLocActivity extends AppCompatActivity {
                 case R.id.btn_so_nguoi:
                     switch (flagSoNguoi) {
                         case 0:
+
+                            if (listSelected.size() != 0){
+                                ll_list_Selected.setVisibility(View.VISIBLE);
+                            }
+                            Toast.makeText(SearchBoLocActivity.this, "ok", Toast.LENGTH_SHORT).show();
+
                             img_so_nguoi_up.setVisibility(View.VISIBLE);
                             img_so_nguoi_down.setVisibility(View.GONE);
                             flagSoNguoi = 1;
-                            //Giao dien so nguoi VISIBLE
+                            getListGioiTinh();
+                            ll_so_nguoi_gioi_tinh.setVisibility(View.VISIBLE);
+
 
                             flagLoaiPhong = 0;
                             flagTienIch = 0;
@@ -327,13 +394,16 @@ public class SearchBoLocActivity extends AppCompatActivity {
 
                             rcvListLoaiPhong.setVisibility(View.GONE);
                             rcvListTienIch.setVisibility(View.GONE);
-                            // Giao dien gia GONE
+                            llGiaSeekBar.setVisibility(View.GONE);
+                            Log.d("TAG", "listNguoiDung: "+ listSelected.size());
+                            Log.d("TAG", "listSoNguoi: "+listGioiTinhSelected.size());
                             break;
                         case 1:
                             img_so_nguoi_down.setVisibility(View.VISIBLE);
                             img_so_nguoi_up.setVisibility(View.GONE);
                             flagSoNguoi = 0;
-                            //Giao dien so nguoi GONE
+                            ll_so_nguoi_gioi_tinh.setVisibility(View.GONE);
+
                             break;
                         default:
                     }
@@ -410,13 +480,18 @@ public class SearchBoLocActivity extends AppCompatActivity {
         rcvListTienIch = findViewById(R.id.rcv_list_tien_ich);
         rcvListSelected = findViewById(R.id.rcv_list_selected);
         rcvListLoaiPhong = findViewById(R.id.rcv_list_loai_phong);
+        rcvListGioiTinh = findViewById(R.id.rcv_list_gioi_tinh);
+
         ll_list_Selected = findViewById(R.id.ll_list_selected);
         llSearchBoLoc = findViewById(R.id.ll_search_bo_loc);
+        ll_so_nguoi_gioi_tinh = findViewById(R.id.ll_so_nguoi_gioi_tinh);
 
         rlt_bg = findViewById(R.id.rlt_bg);
 
         tv_quan = findViewById(R.id.tv_ten_quan);
         tv_huy = findViewById(R.id.tv_huy);
+
+        llGiaSeekBar = findViewById(R.id.ll_seek_bar);
 
 
         adapterTienIch = new TienIchAdapter(SearchBoLocActivity.this, listTienIch, R.layout.cardview_item_tien_ich_layout);
@@ -433,11 +508,19 @@ public class SearchBoLocActivity extends AppCompatActivity {
         rcvListSelected.setAdapter(adapterSelected);
 
         listLoaiPhong = getListLoaiPhong();
-        adapterLoaiPhong = new LoaiPhongAdapter2(SearchBoLocActivity.this, listLoaiPhong, R.layout.nguoithue_cardview_item_loai_phong_layout);
+        adapterLoaiPhong = new PhucLoaiPhongAdapter(SearchBoLocActivity.this, listLoaiPhong, R.layout.nguoithue_cardview_item_loai_phong_layout);
         layoutManagerLoaiPhong = new LinearLayoutManager(SearchBoLocActivity.this);
         layoutManagerLoaiPhong.setOrientation(RecyclerView.VERTICAL);
         rcvListLoaiPhong.setLayoutManager(layoutManagerLoaiPhong);
         rcvListLoaiPhong.setAdapter(adapterLoaiPhong);
+
+        listGioiTinh = getListGioiTinh();
+        adapterGioiTinh = new PhucGioiTinhAdapter(SearchBoLocActivity.this, listGioiTinh, R.layout.nguoithue_cardview_item_gioi_tinh_layout);
+        layoutManagerGioiTinh = new LinearLayoutManager(SearchBoLocActivity.this);
+        layoutManagerGioiTinh.setOrientation(RecyclerView.HORIZONTAL);
+        rcvListGioiTinh.setLayoutManager(layoutManagerGioiTinh);
+        rcvListGioiTinh.setAdapter(adapterGioiTinh);
+
 
 
     }
@@ -447,6 +530,14 @@ public class SearchBoLocActivity extends AppCompatActivity {
         list.add(new Integer(Const.PHONG_TRONG));
         list.add(new Integer(Const.PHONG_DON));
         list.add(new Integer(Const.PHONG_GHEP));
+        return list;
+    }
+
+    private List<Integer> getListGioiTinh() {
+        List<Integer> list = new ArrayList<>();
+        list.add(new Integer(Const.ALL_GENDERS));
+        list.add(new Integer(Const.MALE_GENDERS));
+        list.add(new Integer(Const.FEMALE_GENDERS));
         return list;
     }
 

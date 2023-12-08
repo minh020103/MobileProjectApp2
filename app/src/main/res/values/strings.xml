@@ -68,4 +68,15 @@ Thuận tiện: gần hàng xanh, trường đại học Hurtech, Hồng Bàng, 
     <string name="error_unable_to_call_api">Error unable to call api</string>
     <string name="dsq">Danh sách quận</string>
     <string name="sn">Số người</string>
+    <string name="tcgt">Tất cả</string>
+    <string name="nam">Nam</string>
+    <string name="nu">Nữ</string>
+    <string name="_5">5</string>
+    <string name="_100">100</string>
+    <string name="vnd">VND</string>
+    <string name="gi">Giá</string>
+    <array name="rangeSlide">
+        <item>0</item>
+        <item>15</item>
+    </array>
 </resources>

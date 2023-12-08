@@ -14,7 +14,7 @@ import com.example.mobileprojectapp2.api.Const;
 
 import java.util.List;
 
-public class LoaiPhongAdapter2 extends RecyclerView.Adapter<LoaiPhongAdapter2.MyViewHolder> {
+public class PhucLoaiPhongAdapter extends RecyclerView.Adapter<PhucLoaiPhongAdapter.MyViewHolder> {
 
     private Activity activity;
     private int layoutID;
@@ -25,7 +25,7 @@ public class LoaiPhongAdapter2 extends RecyclerView.Adapter<LoaiPhongAdapter2.My
         this.onClick = onClick;
     }
 
-    public LoaiPhongAdapter2(Activity activity, List<Integer> list, int layoutID) {
+    public PhucLoaiPhongAdapter(Activity activity, List<Integer> list, int layoutID) {
         this.activity = activity;
         this.layoutID = layoutID;
         this.list = list;
