@@ -38,7 +38,6 @@ import java.util.LinkedList;
 
 public class RenterActivity extends AppCompatActivity {
     private int idTaiKhoan = 15;
-    private int iconNotification = R.drawable.icon_notification_selected;
     public static ViewPager2 viewPager2NguoiThue;
     private BottomNavigationView bottomNavigationViewNguoiThue;
     private RenterViewPage2Adapter adapter;
@@ -61,7 +60,7 @@ public class RenterActivity extends AppCompatActivity {
         badgeMessage.setVisible(true);
         badgeMessage.setNumber(10);
         adapter = new RenterViewPage2Adapter(this);
-        requestPermisstion();
+
 
         list.add(new HomeFragment());
         list.add(new MyRoomFragment());
@@ -134,15 +133,5 @@ public class RenterActivity extends AppCompatActivity {
 //                notificationManager.notify(id, notification);
 //            }
 //    }
-    private void requestPermisstion(){
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            if (ContextCompat.checkSelfPermission(
-                    activity, Manifest.permission.POST_NOTIFICATIONS) ==
-                    PackageManager.PERMISSION_GRANTED){
-            }
-            else {
-                requestPermissions(new String[]{Manifest.permission.POST_NOTIFICATIONS}, 111);
-            }
-        }
-    }
+
 }

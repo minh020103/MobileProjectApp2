@@ -31,7 +31,7 @@ public interface ApiServiceMinh {
     Call<List<Banner>> layTatCaBanner();
     @GET("api/phongtro/all")
     Call<List<PhongTro>> layTatCaPhongTro(@Query("loaiPhong") int loaiPhong, @Query("arrange") String arrange);
-    @GET("api/quan/all")
+    @GET("api/quan/all/hoatdong")
     Call<List<Quan>> layTatCaQuan();
     @GET("api/phongtro/quan")
     Call<List<PhongTro>> layTatCaPhongTrongQuan(@Query("idQuan") int idQuan,@Query("arrange") String arrange);

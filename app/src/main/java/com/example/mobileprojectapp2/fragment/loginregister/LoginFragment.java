@@ -1,9 +1,12 @@
 package com.example.mobileprojectapp2.fragment.loginregister;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,6 +21,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.content.ContextCompat;
 
 import com.example.mobileprojectapp2.R;
 import com.example.mobileprojectapp2.activity.chutro.MotelRoomOwnerActivity;
@@ -41,7 +45,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class LoginFragment extends AbstractFragment{
+public class LoginFragment extends AbstractFragment {
     EditText tenTaiKhoan;
     EditText matKhau;
     TextView quenMatKhau;
@@ -55,24 +59,26 @@ public class LoginFragment extends AbstractFragment{
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         View view = null;
-        view = getLayoutInflater().inflate(R.layout.login_tab_fragment,container, false);
+        view = getLayoutInflater().inflate(R.layout.login_tab_fragment, container, false);
+        requestPermisstion();
         sharedPreferences = getContext().getSharedPreferences(Const.PRE_LOGIN, Context.MODE_PRIVATE);
         anhXa(view);
         setHieuUng();
         batSuKienDangNhap();
         return view;
     }
-    private void batSuKienDangNhap(){
+
+    private void batSuKienDangNhap() {
         dangNhap.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
                 batTatProgessBar(0);
-                if(kiemTraRong()){
+                if (kiemTraRong()) {
                     String ten = tenTaiKhoan.getText().toString();
                     String mk = matKhau.getText().toString();
                     kiemTraDangNhap(ten, mk);
-                }else{
+                } else {
                     batTatProgessBar(1);
                     thongBao("Không Được Để Trống!");
                 }
@@ -89,7 +95,8 @@ public class LoginFragment extends AbstractFragment{
 
 
     }
-    private void kiemTraDangNhap(String tenTaiKhoan, String matKhau){
+
+    private void kiemTraDangNhap(String tenTaiKhoan, String matKhau) {
 //        Call<TaiKhoan> call = ApiServiceNghiem.apiService.kiemTraDangNhap(tenTaiKhoan,matKhau);
 //        call.enqueue(new Callback<TaiKhoan>() {
 //            @Override
@@ -144,7 +151,7 @@ public class LoginFragment extends AbstractFragment{
             public void onResponse(Call<TaiKhoan> call, Response<TaiKhoan> response) {
                 FirebaseAuth firebaseAuth;
                 firebaseAuth = FirebaseAuth.getInstance();
-                firebaseAuth.signInWithEmailAndPassword(tenTaiKhoan,matKhau).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
+                firebaseAuth.signInWithEmailAndPassword(tenTaiKhoan, matKhau).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                     @Override
                     public void onSuccess(AuthResult authResult) {
                         FirebaseMessaging.getInstance().getToken()
@@ -162,7 +169,7 @@ public class LoginFragment extends AbstractFragment{
                                         ApiServiceMinh.apiService.saveTokenDeviceOfAccount(token, response.body().getId()).enqueue(new Callback<FirebaseCloudMessaging>() {
                                             @Override
                                             public void onResponse(Call<FirebaseCloudMessaging> call, Response<FirebaseCloudMessaging> response) {
-                                                if (response.code() == 200){
+                                                if (response.code() == 200) {
                                                     Log.d("TAG", "onResponse: SAVE TOKEN COMPLATED");
                                                 }
                                             }
@@ -175,18 +182,19 @@ public class LoginFragment extends AbstractFragment{
                                     }
                                 });
                         sharedPreferences.edit().putInt("idTaiKhoan", response.body().getId()).commit();
-                        if(response.body().getLoaiTaiKhoan()==1){
-                        sharedPreferences.edit().putInt("idChuTro", response.body().getNguoiDangNhap().getId()).commit();
-                        sharedPreferences.edit().putInt("trangThaiXacThuc", response.body().getNguoiDangNhap().getXacThuc()).commit();
-                        batTatProgessBar(1);
-                        Intent intent = new Intent(getContext(), MotelRoomOwnerActivity.class);
-                        startActivity(intent);
+                        sharedPreferences.edit().putInt("loaiTaiKhoan", response.body().getLoaiTaiKhoan()).commit();
+                        if (response.body().getLoaiTaiKhoan() == 1) {
+                            sharedPreferences.edit().putInt("idChuTro", response.body().getNguoiDangNhap().getId()).commit();
+                            sharedPreferences.edit().putInt("trangThaiXacThuc", response.body().getNguoiDangNhap().getXacThuc()).commit();
+
+                            batTatProgessBar(1);
+                            Intent intent = new Intent(getContext(), MotelRoomOwnerActivity.class);
+                            startActivity(intent);
+                        } else {
+                            batTatProgessBar(1);
+                            Intent intent = new Intent(getContext(), RenterActivity.class);
+                            startActivity(intent);
                         }
-                        else{
-                    batTatProgessBar(1);
-                    Intent intent = new Intent(getContext(), RenterActivity.class);
-                    startActivity(intent);
-                                }
                     }
                 }).addOnFailureListener(new OnFailureListener() {
 
@@ -206,13 +214,15 @@ public class LoginFragment extends AbstractFragment{
         });
 
     }
-    private boolean kiemTraRong(){
-        if(!tenTaiKhoan.getText().toString().isEmpty()&&!matKhau.getText().toString().isEmpty()){
+
+    private boolean kiemTraRong() {
+        if (!tenTaiKhoan.getText().toString().isEmpty() && !matKhau.getText().toString().isEmpty()) {
             return true;
         }
         return false;
     }
-    private void thongBao(String message){
+
+    private void thongBao(String message) {
         AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
         dialog.setMessage(message).setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
@@ -223,7 +233,8 @@ public class LoginFragment extends AbstractFragment{
         dialog.create();
         dialog.show();
     }
-    private void setHieuUng(){
+
+    private void setHieuUng() {
         tenTaiKhoan.setTranslationX(800);
         matKhau.setTranslationX(800);
         quenMatKhau.setTranslationX(800);
@@ -237,18 +248,31 @@ public class LoginFragment extends AbstractFragment{
         quenMatKhau.animate().translationX(0).alpha(1).setDuration(800).setStartDelay(500).start();
         dangNhap.animate().translationX(0).alpha(1).setDuration(800).setStartDelay(700).start();
     }
-    private void batTatProgessBar(int kt){
-        if(kt ==0 ){
+
+    private void batTatProgessBar(int kt) {
+        if (kt == 0) {
             progressBar.setVisibility(View.VISIBLE);
-        }else if(kt==1){
+        } else if (kt == 1) {
             progressBar.setVisibility(View.INVISIBLE);
         }
     }
-    private void anhXa(View fragment){
+
+    private void anhXa(View fragment) {
         tenTaiKhoan = fragment.findViewById(R.id.tenTaiKhoan);
         matKhau = fragment.findViewById(R.id.matKhau);
         quenMatKhau = fragment.findViewById(R.id.quenMatKhau);
         dangNhap = fragment.findViewById(R.id.dangNhap);
         progressBar = fragment.findViewById(R.id.progessbar);
+    }
+
+    private void requestPermisstion() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (ContextCompat.checkSelfPermission(
+                    getActivity(), Manifest.permission.POST_NOTIFICATIONS) ==
+                    PackageManager.PERMISSION_GRANTED) {
+            } else {
+                requestPermissions(new String[]{Manifest.permission.POST_NOTIFICATIONS}, 111);
+            }
+        }
     }
 }

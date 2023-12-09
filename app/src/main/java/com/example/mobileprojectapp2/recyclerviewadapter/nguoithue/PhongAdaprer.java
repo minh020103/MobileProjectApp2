@@ -19,6 +19,7 @@ import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.example.mobileprojectapp2.R;
 import com.example.mobileprojectapp2.api.Const;
+import com.example.mobileprojectapp2.component.MComponent;
 import com.example.mobileprojectapp2.datamodel.PhongTro;
 
 import java.util.List;
@@ -57,10 +58,10 @@ public class PhongAdaprer extends RecyclerView.Adapter<PhongAdaprer.MyViewHolder
             else {
                 holder.imgPhong.setImageDrawable(activity.getResources().getDrawable(R.drawable.not_image, activity.getTheme()));
             }
-            holder.tvMoTa.setText(phongTro.getMoTa());
+            holder.tvMoTa.setText(MComponent.boChuoiPhiaSau(phongTro.getMoTa(), 30, "..."));
             holder.tvGioiTinh.setText(phongTro.getGioiTinh() == Const.ALL_GENDERS? "Giới tính: Tất cả":phongTro.getGioiTinh() == Const.MALE_GENDERS?"Giới tính: Nam":"Giới tính: Nữ");
             holder.tvGia.setText(phongTro.getGia()+" đồng");
-            holder.tvDiaChi.setText(phongTro.getDiaChiChiTiet());
+            holder.tvDiaChi.setText(MComponent.boChuoiPhiaSau(phongTro.getDiaChiChiTiet(), 30, "..."));
             holder.tvCountComment.setText(phongTro.getBinhLuan()+"");
             holder.tvTBRating.setText(phongTro.getDanhGia()+"");
         }

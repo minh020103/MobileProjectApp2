@@ -63,7 +63,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 //    }
     private void notification(int icon, String title, String content, int id){
         Intent intent = new Intent(this, LoginActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 2003, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 2003, intent, PendingIntent.FLAG_IMMUTABLE);
         Notification notification = new NotificationCompat.Builder(MyFirebaseMessagingService.this, MyNotification.CHANNEL_ID)
                 .setContentTitle(title)
                 .setContentText(content)
