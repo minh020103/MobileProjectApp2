@@ -5,12 +5,15 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
 import androidx.appcompat.widget.SearchView;
+
+import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 
 import com.example.mobileprojectapp2.R;
@@ -27,7 +30,7 @@ import retrofit2.Response;
 
 public class SearchQuanActivity extends AppCompatActivity {
     private TextView tvHuy;
-    private SearchView search;
+    private SearchView searchView;
     private RecyclerView rcvListQuan;
     private PhucQuanAdaprer adapterQuan;
     private List<Quan> listQuan;
@@ -39,9 +42,17 @@ public class SearchQuanActivity extends AppCompatActivity {
         setContentView(R.layout.nguoithue_search_quan_activity);
         listQuan = new ArrayList<>();
         anhXa();
+
+        // Tự động click vào SearchView
+        searchView.requestFocus();
+        // Hiển thị bàn phím
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.showSoftInput(searchView, InputMethodManager.SHOW_IMPLICIT);
+
         onClick();
         getListQuanApi();
         searchQuan();
+
     }
 
     private void onClick() {
@@ -49,6 +60,7 @@ public class SearchQuanActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 finish();
+//                alertSuccess("OK");
             }
         });
 
@@ -81,7 +93,7 @@ public class SearchQuanActivity extends AppCompatActivity {
         });
     }
     private void searchQuan(){
-        search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 adapterQuan.getFilter().filter(query);
@@ -99,7 +111,7 @@ public class SearchQuanActivity extends AppCompatActivity {
 
     private void anhXa() {
         tvHuy = findViewById(R.id.tv_huy);
-        search = findViewById(R.id.search);
+        searchView = findViewById(R.id.search_view);
         rcvListQuan = findViewById(R.id.rcv_list_quan);
 
         adapterQuan = new PhucQuanAdaprer(SearchQuanActivity.this, listQuan, R.layout.nguoithue_cardview_item_quan_layout);

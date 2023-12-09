@@ -2,7 +2,6 @@ package com.example.mobileprojectapp2.recyclerviewadapter.chutro;
 
 
 import android.app.Activity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -62,12 +61,12 @@ public class TienIchAdapter extends RecyclerView.Adapter<TienIchAdapter.TienIchV
         holder.onClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                myOnCLickListener.OnClickItem(position, v);
+                myOnCLickListener.OnClickItem(position, v, holder.llBg);
             }
         };
     }
     public interface MyOnCLickListener {
-        void OnClickItem(int position, View v);
+        void OnClickItem(int position, View v, LinearLayout llBg);
     }
     @Override
     public int getItemCount() {
@@ -83,10 +82,12 @@ public class TienIchAdapter extends RecyclerView.Adapter<TienIchAdapter.TienIchV
 
         private ImageView imageTienIch;
         private TextView tvTenTienIch;
+        LinearLayout llBg;
+
 
         public TienIchViewHolder(@NonNull View itemView) {
             super(itemView);
-
+            llBg = itemView.findViewById(R.id.ll_bg_item_loai_phong);
             imageTienIch = itemView.findViewById(R.id.img_tien_ich);
             tvTenTienIch = itemView.findViewById(R.id.tv_ten_tien_ich);
             itemView.setOnClickListener(this);

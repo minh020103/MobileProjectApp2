@@ -87,6 +87,7 @@ public class SelectedAdapter extends RecyclerView.Adapter<SelectedAdapter.Select
         private TextView tv_name_selected;
         private ImageView imgClose;
 
+
         public SelectedViewHolder(@NonNull View itemView) {
             super(itemView);
 

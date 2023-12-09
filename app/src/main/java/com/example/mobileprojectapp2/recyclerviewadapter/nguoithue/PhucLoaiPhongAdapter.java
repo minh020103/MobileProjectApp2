@@ -3,6 +3,7 @@ package com.example.mobileprojectapp2.recyclerviewadapter.nguoithue;
 import android.app.Activity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -44,7 +45,7 @@ public class PhucLoaiPhongAdapter extends RecyclerView.Adapter<PhucLoaiPhongAdap
         holder.onClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onClick.onClickItemListener(position, view);
+                onClick.onClickItemListener(position, view, holder.llBg);
             }
         };
     }
@@ -55,15 +56,17 @@ public class PhucLoaiPhongAdapter extends RecyclerView.Adapter<PhucLoaiPhongAdap
     }
 
     public interface OnClick{
-        void onClickItemListener(int position, View view);
+        void onClickItemListener(int position, View view, LinearLayout llBg);
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView tvLoaiPhong;
+        LinearLayout llBg;
         View.OnClickListener onClickListener;
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             tvLoaiPhong = itemView.findViewById(R.id.tv_loai_phong);
+            llBg = itemView.findViewById(R.id.ll_bg_item_loai_phong);
             itemView.setOnClickListener(this);
         }
 
