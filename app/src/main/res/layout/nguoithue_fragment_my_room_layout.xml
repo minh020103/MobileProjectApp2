@@ -351,10 +351,11 @@
                         android:layout_weight="5"
                         android:src="@drawable/icon_comment" />
                     <ImageView
+                        android:id="@+id/ic_danhgia"
                         android:layout_width="0dp"
                         android:layout_height="50dp"
                         android:layout_weight="5"
-                        android:src="@drawable/iconp_gps" />
+                        android:src="@drawable/icon_star_selected" />
 
 
                 </LinearLayout>
