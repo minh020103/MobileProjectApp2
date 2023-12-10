@@ -10,6 +10,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -17,6 +19,7 @@ import android.util.Log;
 import android.view.View;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -34,6 +37,7 @@ import com.bumptech.glide.Glide;
 import com.example.mobileprojectapp2.R;
 import com.example.mobileprojectapp2.activity.chutro.PhongNhanTinActivity;
 import com.example.mobileprojectapp2.activity.chutro.RenterDetailActivity;
+import com.example.mobileprojectapp2.activity.chutro.ReviewRoomActivity;
 import com.example.mobileprojectapp2.activity.chutro.ZoomOutPageTransformer;
 import com.example.mobileprojectapp2.api.Const;
 import com.example.mobileprojectapp2.api.chutro.ApiServiceNghiem;
@@ -43,6 +47,7 @@ import com.example.mobileprojectapp2.api.nguoithue.ApiServicePhuc2;
 import com.example.mobileprojectapp2.datamodel.HinhAnh;
 import com.example.mobileprojectapp2.datamodel.PhongNguoiThue;
 import com.example.mobileprojectapp2.datamodel.PhongTinNhan;
+import com.example.mobileprojectapp2.datamodel.VideoReview;
 import com.example.mobileprojectapp2.model.ChuTro;
 import com.example.mobileprojectapp2.model.PhongTro;
 import com.example.mobileprojectapp2.model.TienIch;
@@ -139,7 +144,7 @@ public class DetailPhongTroNguoiThueActivity extends AppCompatActivity {
         reviewPhong.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                thongBao();
+                xemVideoReview();
             }
         });
         getDataFromApi();
@@ -225,17 +230,116 @@ public class DetailPhongTroNguoiThueActivity extends AppCompatActivity {
         });
     }
 
-    private void thongBao(){
-        AlertDialog.Builder review = new AlertDialog.Builder(this);
-        View view = DetailPhongTroNguoiThueActivity.this.getLayoutInflater().inflate(R.layout.activity_review_phong, null);
-        review.setView(view);
-        AlertDialog dialog = review.create();
+    private void xemVideoReview(){
+        AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+        View view = DetailPhongTroNguoiThueActivity.this.getLayoutInflater().inflate(R.layout.activity_review_phong,null);
+        dialog.setView(view);
+        AlertDialog dialogB = dialog.create();
+        dialogB.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        TextView dong = view.findViewById(R.id.dongDialog);
+        TextView ghiChuHuongDan = view.findViewById(R.id.ghiChuHuongDan);
         WebView webView = view.findViewById(R.id.videoReview);
-        String video = "<iframe width=\"100%\" height=\"100%\" src=\"https://www.youtube.com/embed/KKC3nAMGaAo?si=hlQnjtxSVmWz9JRI\" title=\"YouTube video player\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" allowfullscreen></iframe>";
-        webView.loadData(video,"text/html","utf-8");
-        webView.getSettings().setJavaScriptEnabled(true);
-        webView.setWebChromeClient(new WebChromeClient());
-        dialog.show();
+
+        Call<VideoReview> call = com.example.mobileprojectapp2.api.nguoithue.ApiServiceNghiem.apiService.getVideoReview(idPhong);
+        call.enqueue(new Callback<VideoReview>() {
+            @Override
+            public void onResponse(Call<VideoReview> call, Response<VideoReview> response) {
+                if(response.body()!=null){
+                    ghiChuHuongDan.setVisibility(View.INVISIBLE);
+                    VideoReview videoReview = response.body();
+                    if(!videoReview.getLinkVideo().equals("Video_Rong")){
+                        if(videoReview.getLoaiVideo()==0){
+                            String video = Const.DOMAIN+response.body().getLinkVideo();
+                            webView.loadUrl(video);
+                            webView.getSettings().setJavaScriptEnabled(true);
+                            webView.setWebChromeClient(new WebChromeClient());
+                        }else{
+                            String dataUrl = "<!DOCTYPE html>\n" +
+                                    "<html>\n" +
+                                    "  <body>\n" +
+                                    "    <!-- 1. The <iframe> (and video player) will replace this <div> tag. -->\n" +
+                                    "    <div id=\"player\"></div>\n" +
+                                    "\n" +
+                                    "    <script>\n" +
+                                    "      // 2. This code loads the IFrame Player API code asynchronously.\n" +
+                                    "      var tag = document.createElement('script');\n" +
+                                    "\n" +
+                                    "      tag.src = \"https://www.youtube.com/iframe_api\";\n" +
+                                    "      var firstScriptTag = document.getElementsByTagName('script')[0];\n" +
+                                    "      firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);\n" +
+                                    "\n" +
+                                    "      // 3. This function creates an <iframe> (and YouTube player)\n" +
+                                    "      //    after the API code downloads.\n" +
+                                    "      var player;\n" +
+                                    "      function onYouTubeIframeAPIReady() {\n" +
+                                    "        player = new YT.Player('player', {\n" +
+                                    "          height: '240',\n" +
+                                    "          width: '100%',\n" +
+                                    "          videoId: '"+ videoReview.getLinkVideo()+"',\n" +
+                                    "          playerVars: {\n" +
+                                    "            'playsinline': 1\n" +
+                                    "          },\n" +
+                                    "          events: {\n" +
+                                    "            'onReady': onPlayerReady,\n" +
+                                    "            'onStateChange': onPlayerStateChange\n" +
+                                    "          }\n" +
+                                    "        });\n" +
+                                    "      }\n" +
+                                    "\n" +
+                                    "      // 4. The API will call this function when the video player is ready.\n" +
+                                    "      function onPlayerReady(event) {\n" +
+                                    "        event.target.playVideo();\n" +
+                                    "      }\n" +
+                                    "\n" +
+                                    "      // 5. The API calls this function when the player's state changes.\n" +
+                                    "      //    The function indicates that when playing a video (state=1),\n" +
+                                    "      //    the player should play for six seconds and then stop.\n" +
+                                    "      var done = false;\n" +
+                                    "      function onPlayerStateChange(event) {\n" +
+                                    "        if (event.data == YT.PlayerState.PLAYING && !done) {\n" +
+                                    "          setTimeout(stopVideo, 10000);\n" +
+                                    "          done = true;\n" +
+                                    "        }\n" +
+                                    "      }\n" +
+                                    "      function stopVideo() {\n" +
+                                    "        player.stopVideo();\n" +
+                                    "      }\n" +
+                                    "    </script>\n" +
+                                    "  </body>\n" +
+                                    "</html>";
+
+
+                            webView.getSettings().setJavaScriptEnabled(true);
+                            webView.setWebViewClient(new WebViewClient(){
+                                @Override
+                                public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                                    view.loadUrl(url);
+                                    return true;
+                                }
+                            });
+//                            webView.getSettings().getMixedContentMode();
+                            webView.loadData(dataUrl,"text/html","utf-8");
+                            webView.setWebChromeClient(new WebChromeClient());
+                        }
+                    }else{
+                        ghiChuHuongDan.setVisibility(View.VISIBLE);
+                    }
+                }else{
+                    ghiChuHuongDan.setVisibility(View.VISIBLE);
+                }
+            }
+            @Override
+            public void onFailure(Call<VideoReview> call, Throwable t) {
+                Toast.makeText(getApplicationContext(),"Lỗi Dữ Liệu",Toast.LENGTH_SHORT).show();
+            }
+        });
+        dong.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialogB.hide();
+            }
+        });
+        dialogB.show();
     }
 
 

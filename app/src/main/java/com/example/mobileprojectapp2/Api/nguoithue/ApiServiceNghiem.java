@@ -44,4 +44,14 @@ public interface ApiServiceNghiem {
                                     @Part("loaiVideo")int loadVideo,
                                     @Part MultipartBody.Part file
                                     );
+    @Multipart
+    @POST("uploadvideoreviewyoutube")
+    Call<Integer> uploadVideoReviewYoutube(@Part("idPhong")int idPhong,
+                                            @Part("loaiVideo")int loadVideo,
+                                           @Part("linkVideo")RequestBody linkVideo
+    );
+    @Multipart
+    @POST("deletevideoreview")
+    Call<Integer> deleteVideoReviewYoutube(@Part("idPhong")int idPhong
+    );
   }
