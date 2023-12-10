@@ -24,9 +24,4 @@ public class PushNotification {
     public void setTo(String to) {
         this.to = to;
     }
-
-    public PushNotification(Notification data, String to) {
-        this.data = data;
-        this.to = to;
-    }
 }

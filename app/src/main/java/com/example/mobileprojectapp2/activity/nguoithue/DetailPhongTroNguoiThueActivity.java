@@ -224,12 +224,7 @@ public class DetailPhongTroNguoiThueActivity extends AppCompatActivity {
 
         getDanhSachPhongGoiY();
 
-        llDatPhong.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                requestYeuCauDatPhong();
-            }
-        });
+
         llChat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
