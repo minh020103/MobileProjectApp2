@@ -164,9 +164,9 @@ public class SearchBoLocActivity extends AppCompatActivity {
                 v.startAnimation(anim);
 
                 if (!listTienIchSeleted.contains(listTienIch.get(position))) {
-                    //Set màu mới cho background
-                    bg.setBackground(getResources().getDrawable(R.drawable.btn_p4, getTheme()));
-                    //add vao list nguoi dung
+//                    //Set màu mới cho background
+//                    bg.setBackground(getResources().getDrawable(R.drawable.btn_p4, getTheme()));
+//                    //add vao list nguoi dung
 
                     listSelected.add(new Selected(Const.TIEN_ICH, position, listTienIch.get(position).getTen()));
                     //add vao list luu du lieu
@@ -182,6 +182,8 @@ public class SearchBoLocActivity extends AppCompatActivity {
         adapterLoaiPhong.setOnClick(new PhucLoaiPhongAdapter.OnClick() {
             @Override
             public void onClickItemListener(int position, View view, LinearLayout bg) {
+                Animation anim = AnimationUtils.loadAnimation(SearchBoLocActivity.this, R.anim.item_click);
+                view.startAnimation(anim);
                 if (!listLoaiPhongSelected.contains(listLoaiPhong.get(position))) {
                     //Set màu mới cho background
 
@@ -192,32 +194,34 @@ public class SearchBoLocActivity extends AppCompatActivity {
                             if (selected.getKey() == Const.LOAI_PHONG) {
                                 listSelected.remove(selected);
                                 listLoaiPhongSelected.clear();
-                                bgLoaiPhongOld.setBackground(backDrawableLoaiPhong);
-                                Toast.makeText(SearchBoLocActivity.this, "Xóa cái hiện tại", Toast.LENGTH_SHORT).show();
+//                                bgLoaiPhongOld.setBackground(backDrawableLoaiPhong);
+//                                Toast.makeText(SearchBoLocActivity.this, "Xóa cái hiện tại", Toast.LENGTH_SHORT).show();
                                 adapterSelected.notifyDataSetChanged();
                             }
                         }
-                        bgLoaiPhongOld = bg;
-                        backDrawableLoaiPhong = bg.getBackground();
-                        bg.setBackground(getResources().getDrawable(R.drawable.btn_p4, getTheme()));
+//                        bgLoaiPhongOld = bg;
+//                        backDrawableLoaiPhong = bg.getBackground();
+//                        bg.setBackground(getResources().getDrawable(R.drawable.btn_p4, getTheme()));
                         //add moi vao list nguoi dung
                         listSelected.add(new Selected(Const.LOAI_PHONG, position, listLoaiPhong.get(position) == Const.PHONG_TRONG ? "Phòng trống" : listLoaiPhong.get(position) == Const.PHONG_DON ? "Phòng đơn" : "Phòng ghép"));
                         //add moi vao list luu du lieu
                         listLoaiPhongSelected.add(listLoaiPhong.get(position));
                         //Set màu mới cho background
-                        bg.setBackground(getResources().getDrawable(R.drawable.btn_p4, getTheme()));
+//                        bg.setBackground(getResources().getDrawable(R.drawable.btn_p4, getTheme()));
                         adapterSelected.notifyDataSetChanged();
                         ll_list_Selected.setVisibility(View.VISIBLE);
 
                     }
                 } else {
-                    alertSuccess("da co");
+                    Toast.makeText(SearchBoLocActivity.this, "Đã chọn", Toast.LENGTH_SHORT).show();
                 }
             }
         });
         adapterGioiTinh.setOnClick(new PhucGioiTinhAdapter.OnClick() {
             @Override
             public void onClickItemListener(int position, View view) {
+                Animation anim = AnimationUtils.loadAnimation(SearchBoLocActivity.this, R.anim.item_click);
+                view.startAnimation(anim);
                 if (!listGioiTinhSelected.contains(listGioiTinh.get(position))) {
                     if (!listSelected.contains(new Selected(Const.GIOI_TINH, listGioiTinh.get(position), listGioiTinh.get(position) == Const.ALL_GENDERS ? "Tất cả" : listGioiTinh.get(position) == Const.MALE_GENDERS ? "Nam" : "Nữ"))) {
                         //Xóa cái hiện tại
@@ -250,32 +254,28 @@ public class SearchBoLocActivity extends AppCompatActivity {
 
     private void onChangePrice() {
         range_slider.setValues(0f, 5000f);
-
         range_slider.addOnChangeListener(new RangeSlider.OnChangeListener() {
             @Override
             public void onValueChange(@NonNull RangeSlider slider, float value, boolean fromUser) {
+                Animation anim = AnimationUtils.loadAnimation(SearchBoLocActivity.this, R.anim.item_click);
+                slider.startAnimation(anim);
                 // Lấy giá trị tối thiểu và tối đa hiện tại từ RangeSlider
                 minValue = slider.getValues().get(0);
                 maxValue = slider.getValues().get(1);
 
-                String min;
-                String max;
+                float min = minValue;
+                float max = maxValue;
 
                 if (minValue < 1000) {
-                    DecimalFormat decimalFormat = new DecimalFormat("#.#");
-                     min = decimalFormat.format(minValue);
-                     max = decimalFormat.format(maxValue);
                     tv_gia_start.setText(String.valueOf(min) + " k");
-                } else {
-                    minValue = minValue / 1000;
-                    maxValue = maxValue / 1000;
-                    DecimalFormat decimalFormat = new DecimalFormat("#.#");
-                     max = decimalFormat.format(maxValue);
-                     min = decimalFormat.format(minValue);
-
-                    tv_gia_start.setText(String.valueOf(min) + " triệu");
+                    max = max / 1000;
                     tv_gia_end.setText(String.valueOf(max) + " triệu");
 
+                } else {
+                    min = minValue / 1000;
+                    max = maxValue / 1000;
+                    tv_gia_start.setText(String.valueOf(min) + " triệu");
+                    tv_gia_end.setText(String.valueOf(max) + " triệu");
                 }
 
                 for (Selected selected :
@@ -285,14 +285,12 @@ public class SearchBoLocActivity extends AppCompatActivity {
                     }
                 }
 
-
                 ll_list_Selected.setVisibility(View.VISIBLE);
-//                listSelected.add(new Selected(Const.GIA, 0, min + " VND - " + max + " VND"));
-//                listSelected.add(new Selected(Const.GIA, 0, minValue < 1000 ? min + " k VND": min + " triệu VND" + max + " triệu" ));
+                listSelected.add(new Selected(Const.GIA, 0, minValue < 1000 ?
+                        min + " k VND" + " - " + max + " triệu" :
+                        min + " triệu VND" + " - " + max + " triệu"));
 
                 adapterSelected.notifyDataSetChanged();
-
-
             }
         });
     }

@@ -5,7 +5,7 @@
     <item android:state_pressed="true">
         <shape android:shape="rectangle">
             //Mau bg
-            <solid android:color="#BAB6B6" />
+            <solid android:color="#A1A1A1" />
 <!--            //Vien-->
 <!--            <stroke android:width="5dp" android:color="@color/main_color_app_light" />-->
           //Bo tron-->
