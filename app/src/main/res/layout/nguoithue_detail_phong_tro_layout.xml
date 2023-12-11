@@ -46,21 +46,21 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-<!--                <TextView-->
-<!--                    android:id="@+id/tv_hinh_anh_rong"-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="match_parent"-->
-<!--                    android:gravity="center_vertical|center_horizontal"-->
-<!--                    android:text="@string/pccha"-->
-<!--                    android:textColor="@color/black"-->
-<!--                    android:textSize="@dimen/size_20sp"-->
-<!--                    android:visibility="gone" />-->
+                <!--                <TextView-->
+                <!--                    android:id="@+id/tv_hinh_anh_rong"-->
+                <!--                    android:layout_width="match_parent"-->
+                <!--                    android:layout_height="match_parent"-->
+                <!--                    android:gravity="center_vertical|center_horizontal"-->
+                <!--                    android:text="@string/pccha"-->
+                <!--                    android:textColor="@color/black"-->
+                <!--                    android:textSize="@dimen/size_20sp"-->
+                <!--                    android:visibility="gone" />-->
                 <ImageView
                     android:id="@+id/img_hinh_anh_rong"
                     android:layout_width="match_parent"
                     android:layout_height="220dp"
                     android:src="@drawable/khongcoanh"
-                    android:visibility="gone"/>
+                    android:visibility="gone" />
 
                 <androidx.viewpager2.widget.ViewPager2
                     android:id="@+id/view_pager_2_nguoi_thue"
@@ -95,19 +95,21 @@
                         android:drawableRight="@drawable/iconp_star"
                         android:drawablePadding="2dp"
                         android:text="@string/gt" />
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:gravity="end">
+                        android:gravity="end"
+                        android:orientation="horizontal">
+
                         <com.google.android.material.button.MaterialButton
-                            app:icon="@drawable/baseline_play_circle_outline_24"
-                            android:text="Review"
                             android:id="@+id/reviewPhong"
+                            android:layout_width="150dp"
+                            android:layout_height="50dp"
                             android:layout_gravity="end"
                             android:gravity="center"
-                            android:layout_width="150dp"
-                            android:layout_height="50dp"/>
+                            android:text="Review"
+                            app:icon="@drawable/baseline_play_circle_outline_24" />
 
                     </LinearLayout>
 
@@ -411,8 +413,7 @@
                         android:layout_height="35dp"
                         android:layout_below="@+id/ll_gray_2"
                         android:orientation="horizontal"
-                        android:visibility="visible"
-                        >
+                        android:visibility="visible">
 
                         <LinearLayout
                             android:id="@+id/ll_xem_them"
@@ -569,6 +570,7 @@
                                     android:paddingStart="5dp"
                                     android:text="Nguyen Van A"
                                     android:textStyle="bold" />
+
                                 <TextView
                                     android:id="@+id/tv_sdt_chu_tro"
                                     style="@style/tv_16sp_2"
@@ -613,26 +615,25 @@
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:layout_gravity="center_horizontal">
+                        android:layout_gravity="center_horizontal"
+                        android:orientation="horizontal">
 
                         <TextView
                             style="@style/tv_20sp"
-                            android:text="@string/ctbqt"/>
+                            android:text="@string/ctbqt" />
 
                         <ImageView
                             android:layout_width="30dp"
                             android:layout_height="30dp"
-                            android:src="@drawable/iconp_question"/>
+                            android:src="@drawable/iconp_question" />
 
                     </LinearLayout>
-
 
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rcv_list_ds_phong_goi_y"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content" />
 
                 </LinearLayout>
 
@@ -647,10 +648,10 @@
         android:layout_height="1dp"
         android:background="@color/text_gray2" />
 
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:layout_marginTop="8dp"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         android:padding="5dp">
@@ -660,18 +661,18 @@
             android:layout_width="0dp"
             android:layout_height="50dp"
             android:layout_weight="1"
-            android:background="@drawable/bg_p"
+            android:background="@drawable/bg_p3"
             android:gravity="center_horizontal|center_vertical"
             android:orientation="horizontal">
 
             <TextView
                 style="@style/tv_20sp"
                 android:text="Chat"
-                android:textColor="#2196F3" />
+                android:textColor="@color/button_fb" />
 
             <ImageView
                 android:layout_width="25dp"
-                android:layout_height="21dp"
+                android:layout_height="25dp"
                 android:layout_marginStart="5dp"
                 android:src="@drawable/iconp_chat" />
         </LinearLayout>
@@ -682,36 +683,61 @@
             android:layout_height="50dp"
             android:layout_margin="5dp"
             android:layout_weight="1"
-            android:background="@drawable/bg_p2"
+            android:background="@drawable/bg_p"
             android:gravity="center_horizontal|center_vertical"
             android:orientation="horizontal"
-         >
+            android:visibility="visible">
 
             <TextView
                 style="@style/tv_20sp"
                 android:text="@string/dp"
-                android:textColor="@color/main_color_app_light" />
+                android:textColor="#FFBB33"
+                android:paddingVertical="5dp"/>
 
             <ImageView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_marginStart="5dp"
-                android:src="@drawable/iconp_datcoc" />
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:src="@drawable/iconp_money" />
         </LinearLayout>
+
+<!--        <LinearLayout-->
+<!--            android:id="@+id/ll_dat_phong"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="50dp"-->
+<!--            android:layout_margin="5dp"-->
+<!--            android:layout_weight="1"-->
+<!--            android:gravity="center_horizontal|center_vertical"-->
+<!--            android:orientation="horizontal"-->
+<!--            android:visibility="visible">-->
+
+<!--            <TextView-->
+<!--                style="@style/tv_20sp"-->
+<!--                android:text="@string/dp"-->
+<!--                android:textColor="#FFBB33" />-->
+
+            <ImageView
+                android:id="@+id/image_gif"
+                android:layout_width="80dp"
+                android:layout_height="60dp"
+                android:layout_margin="5dp"
+                android:src="@drawable/iconp_giphy"
+                android:visibility="gone"/>
+<!--        </LinearLayout>-->
+
 
         <LinearLayout
             android:id="@+id/ll_goi"
             android:layout_width="0dp"
             android:layout_height="50dp"
             android:layout_weight="1"
-            android:background="@drawable/bg_p3"
+            android:background="@drawable/bg_p2"
             android:gravity="center_horizontal|center_vertical"
             android:orientation="horizontal">
 
             <TextView
                 style="@style/tv_20sp"
                 android:text="Gọi"
-                android:textColor="@color/button_fb" />
+                android:textColor="@color/main_color_app_light" />
 
             <ImageView
                 android:layout_width="25dp"

@@ -165,6 +165,8 @@ public class AuthenticationActivity extends AppCompatActivity {
                     tvNotAuthencation.setVisibility(View.GONE);
                     tvOkAuthencation.setVisibility(View.GONE);
                     btnAcceptYeuCauXacThuc.setVisibility(View.GONE);
+                    imageViewMatTruocCCCD.setEnabled(false);
+                    imageViewMatSauCCCD.setEnabled(false);
                     databaseReference.child("notification_admin").child(idChuTro + "").setValue(0).addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void unused) {
@@ -219,6 +221,8 @@ public class AuthenticationActivity extends AppCompatActivity {
                     tvNotAuthencation.setVisibility(View.GONE);
                     tvOkAuthencation.setVisibility(View.GONE);
                     btnAcceptYeuCauXacThuc.setVisibility(View.GONE);
+                    imageViewMatTruocCCCD.setEnabled(false);
+                    imageViewMatSauCCCD.setEnabled(false);
                     onClickCanDuLieu(trangThaiXacThuc);
                 }
                 if (response.body().getTrangThaiXacThuc() == 1) {
@@ -227,6 +231,9 @@ public class AuthenticationActivity extends AppCompatActivity {
                     tvNotAuthencation.setVisibility(View.GONE);
                     tvOkAuthencation.setVisibility(View.VISIBLE);
                     btnAcceptYeuCauXacThuc.setVisibility(View.GONE);
+                    imageViewMatTruocCCCD.setEnabled(false);
+                    imageViewMatSauCCCD.setEnabled(false);
+
                 }
 
 

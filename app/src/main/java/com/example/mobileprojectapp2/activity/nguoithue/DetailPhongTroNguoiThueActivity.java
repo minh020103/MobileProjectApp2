@@ -80,7 +80,7 @@ public class DetailPhongTroNguoiThueActivity extends AppCompatActivity {
     private TextView tvLoaiPhongNguoiThue, tvGioTinhNguoiThue, tvGiaNguoiThue, tvSoLuongToiDaNguoiThue, tvDienTichNguoiThue,
             tvTienCocNguoiThue, tvTienDienNguoiThue, tvTienNuocNguoiThue, tvQuanNguoiThue, tvDiaChiNguoiThue, tvTienIchRong,
             tvTenChuTro, tvSDTChuTro, tv_dsnt;
-    private ImageView img_hinh_anh_rong;
+    private ImageView img_hinh_anh_rong, image_gif;
     private ReadMoreTextView tvMoTaNguoiThue;
     private TienIchAdapter adapterTienIch;
     private ImageView imageBack, imageViewChuTro;
@@ -402,6 +402,7 @@ public class DetailPhongTroNguoiThueActivity extends AppCompatActivity {
                                             }
                                         });
                                         alertSuccess("Bạn đã đặt phòng thành công!");
+//                                        llDatPhong.setVisibility(View.GONE);
                                     }
 
                                     @Override
@@ -457,7 +458,6 @@ public class DetailPhongTroNguoiThueActivity extends AppCompatActivity {
                 tvSoLuongToiDaNguoiThue.setText(response.body().getSoLuongToiDa() + " người");
                 tvDiaChiNguoiThue.setText(response.body().getDiaChiChiTiet());
 
-//                Log.d("TAG", "onResponse: "+ response.body().getHinhAnhPhongTro().size());
 
                 if (response.body().getHinhAnhPhongTro().size() == 0) {
 //                    tvHinhAnhRong.setVisibility(View.VISIBLE);
@@ -663,6 +663,7 @@ public class DetailPhongTroNguoiThueActivity extends AppCompatActivity {
         ll_dsnt = findViewById(R.id.ll_dsnt);
         llChat = findViewById(R.id.ll_chat);
         llDatPhong = findViewById(R.id.ll_dat_phong);
+        image_gif = findViewById(R.id.image_gif);
         llGoi = findViewById(R.id.ll_goi);
         ll_dsp_chu_tro = findViewById(R.id.ll_dsp_chu_tro);
         tvTienIchRong = findViewById(R.id.tv_tien_ich_rong);
@@ -670,6 +671,9 @@ public class DetailPhongTroNguoiThueActivity extends AppCompatActivity {
         mViewPager2 = findViewById(R.id.view_pager_2_nguoi_thue);
         adapterHinhAnh = new HinhAnhAdapter(DetailPhongTroNguoiThueActivity.this, listHinhAnh, R.layout.chutro_item_image_layout);
         mViewPager2.setAdapter(adapterHinhAnh);
+
+        Glide.with(this).load(R.drawable.iconp_giphy).into(image_gif);
+
 
         adapterTienIch = new TienIchAdapter(DetailPhongTroNguoiThueActivity.this, listTienIch, R.layout.cardview_item_tien_ich_layout);
         layoutManagerTienIch = new LinearLayoutManager(DetailPhongTroNguoiThueActivity.this);
