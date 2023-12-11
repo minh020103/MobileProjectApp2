@@ -3,6 +3,7 @@ package com.example.mobileprojectapp2.api.chutro;
 import com.example.mobileprojectapp2.api.Const;
 import com.example.mobileprojectapp2.datamodel.ChuTro;
 import com.example.mobileprojectapp2.datamodel.Goi;
+import com.example.mobileprojectapp2.datamodel.Phuong;
 import com.example.mobileprojectapp2.datamodel.YeuCauDKG;
 import com.example.mobileprojectapp2.model.Admin;
 
@@ -42,5 +43,8 @@ public interface ApiServiceDung {
     Call<YeuCauDKG> yeucaudangkygoi(@Part("idChuTro") RequestBody idChuTro,
                                     @Part("idGoi") RequestBody idGoi,
                                     @Part MultipartBody.Part hinhAnhChuyenKhoan);
+
+    @GET("api/phuong/thongtin")
+    Call<Phuong> layPhuongTheoIDAPI(@Query("id") int id);
 }
     
