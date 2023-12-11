@@ -34,4 +34,9 @@ public class Const {
     public static final String HEADER_YOUTUBE = "<iframe width=\"100%\" height=\"100%\" src=\"https://www.youtube.com/embed/";
     public static final String FOOTER_YOUTUBE = "\" title=\"YouTube video player\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" allowfullscreen></iframe>";
     public static final String HEADER_DEVICE = "<iframe width=\"100%\" height=\"100%\" src=\"";
+    
+    public static final int GIA = 0;
+    public static final int TIEN_ICH = 1;
+    public static final int LOAI_PHONG = 2;
+    public static final int GIOI_TINH = 3;
 }

@@ -65,10 +65,22 @@
                 <androidx.viewpager2.widget.ViewPager2
                     android:id="@+id/view_pager_2_nguoi_thue"
                     android:layout_width="match_parent"
-                    android:layout_height="220dp"
-                    android:visibility="visible" />
+                    android:layout_height="180dp"
+                    android:visibility="visible"
+                    android:paddingStart="60dp"
+                    android:paddingEnd="60dp"/>
+
+
 
             </LinearLayout>
+
+<!--            <me.relex.circleindicator.CircleIndicator3-->
+<!--                android:id="@+id/ci_3"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="35dp"-->
+<!--                android:layout_gravity="center_horizontal"-->
+<!--                android:visibility="visible"-->
+<!--                app:ci_drawable="@drawable/ci" />-->
 
             <LinearLayout
                 android:layout_width="match_parent"

@@ -30,6 +30,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager2.widget.CompositePageTransformer;
+import androidx.viewpager2.widget.MarginPageTransformer;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.borjabravo.readmoretextview.ReadMoreTextView;
@@ -68,6 +70,7 @@ import com.google.android.material.button.MaterialButton;
 import java.util.ArrayList;
 import java.util.List;
 
+import me.relex.circleindicator.CircleIndicator3;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 import retrofit2.Call;
@@ -87,7 +90,7 @@ public class DetailPhongTroNguoiThueActivity extends AppCompatActivity {
     private LinearLayoutManager layoutManagerTienIch = new LinearLayoutManager(DetailPhongTroNguoiThueActivity.this);
     private LinearLayoutManager layoutManagerNguoiThue = new LinearLayoutManager(DetailPhongTroNguoiThueActivity.this);
     private LinearLayoutManager layoutManagerPhongGoiY = new LinearLayoutManager(DetailPhongTroNguoiThueActivity.this);
-
+//    private CircleIndicator3 ci_3;
     private RecyclerView rcvListTienIchNguoiThue, rcvListNguoiThue, rcvDSPhongGoiY;
     private HinhAnhAdapter adapterHinhAnh;
     private ViewPager2 mViewPager2;
@@ -473,7 +476,7 @@ public class DetailPhongTroNguoiThueActivity extends AppCompatActivity {
                 if (response.body().getDanhSachTienIch().size() == 0) {
                     tvTienIchRong.setVisibility(View.VISIBLE);
                 }
-                if (response.body().getDanhSachTienIch().size() < 8) {
+                if (response.body().getDanhSachTienIch().size() <= 8) {
                     llXemThem.setVisibility(View.GONE);
                 }
                 int i = 0;
@@ -667,10 +670,21 @@ public class DetailPhongTroNguoiThueActivity extends AppCompatActivity {
         llGoi = findViewById(R.id.ll_goi);
         ll_dsp_chu_tro = findViewById(R.id.ll_dsp_chu_tro);
         tvTienIchRong = findViewById(R.id.tv_tien_ich_rong);
+//        ci_3 = findViewById(R.id.ci_3);
 
         mViewPager2 = findViewById(R.id.view_pager_2_nguoi_thue);
+        mViewPager2.setOffscreenPageLimit(3);
+        mViewPager2.setClipToPadding(false);
+        mViewPager2.setClipChildren(false);
+
+        CompositePageTransformer compositePageTransformer = new CompositePageTransformer();
+        compositePageTransformer.addTransformer(new MarginPageTransformer(40));
+        mViewPager2.setPageTransformer(compositePageTransformer);
+
         adapterHinhAnh = new HinhAnhAdapter(DetailPhongTroNguoiThueActivity.this, listHinhAnh, R.layout.chutro_item_image_layout);
         mViewPager2.setAdapter(adapterHinhAnh);
+//        ci_3.setViewPager(mViewPager2);
+
 
         Glide.with(this).load(R.drawable.iconp_giphy).into(image_gif);
 
@@ -682,6 +696,7 @@ public class DetailPhongTroNguoiThueActivity extends AppCompatActivity {
         rcvListTienIchNguoiThue.setLayoutManager(layoutManagerTienIch);
         rcvListTienIchNguoiThue.setAdapter(adapterTienIch);
         imageBack = findViewById(R.id.img_back_detail);
+
 
 //        listNguoiThue2 = getListNguoiThue2();
         adapterNguoiThue = new PhucNguoiThueAdapter(DetailPhongTroNguoiThueActivity.this, listNguoiThue, R.layout.nguoithue_cardview_item_nguoi_thue_layout);

@@ -4,9 +4,11 @@ import com.example.mobileprojectapp2.api.Const;
 import com.example.mobileprojectapp2.datamodel.NguoiThue;
 import com.example.mobileprojectapp2.datamodel.PhongNguoiThue;
 import com.example.mobileprojectapp2.datamodel.PhongTroChuTro;
+import com.example.mobileprojectapp2.model.Quan;
 import com.example.mobileprojectapp2.datamodels.PhongTro;
 import com.example.mobileprojectapp2.model.PhongTroChuTro2;
 import com.example.mobileprojectapp2.model.PhongTroGoiY;
+import com.example.mobileprojectapp2.model.TienIch;
 import com.example.mobileprojectapp2.model.YeuCauDatPhong;
 
 import java.util.List;
@@ -66,5 +68,14 @@ public interface ApiServicePhuc2 {
 
     @GET("api/phongtrochutro/all")
     Call<List<PhongTroChuTro>> getALlListPhongTroTheoChuTro(@Query("idChuTro") int idChuTro);
+
+    @GET("api/tienich/all/hoatdong")
+    Call<List<TienIch>> getAllListTienIch();
+
+    @GET("api/quan/all/hoatdong")
+    Call<List<Quan>> getAllListQuan();
+
+    @GET("api/layquantheoid")
+    Call<Quan> getQuanById(@Query("id") int id);
 
 }
