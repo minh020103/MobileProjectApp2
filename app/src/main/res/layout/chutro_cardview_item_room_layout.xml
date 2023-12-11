@@ -23,7 +23,7 @@
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="8"
+                android:layout_weight="7.5"
                 android:orientation="horizontal">
 
                 <de.hdodenhof.circleimageview.CircleImageView
@@ -63,14 +63,20 @@
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="3"
+                android:layout_weight="3.5"
                 android:gravity="right">
 
+                <ImageView
+                    android:id="@+id/imgVideoReview"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginRight="10dp"
+                    android:src="@drawable/review_ic" />
                 <ImageView
                     android:id="@+id/imgDanhSachNguoiThue"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:layout_marginRight="15dp"
+                    android:layout_marginRight="10dp"
                     android:src="@drawable/icon_list_person" />
 
 
@@ -78,7 +84,7 @@
                     android:id="@+id/imgChinhSua"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:layout_marginRight="15dp"
+                    android:layout_marginRight="10dp"
                     android:src="@drawable/icon_edit" />
 
                 <ImageView

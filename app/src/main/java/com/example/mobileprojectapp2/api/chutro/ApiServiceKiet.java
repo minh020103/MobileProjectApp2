@@ -51,4 +51,6 @@ public interface ApiServiceKiet {
     @PUT("api/yeucaudatphong/xacnhandatphong")
     Call<FCMThongBaoDatPhong> xacNhanDatPhong(@Query("id") int id, @Query("idTaiKhoanGui") int idTaiKhoanGui, @Query("idNguoiThue") int idNguoiThue, @Query("myIdTaiKhoan") int myIdTaiKhoan, @Query("idPhong") int idPhong);
 
+    @PUT("api/yeucaudatphong/tuchoi")
+    Call<ThongBao> tuChoiDatPhong(@Query("id") int id, @Query("idTaiKhoanGui") int idTaiKhoanGui, @Query("myIdTaiKhoan") int myIdTaiKhoan);
 }
