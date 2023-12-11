@@ -52,9 +52,9 @@ public class NotificationFragment extends AbstractFragment{
 //    FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
 //    DatabaseReference databaseReference = firebaseDatabase.getReference();
 
-    private TabLayout mTablayout;
-    private ViewPager2 mViewPager2;
-    private NotifyViewPage2Adapter adapter;
+            private TabLayout mTablayout;
+            private ViewPager2 mViewPager2;
+            private NotifyViewPage2Adapter adapter;
 
     DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
 
