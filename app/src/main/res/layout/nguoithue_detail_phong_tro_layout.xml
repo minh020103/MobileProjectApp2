@@ -23,7 +23,28 @@
 
             <TextView
                 style="@style/tv_toolbar"
-                android:text="@string/ctp" />
+                android:text="@string/ctp"
+                />
+            <ImageView
+                android:id="@+id/img_like1"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_alignParentRight="true"
+                android:layout_margin="10dp"
+                android:src="@drawable/iconp_like1"
+                android:visibility="visible"
+                android:layout_gravity="right"
+
+                />
+            <ImageView
+                android:id="@+id/img_like2"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_alignParentRight="true"
+                android:layout_margin="10dp"
+                android:visibility="gone"
+                android:src="@drawable/iconp_like2"
+                android:layout_gravity="right"/>
 
         </androidx.appcompat.widget.Toolbar>
     </LinearLayout>

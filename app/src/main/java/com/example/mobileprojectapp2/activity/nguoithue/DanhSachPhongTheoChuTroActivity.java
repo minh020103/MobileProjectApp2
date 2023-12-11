@@ -5,31 +5,25 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.mobileprojectapp2.R;
-import com.example.mobileprojectapp2.activity.chutro.DetailPhongTroActivity;
 import com.example.mobileprojectapp2.api.Const;
 import com.example.mobileprojectapp2.api.chutro.ApiServicePhuc;
 import com.example.mobileprojectapp2.api.nguoithue.ApiServicePhuc2;
 import com.example.mobileprojectapp2.datamodel.PhongTroChuTro;
-import com.example.mobileprojectapp2.datamodels.PhongTro;
 import com.example.mobileprojectapp2.model.ChuTro;
-import com.example.mobileprojectapp2.model.PhongTroChuTro2;
-import com.example.mobileprojectapp2.recyclerviewadapter.chutro.PhongTroChuTroAdapter;
-import com.example.mobileprojectapp2.recyclerviewadapter.nguoithue.PhucDanhSachPhongGoiYAdapter;
 import com.example.mobileprojectapp2.recyclerviewadapter.nguoithue.PhucDanhSachPhongGoiYAdapter2;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -52,7 +46,7 @@ public class DanhSachPhongTheoChuTroActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_danh_sach_phong_theo_chu_tro);
+        setContentView(R.layout.nguoithue_danh_sach_phong_theo_chu_tro);
 
         listDanhSachPhong = new LinkedList<>();
         anhXa();
@@ -68,6 +62,8 @@ public class DanhSachPhongTheoChuTroActivity extends AppCompatActivity {
         adapter.setMyOnCLickListener(new PhucDanhSachPhongGoiYAdapter2.MyOnCLickListener() {
             @Override
             public void OnClickItem(int position, View v) {
+                Animation anim = AnimationUtils.loadAnimation(DanhSachPhongTheoChuTroActivity.this, R.anim.item_click);
+                v.startAnimation(anim);
                 Intent intent = new Intent(DanhSachPhongTheoChuTroActivity.this, DetailPhongTroNguoiThueActivity.class);
                 intent.putExtra("idPhong", listDanhSachPhong.get(position).getId());
                 startActivity(intent);

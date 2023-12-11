@@ -4,6 +4,7 @@ import com.example.mobileprojectapp2.api.Const;
 import com.example.mobileprojectapp2.datamodel.NguoiThue;
 import com.example.mobileprojectapp2.datamodel.PhongNguoiThue;
 import com.example.mobileprojectapp2.datamodel.PhongTroChuTro;
+import com.example.mobileprojectapp2.model.PhongTroYeuThich;
 import com.example.mobileprojectapp2.model.Quan;
 import com.example.mobileprojectapp2.datamodels.PhongTro;
 import com.example.mobileprojectapp2.model.PhongTroChuTro2;
@@ -58,14 +59,12 @@ public interface ApiServicePhuc2 {
                                         @Query("idTaiKhoanNhan") int idTaiKhoanNhan,
                                         @Query("idPhong") int idPhong);
 
-
     @Multipart
     @POST("api/nguoithue/capnhatphonggoiy")
     Call<Integer> capNhatPhongGoiY(@Part("idTaiKhoan") RequestBody idTaiKhoan,
                                    @Part("idQuan") RequestBody idQuan,
                                    @Part("tienCoc") RequestBody tienCoc,
                                    @Part("gioiTinh") RequestBody gioiTinh);
-
     @GET("api/phongtrochutro/all")
     Call<List<PhongTroChuTro>> getALlListPhongTroTheoChuTro(@Query("idChuTro") int idChuTro);
 
@@ -77,5 +76,17 @@ public interface ApiServicePhuc2 {
 
     @GET("api/layquantheoid")
     Call<Quan> getQuanById(@Query("id") int id);
+
+    @GET("api/kiemtrayeuthich")
+    Call<Integer> checkYeuThich(@Query("idPhong") int idPhong,
+                             @Query("idTaiKhoan") int idTaiKhoan);
+
+    @Multipart
+    @POST("api/capnhatyeuthichphongtro")
+    Call<Integer> updateLike(@Part("idPhong") RequestBody idPhong,
+                             @Part("idTaiKhoan") RequestBody idTaiKhoan);
+
+    @GET("api/laydanhsachphongtroyeuthich")
+    Call<List<PhongTroYeuThich>> getAllPhongYeuThich(@Query("idTaiKhoan")int idTaiKhoan);
 
 }

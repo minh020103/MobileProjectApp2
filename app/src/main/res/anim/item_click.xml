@@ -5,8 +5,11 @@
         android:toXScale="0.95"
         android:fromYScale="1.0"
         android:toYScale="0.95"
-        android:duration="200"
+        android:duration="500"
         android:pivotX="50%"
-        android:pivotY="50%" />
+        android:pivotY="50%"
+        android:fromAlpha="1.0"
+        android:toAlpha="0.5"
+        />
 
 </set>

@@ -13,26 +13,23 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
 import com.example.mobileprojectapp2.R;
-import com.example.mobileprojectapp2.api.Const;
-import com.example.mobileprojectapp2.datamodel.PhongTroChuTro;
 import com.example.mobileprojectapp2.model.PhongTroYeuThich;
 
 import java.text.DecimalFormat;
 import java.util.List;
 
-public class PhucDanhSachPhongYThichAdapter extends RecyclerView.Adapter<PhucDanhSachPhongYThichAdapter.PhongGoiYViewHolder> {
+public class PhucDanhSachPhongYeuThichAdapter extends RecyclerView.Adapter<PhucDanhSachPhongYeuThichAdapter.PhongGoiYViewHolder> {
     private Activity activity;
     private List<PhongTroYeuThich> list;
     private int layoutID;
-    private PhucDanhSachPhongYThichAdapter.MyOnCLickListener myOnCLickListener;
+    private PhucDanhSachPhongYeuThichAdapter.MyOnCLickListener myOnCLickListener;
 
-    public void setMyOnCLickListener(PhucDanhSachPhongYThichAdapter.MyOnCLickListener myOnCLickListener) {
+    public void setMyOnCLickListener(PhucDanhSachPhongYeuThichAdapter.MyOnCLickListener myOnCLickListener) {
         this.myOnCLickListener = myOnCLickListener;
     }
 
-    public PhucDanhSachPhongYThichAdapter(Activity activity, List<PhongTroYeuThich> list, int layoutID) {
+    public PhucDanhSachPhongYeuThichAdapter(Activity activity, List<PhongTroYeuThich> list, int layoutID) {
         this.activity = activity;
         this.list = list;
         this.layoutID = layoutID;
@@ -58,36 +55,35 @@ public class PhucDanhSachPhongYThichAdapter extends RecyclerView.Adapter<PhucDan
 //        } else {
 //            holder.imgViewPhongGoiY.setImageResource(R.drawable.khongcoanh);
 //        }
-        holder.tvDiaChi.setText(phongTroYeuThich.getIdPhong().getDiaChiChiTiet());
-//        holder.tvQuan.setText(phongTro.getPhongTro().getQuan().getTenQuan()+ "");
-//        holder.tvGia.setText(phongTro.getPhongTro().getGia() + "triệu VNĐ/tháng");
 
-        float trieu = 1000000;
-        float ngan = 1000;
-        float tram = 100000;
-        float gia;
-        String gia2;
-        DecimalFormat decimalFormat = new DecimalFormat("#.#");
-        if (phongTroYeuThich.getIdPhong().getGia() < tram) {
-            holder.tvGia.setText("Đang cập nhật");
-        } else if (phongTroYeuThich.getIdPhong().getGia() < trieu) {
-            gia = phongTroYeuThich.getIdPhong().getGia() / ngan;
-            gia2 = decimalFormat.format(gia);
-            holder.tvGia.setText(gia2 + "k /tháng");
-        } else if (phongTroYeuThich.getIdPhong().getGia() >= trieu) {
-            gia = phongTroYeuThich.getIdPhong().getGia() / trieu;
-            gia2 = decimalFormat.format(gia);
-            holder.tvGia.setText(gia2 + " triệu/tháng");
-        }
-
-        holder.tvLoaiPhong.setText(phongTroYeuThich.getIdPhong().getLoaiPhong() == PHONG_GHEP ? "Phòng ghép" : "Tìm người thuê");
-        holder.tvGioiTinh.setText(phongTroYeuThich.getIdPhong().getGioiTinh() == MALE_GENDERS ? "Nam" : "Nữ");
-        holder.onClickListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                myOnCLickListener.OnClickItem(position, v);
-            }
-        };
+//        holder.tvDiaChi.setText(phongTroYeuThich.getIdPhong().getDiaChiChiTiet());
+//
+//        float trieu = 1000000;
+//        float ngan = 1000;
+//        float tram = 100000;
+//        float gia;
+//        String gia2;
+//        DecimalFormat decimalFormat = new DecimalFormat("#.#");
+//        if (phongTroYeuThich.getIdPhong().getGia() < tram) {
+//            holder.tvGia.setText("Đang cập nhật");
+//        } else if (phongTroYeuThich.getIdPhong().getGia() < trieu) {
+//            gia = phongTroYeuThich.getIdPhong().getGia() / ngan;
+//            gia2 = decimalFormat.format(gia);
+//            holder.tvGia.setText(gia2 + "k /tháng");
+//        } else if (phongTroYeuThich.getIdPhong().getGia() >= trieu) {
+//            gia = phongTroYeuThich.getIdPhong().getGia() / trieu;
+//            gia2 = decimalFormat.format(gia);
+//            holder.tvGia.setText(gia2 + " triệu/tháng");
+//        }
+//
+//        holder.tvLoaiPhong.setText(phongTroYeuThich.getIdPhong().getLoaiPhong() == PHONG_GHEP ? "Phòng ghép" : "Tìm người thuê");
+//        holder.tvGioiTinh.setText(phongTroYeuThich.getIdPhong().getGioiTinh() == MALE_GENDERS ? "Nam" : "Nữ");
+//        holder.onClickListener = new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                myOnCLickListener.OnClickItem(position, v);
+//            }
+//        };
     }
 
     public interface MyOnCLickListener {
@@ -107,7 +103,7 @@ public class PhucDanhSachPhongYThichAdapter extends RecyclerView.Adapter<PhucDan
 
         public PhongGoiYViewHolder(@NonNull View itemView) {
             super(itemView);
-            imgViewPhongGoiY = itemView.findViewById(R.id.imgView_phong_goi_y);
+//            imgViewPhongGoiY = itemView.findViewById(R.id.imgView_phong_goi_y);
             tvLoaiPhong = itemView.findViewById(R.id.tv_loai_phong_ds_goi_y);
             tvGioiTinh = itemView.findViewById(R.id.tv_gioi_tinh_ds_goi_y);
             tvGia = itemView.findViewById(R.id.tv_gia_ds_goi_y);

@@ -31,6 +31,7 @@
                     android:src="@drawable/p5" />
 
                 <ImageView
+                    android:id="@+id/img_like1"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:layout_alignParentRight="true"

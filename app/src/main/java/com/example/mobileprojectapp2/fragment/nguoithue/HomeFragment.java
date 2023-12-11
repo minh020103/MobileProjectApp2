@@ -25,6 +25,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.mobileprojectapp2.R;
+import com.example.mobileprojectapp2.activity.nguoithue.DanhSachPhongYeuThichActivity;
 import com.example.mobileprojectapp2.activity.nguoithue.DetailPhongTroNguoiThueActivity;
 import com.example.mobileprojectapp2.activity.nguoithue.DanhSachPhongGhepActivity;
 import com.example.mobileprojectapp2.activity.nguoithue.DanhSachPhongGoiYActivity;
@@ -237,7 +238,7 @@ public class HomeFragment extends AbstractFragment {
         llSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                chuyenQuaManHinhTimKiem();
+                startActivity(new Intent(getActivity(), DanhSachPhongYeuThichActivity.class));
             }
         });
         tvTimPhong.setOnClickListener(new View.OnClickListener() {
