@@ -120,6 +120,9 @@ public class MotelRoomAdapter extends RecyclerView.Adapter<MotelRoomAdapter.MyVi
                     case R.id.imgChinhSua:
                         onClickItemRoomListener.setOnClickEdit(position, view);
                         break;
+                    case R.id.imgVideoReview:
+                        onClickItemRoomListener.setOnClickVideoReview(position,view);
+                        break;
                     case R.id.imgXoa:
                         onClickItemRoomListener.setOnClickDelete(position, view);
                         break;
@@ -145,6 +148,7 @@ public class MotelRoomAdapter extends RecyclerView.Adapter<MotelRoomAdapter.MyVi
     public interface OnClickItemRoomListener{
         void setOnClickListPerson(int position, View view);
         void setOnClickEdit(int position, View view);
+        void setOnClickVideoReview(int position, View view);
         void setOnClickDelete(int position, View view);
         void setOnClickComment(int position, View view);
         void setOnClickRating(int position, View view);
@@ -156,7 +160,7 @@ public class MotelRoomAdapter extends RecyclerView.Adapter<MotelRoomAdapter.MyVi
         ViewPager2 vp2SlideImage;
         CircleIndicator3 ci3SlideImage;
 
-        ImageView  imgDanhSachNguoiThue, imgChinhSua, imgXoa,imgControls;
+        ImageView  imgDanhSachNguoiThue, imgChinhSua, imgXoa,imgControls,imgReview;
 
         LinearLayout llComment;
         LinearLayout llRating,  llControls;
@@ -173,6 +177,7 @@ public class MotelRoomAdapter extends RecyclerView.Adapter<MotelRoomAdapter.MyVi
             imgChinhSua = itemView.findViewById(R.id.imgChinhSua);
             imgXoa = itemView.findViewById(R.id.imgXoa);
             imgControls = itemView.findViewById(R.id.imgControls);
+            imgReview = itemView.findViewById(R.id.imgVideoReview);
 
             llComment = itemView.findViewById(R.id.llComment);
             llRating = itemView.findViewById(R.id.llRating);
@@ -204,6 +209,7 @@ public class MotelRoomAdapter extends RecyclerView.Adapter<MotelRoomAdapter.MyVi
             imgDanhSachNguoiThue.setOnClickListener(this);
             imgChinhSua.setOnClickListener(this);
             imgXoa.setOnClickListener(this);
+            imgReview.setOnClickListener(this);
             llComment.setOnClickListener(this);
             llRating.setOnClickListener(this);
             llControls.setOnClickListener(this);

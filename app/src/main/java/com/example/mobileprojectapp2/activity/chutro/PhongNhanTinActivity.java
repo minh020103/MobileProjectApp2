@@ -20,9 +20,11 @@ import com.example.mobileprojectapp2.R;
 import com.example.mobileprojectapp2.adapter.TinNhanAdapter;
 import com.example.mobileprojectapp2.api.Const;
 import com.example.mobileprojectapp2.api.chutro.ApiServiceNghiem;
+import com.example.mobileprojectapp2.component.MFCM;
 import com.example.mobileprojectapp2.datamodel.ChuTro;
 import com.example.mobileprojectapp2.datamodel.NguoiThue;
 import com.example.mobileprojectapp2.datamodel.TaiKhoan;
+import com.example.mobileprojectapp2.datamodel.TenSender;
 import com.example.mobileprojectapp2.datamodel.TinNhan;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -157,12 +159,27 @@ public class PhongNhanTinActivity extends AppCompatActivity {
             });
         }
     private void capNhatTinNhanNew(int idPhong, String noiDung, String thoiGian){
+
         RequestBody noiDungAPi = RequestBody.create(MediaType.parse("multipart/form-data"),inputMess.getText().toString());
         RequestBody thoiGianApi = RequestBody.create(MediaType.parse("multipart/form-data"),thoiGian);
         Call<Integer> call = ApiServiceNghiem.apiService.capNhatTinNhanMoiNhat(senderId,idPhong,noiDungAPi,thoiGianApi);
         call.enqueue(new Callback<Integer>() {
             @Override
             public void onResponse(Call<Integer> call, Response<Integer> response) {
+                Call<TenSender> tenSenderCall = ApiServiceNghiem.apiService.layTenSender(senderId);
+                tenSenderCall.enqueue(new Callback<TenSender>() {
+                    @Override
+                    public void onResponse(Call<TenSender> call, Response<TenSender> response) {
+                        if(response!=null){
+                            Date date = new Date();
+                            MFCM.sendNotificationForAccountID(idDoiPhuong,date.getSeconds(),response.body().getTen(),noiDung);
+                        }
+                    }
+                    @Override
+                    public void onFailure(Call<TenSender> call, Throwable t) {
+                        thongBao("Sai");
+                    }
+                });
                 thongBaoReset(inputMess.getText().toString());
                 inputMess.setText("");
             }

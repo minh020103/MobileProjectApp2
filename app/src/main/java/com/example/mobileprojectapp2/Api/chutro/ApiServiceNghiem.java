@@ -6,6 +6,7 @@ import com.example.mobileprojectapp2.datamodel.ChuTro;
 import com.example.mobileprojectapp2.datamodel.NguoiThue;
 import com.example.mobileprojectapp2.datamodel.PhongTinNhan;
 import com.example.mobileprojectapp2.datamodel.TaiKhoan;
+import com.example.mobileprojectapp2.datamodel.TenSender;
 import com.example.mobileprojectapp2.datamodel.TinNhan;
 
 import java.util.ArrayList;
@@ -89,7 +90,8 @@ public interface ApiServiceNghiem {
     Call<PhongTinNhan> taoPhongTinNhan(@Part("idTaiKhoan1") RequestBody idTaiKhoan1,
                                          @Part("idTaiKhoan2")RequestBody idTaiKhoan2
                                          );
-
+    @GET("profilesender")
+    Call<TenSender> layTenSender(@Query("idTaiKhoan") int idtaiKhoan);
     @GET("layanhvatendoiphuong")
     Call<TaiKhoan> callThongTinDoiPhuong(@Query("idSender") int idSender,@Query("idPhong") int idPhong,@Query("idDoiPhuong") int idDoiPhuong   );
 }

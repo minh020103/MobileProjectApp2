@@ -41,6 +41,7 @@ public class DanhSachPhongGoiYActivity extends AppCompatActivity {
     LinearLayoutManager linearLayoutManager;
     DanhSachGoiYAdapter danhSachGoiYAdapter;
     ImageView ic_back;
+    TextView ghiChuHuongDan;
     SharedPreferences sharedPreferences;
     int idTaiKhoan;
     TextView soLuongKetQua;
@@ -112,11 +113,17 @@ public class DanhSachPhongGoiYActivity extends AppCompatActivity {
                 if(response!=null){
                     arrayList.clear();
                     arrayList.addAll(response.body());
-                    soLuongKetQua.setText(arrayList.size()+"");
+                    if(arrayList.size()==0){
+                        soLuongKetQua.setText(arrayList.size()+"");
+                        ghiChuHuongDan.setVisibility(View.VISIBLE);
+                    }else{
+                    soLuongKetQua.setText(arrayList.size()+""); ghiChuHuongDan.setVisibility(View.INVISIBLE);}
+
                     danhSachGoiYAdapter.notifyDataSetChanged();
 
                 }else{
                     soLuongKetQua.setText(0+"");
+                    ghiChuHuongDan.setVisibility(View.VISIBLE);
                 }
             }
 
@@ -143,5 +150,6 @@ public class DanhSachPhongGoiYActivity extends AppCompatActivity {
         ic_back = findViewById(R.id.ic_back);
         soLuongKetQua= findViewById(R.id.soLuongKetQua);
         vp2Banner = findViewById(R.id.vp2Banner);
+        ghiChuHuongDan = findViewById(R.id.ghiChuHuongDan);
     }
 }

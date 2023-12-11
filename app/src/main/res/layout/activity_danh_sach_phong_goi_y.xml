@@ -84,6 +84,7 @@
                 app:layout_constraintTop_toBottomOf="@id/shapeableImageView" />
 
             <TextView
+                android:id="@+id/textView10"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
@@ -92,6 +93,20 @@
                 app:layout_constraintBottom_toBottomOf="@+id/soLuongKetQua"
                 app:layout_constraintStart_toEndOf="@+id/soLuongKetQua"
                 app:layout_constraintTop_toTopOf="@+id/soLuongKetQua"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <TextView
+                android:visibility="invisible"
+                android:id="@+id/ghiChuHuongDan"
+                android:textColor="@color/text_do"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="*Hãy Xem Thử Phòng Nào Đó!"
+                app:layout_constraintBottom_toBottomOf="@+id/textView10"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.188"
+                app:layout_constraintStart_toEndOf="@+id/textView10"
+                app:layout_constraintTop_toTopOf="@+id/textView10"
                 app:layout_constraintVertical_bias="0.0" />
 
             <androidx.recyclerview.widget.RecyclerView
