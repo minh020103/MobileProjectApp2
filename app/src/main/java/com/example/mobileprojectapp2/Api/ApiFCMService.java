@@ -7,6 +7,7 @@ import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
 
@@ -17,7 +18,9 @@ public interface ApiFCMService {
             .build()
             .create(ApiFCMService.class);
 
-        @Headers({"Authorization: key=" + Const.SERVER_KEY, "Content-Type:" + Const.CONTENT_TYPE})
-        @POST("/fcm/send")
-        Call<ResultFCM> postNotification(@Body PushNotification data);
+    @Headers({"Authorization: key=" + Const.SERVER_KEY, "Content-Type:" + Const.CONTENT_TYPE})
+    @POST("/fcm/send")
+    Call<ResultFCM> postNotification(@Body PushNotification data);
+
+
 }
