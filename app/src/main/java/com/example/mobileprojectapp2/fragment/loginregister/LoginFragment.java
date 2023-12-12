@@ -91,6 +91,7 @@ public class LoginFragment extends AbstractFragment {
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), QuenMatKhauActivity.class);
                 startActivity(intent);
+                getActivity().finish();
             }
         });
 
