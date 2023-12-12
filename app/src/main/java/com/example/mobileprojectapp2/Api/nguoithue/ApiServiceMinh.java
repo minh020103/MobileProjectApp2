@@ -44,7 +44,7 @@ public interface ApiServiceMinh {
     Call<FirebaseCloudMessaging> saveTokenDeviceOfAccount(@Query("token") String token, @Query("idTaiKhoan") int idTaiKhoan);
     // Khi đăng xuất thì phải dùng hàm này khi xóa thành công trên database rồi mới được xóa idTaiKhoan trong thiết bị và đăng xuất
     @DELETE("api/fcm/delete")
-    Call<Integer> deleteTokenDeviceOfAccount(@Query("token") String token, @Query("idTaiKhoan") int idTaiKhoan);
+    Call<Integer> deleteTokenDeviceOfAccount(@Query("token") String token);
 
     @GET("api/taikhoan/all/type")
     Call<List<TaiKhoan>> layTatCaTaiKhoanTheoLoaiTaiKhoan(@Query("loaiTaiKhoan") int loaiTaiKhoan);

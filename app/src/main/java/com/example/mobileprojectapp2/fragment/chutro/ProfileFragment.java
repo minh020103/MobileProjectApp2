@@ -25,6 +25,7 @@ import com.example.mobileprojectapp2.activity.chutro.AuthenticationActivity;
 import com.example.mobileprojectapp2.activity.chutro.ChangePasswordActivity;
 import com.example.mobileprojectapp2.activity.chutro.EditProfileActivity;
 import com.example.mobileprojectapp2.activity.chutro.MotelRoomOwnerActivity;
+import com.example.mobileprojectapp2.component.MComponent;
 import com.example.mobileprojectapp2.model.ChuTro;
 import com.makeramen.roundedimageview.RoundedImageView;
 
@@ -81,7 +82,7 @@ public class ProfileFragment extends AbstractFragment {
                 sharedPreferences.edit().remove("idTaiKhoan").commit();
                 sharedPreferences.edit().remove("idChuTro").commit();
                 sharedPreferences.edit().remove("trangThaiXacThuc").commit();
-
+                MComponent.deleteTokenDivice();
                 startActivity(new Intent(getActivity(), LoginActivity.class));
             }
         });

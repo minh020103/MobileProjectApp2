@@ -31,6 +31,7 @@ import com.example.mobileprojectapp2.activity.nguoithue.RenterActivity;
 import com.example.mobileprojectapp2.api.chutro.ApiServiceNghiem;
 import com.example.mobileprojectapp2.api.Const;
 import com.example.mobileprojectapp2.api.nguoithue.ApiServiceMinh;
+import com.example.mobileprojectapp2.component.MComponent;
 import com.example.mobileprojectapp2.datamodel.FirebaseCloudMessaging;
 import com.example.mobileprojectapp2.datamodel.TaiKhoan;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -154,33 +155,7 @@ public class LoginFragment extends AbstractFragment {
                 firebaseAuth.signInWithEmailAndPassword(tenTaiKhoan, matKhau).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                     @Override
                     public void onSuccess(AuthResult authResult) {
-                        FirebaseMessaging.getInstance().getToken()
-                                .addOnCompleteListener(new OnCompleteListener<String>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<String> task) {
-                                        if (!task.isSuccessful()) {
-                                            Log.w("TAG", "Fetching FCM registration token failed", task.getException());
-                                            return;
-                                        }
-
-                                        // Get new FCM registration token
-                                        String token = task.getResult();
-
-                                        ApiServiceMinh.apiService.saveTokenDeviceOfAccount(token, response.body().getId()).enqueue(new Callback<FirebaseCloudMessaging>() {
-                                            @Override
-                                            public void onResponse(Call<FirebaseCloudMessaging> call, Response<FirebaseCloudMessaging> response) {
-                                                if (response.code() == 200) {
-                                                    Log.d("TAG", "onResponse: SAVE TOKEN COMPLATED");
-                                                }
-                                            }
-
-                                            @Override
-                                            public void onFailure(Call<FirebaseCloudMessaging> call, Throwable t) {
-
-                                            }
-                                        });
-                                    }
-                                });
+                        MComponent.saveTokenAppDevice(response.body().getId());
                         sharedPreferences.edit().putInt("idTaiKhoan", response.body().getId()).commit();
                         sharedPreferences.edit().putInt("loaiTaiKhoan", response.body().getLoaiTaiKhoan()).commit();
                         if (response.body().getLoaiTaiKhoan() == 1) {

@@ -17,18 +17,22 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.mobileprojectapp2.R;
 import com.example.mobileprojectapp2.api.chutro.ApiServiceMinh;
+import com.example.mobileprojectapp2.datamodel.FirebaseCloudMessaging;
 import com.example.mobileprojectapp2.datamodel.PhongBinhLuan;
 import com.example.mobileprojectapp2.datamodel.PhongDanhGia;
 import com.example.mobileprojectapp2.player.RatingPlayer;
 import com.example.mobileprojectapp2.recyclerviewadapter.chutro.CommentAdapter;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -212,5 +216,67 @@ public class MComponent {
     public static String boChuoiPhiaSau(String str, int soLuongKyTu, String kyTuThayThe){
         String res = str.length() >= soLuongKyTu+1?str.substring(0, soLuongKyTu)+kyTuThayThe:str;
         return res;
+    }
+    //Lưu token ứng dụng của thiết bị (idAccount)
+    //idAccount là tài khoản đã đăng nhập vào ứng dụng
+    public static void saveTokenAppDevice(int idAccount){
+        FirebaseMessaging.getInstance().getToken()
+                .addOnCompleteListener(new OnCompleteListener<String>() {
+                    @Override
+                    public void onComplete(@NonNull Task<String> task) {
+                        if (!task.isSuccessful()) {
+                            Log.w("TAG", "Fetching FCM registration token failed", task.getException());
+                            return;
+                        }
+
+                        // Get new FCM registration token
+                        String token = task.getResult();
+
+                        com.example.mobileprojectapp2.api.nguoithue.ApiServiceMinh.apiService.saveTokenDeviceOfAccount(token, idAccount).enqueue(new Callback<FirebaseCloudMessaging>() {
+                            @Override
+                            public void onResponse(Call<FirebaseCloudMessaging> call, Response<FirebaseCloudMessaging> response) {
+                                if (response.code() == 200) {
+                                    Log.d("TAG", "onResponse: SAVE TOKEN COMPLATED");
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Call<FirebaseCloudMessaging> call, Throwable t) {
+
+                            }
+                        });
+                    }
+                });
+    }
+    //Xóa token
+    public static void deleteTokenDivice(){
+        FirebaseMessaging.getInstance().getToken()
+                .addOnCompleteListener(new OnCompleteListener<String>() {
+                    @Override
+                    public void onComplete(@NonNull Task<String> task) {
+                        if (!task.isSuccessful()) {
+                            Log.w("TAG", "Fetching FCM registration token failed", task.getException());
+                            return;
+                        }
+
+                        // Get new FCM registration token
+                        String token = task.getResult();
+
+                        com.example.mobileprojectapp2.api.nguoithue.ApiServiceMinh.apiService.deleteTokenDeviceOfAccount(token).enqueue(new Callback<Integer>() {
+                            @Override
+                            public void onResponse(Call<Integer> call, Response<Integer> response) {
+                                if (response.code() == 200) {
+                                    Log.d("TAG", "onResponse: DELETE TOKEN COMPLATED");
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Call<Integer> call, Throwable t) {
+
+                            }
+                        });
+                    }
+                });
+
     }
 }
