@@ -168,15 +168,4 @@ public class RenterActivity extends AppCompatActivity {
 //                notificationManager.notify(id, notification);
 //            }
 //    }
-    private void requestPermisstion(){
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            if (ContextCompat.checkSelfPermission(
-                    activity, Manifest.permission.POST_NOTIFICATIONS) ==
-                    PackageManager.PERMISSION_GRANTED){
-            }
-            else {
-                requestPermissions(new String[]{Manifest.permission.POST_NOTIFICATIONS}, 111);
-            }
-        }
-    }
 }

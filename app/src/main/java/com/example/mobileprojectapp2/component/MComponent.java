@@ -203,4 +203,14 @@ public class MComponent {
             }
         });
     }
+
+
+    //Hàm cắt bỏ phần đuôi của chuỗi (str, soLuongKyTu, kyTuThayThe)
+    //str là chuỗi bỏ vào
+    //soLuongKyTu là chuỗi chỉ lấy từ vị trí thứ 0 -> soLuongKyTu VD str="0123456" soLuongKyTu=5 thì str còn "012345"
+    //kyTuThayThe là phần bị mất đi được thay thế bằng kyTuThayThe VD kyTuThayThe="..." thì str ở trên sẽ thành "012345..."
+    public static String boChuoiPhiaSau(String str, int soLuongKyTu, String kyTuThayThe){
+        String res = str.length() >= soLuongKyTu+1?str.substring(0, soLuongKyTu)+kyTuThayThe:str;
+        return res;
+    }
 }
