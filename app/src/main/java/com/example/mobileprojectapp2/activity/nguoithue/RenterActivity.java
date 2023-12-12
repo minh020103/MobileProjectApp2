@@ -95,7 +95,6 @@ public class RenterActivity extends AppCompatActivity {
         badgeMessage.setVisible(true);
         badgeMessage.setNumber(10);
         adapter = new RenterViewPage2Adapter(this);
-        requestPermisstion();
 
         list.add(new HomeFragment());
         list.add(new MyRoomFragment());
