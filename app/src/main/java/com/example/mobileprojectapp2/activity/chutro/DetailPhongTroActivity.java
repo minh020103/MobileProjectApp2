@@ -156,6 +156,7 @@ public class DetailPhongTroActivity extends AppCompatActivity {
                         break;
                     }
                 }
+
                 adapterTienIch.notifyDataSetChanged();
                 llXemThem.setOnClickListener(new View.OnClickListener() {
                     @Override

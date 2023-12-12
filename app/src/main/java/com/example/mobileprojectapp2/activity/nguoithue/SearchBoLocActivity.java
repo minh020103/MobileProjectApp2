@@ -33,9 +33,7 @@ import com.example.mobileprojectapp2.recyclerviewadapter.nguoithue.PhucGioiTinhA
 import com.example.mobileprojectapp2.recyclerviewadapter.nguoithue.PhucLoaiPhongAdapter;
 import com.google.android.material.slider.RangeSlider;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -43,7 +41,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class SearchBoLocActivity extends AppCompatActivity {
-    private Button btnTienIch, btnLoaiPhong, btnGia, btnSoNguoi;
+    private Button btnDienNuoc, btnLoaiPhong, btnGia, btnSoNguoi;
     // Sửa màu cho phòng
     LinearLayout bgLoaiPhongOld = null;
     Drawable backDrawableLoaiPhong = null;
@@ -59,7 +57,7 @@ public class SearchBoLocActivity extends AppCompatActivity {
 
     //List nguoi dung
     private List<Selected> listSelected;
-    private ImageView imgDownTienIch, imgUpTienIch, imgClear, img_loai_phong_down, img_loai_phong_up,
+    private ImageView imgDownDienNuoc, imgUpDienNuoc, imgClear, img_loai_phong_down, img_loai_phong_up,
             img_gia_down, img_gia_up, img_so_nguoi_down, img_so_nguoi_up;
     private RecyclerView rcvListTienIch, rcvListSelected, rcvListLoaiPhong, rcvListGioiTinh;
 
@@ -156,29 +154,29 @@ public class SearchBoLocActivity extends AppCompatActivity {
                 notShowListSelected();
             }
         });
-        adapterTienIch.setMyOnCLickListener(new TienIchAdapter.MyOnCLickListener() {
-            @Override
-            public void OnClickItem(int position, View v, LinearLayout bg) {
-                onClickListener.onClick(v);
-                Animation anim = AnimationUtils.loadAnimation(SearchBoLocActivity.this, R.anim.item_click);
-                v.startAnimation(anim);
-
-                if (!listTienIchSeleted.contains(listTienIch.get(position))) {
-//                    //Set màu mới cho background
-//                    bg.setBackground(getResources().getDrawable(R.drawable.btn_p4, getTheme()));
-//                    //add vao list nguoi dung
-
-                    listSelected.add(new Selected(Const.TIEN_ICH, position, listTienIch.get(position).getTen()));
-                    //add vao list luu du lieu
-                    listTienIchSeleted.add(listTienIch.get(position));
-                    adapterSelected.notifyDataSetChanged();
-                    ll_list_Selected.setVisibility(View.VISIBLE);
-                } else {
-
-                    Toast.makeText(SearchBoLocActivity.this, "Đã có", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
+//        adapterTienIch.setMyOnCLickListener(new TienIchAdapter.MyOnCLickListener() {
+//            @Override
+//            public void OnClickItem(int position, View v, LinearLayout bg) {
+//                onClickListener.onClick(v);
+//                Animation anim = AnimationUtils.loadAnimation(SearchBoLocActivity.this, R.anim.item_click);
+//                v.startAnimation(anim);
+//
+//                if (!listTienIchSeleted.contains(listTienIch.get(position))) {
+////                    //Set màu mới cho background
+////                    bg.setBackground(getResources().getDrawable(R.drawable.btn_p4, getTheme()));
+////                    //add vao list nguoi dung
+//
+//                    listSelected.add(new Selected(Const.TIEN_ICH, position, listTienIch.get(position).getTen()));
+//                    //add vao list luu du lieu
+//                    listTienIchSeleted.add(listTienIch.get(position));
+//                    adapterSelected.notifyDataSetChanged();
+//                    ll_list_Selected.setVisibility(View.VISIBLE);
+//                } else {
+//
+//                    Toast.makeText(SearchBoLocActivity.this, "Đã có", Toast.LENGTH_SHORT).show();
+//                }
+//            }
+//        });
         adapterLoaiPhong.setOnClick(new PhucLoaiPhongAdapter.OnClick() {
             @Override
             public void onClickItemListener(int position, View view, LinearLayout bg) {
@@ -296,7 +294,7 @@ public class SearchBoLocActivity extends AppCompatActivity {
     }
 
     private void onClickButton() {
-        btnTienIch.setOnClickListener(onClickListener);
+        btnDienNuoc.setOnClickListener(onClickListener);
         btnLoaiPhong.setOnClickListener(onClickListener);
         btnGia.setOnClickListener(onClickListener);
         btnSoNguoi.setOnClickListener(onClickListener);
@@ -313,14 +311,14 @@ public class SearchBoLocActivity extends AppCompatActivity {
         public void onClick(View v) {
             int id = v.getId();
             switch (id) {
-                case R.id.btn_tien_ich:
+                case R.id.btn_dien_nuoc:
                     switch (flagTienIch) {
                         case 0:
                             //Bat
                             Log.d("TAG", "listNguoiDung: " + listSelected.size());
                             Log.d("TAG", "listSoNguoi: " + listTienIchSeleted.size());
-                            imgDownTienIch.setVisibility(View.GONE);
-                            imgUpTienIch.setVisibility(View.VISIBLE);
+                            imgDownDienNuoc.setVisibility(View.GONE);
+                            imgUpDienNuoc.setVisibility(View.VISIBLE);
                             flagTienIch = 1;
                             getListTienIch();
                             rcvListTienIch.setVisibility(View.VISIBLE);
@@ -343,8 +341,8 @@ public class SearchBoLocActivity extends AppCompatActivity {
                             break;
                         case 1:
                             //Tat
-                            imgDownTienIch.setVisibility(View.VISIBLE);
-                            imgUpTienIch.setVisibility(View.GONE);
+                            imgDownDienNuoc.setVisibility(View.VISIBLE);
+                            imgUpDienNuoc.setVisibility(View.GONE);
                             flagTienIch = 0;
                             rcvListTienIch.setVisibility(View.GONE);
 
@@ -366,8 +364,8 @@ public class SearchBoLocActivity extends AppCompatActivity {
                             flagGia = 0;
                             flagSoNguoi = 0;
 
-                            imgUpTienIch.setVisibility(View.GONE);
-                            imgDownTienIch.setVisibility(View.VISIBLE);
+                            imgUpDienNuoc.setVisibility(View.GONE);
+                            imgDownDienNuoc.setVisibility(View.VISIBLE);
                             img_gia_up.setVisibility(View.GONE);
                             img_gia_down.setVisibility(View.VISIBLE);
                             img_so_nguoi_up.setVisibility(View.GONE);
@@ -402,8 +400,8 @@ public class SearchBoLocActivity extends AppCompatActivity {
                             flagLoaiPhong = 0;
                             flagSoNguoi = 0;
 
-                            imgUpTienIch.setVisibility(View.GONE);
-                            imgDownTienIch.setVisibility(View.VISIBLE);
+                            imgUpDienNuoc.setVisibility(View.GONE);
+                            imgDownDienNuoc.setVisibility(View.VISIBLE);
                             img_loai_phong_up.setVisibility(View.GONE);
                             img_loai_phong_down.setVisibility(View.VISIBLE);
                             img_so_nguoi_up.setVisibility(View.GONE);
@@ -441,8 +439,8 @@ public class SearchBoLocActivity extends AppCompatActivity {
 
                             img_loai_phong_up.setVisibility(View.GONE);
                             img_loai_phong_down.setVisibility(View.VISIBLE);
-                            imgUpTienIch.setVisibility(View.GONE);
-                            imgDownTienIch.setVisibility(View.VISIBLE);
+                            imgUpDienNuoc.setVisibility(View.GONE);
+                            imgDownDienNuoc.setVisibility(View.VISIBLE);
                             img_gia_down.setVisibility(View.VISIBLE);
                             img_gia_up.setVisibility(View.GONE);
 
@@ -523,14 +521,14 @@ public class SearchBoLocActivity extends AppCompatActivity {
     }
 
     private void anhXa() {
-        btnTienIch = findViewById(R.id.btn_tien_ich);
+        btnDienNuoc = findViewById(R.id.btn_dien_nuoc);
         btnLoaiPhong = findViewById(R.id.btn_loai_phong);
         btnGia = findViewById(R.id.btn_gia);
         btnSoNguoi = findViewById(R.id.btn_so_nguoi);
 
         imgClear = findViewById(R.id.img_clear);
-        imgDownTienIch = findViewById(R.id.img_tien_ich_down);
-        imgUpTienIch = findViewById(R.id.img_tien_ich_up);
+        imgDownDienNuoc = findViewById(R.id.img_dien_nuoc_down);
+        imgUpDienNuoc = findViewById(R.id.img_dien_nuoc_up);
 
         img_loai_phong_down = findViewById(R.id.img_loai_phong_down);
         img_loai_phong_up = findViewById(R.id.img_loai_phong_up);

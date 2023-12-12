@@ -18,6 +18,7 @@ import com.example.mobileprojectapp2.datamodel.HinhAnh;
 import com.example.mobileprojectapp2.model.PhongTroChuTro2;
 import com.example.mobileprojectapp2.viewpager2adapter.ChuTroImageSlideViewPager2Adapter;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -55,7 +56,26 @@ public class PhongTroChuTroAdapter extends RecyclerView.Adapter<PhongTroChuTroAd
             return;
         }
         holder.soPhong.setText(phongTroChuTro.getPhongTro().getSoPhong() + "");
-        holder.gia.setText(phongTroChuTro.getPhongTro().getGia() + " " + "₫");
+//        holder.gia.setText(phongTroChuTro.getPhongTro().getGia() + " " + "₫");
+
+        float trieu = 1000000;
+        float ngan = 1000;
+        float tram = 100000;
+        float gia;
+        String gia2;
+        DecimalFormat decimalFormat = new DecimalFormat("#.#");
+        if (phongTroChuTro.getPhongTro().getGia() < tram) {
+            holder.gia.setText("Đang cập nhật");
+        } else if (phongTroChuTro.getPhongTro().getGia() < trieu) {
+            gia = phongTroChuTro.getPhongTro().getGia() / ngan;
+            gia2 = decimalFormat.format(gia);
+            holder.gia.setText(gia2 + "k /tháng");
+        } else if (phongTroChuTro.getPhongTro().getGia() >= trieu) {
+            gia = phongTroChuTro.getPhongTro().getGia() / trieu;
+            gia2 = decimalFormat.format(gia);
+            holder.gia.setText(gia2 + " triệu/tháng");
+        }
+
         holder.loaiPhong.setText(phongTroChuTro.getPhongTro().getLoaiPhong() == PHONG_TRONG ? "Phòng trống" : phongTroChuTro.getPhongTro().getLoaiPhong() == PHONG_GHEP ? "Phòng ghép" : "Phòng đơn");
         holder.dienTich.setText(phongTroChuTro.getPhongTro().getDienTich() + "" + "㎡");
         holder.onClickListener = new View.OnClickListener() {

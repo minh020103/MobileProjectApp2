@@ -24,12 +24,6 @@ public class TienIchAdapter extends RecyclerView.Adapter<TienIchAdapter.TienIchV
     private List<TienIch> list;
     private int layoutID;
 
-    private MyOnCLickListener myOnCLickListener;
-
-    public void setMyOnCLickListener(MyOnCLickListener myOnCLickListener) {
-        this.myOnCLickListener = myOnCLickListener;
-    }
-
     public TienIchAdapter(Activity activity, List<TienIch> list, int layoutID) {
         this.activity = activity;
         this.list = list;
@@ -58,16 +52,9 @@ public class TienIchAdapter extends RecyclerView.Adapter<TienIchAdapter.TienIchV
 
         holder.tvTenTienIch.setText(tienIch.getTen());
         Glide.with(activity.getLayoutInflater().getContext()).load(Const.DOMAIN + tienIch.getHinh()).into(holder.imageTienIch);
-        holder.onClickListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                myOnCLickListener.OnClickItem(position, v, holder.llBg);
-            }
-        };
+
     }
-    public interface MyOnCLickListener {
-        void OnClickItem(int position, View v, LinearLayout llBg);
-    }
+
     @Override
     public int getItemCount() {
         if (list != null) {
@@ -76,9 +63,8 @@ public class TienIchAdapter extends RecyclerView.Adapter<TienIchAdapter.TienIchV
         return 0;
     }
 
-    public class TienIchViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    public class TienIchViewHolder extends RecyclerView.ViewHolder {
 
-        View.OnClickListener onClickListener;
 
         private ImageView imageTienIch;
         private TextView tvTenTienIch;
@@ -90,13 +76,7 @@ public class TienIchAdapter extends RecyclerView.Adapter<TienIchAdapter.TienIchV
             llBg = itemView.findViewById(R.id.ll_bg_item_loai_phong);
             imageTienIch = itemView.findViewById(R.id.img_tien_ich);
             tvTenTienIch = itemView.findViewById(R.id.tv_ten_tien_ich);
-            itemView.setOnClickListener(this);
-
         }
 
-        @Override
-        public void onClick(View v) {
-            onClickListener.onClick(v);
-        }
     }
 }

@@ -4,11 +4,8 @@ import com.example.mobileprojectapp2.api.Const;
 import com.example.mobileprojectapp2.datamodel.NguoiThue;
 import com.example.mobileprojectapp2.datamodel.PhongNguoiThue;
 import com.example.mobileprojectapp2.datamodel.PhongTroChuTro;
-import com.example.mobileprojectapp2.model.PhongTroYeuThich;
 import com.example.mobileprojectapp2.model.Quan;
 import com.example.mobileprojectapp2.datamodels.PhongTro;
-import com.example.mobileprojectapp2.model.PhongTroChuTro2;
-import com.example.mobileprojectapp2.model.PhongTroGoiY;
 import com.example.mobileprojectapp2.model.TienIch;
 import com.example.mobileprojectapp2.model.YeuCauDatPhong;
 
@@ -87,6 +84,6 @@ public interface ApiServicePhuc2 {
                              @Part("idTaiKhoan") RequestBody idTaiKhoan);
 
     @GET("api/laydanhsachphongtroyeuthich")
-    Call<List<PhongTroYeuThich>> getAllPhongYeuThich(@Query("idTaiKhoan")int idTaiKhoan);
+    Call<List<PhongTro>> getAllPhongYeuThich(@Query("idTaiKhoan")int idTaiKhoan);
 
 }

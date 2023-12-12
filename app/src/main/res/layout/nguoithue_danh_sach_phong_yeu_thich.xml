@@ -49,7 +49,13 @@
 
                     <TextView
                         style="@style/tv_20sp"
+                        android:textColor="#F9595F"
                         android:text="Danh sách phòng yêu thích"/>
+                    <ImageView
+                        android:layout_marginStart="10dp"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:src="@drawable/iconp_hearts"/>
                 </LinearLayout>
 
                 <androidx.recyclerview.widget.RecyclerView
