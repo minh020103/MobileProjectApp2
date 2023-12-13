@@ -6,7 +6,8 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".activity.chutro.AddRoomActivity"
-    android:background="@color/background_gray">
+    android:background="@color/background_gray"
+    android:descendantFocusability="blocksDescendants">
 
     <LinearLayout
         android:layout_width="match_parent"

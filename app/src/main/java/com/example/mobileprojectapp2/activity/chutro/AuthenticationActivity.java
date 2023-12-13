@@ -212,22 +212,26 @@ public class AuthenticationActivity extends AppCompatActivity {
         call.enqueue(new Callback<XacThucChuTro>() {
             @Override
             public void onResponse(Call<XacThucChuTro> call, Response<XacThucChuTro> response) {
-                if (response.body().getTrangThaiXacThuc() == 0) {
-                    Glide.with(AuthenticationActivity.this.getLayoutInflater().getContext()).load(Const.DOMAIN + response.body().getCccdMatTruoc()).into(imageViewMatTruocCCCD);
-                    Glide.with(AuthenticationActivity.this.getLayoutInflater().getContext()).load(Const.DOMAIN + response.body().getCccdMatSau()).into(imageViewMatSauCCCD);
-                    tvDangChoAuthencation.setVisibility(View.VISIBLE);
-                    tvNotAuthencation.setVisibility(View.GONE);
-                    tvOkAuthencation.setVisibility(View.GONE);
-                    btnAcceptYeuCauXacThuc.setVisibility(View.GONE);
-                    onClickCanDuLieu(trangThaiXacThuc);
-                }
-                if (response.body().getTrangThaiXacThuc() == 1) {
-                    Glide.with(AuthenticationActivity.this.getLayoutInflater().getContext()).load(Const.DOMAIN + response.body().getCccdMatTruoc()).into(imageViewMatTruocCCCD);
-                    Glide.with(AuthenticationActivity.this.getLayoutInflater().getContext()).load(Const.DOMAIN + response.body().getCccdMatSau()).into(imageViewMatSauCCCD);
-                    tvNotAuthencation.setVisibility(View.GONE);
-                    tvOkAuthencation.setVisibility(View.VISIBLE);
-                    btnAcceptYeuCauXacThuc.setVisibility(View.GONE);
-                }
+               if (response.code() == 200){
+                   if (response.body() != null){
+                       if (response.body().getTrangThaiXacThuc() == 0) {
+                           Glide.with(AuthenticationActivity.this.getLayoutInflater().getContext()).load(Const.DOMAIN + response.body().getCccdMatTruoc()).into(imageViewMatTruocCCCD);
+                           Glide.with(AuthenticationActivity.this.getLayoutInflater().getContext()).load(Const.DOMAIN + response.body().getCccdMatSau()).into(imageViewMatSauCCCD);
+                           tvDangChoAuthencation.setVisibility(View.VISIBLE);
+                           tvNotAuthencation.setVisibility(View.GONE);
+                           tvOkAuthencation.setVisibility(View.GONE);
+                           btnAcceptYeuCauXacThuc.setVisibility(View.GONE);
+                           onClickCanDuLieu(trangThaiXacThuc);
+                       }
+                       if (response.body().getTrangThaiXacThuc() == 1) {
+                           Glide.with(AuthenticationActivity.this.getLayoutInflater().getContext()).load(Const.DOMAIN + response.body().getCccdMatTruoc()).into(imageViewMatTruocCCCD);
+                           Glide.with(AuthenticationActivity.this.getLayoutInflater().getContext()).load(Const.DOMAIN + response.body().getCccdMatSau()).into(imageViewMatSauCCCD);
+                           tvNotAuthencation.setVisibility(View.GONE);
+                           tvOkAuthencation.setVisibility(View.VISIBLE);
+                           btnAcceptYeuCauXacThuc.setVisibility(View.GONE);
+                       }
+                   }
+               }
 
 
 

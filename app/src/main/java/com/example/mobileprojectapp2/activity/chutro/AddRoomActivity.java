@@ -232,7 +232,7 @@ public class AddRoomActivity extends AppCompatActivity {
                 tvXacNhan.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        dialog.hide();
+                        dialog.dismiss();
                     }
                 });
                 rcvChonQuan = viewDialog.findViewById(R.id.rcvChonQuan);
@@ -298,7 +298,7 @@ public class AddRoomActivity extends AppCompatActivity {
                     tvXacNhan.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            dialog.hide();
+                            dialog.dismiss();
                         }
                     });
                     rcvChonPhuong = viewDialog.findViewById(R.id.rcvChonPhuong);
@@ -361,7 +361,7 @@ public class AddRoomActivity extends AppCompatActivity {
                 tvXacNhan.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        dialog.hide();
+                        dialog.dismiss();
                     }
                 });
                 rcvChonTienIch = viewDialog.findViewById(R.id.rcvChonTienIch);
@@ -392,7 +392,7 @@ public class AddRoomActivity extends AppCompatActivity {
                 tvXacNhan.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        dialog.hide();
+                        dialog.dismiss();
                     }
                 });
                 rcvGioiTinh = viewDialog.findViewById(R.id.rcvChonGioiTinh);

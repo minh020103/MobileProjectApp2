@@ -95,7 +95,6 @@ public class RenterActivity extends AppCompatActivity {
         badgeMessage.setVisible(true);
         badgeMessage.setNumber(10);
         adapter = new RenterViewPage2Adapter(this);
-        requestPermisstion();
 
         list.add(new HomeFragment());
         list.add(new MyRoomFragment());
@@ -168,15 +167,4 @@ public class RenterActivity extends AppCompatActivity {
 //                notificationManager.notify(id, notification);
 //            }
 //    }
-    private void requestPermisstion(){
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            if (ContextCompat.checkSelfPermission(
-                    activity, Manifest.permission.POST_NOTIFICATIONS) ==
-                    PackageManager.PERMISSION_GRANTED){
-            }
-            else {
-                requestPermissions(new String[]{Manifest.permission.POST_NOTIFICATIONS}, 111);
-            }
-        }
-    }
 }

@@ -31,7 +31,7 @@ public interface ApiServiceMinh {
     Call<List<Banner>> layTatCaBanner();
     @GET("api/phongtro/all")
     Call<List<PhongTro>> layTatCaPhongTro(@Query("loaiPhong") int loaiPhong, @Query("arrange") String arrange);
-    @GET("api/quan/all")
+    @GET("api/quan/all/hoatdong")
     Call<List<Quan>> layTatCaQuan();
     @GET("api/phongtro/quan")
     Call<List<PhongTro>> layTatCaPhongTrongQuan(@Query("idQuan") int idQuan,@Query("arrange") String arrange);
@@ -44,7 +44,7 @@ public interface ApiServiceMinh {
     Call<FirebaseCloudMessaging> saveTokenDeviceOfAccount(@Query("token") String token, @Query("idTaiKhoan") int idTaiKhoan);
     // Khi đăng xuất thì phải dùng hàm này khi xóa thành công trên database rồi mới được xóa idTaiKhoan trong thiết bị và đăng xuất
     @DELETE("api/fcm/delete")
-    Call<Integer> deleteTokenDeviceOfAccount(@Query("token") String token, @Query("idTaiKhoan") int idTaiKhoan);
+    Call<Integer> deleteTokenDeviceOfAccount(@Query("token") String token);
 
     @GET("api/taikhoan/all/type")
     Call<List<TaiKhoan>> layTatCaTaiKhoanTheoLoaiTaiKhoan(@Query("loaiTaiKhoan") int loaiTaiKhoan);

@@ -26,6 +26,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -374,7 +375,7 @@ public class EditRoomActivity extends AppCompatActivity {
                 tvXacNhan.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        dialog.hide();
+                        dialog.dismiss();
                     }
                 });
                 rcvChonQuan = viewDialog.findViewById(R.id.rcvChonQuan);
@@ -440,7 +441,7 @@ public class EditRoomActivity extends AppCompatActivity {
                     tvXacNhan.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            dialog.hide();
+                            dialog.dismiss();
                         }
                     });
                     rcvChonPhuong = viewDialog.findViewById(R.id.rcvChonPhuong);
@@ -503,7 +504,7 @@ public class EditRoomActivity extends AppCompatActivity {
                 tvXacNhan.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        dialog.hide();
+                        dialog.dismiss();
                     }
                 });
                 rcvChonTienIch = viewDialog.findViewById(R.id.rcvChonTienIch);
@@ -534,7 +535,7 @@ public class EditRoomActivity extends AppCompatActivity {
                 tvXacNhan.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        dialog.hide();
+                        dialog.dismiss();
                     }
                 });
                 rcvGioiTinh = viewDialog.findViewById(R.id.rcvChonGioiTinh);
@@ -596,7 +597,7 @@ public class EditRoomActivity extends AppCompatActivity {
                 tvXacNhan.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        dialog.hide();
+                        dialog.dismiss();
                     }
                 });
                 rcvLoaiPhong = viewDialog.findViewById(R.id.rcvLoaiPhong);
@@ -754,13 +755,20 @@ public class EditRoomActivity extends AppCompatActivity {
         }
     }
 
+//    private void openGallery() {
+//        Intent intent = new Intent();
+//        intent.setType("image/*");
+//        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+//        intent.setAction(Intent.ACTION_GET_CONTENT);
+//        mActivityResultLauncher.launch(Intent.createChooser(intent, "Select Picture"));
+//    }
     private void openGallery() {
-        Intent intent = new Intent();
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.setType("image/*");
         intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        mActivityResultLauncher.launch(Intent.createChooser(intent, "Select Picture"));
+        mActivityResultLauncher.launch(intent);
     }
+
 
     private void getDataForListPhuong(int positionSeletedQuan) {
         Log.d("TAG", "getDataForListPhuong: " + ">>>>>>" + positionSeletedQuan);
