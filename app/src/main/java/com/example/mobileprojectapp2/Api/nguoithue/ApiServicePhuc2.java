@@ -4,6 +4,7 @@ import com.example.mobileprojectapp2.api.Const;
 import com.example.mobileprojectapp2.datamodel.NguoiThue;
 import com.example.mobileprojectapp2.datamodel.PhongNguoiThue;
 import com.example.mobileprojectapp2.datamodel.PhongTroChuTro;
+import com.example.mobileprojectapp2.model.KetQuaGuiYeuCauDatPhong;
 import com.example.mobileprojectapp2.model.Quan;
 import com.example.mobileprojectapp2.datamodels.PhongTro;
 import com.example.mobileprojectapp2.model.TienIch;
@@ -52,9 +53,9 @@ public interface ApiServicePhuc2 {
                                        @Part("soDienThoai") RequestBody soDienThoai);
 
     @POST("api/yeucaudatphong/them")
-    Call<YeuCauDatPhong> yeuCauDatPhong(@Query("idTaiKhoanGui") int idTaiKhoanGui,
-                                        @Query("idTaiKhoanNhan") int idTaiKhoanNhan,
-                                        @Query("idPhong") int idPhong);
+    Call<KetQuaGuiYeuCauDatPhong> yeuCauDatPhong(@Query("idTaiKhoanGui") int idTaiKhoanGui,
+                                                 @Query("idTaiKhoanNhan") int idTaiKhoanNhan,
+                                                 @Query("idPhong") int idPhong);
 
     @Multipart
     @POST("api/nguoithue/capnhatphonggoiy")

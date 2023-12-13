@@ -46,10 +46,12 @@ import com.example.mobileprojectapp2.api.chutro.ApiServiceNghiem;
 import com.example.mobileprojectapp2.api.chutro.ApiServicePhuc;
 import com.example.mobileprojectapp2.api.nguoithue.ApiServicePhuc2;
 
+import com.example.mobileprojectapp2.component.MFCM;
 import com.example.mobileprojectapp2.datamodel.HinhAnh;
 import com.example.mobileprojectapp2.datamodel.PhongNguoiThue;
 import com.example.mobileprojectapp2.datamodel.PhongTinNhan;
 import com.example.mobileprojectapp2.datamodel.VideoReview;
+import com.example.mobileprojectapp2.model.KetQuaGuiYeuCauDatPhong;
 import com.example.mobileprojectapp2.model.PhongTro;
 import com.example.mobileprojectapp2.model.TienIch;
 import com.example.mobileprojectapp2.model.YeuCauDatPhong;
@@ -488,22 +490,28 @@ public class DetailPhongTroNguoiThueActivity extends AppCompatActivity {
                         .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                Call<YeuCauDatPhong> call = ApiServicePhuc2.apiService.yeuCauDatPhong(idTaiKhoan, idNhan, idPhong);
-                                call.enqueue(new Callback<YeuCauDatPhong>() {
+                                Call<KetQuaGuiYeuCauDatPhong> call = ApiServicePhuc2.apiService.yeuCauDatPhong(idTaiKhoan, idNhan, idPhong);
+                                call.enqueue(new Callback<KetQuaGuiYeuCauDatPhong>() {
                                     @Override
-                                    public void onResponse(Call<YeuCauDatPhong> call, Response<YeuCauDatPhong> responseYC) {
-                                        databaseReference.child("notification").child(idNhan + "").child(responseYC.body().getId() + "").setValue(0).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                            @Override
-                                            public void onSuccess(Void unused) {
-                                                Log.d("TAG", "onSuccess: PUSH NOTIFICATION REALTIME");
+                                    public void onResponse(Call<KetQuaGuiYeuCauDatPhong> call, Response<KetQuaGuiYeuCauDatPhong> responseYC) {
+
+                                        if (responseYC.code() == 200){
+                                            if (responseYC.body() == null){
+                                                databaseReference.child("notification").child(idNhan + "").child(responseYC.body().getObject().getId() + "").setValue(0).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                    @Override
+                                                    public void onSuccess(Void unused) {
+                                                        Log.d("TAG", "onSuccess: PUSH NOTIFICATION REALTIME");
+                                                    }
+                                                });
+                                                MFCM.sendNotificationForAccountID(responseYC.body().getObject().getIdTaiKhoanNhan(),responseYC.body().getObject().getId(), "Yêu cầu đặt phòng", "Có yêu cầu đặt phòng mới hãy vào xem");
                                             }
-                                        });
-                                        alertSuccess("Bạn đã đặt phòng thành công!");
-//                                        llDatPhong.setVisibility(View.GONE);
+                                        }
+                                       alertSuccess(responseYC.body().getMessage());
+
                                     }
 
                                     @Override
-                                    public void onFailure(Call<YeuCauDatPhong> call, Throwable t) {
+                                    public void onFailure(Call<KetQuaGuiYeuCauDatPhong> call, Throwable t) {
                                         Toast.makeText(DetailPhongTroNguoiThueActivity.this, "Error not call Api", Toast.LENGTH_SHORT).show();
                                     }
                                 });
