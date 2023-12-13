@@ -21,17 +21,17 @@ import com.example.mobileprojectapp2.datamodel.PhongTroChuTro;
 import java.text.DecimalFormat;
 import java.util.List;
 
-public class PhucDanhSachPhongGoiYAdapter2 extends RecyclerView.Adapter<PhucDanhSachPhongGoiYAdapter2.PhongGoiYViewHolder> {
+public class PhucDanhSachPhongTheoChuTro extends RecyclerView.Adapter<PhucDanhSachPhongTheoChuTro.PhongGoiYViewHolder> {
     private Activity activity;
     private List<PhongTroChuTro> list;
     private int layoutID;
-    private PhucDanhSachPhongGoiYAdapter2.MyOnCLickListener myOnCLickListener;
+    private PhucDanhSachPhongTheoChuTro.MyOnCLickListener myOnCLickListener;
 
-    public void setMyOnCLickListener(PhucDanhSachPhongGoiYAdapter2.MyOnCLickListener myOnCLickListener) {
+    public void setMyOnCLickListener(PhucDanhSachPhongTheoChuTro.MyOnCLickListener myOnCLickListener) {
         this.myOnCLickListener = myOnCLickListener;
     }
 
-    public PhucDanhSachPhongGoiYAdapter2(Activity activity, List<PhongTroChuTro> list, int layoutID) {
+    public PhucDanhSachPhongTheoChuTro(Activity activity, List<PhongTroChuTro> list, int layoutID) {
         this.activity = activity;
         this.list = list;
         this.layoutID = layoutID;
@@ -51,15 +51,12 @@ public class PhucDanhSachPhongGoiYAdapter2 extends RecyclerView.Adapter<PhucDanh
         if (phongTro == null) {
             return;
         }
-//        Log.d("TAG", "onBindViewHolder: "+ phongTro.getHinhAnhPhongTro().size());
         if (phongTro.getHinhAnh().size() > 0) {
             Glide.with(activity.getLayoutInflater().getContext()).load(Const.DOMAIN + phongTro.getHinhAnh().get(0).getHinh()).placeholder(R.drawable.anhdaidien).into(holder.imgViewPhongGoiY);
         } else {
             holder.imgViewPhongGoiY.setImageResource(R.drawable.khongcoanh);
         }
         holder.tvDiaChi.setText(phongTro.getPhongTro().getDiaChiChiTiet());
-//        holder.tvQuan.setText(phongTro.getPhongTro().getQuan().getTenQuan()+ "");
-//        holder.tvGia.setText(phongTro.getPhongTro().getGia() + "triệu VNĐ/tháng");
 
         float trieu = 1000000;
         float ngan = 1000;
@@ -101,7 +98,7 @@ public class PhucDanhSachPhongGoiYAdapter2 extends RecyclerView.Adapter<PhucDanh
     public class PhongGoiYViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private ImageView imgViewPhongGoiY;
-        private TextView tvLoaiPhong, tvGioiTinh, tvGia, tvDiaChi, tvQuan;
+        private TextView tvLoaiPhong, tvGioiTinh, tvGia, tvDiaChi;
         View.OnClickListener onClickListener;
 
         public PhongGoiYViewHolder(@NonNull View itemView) {
@@ -110,7 +107,6 @@ public class PhucDanhSachPhongGoiYAdapter2 extends RecyclerView.Adapter<PhucDanh
             tvLoaiPhong = itemView.findViewById(R.id.tv_loai_phong_ds_goi_y);
             tvGioiTinh = itemView.findViewById(R.id.tv_gioi_tinh_ds_goi_y);
             tvGia = itemView.findViewById(R.id.tv_gia_ds_goi_y);
-            tvQuan = itemView.findViewById(R.id.tv_quan_ds_goi_y);
             tvDiaChi = itemView.findViewById(R.id.tv_dia_chi_ds_goi_y);
             itemView.setOnClickListener(this);
         }
