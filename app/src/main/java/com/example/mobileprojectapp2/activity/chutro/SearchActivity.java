@@ -69,7 +69,7 @@ public class SearchActivity extends AppCompatActivity {
         rcvListPhongTro.addItemDecoration(itemDecoration);
         getAllDataApi();
 
-        searchView = findViewById(R.id.search);
+        searchView = findViewById(R.id.search_view);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
