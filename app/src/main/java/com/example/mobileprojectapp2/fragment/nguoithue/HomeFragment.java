@@ -25,12 +25,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.mobileprojectapp2.R;
+import com.example.mobileprojectapp2.activity.nguoithue.DanhSachPhongYeuThichActivity;
 import com.example.mobileprojectapp2.activity.nguoithue.DetailPhongTroNguoiThueActivity;
 import com.example.mobileprojectapp2.activity.nguoithue.DanhSachPhongGhepActivity;
 import com.example.mobileprojectapp2.activity.nguoithue.DanhSachPhongGoiYActivity;
 import com.example.mobileprojectapp2.activity.nguoithue.RenterActivity;
 import com.example.mobileprojectapp2.activity.nguoithue.RoomOfDistrictActivity;
 import com.example.mobileprojectapp2.activity.nguoithue.RoomRandomActivity;
+import com.example.mobileprojectapp2.activity.nguoithue.SearchQuanActivity;
 import com.example.mobileprojectapp2.api.Const;
 import com.example.mobileprojectapp2.api.nguoithue.ApiServiceMinh;
 import com.example.mobileprojectapp2.component.MComponent;
@@ -118,7 +120,6 @@ public class HomeFragment extends AbstractFragment {
         rcvPhong.setAdapter(phongAdaprer);
 
 
-
         batSuKienAdapterQuan();
         batSuKienPhong();
         return fragmentLayout;
@@ -129,8 +130,8 @@ public class HomeFragment extends AbstractFragment {
             @Override
             public void onClickItemListenner(int position, View view) {
                 //TODO: Chuyển qua màn hình chi tiết
-   				Intent intent = new Intent(getActivity(), DetailPhongTroNguoiThueActivity.class);
-                intent.putExtra("idPhong",listPhong.get(position).getId());
+                Intent intent = new Intent(getActivity(), DetailPhongTroNguoiThueActivity.class);
+                intent.putExtra("idPhong", listPhong.get(position).getId());
                 startActivity(intent);
 
 
@@ -237,7 +238,7 @@ public class HomeFragment extends AbstractFragment {
         llSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                chuyenQuaManHinhTimKiem();
+                startActivity(new Intent(getActivity(), DanhSachPhongYeuThichActivity.class));
             }
         });
         tvTimPhong.setOnClickListener(new View.OnClickListener() {
@@ -256,8 +257,8 @@ public class HomeFragment extends AbstractFragment {
         llReComment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                    Intent intent = new Intent(getContext(), DanhSachPhongGoiYActivity.class);
-                    startActivity(intent);
+                Intent intent = new Intent(getContext(), DanhSachPhongGoiYActivity.class);
+                startActivity(intent);
             }
         });
         llRandom.setOnClickListener(new View.OnClickListener() {
@@ -270,7 +271,7 @@ public class HomeFragment extends AbstractFragment {
     }
 
     private void chuyenQuaManHinhTimKiem() {
-
+        startActivity(new Intent(getActivity(), SearchQuanActivity.class));
     }
 
     private void anhXa(View fragmentLayout) {
