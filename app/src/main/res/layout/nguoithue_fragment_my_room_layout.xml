@@ -10,9 +10,18 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
+        <TextView
+            android:id="@+id/chuacotro"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Bạn Chưa Đăng Kí Trọ"
+            android:gravity="center"
+            android:visibility="gone"
+            android:textSize="90dp"/>
 
         <LinearLayout
-            android:id="@+id/llListHinhAnh"
+            android:id="@+id/anh"
+            android:visibility="visible"
             android:layout_width="match_parent"
             android:layout_height="250dp"
             android:orientation="vertical">
@@ -37,9 +46,11 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/thongtin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:visibility="visible">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -109,13 +120,14 @@
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    android:layout_weight="1.1"
                     android:gravity="center_horizontal"
                     android:orientation="vertical">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:gravity="center"
                         android:text="Số lượng tối đa"
                         android:textColor="@color/black"
                         android:textSize="@dimen/size_16sp" />
@@ -182,74 +194,6 @@
                         android:textSize="@dimen/size_16sp" />
 
                 </LinearLayout>
-
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginLeft="30dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginRight="30dp"
-                android:layout_marginBottom="15dp"
-                android:background="@color/text_gray" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:orientation="horizontal">
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center_horizontal"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Quận"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/size_16sp" />
-
-                    <TextView
-                        android:id="@+id/tv_quan"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:padding="5dp"
-                        android:text="thủ đức"
-                        android:textColor="@color/main_color_app_light"
-                        android:textSize="@dimen/size_16sp" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center_horizontal"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Phường"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/size_16sp" />
-
-                    <TextView
-                        android:id="@+id/tv_phuong"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:padding="5dp"
-                        android:text="Linh Đông"
-                        android:textColor="@color/main_color_app_light"
-                        android:textSize="@dimen/size_16sp" />
-
-                </LinearLayout>
-
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -275,10 +219,8 @@
 
                 </LinearLayout>
 
-
-
-
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
@@ -526,6 +468,8 @@
                 android:layout_marginBottom="10dp"
                 android:background="@color/text_gray2" />
 
+
+
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -553,12 +497,20 @@
                     android:textSize="@dimen/size_20sp" />
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rcv_list_tien_ich"
+                    android:id="@+id/rcv_list"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_below="@+id/text2"
                     android:padding="10dp" />
             </RelativeLayout>
                 </LinearLayout>
+        <Button
+            android:id="@+id/btnRoiTro"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:backgroundTint="@color/cardview_dark_background"
+            android:text="Rời Phòng Trọ Hiện Tại"/>
     </LinearLayout>
+
 </androidx.core.widget.NestedScrollView>

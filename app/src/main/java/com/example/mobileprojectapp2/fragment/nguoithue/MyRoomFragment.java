@@ -5,6 +5,7 @@ import static com.example.mobileprojectapp2.api.Const.PHONG_DON;
 import static com.example.mobileprojectapp2.api.Const.PHONG_TRONG;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
@@ -14,6 +15,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -21,6 +23,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
@@ -64,9 +67,11 @@ import retrofit2.Response;
 public class MyRoomFragment extends AbstractFragment{
 
     TextView tv_detail_soPhong,tv_detail_gia_my_room,tv_detail_so_luong_toi_da,tv_detail_loai_phong,tv_detail_tien_coc,
-    tv_quan,tv_phuong,tv_detail_dien_tich,tv_detail_gioi_tinh,tv_detail_tien_dien,tv_detail_tien_nuoc,tv_detail_mo_ta,
-            tv_detail_dia_chi ;
+    tv_detail_dien_tich,tv_detail_gioi_tinh,tv_detail_tien_dien,tv_detail_tien_nuoc,tv_detail_mo_ta,
+            tv_detail_dia_chi,chuacotro;
+    LinearLayout thongtin,anh;
     LinearLayout edtComment, ic_danhgia;
+    Button btnRoiTro;
     TextView title;
     LinearLayoutManager layoutManager;
 
@@ -75,7 +80,7 @@ public class MyRoomFragment extends AbstractFragment{
 
     LinkedList<PhongBinhLuan> list;
     private SharedPreferences shared;
-    private int idTaiKhoan;
+    private int idTaiKhoan,idphong;
     private ViewPager2 mViewPager2;
 
     List<PhongNguoiThue> nguoithueList;
@@ -103,58 +108,29 @@ public class MyRoomFragment extends AbstractFragment{
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View fragmentLayout = null;
         fragmentLayout = inflater.inflate(R.layout.nguoithue_fragment_my_room_layout, container, false);
-        edtComment = fragmentLayout.findViewById(R.id.edtComment);
-        ic_danhgia = fragmentLayout.findViewById(R.id.ic_danhgia);
-        title = fragmentLayout.findViewById(R.id.title_solo);
 
-        //anh xa
-        tv_detail_soPhong = fragmentLayout.findViewById(R.id.tv_detail_soPhong);
-        tv_detail_gia_my_room = fragmentLayout.findViewById(R.id.tv_detail_gia_my_room);
-        tv_detail_so_luong_toi_da = fragmentLayout.findViewById(R.id.tv_detail_so_luong_toi_da);
-        tv_detail_loai_phong = fragmentLayout.findViewById(R.id.tv_detail_loai_phong);
-        tv_detail_tien_coc = fragmentLayout.findViewById(R.id.tv_detail_tien_coc);
-        tv_quan = fragmentLayout.findViewById(R.id.tv_quan);
-        tv_phuong = fragmentLayout.findViewById(R.id.tv_phuong);
-        tv_detail_dien_tich = fragmentLayout.findViewById(R.id.tv_detail_dien_tich);
-        tv_detail_gioi_tinh = fragmentLayout.findViewById(R.id.tv_detail_gioi_tinh);
-        tv_detail_tien_dien = fragmentLayout.findViewById(R.id.tv_detail_tien_dien);
-        tv_detail_tien_nuoc = fragmentLayout.findViewById(R.id.tv_detail_tien_nuoc);
-        tv_detail_mo_ta = fragmentLayout.findViewById(R.id.tv_detail_mo_ta);
-        tv_detail_dia_chi = fragmentLayout.findViewById(R.id.tv_detail_dia_chi);
-
-
-        recyclerView = fragmentLayout.findViewById(R.id.rcv_list_tien_ich);
-        listHinhAnh = new ArrayList<>();
-        mViewPager2 = fragmentLayout.findViewById(R.id.view_pager_2);
-        adapterHinhAnh = new HinhAnhAdapter(getActivity(), listHinhAnh, R.layout.chutro_item_image_layout);
-        mViewPager2.setAdapter(adapterHinhAnh);
-
-        layoutManager = new LinearLayoutManager(getActivity());
-        nguoithueList = new ArrayList<>();
-        phongNguoiThueAdapter = new PhongNguoiThueAdapter(getActivity(), nguoithueList, R.layout.cardview_danh_sach_nguoi_thue_my_room);
-        listNguoiThueTheoIdPhong(2);
-        layoutManager.setOrientation(RecyclerView.VERTICAL);
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setAdapter(phongNguoiThueAdapter);
-
-        getDetailPhongApi();
-        getDataFromApi();
-
-//        shared = getActivity().getSharedPreferences(Const.PRE_LOGIN, Context.MODE_PRIVATE);
-//        idTaiKhoan = shared.getInt("idTaiKhoan", -1);
+        anhxa(fragmentLayout);
+        LayDuLieu();
 
         list = new LinkedList<>();
         edtComment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MComponent.comment(getActivity(), container, 1,list ,1 );
+                MComponent.comment(getActivity(), container, idphong,list ,idTaiKhoan );
             }
         });
 
         ic_danhgia.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MComponent.rating(getActivity(),1,1);
+                MComponent.rating(getActivity(),idphong,idTaiKhoan);
+            }
+        });
+
+        btnRoiTro.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                thongBao("Bạn Có Chắc Muốn Rời Trọ \nThao Tác Này Sẽ Không Hoàn Tác Được");
             }
         });
 
@@ -175,8 +151,51 @@ public class MyRoomFragment extends AbstractFragment{
         return fragmentLayout;
     }
 
-    private void getDataFromApi() {
-        Call<PhongTro> call = ApiServicePhuc.apiService.getPhongTroByID(2);
+    private void LayDuLieu(){
+        shared = getActivity().getSharedPreferences(Const.PRE_LOGIN, Context.MODE_PRIVATE);
+        idTaiKhoan = shared.getInt("idNguoiThue", -1);
+        Call<PhongNguoiThue> call = ApiServiceDung.apiServiceDung.layphongnguoithue(idTaiKhoan);
+        call.enqueue(new Callback<PhongNguoiThue>() {
+            @Override
+            public void onResponse(Call<PhongNguoiThue> call, Response<PhongNguoiThue> response) {
+                if (response.body() != null){
+                    idphong = response.body().getIdPhong();
+
+                    getDetailPhongApi(idphong);
+                    getDataFromApi(idphong);
+                    listNguoiThueTheoIdPhong(idphong);
+
+                    listHinhAnh = new ArrayList<>();
+                    adapterHinhAnh = new HinhAnhAdapter(getActivity(), listHinhAnh, R.layout.chutro_item_image_layout);
+                    mViewPager2.setAdapter(adapterHinhAnh);
+
+                    layoutManager = new LinearLayoutManager(getActivity());
+                    nguoithueList = new ArrayList<>();
+                    phongNguoiThueAdapter = new PhongNguoiThueAdapter(getActivity(), nguoithueList, R.layout.cardview_danh_sach_nguoi_thue_my_room);
+                    layoutManager.setOrientation(RecyclerView.VERTICAL);
+                    recyclerView.setLayoutManager(layoutManager);
+                    recyclerView.setAdapter(phongNguoiThueAdapter);
+
+                    chuacotro.setVisibility(View.GONE);
+                    thongtin.setVisibility(View.VISIBLE);
+                    anh.setVisibility(View.VISIBLE);
+
+                }else {
+                    chuacotro.setVisibility(View.VISIBLE);
+                    thongtin.setVisibility(View.GONE);
+                    anh.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<PhongNguoiThue> call, Throwable t) {
+
+            }
+        });
+    }
+
+    private void getDataFromApi(int idphong) {
+        Call<PhongTro> call = ApiServicePhuc.apiService.getPhongTroByID(idphong);
         call.enqueue(new Callback<PhongTro>() {
             @Override
             public void onResponse(Call<PhongTro> call, Response<PhongTro> response) {
@@ -223,10 +242,6 @@ public class MyRoomFragment extends AbstractFragment{
                     tv_detail_tien_coc.setText(gia2 + " triệu");
                 }
 
-                tv_quan.setText(response.body().getIdQuan()+"");
-
-                tv_phuong.setText(response.body().getIdPhuong()+"");
-
                 tv_detail_dien_tich.setText(response.body().getDienTich() + "㎡");
 
                 if (response.body().getGioiTinh() == MALE_GENDERS) {
@@ -235,26 +250,35 @@ public class MyRoomFragment extends AbstractFragment{
                     tv_detail_gioi_tinh.setText("Nữ ♀");
                 }
 
-                tv_detail_tien_dien.setText(response.body().getTienDien()+"");
+                //tv_detail_tien_dien.setText(response.body().getTienDien()+"");
+                if (response.body().getTienDien() < tram) {
+                    tv_detail_tien_dien.setText("Đang cập nhật");
+                } else if (response.body().getTienDien() < trieu) {
+                    gia = response.body().getTienDien() / ngan;
+                    gia2 = decimalFormat.format(gia);
+                    tv_detail_tien_dien.setText(gia2 + "k");
+                } else if (response.body().getTienDien() >= trieu) {
+                    gia = response.body().getTienDien() / trieu;
+                    gia2 = decimalFormat.format(gia);
+                    tv_detail_tien_dien.setText(gia2 + " triệu");
+                }
 
-                tv_detail_tien_nuoc.setText(response.body().getTienNuoc()+"");
+                //tv_detail_tien_nuoc.setText(response.body().getTienNuoc()+"");
+                if (response.body().getTienNuoc() < tram) {
+                    tv_detail_tien_nuoc.setText("Đang cập nhật");
+                } else if (response.body().getTienNuoc() < trieu) {
+                    gia = response.body().getTienNuoc() / ngan;
+                    gia2 = decimalFormat.format(gia);
+                    tv_detail_tien_nuoc.setText(gia2 + "k");
+                } else if (response.body().getTienNuoc() >= trieu) {
+                    gia = response.body().getTienNuoc() / trieu;
+                    gia2 = decimalFormat.format(gia);
+                    tv_detail_tien_nuoc.setText(gia2 + " triệu");
+                }
 
                 tv_detail_mo_ta.setText(response.body().getMoTa()+"");
 
                 tv_detail_dia_chi.setText(response.body().getDiaChiChiTiet()+"");
-
-//                Call<Phuong> call1 = ApiServiceDung.apiServiceDung.layPhuongTheoIDAPI(response.body().getIdPhuong());
-//                call1.enqueue(new Callback<Phuong>() {
-//                    @Override
-//                    public void onResponse(Call<Phuong> call, Response<Phuong> response) {
-//                        Log.d("TAG", "onResponse: "+ response.body().getTenPhuong());
-//                        tv_phuong.setText(response.body().getTenPhuong());
-//                    }
-//                    @Override
-//                    public void onFailure(Call<Phuong> call, Throwable t) {
-//                        Toast.makeText(getActivity(), "Error not call Api", Toast.LENGTH_SHORT).show();
-//                    }
-//                });
 
             }
             @Override
@@ -265,8 +289,8 @@ public class MyRoomFragment extends AbstractFragment{
     }
 
 
-    private void getDetailPhongApi() {
-        Call<PhongTro> call = ApiServicePhuc.apiService.getPhongTroByID(2);
+    private void getDetailPhongApi(int idphong) {
+        Call<PhongTro> call = ApiServicePhuc.apiService.getPhongTroByID(idphong);
         call.enqueue(new Callback<PhongTro>() {
             @Override
             public void onResponse(Call<PhongTro> call, Response<PhongTro> response) {
@@ -274,8 +298,6 @@ public class MyRoomFragment extends AbstractFragment{
                     listHinhAnh.add(hinhAnh);
 
                 }
-                Log.d("TAG", "onResponse: "+ response.body().getHinhAnhPhongTro().size());
-
                 adapterHinhAnh.notifyDataSetChanged();
             }
 
@@ -327,8 +349,54 @@ public class MyRoomFragment extends AbstractFragment{
         startActivity(intent);
     }
 
+    private void anhxa(View fragmentLayout){
+        edtComment = fragmentLayout.findViewById(R.id.edtComment);
+        ic_danhgia = fragmentLayout.findViewById(R.id.ic_danhgia);
+        title = fragmentLayout.findViewById(R.id.title_solo);
+
+        //anh xa
+        tv_detail_soPhong = fragmentLayout.findViewById(R.id.tv_detail_soPhong);
+        tv_detail_gia_my_room = fragmentLayout.findViewById(R.id.tv_detail_gia_my_room);
+        tv_detail_so_luong_toi_da = fragmentLayout.findViewById(R.id.tv_detail_so_luong_toi_da);
+        tv_detail_loai_phong = fragmentLayout.findViewById(R.id.tv_detail_loai_phong);
+        tv_detail_tien_coc = fragmentLayout.findViewById(R.id.tv_detail_tien_coc);
+        tv_detail_dien_tich = fragmentLayout.findViewById(R.id.tv_detail_dien_tich);
+        tv_detail_gioi_tinh = fragmentLayout.findViewById(R.id.tv_detail_gioi_tinh);
+        tv_detail_tien_dien = fragmentLayout.findViewById(R.id.tv_detail_tien_dien);
+        tv_detail_tien_nuoc = fragmentLayout.findViewById(R.id.tv_detail_tien_nuoc);
+        tv_detail_mo_ta = fragmentLayout.findViewById(R.id.tv_detail_mo_ta);
+        tv_detail_dia_chi = fragmentLayout.findViewById(R.id.tv_detail_dia_chi);
+        recyclerView = fragmentLayout.findViewById(R.id.rcv_list);
+        mViewPager2 = fragmentLayout.findViewById(R.id.view_pager_2);
+        btnRoiTro = fragmentLayout.findViewById(R.id.btnRoiTro);
+
+        chuacotro = fragmentLayout.findViewById(R.id.chuacotro);
+        thongtin = fragmentLayout.findViewById(R.id.thongtin);
+        anh = fragmentLayout.findViewById(R.id.anh);
+
+    }
+
+    private void thongBao(String mes){
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setMessage(mes).setPositiveButton("Không", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+            }
+        }).setNegativeButton("Có", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                //TODO: làm rời phòng 2222
+                onResume();
+            }
+        });
+        builder.create();
+        builder.show();
+    }
+
     @Override
     public void onResume() {
+        LayDuLieu();
         super.onResume();
     }
 

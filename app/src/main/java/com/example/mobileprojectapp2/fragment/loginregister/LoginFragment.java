@@ -183,6 +183,7 @@ public class LoginFragment extends AbstractFragment{
                         startActivity(intent);
                         }
                         else{
+                            sharedPreferences.edit().putInt("idNguoiThue", response.body().getNguoiDangNhap().getId()).commit();
                     batTatProgessBar(1);
                     Intent intent = new Intent(getContext(), RenterActivity.class);
                     startActivity(intent);
