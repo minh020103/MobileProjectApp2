@@ -4,7 +4,7 @@
 
 
     <stroke
-        android:width="5dp"
-        android:color="@color/button_fb" />
+        android:width="2dp"
+        android:color="#1DEFDB" />
     <corners android:radius="10dp"/>
 </shape>

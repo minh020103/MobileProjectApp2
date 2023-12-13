@@ -92,7 +92,6 @@ public class SearchBoLocActivity extends AppCompatActivity {
         setContentView(R.layout.nguoithue_search_bo_loc_activity);
 
         _Initialization();
-        Log.d("TAG", "onClick: " + (int) maxValue * 1000 + " alo123");
 
         Intent intent = getIntent();
         id = intent.getIntExtra("idPhong", -1);
@@ -108,6 +107,8 @@ public class SearchBoLocActivity extends AppCompatActivity {
         ll_so_nguoi_gioi_tinh.setVisibility(View.GONE);
         ll_ap_dung.setVisibility(View.VISIBLE);
 
+        int max = (int) (maxValue * 1000);
+        tv_gia_end.setText(String.valueOf(max/1000000) + " triệu");
 
     }
 
@@ -139,6 +140,7 @@ public class SearchBoLocActivity extends AppCompatActivity {
             public void OnCLickCloseItem(int position, View v) {
                 if (listSelected.get(position).getKey() == Const.TIEN_ICH) {
                     listTienIchSeleted.remove(listTienIch.get(listSelected.get(position).getId()));
+                    ll_ap_dung.setVisibility(View.VISIBLE);
                     Log.d("TAG", "onClickListNguoiDung: " + listSelected.size());
                     Log.d("TAG", "onClickListData: " + listTienIchSeleted.size());
                     Log.d("TAG", "onClickTenTienIchNguoiDungThay: " + listSelected.get(position).getName());
@@ -146,9 +148,11 @@ public class SearchBoLocActivity extends AppCompatActivity {
                 } else if (listSelected.get(position).getKey() == Const.LOAI_PHONG) {
                     Log.d("TAG", "onClickListNguoiDung: " + listSelected.size());
                     Log.d("TAG", "onClickListApi: " + listLoaiPhong.size());
+                    ll_ap_dung.setVisibility(View.VISIBLE);
                     idLoaiPhong = -1;
 
                 } else if (listSelected.get(position).getKey() == Const.GIOI_TINH) {
+                    ll_ap_dung.setVisibility(View.VISIBLE);
                     idGioiTinh = -1;
                     Log.d("TAG", "onClickListNguoiDung: " + listSelected.size());
                 } else if (listSelected.get(position).getKey() == Const.GIA) {
@@ -170,12 +174,11 @@ public class SearchBoLocActivity extends AppCompatActivity {
                 onClickListener.onClick(view);
                 Animation anim = AnimationUtils.loadAnimation(SearchBoLocActivity.this, R.anim.item_click);
                 view.startAnimation(anim);
-
                 if (!listTienIchSeleted.contains(listTienIch.get(position))) {
-
                     listSelected.add(new Selected(Const.TIEN_ICH, position, listTienIch.get(position).getTen()));
                     //add vao list luu du lieu
                     listTienIchSeleted.add(listTienIch.get(position));
+
                     int itemCount = adapterSelected.getItemCount();
                     if (itemCount > 0) {
                         rcvListSelected.scrollToPosition(itemCount - 1);
@@ -183,7 +186,6 @@ public class SearchBoLocActivity extends AppCompatActivity {
                     adapterSelected.notifyDataSetChanged();
                     ll_list_Selected.setVisibility(View.VISIBLE);
                 } else {
-
                     Toast.makeText(SearchBoLocActivity.this, "Đã có", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -194,9 +196,8 @@ public class SearchBoLocActivity extends AppCompatActivity {
                 Animation anim = AnimationUtils.loadAnimation(SearchBoLocActivity.this, R.anim.item_click);
                 view.startAnimation(anim);
                 if (idLoaiPhong != listLoaiPhong.get(position)) {
-                    //Set màu mới cho background
-
-                    if (!listSelected.contains(new Selected(Const.LOAI_PHONG, listLoaiPhong.get(position), listLoaiPhong.get(position) == Const.PHONG_GHEP ? "Phòng đơn" : "Phòng ghép"))) {
+                    if (!listSelected.contains(new Selected(Const.LOAI_PHONG, listLoaiPhong.get(position),
+                            listLoaiPhong.get(position) == Const.PHONG_GHEP ? "Phòng đơn" : "Phòng ghép"))) {
                         //Xóa cái hiện tại
                         Log.d("TAG", "onClickItemListener: " + listSelected.size());
                         for (int i = 0; i < listSelected.size(); i++) {
@@ -209,18 +210,21 @@ public class SearchBoLocActivity extends AppCompatActivity {
 //                        bgLoaiPhongOld = bg;
 //                        backDrawableLoaiPhong = bg.getBackground();
 //                        bg.setBackground(getResources().getDrawable(R.drawable.btn_p4, getTheme()));
-                        //add moi vao list nguoi dung
+                        //add moi vao list nguoi dungint itemCount = adapterSelected.getItemCount();
+
                         listSelected.add(new Selected(Const.LOAI_PHONG, position, listLoaiPhong.get(position) == Const.PHONG_TRONG ? "Phòng trống" : listLoaiPhong.get(position) == Const.PHONG_DON ? "Phòng đơn" : "Phòng ghép"));
                         //add moi vao list luu du lieu
                         idLoaiPhong = listLoaiPhong.get(position);
-                        //Set màu mới cho background
-//                        bg.setBackground(getResources().getDrawable(R.drawable.btn_p4, getTheme()));
+                        int itemCount = adapterSelected.getItemCount();
+                        if (itemCount > 0) {
+                            rcvListSelected.scrollToPosition(itemCount - 1);
+                        }
                         adapterSelected.notifyDataSetChanged();
                         ll_list_Selected.setVisibility(View.VISIBLE);
 
                     }
                 } else {
-                    Toast.makeText(SearchBoLocActivity.this, "Đã chọn", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SearchBoLocActivity.this, "Đã có", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -230,7 +234,7 @@ public class SearchBoLocActivity extends AppCompatActivity {
                 Animation anim = AnimationUtils.loadAnimation(SearchBoLocActivity.this, R.anim.item_click);
                 view.startAnimation(anim);
                 if (idGioiTinh != listGioiTinh.get(position)) {
-                    if (!listSelected.contains(new Selected(Const.GIOI_TINH, listGioiTinh.get(position), listGioiTinh.get(position) == Const.ALL_GENDERS ? "Tất cả" : listGioiTinh.get(position) == Const.MALE_GENDERS ? "Nam" : "Nữ"))) {
+                    if (!listSelected.contains(new Selected(Const.GIOI_TINH, listGioiTinh.get(position), listGioiTinh.get(position) == Const.ALL_GENDERS ? "Nam/Nữ" : listGioiTinh.get(position) == Const.MALE_GENDERS ? "Nam" : "Nữ"))) {
                         //Xóa cái hiện tại
                         for (int i = 0; i < listSelected.size(); i++) {
                             Selected selected = listSelected.get(i);
@@ -240,10 +244,13 @@ public class SearchBoLocActivity extends AppCompatActivity {
                             }
                         }
                         //add moi vao list nguoi dung
-                        listSelected.add(new Selected(Const.GIOI_TINH, listGioiTinh.get(position), listGioiTinh.get(position) == Const.ALL_GENDERS ? "Tất cả" : listGioiTinh.get(position) == Const.MALE_GENDERS ? "Nam" : "Nữ"));
+                        listSelected.add(new Selected(Const.GIOI_TINH, listGioiTinh.get(position), listGioiTinh.get(position) == Const.ALL_GENDERS ? "Nam/Nữ" : listGioiTinh.get(position) == Const.MALE_GENDERS ? "Nam" : "Nữ"));
                         //add moi vao list luu du lieu
                         idGioiTinh = listGioiTinh.get(position);
-
+                        int itemCount = adapterSelected.getItemCount();
+                        if (itemCount > 0) {
+                            rcvListSelected.scrollToPosition(itemCount - 1);
+                        }
                         adapterSelected.notifyDataSetChanged();
                         ll_list_Selected.setVisibility(View.VISIBLE);
 
@@ -251,14 +258,16 @@ public class SearchBoLocActivity extends AppCompatActivity {
                         Log.d("TAG", "onClickListData: " + idGioiTinh);
                     }
                 } else {
-                    alertSuccess("Đã chọn");
+                    Toast.makeText(SearchBoLocActivity.this, "Đã có", Toast.LENGTH_SHORT).show();
                 }
             }
         });
         adapterPhongTimKiem.setMyOnCLickListener(new PhucDanhSachPhongTimKiemAdapter.MyOnCLickListener() {
             @Override
             public void OnClickItem(int position, View v) {
-                alertComingSoon("Coming Soon");
+                Intent intent = new Intent(SearchBoLocActivity.this, DetailPhongTroNguoiThueActivity.class);
+                intent.putExtra("idPhong", listPhongTimKiem.get(position).getId());
+                startActivity(intent);
             }
         });
     }
@@ -288,6 +297,10 @@ public class SearchBoLocActivity extends AppCompatActivity {
                     tv_gia_end.setText(String.valueOf(max) + " triệu");
                 }
 
+//                if (idGioiTinh != listGioiTinh.get(position)) {
+//                    if (!listSelected.contains(new Selected(Const.GIOI_TINH, listGioiTinh.get(position), listGioiTinh.get(position) == Const.ALL_GENDERS ? "Nam/Nữ" : listGioiTinh.get(position) == Const.MALE_GENDERS ? "Nam" : "Nữ"))) {
+
+
                 for (int i = 0; i < listSelected.size(); i++) {
                     Selected selected = listSelected.get(i);
                     if (selected.getKey() == Const.GIA) {
@@ -295,8 +308,6 @@ public class SearchBoLocActivity extends AppCompatActivity {
                         adapterSelected.notifyDataSetChanged();
                     }
                 }
-
-
                 ll_list_Selected.setVisibility(View.VISIBLE);
                 listSelected.add(new Selected(Const.GIA, 0, minValue < 1000 ?
                         min + " k VND" + " - " + max + " triệu" :
@@ -469,7 +480,7 @@ public class SearchBoLocActivity extends AppCompatActivity {
                             llGiaSeekBar.setVisibility(View.GONE);
                             ll_khong_tim_thay.setVisibility(View.GONE);
                             rcvListPhongTimKiem.setVisibility(View.GONE);
-                            Log.d("TAG", "onClick: "+idGioiTinh);
+                            Log.d("TAG", "onClick: " + idGioiTinh);
                             break;
                         case 1:
                             img_so_nguoi_down.setVisibility(View.VISIBLE);
@@ -549,15 +560,26 @@ public class SearchBoLocActivity extends AppCompatActivity {
         btn_ap_dung.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (idGioiTinh == -1){
-                    listSelected.add(new Selected(Const.GIOI_TINH, 0,"Tất cả"));
-                }
-                if (idLoaiPhong == -1){
-                    listSelected.add(new Selected(Const.LOAI_PHONG, 0,"Phòng trống"));
-                }
+                flagGia = 0;
+                flagSoNguoi = 0;
+                flagTienIch = 0;
+                flagLoaiPhong = 0;
+                ll_ap_dung.setVisibility(View.GONE);
+                llGiaSeekBar.setVisibility(View.GONE);
+                ll_so_nguoi_gioi_tinh.setVisibility(View.GONE);
+                rcvListLoaiPhong.setVisibility(View.GONE);
+                rcvListTienIch.setVisibility(View.GONE);
+
                 if (minValue == 0.0f && maxValue == 5000.0f) {
-                    listSelected.add(new Selected(Const.GIA, 0, minValue/1000 + " k VND" + " - " + maxValue/1000 + " triệu"));
+                    listSelected.add(new Selected(Const.GIA, 0, minValue / 1000 + " k VND" + " - " + maxValue / 1000 + " triệu"));
                 }
+                if (idLoaiPhong == -1) {
+                    listSelected.add(new Selected(Const.LOAI_PHONG, 0, "Phòng trống"));
+                }
+                if (idGioiTinh == -1) {
+                    listSelected.add(new Selected(Const.GIOI_TINH, 0, "Nam/Nữ"));
+                }
+
                 ll_list_Selected.setVisibility(View.VISIBLE);
                 adapterSelected.notifyDataSetChanged();
                 Call<List<PhongTro>> call = ApiServicePhuc2.apiService.getDanhSachPhongTimKiemBoLoc(id,
@@ -570,25 +592,13 @@ public class SearchBoLocActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(Call<List<PhongTro>> call, Response<List<PhongTro>> response) {
                         if (response.code() == 200) {
-                            if(response.body().size() == 0 ){
-                                Log.d("TAG", "onResponse: "+response.body().size());
+                            if (response.body().size() == 0) {
+                                Log.d("TAG", "onResponse: " + response.body().size());
                                 ll_khong_tim_thay.setVisibility(View.VISIBLE);
-                                ll_ap_dung.setVisibility(View.GONE);
-                                llGiaSeekBar.setVisibility(View.GONE);
-                                ll_so_nguoi_gioi_tinh.setVisibility(View.GONE);
-                                rcvListLoaiPhong.setVisibility(View.GONE);
-                                rcvListTienIch.setVisibility(View.GONE);
-                                img_gia_up.setVisibility(View.GONE);
-                                img_gia_down.setVisibility(View.VISIBLE);
-                                flagGia = 0;
-                            }else {
+
+                            } else {
                                 listPhongTimKiem.clear();
                                 listPhongTimKiem.addAll(response.body());
-                                ll_ap_dung.setVisibility(View.GONE);
-                                llGiaSeekBar.setVisibility(View.GONE);
-                                ll_so_nguoi_gioi_tinh.setVisibility(View.GONE);
-                                rcvListLoaiPhong.setVisibility(View.GONE);
-                                rcvListTienIch.setVisibility(View.GONE);
                                 rcvListPhongTimKiem.setVisibility(View.VISIBLE);
                                 adapterPhongTimKiem.notifyDataSetChanged();
                             }
@@ -600,6 +610,7 @@ public class SearchBoLocActivity extends AppCompatActivity {
                         Log.d("TAG", "onClick: " + idLoaiPhong);
                         Log.d("TAG", "onClick: " + idGioiTinh);
                     }
+
                     @Override
                     public void onFailure(Call<List<PhongTro>> call, Throwable t) {
 
@@ -610,7 +621,6 @@ public class SearchBoLocActivity extends AppCompatActivity {
         });
 
     }
-
 
     private void anhXa() {
         btnTienIch = findViewById(R.id.btn_tien_ich);
@@ -730,6 +740,7 @@ public class SearchBoLocActivity extends AppCompatActivity {
                     }
                 }).show();
     }
+
     private void alertComingSoon(String s) {
         new AlertDialog.Builder(this)
                 .setTitle("Thông báo")

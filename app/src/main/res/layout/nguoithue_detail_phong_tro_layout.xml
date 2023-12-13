@@ -9,42 +9,112 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="">
+        android:layout_height="wrap_content">
 
         <androidx.appcompat.widget.Toolbar
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/white">
 
-            <ImageView
-                android:id="@+id/img_back_detail"
-                style="@style/imgView_back" />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="25dp"
+                android:orientation="horizontal">
 
-            <TextView
-                style="@style/tv_toolbar"
-                android:text="@string/ctp"
-                />
-            <ImageView
-                android:id="@+id/img_like1"
+                <ImageView
+                    android:id="@+id/img_back_detail"
+                    style="@style/imgView_back" />
+
+                <TextView
+                    style="@style/tv_toolbar"
+                    android:text="@string/ctp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_phong_cho_xac_nhan"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:paddingHorizontal="20dp"
+                android:visibility="gone">
+
+                <ImageView
+                    android:id="@+id/image_gif"
+                    android:layout_width="50dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/iconp_giphy"
+                    android:visibility="visible" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/cxn"
+                    android:textColor="@color/black"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+            <RelativeLayout
                 android:layout_width="25dp"
                 android:layout_height="25dp"
-                android:layout_alignParentRight="true"
-                android:layout_margin="10dp"
-                android:src="@drawable/iconp_like1"
-                android:visibility="visible"
-                android:layout_gravity="right"
+                android:gravity="center_horizontal">
 
-                />
-            <ImageView
-                android:id="@+id/img_like2"
-                android:layout_width="25dp"
+                <ImageView
+                    android:id="@+id/img_like1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/iconp_like1"
+                    android:visibility="gone" />
+
+                <ImageView
+                    android:id="@+id/img_like2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/iconp_like2"
+                    android:visibility="visible" />
+            </RelativeLayout>
+
+            <!--            <LinearLayout-->
+            <!--                android:id="@+id/ll_phong_dang_cho"-->
+            <!--                android:layout_width="wrap_content"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:layout_gravity="right"-->
+            <!--                android:layout_marginRight="30dp"-->
+            <!--                android:orientation="horizontal">-->
+
+
+            <!--                <TextView-->
+            <!--                    android:id="@+id/tv_cho_xac_nhan"-->
+            <!--                    style="@style/tv_toolbar"-->
+            <!--                    android:text="@string/cxn" />-->
+
+            <!--                <ImageView-->
+            <!--                    android:layout_width="wrap_content"-->
+            <!--                    android:layout_height="match_parent"-->
+            <!--                    android:src="@drawable/iconp_your_room" />-->
+            <!--            </LinearLayout>-->
+
+            <RelativeLayout
+                android:id="@+id/rlt_phong_dang_cho"
+                android:layout_width="match_parent"
                 android:layout_height="25dp"
-                android:layout_alignParentRight="true"
-                android:layout_margin="10dp"
-                android:visibility="gone"
-                android:src="@drawable/iconp_like2"
-                android:layout_gravity="right"/>
+                android:gravity="right"
+                android:layout_marginEnd="10dp">
+
+                <TextView
+                    android:id="@+id/tv_cho_xac_nhan"
+                    style="@style/tv_toolbar"
+                    android:text="@string/cxn"
+                    android:layout_marginEnd="5dp"/>
+
+                <ImageView
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_toRightOf="@+id/tv_cho_xac_nhan"
+                    android:src="@drawable/iconp_your_room" />
+            </RelativeLayout>
+
 
         </androidx.appcompat.widget.Toolbar>
     </LinearLayout>
@@ -67,15 +137,6 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <!--                <TextView-->
-                <!--                    android:id="@+id/tv_hinh_anh_rong"-->
-                <!--                    android:layout_width="match_parent"-->
-                <!--                    android:layout_height="match_parent"-->
-                <!--                    android:gravity="center_vertical|center_horizontal"-->
-                <!--                    android:text="@string/pccha"-->
-                <!--                    android:textColor="@color/black"-->
-                <!--                    android:textSize="@dimen/size_20sp"-->
-                <!--                    android:visibility="gone" />-->
                 <ImageView
                     android:id="@+id/img_hinh_anh_rong"
                     android:layout_width="match_parent"
@@ -87,21 +148,20 @@
                     android:id="@+id/view_pager_2_nguoi_thue"
                     android:layout_width="match_parent"
                     android:layout_height="180dp"
-                    android:visibility="visible"
                     android:paddingStart="60dp"
-                    android:paddingEnd="60dp"/>
-
+                    android:paddingEnd="60dp"
+                    android:visibility="visible" />
 
 
             </LinearLayout>
 
-<!--            <me.relex.circleindicator.CircleIndicator3-->
-<!--                android:id="@+id/ci_3"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="35dp"-->
-<!--                android:layout_gravity="center_horizontal"-->
-<!--                android:visibility="visible"-->
-<!--                app:ci_drawable="@drawable/ci" />-->
+            <!--            <me.relex.circleindicator.CircleIndicator3-->
+            <!--                android:id="@+id/ci_3"-->
+            <!--                android:layout_width="wrap_content"-->
+            <!--                android:layout_height="35dp"-->
+            <!--                android:layout_gravity="center_horizontal"-->
+            <!--                android:visibility="visible"-->
+            <!--                app:ci_drawable="@drawable/ci" />-->
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -723,9 +783,9 @@
 
             <TextView
                 style="@style/tv_20sp"
+                android:paddingVertical="5dp"
                 android:text="@string/dp"
-                android:textColor="#FFBB33"
-                android:paddingVertical="5dp"/>
+                android:textColor="#FFBB33" />
 
             <ImageView
                 android:layout_width="25dp"
@@ -733,29 +793,29 @@
                 android:src="@drawable/iconp_money" />
         </LinearLayout>
 
-<!--        <LinearLayout-->
-<!--            android:id="@+id/ll_dat_phong"-->
-<!--            android:layout_width="0dp"-->
-<!--            android:layout_height="50dp"-->
-<!--            android:layout_margin="5dp"-->
-<!--            android:layout_weight="1"-->
-<!--            android:gravity="center_horizontal|center_vertical"-->
-<!--            android:orientation="horizontal"-->
-<!--            android:visibility="visible">-->
+        <!--        <LinearLayout-->
+        <!--            android:id="@+id/ll_dat_phong"-->
+        <!--            android:layout_width="0dp"-->
+        <!--            android:layout_height="50dp"-->
+        <!--            android:layout_margin="5dp"-->
+        <!--            android:layout_weight="1"-->
+        <!--            android:gravity="center_horizontal|center_vertical"-->
+        <!--            android:orientation="horizontal"-->
+        <!--            android:visibility="visible">-->
 
-<!--            <TextView-->
-<!--                style="@style/tv_20sp"-->
-<!--                android:text="@string/dp"-->
-<!--                android:textColor="#FFBB33" />-->
+        <!--            <TextView-->
+        <!--                style="@style/tv_20sp"-->
+        <!--                android:text="@string/dp"-->
+        <!--                android:textColor="#FFBB33" />-->
 
-            <ImageView
-                android:id="@+id/image_gif"
-                android:layout_width="80dp"
-                android:layout_height="60dp"
-                android:layout_margin="5dp"
-                android:src="@drawable/iconp_giphy"
-                android:visibility="gone"/>
-<!--        </LinearLayout>-->
+        <!--        <ImageView-->
+        <!--            android:id="@+id/image_gif"-->
+        <!--            android:layout_width="80dp"-->
+        <!--            android:layout_height="60dp"-->
+        <!--            android:layout_margin="5dp"-->
+        <!--            android:src="@drawable/iconp_giphy"-->
+        <!--            android:visibility="gone" />-->
+        <!--        </LinearLayout>-->
 
 
         <LinearLayout

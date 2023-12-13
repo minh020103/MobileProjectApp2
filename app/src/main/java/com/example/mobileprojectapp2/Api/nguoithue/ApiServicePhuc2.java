@@ -96,4 +96,6 @@ public interface ApiServicePhuc2 {
                                                                                           @Query("loaiPhong") int loaiPhong,
                                                                                           @Query("gioiTinh") int gioiTinh,
                                                                                           @Query("tienIch") String tienIch);
+    @GET("api/layyeucaudatphong")
+    Call<YeuCauDatPhong> getYCDPByIdNguoiGui(@Query("idTaiKhoanGui")int idTaiKhoanGui);
 }
