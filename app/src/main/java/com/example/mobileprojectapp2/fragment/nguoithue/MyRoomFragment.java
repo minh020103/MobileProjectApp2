@@ -80,7 +80,7 @@ public class MyRoomFragment extends AbstractFragment{
 
     LinkedList<PhongBinhLuan> list;
     private SharedPreferences shared;
-    private int idTaiKhoan,idphong;
+    private int idTaiKhoan,idTaiKhoanNguoiThue,idphong;
     private ViewPager2 mViewPager2;
 
     List<PhongNguoiThue> nguoithueList;
@@ -116,14 +116,14 @@ public class MyRoomFragment extends AbstractFragment{
         edtComment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MComponent.comment(getActivity(), container, idphong,list ,idTaiKhoan );
+                MComponent.comment(getActivity(), container, idphong,list ,idTaiKhoanNguoiThue);
             }
         });
 
         ic_danhgia.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MComponent.rating(getActivity(),idphong,idTaiKhoan);
+                MComponent.rating(getActivity(),idphong,idTaiKhoanNguoiThue);
             }
         });
 
@@ -153,8 +153,9 @@ public class MyRoomFragment extends AbstractFragment{
 
     private void LayDuLieu(){
         shared = getActivity().getSharedPreferences(Const.PRE_LOGIN, Context.MODE_PRIVATE);
-        idTaiKhoan = shared.getInt("idNguoiThue", -1);
-        Call<PhongNguoiThue> call = ApiServiceDung.apiServiceDung.layphongnguoithue(idTaiKhoan);
+        idTaiKhoanNguoiThue = shared.getInt("idNguoiThue", -1);
+        idTaiKhoan = shared.getInt("idTaiKhoan", -1);
+        Call<PhongNguoiThue> call = ApiServiceDung.apiServiceDung.layphongnguoithue(idTaiKhoanNguoiThue);
         call.enqueue(new Callback<PhongNguoiThue>() {
             @Override
             public void onResponse(Call<PhongNguoiThue> call, Response<PhongNguoiThue> response) {
@@ -179,17 +180,16 @@ public class MyRoomFragment extends AbstractFragment{
                     chuacotro.setVisibility(View.GONE);
                     thongtin.setVisibility(View.VISIBLE);
                     anh.setVisibility(View.VISIBLE);
-
-                }else {
-                    chuacotro.setVisibility(View.VISIBLE);
-                    thongtin.setVisibility(View.GONE);
-                    anh.setVisibility(View.GONE);
+                    btnRoiTro.setVisibility(View.VISIBLE);
                 }
             }
 
             @Override
             public void onFailure(Call<PhongNguoiThue> call, Throwable t) {
-
+                chuacotro.setVisibility(View.VISIBLE);
+                thongtin.setVisibility(View.GONE);
+                anh.setVisibility(View.GONE);
+                btnRoiTro.setVisibility(View.GONE);
             }
         });
     }
@@ -386,13 +386,51 @@ public class MyRoomFragment extends AbstractFragment{
         }).setNegativeButton("Có", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                //TODO: làm rời phòng 2222
-                onResume();
+                Call<Integer> call = ApiServiceDung.apiServiceDung.xoaphongcuanguoithue(idTaiKhoan,idTaiKhoanNguoiThue);
+                call.enqueue(new Callback<Integer>() {
+                    @Override
+                    public void onResponse(Call<Integer> call, Response<Integer> response) {
+                        alertSuccess("Huỷ Đăng Ký Phòng Thành Công");
+                        onResume();
+                    }
+
+                    @Override
+                    public void onFailure(Call<Integer> call, Throwable t) {
+                        alertFail("Huỷ Đăng Ký Thất Bại Vui Lòng Liên Hệ Admin");
+                    }
+                });
             }
         });
         builder.create();
         builder.show();
     }
+
+    private void alertSuccess(String s) {
+        new android.app.AlertDialog.Builder(getContext())
+                .setTitle("Thông báo")
+                .setIcon(R.drawable.iconp_check)
+                .setMessage(s)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                }).show();
+    }
+
+    private void alertFail(String s) {
+        new android.app.AlertDialog.Builder(getContext())
+                .setTitle("Thông báo")
+                .setIcon(R.drawable.iconp_fail)
+                .setMessage(s)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                }).show();
+    }
+
 
     @Override
     public void onResume() {

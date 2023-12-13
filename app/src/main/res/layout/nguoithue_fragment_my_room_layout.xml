@@ -16,12 +16,12 @@
             android:layout_height="match_parent"
             android:text="Bạn Chưa Đăng Kí Trọ"
             android:gravity="center"
-            android:visibility="gone"
+            android:visibility="visible"
             android:textSize="90dp"/>
 
         <LinearLayout
             android:id="@+id/anh"
-            android:visibility="visible"
+            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="250dp"
             android:orientation="vertical">
@@ -50,7 +50,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:visibility="visible">
+            android:visibility="gone">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -506,6 +506,7 @@
                 </LinearLayout>
         <Button
             android:id="@+id/btnRoiTro"
+            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"

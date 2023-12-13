@@ -15,6 +15,7 @@ import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Multipart;
 import retrofit2.http.PATCH;
@@ -47,5 +48,8 @@ public interface ApiServiceDung {
 
     @GET("api/layphongnguoithue")
     Call<PhongNguoiThue> layphongnguoithue(@Query("idNguoiThue") int id);
+
+    @DELETE("api/xoaphongcuanguoithue")
+    Call<Integer> xoaphongcuanguoithue(@Query("idTaiKhoanGui") int idTaiKhoanGui,@Query("idNguoiThue") int idNguoiThue);
 }
     
