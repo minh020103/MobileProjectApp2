@@ -62,7 +62,7 @@ public class DanhSachPhongYeuThichActivity extends AppCompatActivity {
 
             @Override
             public void OnCLickLike(int position, View v) {
-                alertSuccess("Coming soon");
+                alertComingSoon("Coming soon");
             }
         });
 
@@ -106,7 +106,7 @@ public class DanhSachPhongYeuThichActivity extends AppCompatActivity {
         rcvListPhongYeuThich.setAdapter(adapter);
     }
 
-    private void alertSuccess(String s) {
+    private void alertComingSoon(String s) {
         new AlertDialog.Builder(this)
                 .setTitle("Thông báo")
                 .setMessage(s)

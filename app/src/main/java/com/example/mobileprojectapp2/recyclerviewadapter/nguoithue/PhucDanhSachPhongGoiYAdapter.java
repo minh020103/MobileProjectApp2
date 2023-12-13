@@ -41,11 +41,6 @@ public class PhucDanhSachPhongGoiYAdapter extends RecyclerView.Adapter<PhucDanhS
     public PhongGoiYViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(layoutID, parent, false);
         return new PhongGoiYViewHolder(view);
-
-//        CardView view = (CardView) activity.getLayoutInflater().inflate(layoutID, parent,  false);
-//
-//        return new PhongGoiYViewHolder(view);
-
     }
 
     @Override
@@ -61,8 +56,7 @@ public class PhucDanhSachPhongGoiYAdapter extends RecyclerView.Adapter<PhucDanhS
             holder.imgViewPhongGoiY.setImageResource(R.drawable.khongcoanh);
         }
         holder.tvDiaChi.setText(phongTro.getDiaChiChiTiet());
-//        holder.tvQuan.setText(phongTro.getQuan().getTenQuan() + "");
-
+        holder.tvQuan.setText(phongTro.getQuan().getTenQuan() + "");
         float trieu = 1000000;
         float ngan = 1000;
         float tram = 100000;

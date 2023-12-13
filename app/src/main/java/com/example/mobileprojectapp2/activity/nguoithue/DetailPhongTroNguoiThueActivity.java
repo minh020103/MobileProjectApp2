@@ -242,6 +242,13 @@ public class DetailPhongTroNguoiThueActivity extends AppCompatActivity {
             }
         });
 
+        adapterTienIch.setOnClick(new TienIchAdapter.OnClick() {
+            @Override
+            public void onClickItemListener(int position, View view) {
+
+            }
+        });
+
 
     }
 

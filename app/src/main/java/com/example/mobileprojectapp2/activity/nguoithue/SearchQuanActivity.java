@@ -59,6 +59,7 @@ public class SearchQuanActivity extends AppCompatActivity {
         tvHuy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+//                startActivity(new Intent(SearchQuanActivity.this, RenterActivity.class));
                 finish();
 //                alertSuccess("OK");
             }

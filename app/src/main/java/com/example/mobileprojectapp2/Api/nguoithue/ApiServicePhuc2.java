@@ -46,6 +46,7 @@ public interface ApiServicePhuc2 {
                                     @Part("ten") RequestBody ten,
                                     @Part("soDienThoai") RequestBody soDienThoai,
                                     @Part MultipartBody.Part hinh);
+
     @Multipart
     @POST("api/capnhatthongtinnguoithuekhonghinh")
     Call<Integer> editProfileKhongHinh(@Part("idTaiKhoan") int idTaiKhoan,
@@ -63,6 +64,7 @@ public interface ApiServicePhuc2 {
                                    @Part("idQuan") RequestBody idQuan,
                                    @Part("tienCoc") RequestBody tienCoc,
                                    @Part("gioiTinh") RequestBody gioiTinh);
+
     @GET("api/phongtrochutro/all")
     Call<List<PhongTroChuTro>> getALlListPhongTroTheoChuTro(@Query("idChuTro") int idChuTro);
 
@@ -77,7 +79,7 @@ public interface ApiServicePhuc2 {
 
     @GET("api/kiemtrayeuthich")
     Call<Integer> checkYeuThich(@Query("idPhong") int idPhong,
-                             @Query("idTaiKhoan") int idTaiKhoan);
+                                @Query("idTaiKhoan") int idTaiKhoan);
 
     @Multipart
     @POST("api/capnhatyeuthichphongtro")
@@ -85,6 +87,13 @@ public interface ApiServicePhuc2 {
                              @Part("idTaiKhoan") RequestBody idTaiKhoan);
 
     @GET("api/laydanhsachphongtroyeuthich")
-    Call<List<PhongTro>> getAllPhongYeuThich(@Query("idTaiKhoan")int idTaiKhoan);
+    Call<List<PhongTro>> getAllPhongYeuThich(@Query("idTaiKhoan") int idTaiKhoan);
 
+    @GET("api/timkiemtheonhucau")
+    Call<List<com.example.mobileprojectapp2.model.PhongTro>> getDanhSachPhongTimKiemBoLoc(@Query("quan") int quan,
+                                                                                          @Query("giaBatDau") int giaBatDau,
+                                                                                          @Query("giaKetThuc") int giaKetThuc,
+                                                                                          @Query("loaiPhong") int loaiPhong,
+                                                                                          @Query("gioiTinh") int gioiTinh,
+                                                                                          @Query("tienIch") String tienIch);
 }

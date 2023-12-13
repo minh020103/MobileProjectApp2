@@ -17,21 +17,22 @@ import com.bumptech.glide.Glide;
 import com.example.mobileprojectapp2.R;
 import com.example.mobileprojectapp2.api.Const;
 import com.example.mobileprojectapp2.datamodel.PhongTroChuTro;
+import com.example.mobileprojectapp2.model.PhongTro;
 
 import java.text.DecimalFormat;
 import java.util.List;
 
-public class PhucDanhSachPhongTimKiem extends RecyclerView.Adapter<PhucDanhSachPhongTimKiem.PhongGoiYViewHolder> {
+public class PhucDanhSachPhongTimKiemAdapter extends RecyclerView.Adapter<PhucDanhSachPhongTimKiemAdapter.PhongGoiYViewHolder> {
     private Activity activity;
-    private List<PhongTroChuTro> list;
+    private List<PhongTro> list;
     private int layoutID;
-    private PhucDanhSachPhongTimKiem.MyOnCLickListener myOnCLickListener;
+    private PhucDanhSachPhongTimKiemAdapter.MyOnCLickListener myOnCLickListener;
 
-    public void setMyOnCLickListener(PhucDanhSachPhongTimKiem.MyOnCLickListener myOnCLickListener) {
+    public void setMyOnCLickListener(PhucDanhSachPhongTimKiemAdapter.MyOnCLickListener myOnCLickListener) {
         this.myOnCLickListener = myOnCLickListener;
     }
 
-    public PhucDanhSachPhongTimKiem(Activity activity, List<PhongTroChuTro> list, int layoutID) {
+    public PhucDanhSachPhongTimKiemAdapter(Activity activity, List<PhongTro> list, int layoutID) {
         this.activity = activity;
         this.list = list;
         this.layoutID = layoutID;
@@ -47,12 +48,12 @@ public class PhucDanhSachPhongTimKiem extends RecyclerView.Adapter<PhucDanhSachP
 
     @Override
     public void onBindViewHolder(@NonNull PhongGoiYViewHolder holder, int position) {
-        PhongTroChuTro phongTro = list.get(position);
+        PhongTro phongTro = list.get(position);
         if (phongTro == null) {
             return;
         }
-        if (phongTro.getHinhAnh().size() > 0) {
-            Glide.with(activity.getLayoutInflater().getContext()).load(Const.DOMAIN + phongTro.getHinhAnh().get(0).getHinh()).placeholder(R.drawable.anhdaidien).into(holder.imgViewPhongTimKiem);
+        if (phongTro.getHinhAnhPhongTro().size() > 0) {
+            Glide.with(activity.getLayoutInflater().getContext()).load(Const.DOMAIN + phongTro.getHinhAnhPhongTro().get(0).getHinh()).placeholder(R.drawable.anhdaidien).into(holder.imgViewPhongTimKiem);
         } else {
             holder.imgViewPhongTimKiem.setImageResource(R.drawable.khongcoanh);
         }
@@ -63,20 +64,20 @@ public class PhucDanhSachPhongTimKiem extends RecyclerView.Adapter<PhucDanhSachP
         float gia;
         String gia2;
         DecimalFormat decimalFormat = new DecimalFormat("#.#");
-        if (phongTro.getPhongTro().getGia() < tram) {
+        if (phongTro.getGia() < tram) {
             holder.tvGia.setText("Đang cập nhật");
-        } else if (phongTro.getPhongTro().getGia() < trieu) {
-            gia = phongTro.getPhongTro().getGia() / ngan;
+        } else if (phongTro.getGia() < trieu) {
+            gia = phongTro.getGia() / ngan;
             gia2 = decimalFormat.format(gia);
             holder.tvGia.setText(gia2 + "k /tháng");
-        } else if (phongTro.getPhongTro().getGia() >= trieu) {
-            gia = phongTro.getPhongTro().getGia() / trieu;
+        } else if (phongTro.getGia() >= trieu) {
+            gia = phongTro.getGia() / trieu;
             gia2 = decimalFormat.format(gia);
             holder.tvGia.setText(gia2 + " triệu/tháng");
         }
 
-        holder.tvLoaiPhong.setText(phongTro.getPhongTro().getLoaiPhong() == PHONG_GHEP ? "Phòng ghép" : "Tìm người thuê");
-        holder.tvGioiTinh.setText(phongTro.getPhongTro().getGioiTinh() == MALE_GENDERS ? "Nam" : "Nữ");
+        holder.tvLoaiPhong.setText(phongTro.getLoaiPhong() == PHONG_GHEP ? "Phòng ghép" : "Tìm người thuê");
+        holder.tvGioiTinh.setText(phongTro.getGioiTinh() == MALE_GENDERS ? "Nam" : "Nữ");
         holder.onClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {

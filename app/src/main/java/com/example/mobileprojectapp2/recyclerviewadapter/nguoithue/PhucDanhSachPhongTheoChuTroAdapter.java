@@ -21,17 +21,17 @@ import com.example.mobileprojectapp2.datamodel.PhongTroChuTro;
 import java.text.DecimalFormat;
 import java.util.List;
 
-public class PhucDanhSachPhongTheoChuTro extends RecyclerView.Adapter<PhucDanhSachPhongTheoChuTro.PhongGoiYViewHolder> {
+public class PhucDanhSachPhongTheoChuTroAdapter extends RecyclerView.Adapter<PhucDanhSachPhongTheoChuTroAdapter.PhongGoiYViewHolder> {
     private Activity activity;
     private List<PhongTroChuTro> list;
     private int layoutID;
-    private PhucDanhSachPhongTheoChuTro.MyOnCLickListener myOnCLickListener;
+    private PhucDanhSachPhongTheoChuTroAdapter.MyOnCLickListener myOnCLickListener;
 
-    public void setMyOnCLickListener(PhucDanhSachPhongTheoChuTro.MyOnCLickListener myOnCLickListener) {
+    public void setMyOnCLickListener(PhucDanhSachPhongTheoChuTroAdapter.MyOnCLickListener myOnCLickListener) {
         this.myOnCLickListener = myOnCLickListener;
     }
 
-    public PhucDanhSachPhongTheoChuTro(Activity activity, List<PhongTroChuTro> list, int layoutID) {
+    public PhucDanhSachPhongTheoChuTroAdapter(Activity activity, List<PhongTroChuTro> list, int layoutID) {
         this.activity = activity;
         this.list = list;
         this.layoutID = layoutID;
