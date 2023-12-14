@@ -3,6 +3,8 @@ package com.example.mobileprojectapp2.api.chutro;
 import com.example.mobileprojectapp2.api.Const;
 import com.example.mobileprojectapp2.datamodel.ChuTro;
 import com.example.mobileprojectapp2.datamodel.Goi;
+import com.example.mobileprojectapp2.datamodel.PhongNguoiThue;
+import com.example.mobileprojectapp2.datamodel.Phuong;
 import com.example.mobileprojectapp2.datamodel.YeuCauDKG;
 import com.example.mobileprojectapp2.model.Admin;
 
@@ -13,6 +15,7 @@ import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Multipart;
 import retrofit2.http.PATCH;
@@ -33,14 +36,6 @@ public interface ApiServiceDung {
     Call<List<Goi>> getListPakageAPI();
     @GET("api/goi/chitiet")
     Call<Goi> getPakageByIdAPI(@Query("id") int id);
-    @GET("api/goi/lock")
-    Call<Goi> lockPakageByIdAPI(@Query("id") int id);
-    @GET("api/goi/unLock")
-    Call<Goi> unLockPakageByIdAPI(@Query("id") int id);
-    @POST("api/goi/add")
-    Call<Goi> addPakage(@Query("thoiHan") int thoiHan, @Query("soLuongPhongToiDa") int soLuongPhongToiDa, @Query("gia") int gia);
-    @PUT("api/goi/update")
-    Call<Goi> updatePakage(@Query("id") int id,@Query("thoiHan") int thoiHan, @Query("soLuongPhongToiDa") int soLuongPhongToiDa, @Query("gia") int gia);
     @PATCH("api/chutro/xoadichvu")
     Call<ChuTro> xoagoidangdung(@Query("idTaiKhoan") int id);
     @GET("api/thongtinadmin")
@@ -50,4 +45,11 @@ public interface ApiServiceDung {
     Call<YeuCauDKG> yeucaudangkygoi(@Part("idChuTro") RequestBody idChuTro,
                                     @Part("idGoi") RequestBody idGoi,
                                     @Part MultipartBody.Part hinhAnhChuyenKhoan);
+
+    @GET("api/layphongnguoithue")
+    Call<PhongNguoiThue> layphongnguoithue(@Query("idNguoiThue") int id);
+
+    @DELETE("api/xoaphongcuanguoithue")
+    Call<Integer> xoaphongcuanguoithue(@Query("idTaiKhoanGui") int idTaiKhoanGui,@Query("idNguoiThue") int idNguoiThue);
 }
+    

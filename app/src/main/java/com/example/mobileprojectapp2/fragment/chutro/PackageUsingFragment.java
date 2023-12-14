@@ -17,18 +17,24 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.mobileprojectapp2.R;
 import com.example.mobileprojectapp2.activity.chutro.MotelRoomOwnerActivity;
 import com.example.mobileprojectapp2.activity.chutro.ThanhToanGoiActivity;
+import com.example.mobileprojectapp2.activity.nguoithue.DanhSachPhongGoiYActivity;
 import com.example.mobileprojectapp2.adapter.chutro.GoiDichVuAdapter;
 import com.example.mobileprojectapp2.api.Const;
 import com.example.mobileprojectapp2.api.chutro.ApiServiceDung;
 import com.example.mobileprojectapp2.api.chutro.ApiServicePhuc;
+import com.example.mobileprojectapp2.api.nguoithue.ApiServiceMinh;
+import com.example.mobileprojectapp2.datamodel.Banner;
 import com.example.mobileprojectapp2.datamodel.Goi;
 import com.example.mobileprojectapp2.model.ChuTro;
+import com.example.mobileprojectapp2.viewpager2adapter.NguoiThueImageSlideViewPager2Adapter;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -57,6 +63,11 @@ public class PackageUsingFragment extends AbstractFragment{
     private SharedPreferences shared;
     private int idTaiKhoan;
 
+    ViewPager2 vp2Banner;
+    LinkedList<Banner> listHinh;
+    NguoiThueImageSlideViewPager2Adapter imagesAdapter;
+
+
     int temp;
     @Nullable
     @Override
@@ -81,7 +92,10 @@ public class PackageUsingFragment extends AbstractFragment{
         shared = getActivity().getSharedPreferences(Const.PRE_LOGIN, Context.MODE_PRIVATE);
         idTaiKhoan = shared.getInt("idTaiKhoan", -1);
 
-
+        listHinh = new LinkedList<>();
+        imagesAdapter = new NguoiThueImageSlideViewPager2Adapter(getActivity(), listHinh, R.layout.chutro_item_image_layout);
+        vp2Banner.setAdapter(imagesAdapter);
+        getDataForImages();
 
         HostByIdApi(idTaiKhoan);
         getGoiByIdAPI(temp);
@@ -133,6 +147,26 @@ public class PackageUsingFragment extends AbstractFragment{
 
             }
         });
+    }
+    private void getDataForImages() {
+        ApiServiceMinh.apiService.layTatCaBanner().enqueue(new Callback<List<Banner>>() {
+            @Override
+            public void onResponse(Call<List<Banner>> call, Response<List<Banner>> response) {
+                if (response.code() == 200) {
+                    vp2Banner.setBackground(null);
+                    listHinh.addAll(response.body());
+                    imagesAdapter.notifyDataSetChanged();
+                } else {
+                    vp2Banner.setBackground(PackageUsingFragment.this.getResources().getDrawable(R.drawable.thuduc, PackageUsingFragment.this.getActivity().getTheme()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Banner>> call, Throwable t) {
+                vp2Banner.setBackground(PackageUsingFragment.this.getResources().getDrawable(R.drawable.thuduc, PackageUsingFragment.this.getActivity().getTheme()));
+            }
+        });
+        imagesAdapter.notifyDataSetChanged();
     }
 
     private void ClickOpenButtomSheet(String text) {
