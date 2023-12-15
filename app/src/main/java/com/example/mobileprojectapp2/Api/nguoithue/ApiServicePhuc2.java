@@ -17,6 +17,7 @@ import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
@@ -98,4 +99,10 @@ public interface ApiServicePhuc2 {
                                                                                           @Query("tienIch") String tienIch);
     @GET("api/layyeucaudatphong")
     Call<YeuCauDatPhong> getYCDPByIdNguoiGui(@Query("idTaiKhoanGui")int idTaiKhoanGui);
+
+    @GET("api/phongtro/quan")
+    Call<List<com.example.mobileprojectapp2.datamodel.PhongTro>> layTatCaPhongTroTheoQuan(@Query("idQuan") int idQuan, @Query("arrange") String arrange);
+
+    @DELETE("api/xoayeucaudatphong")
+    Call<YeuCauDatPhong> deleteYeuCauDatPhong(@Query("idTaiKhoanGui")int idTaiKhoanGui);
 }

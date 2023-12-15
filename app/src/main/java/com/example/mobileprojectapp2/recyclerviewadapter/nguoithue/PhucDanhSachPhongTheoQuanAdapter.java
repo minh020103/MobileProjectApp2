@@ -16,23 +16,22 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.mobileprojectapp2.R;
 import com.example.mobileprojectapp2.api.Const;
-import com.example.mobileprojectapp2.datamodel.PhongTroChuTro;
 import com.example.mobileprojectapp2.model.PhongTro;
 
 import java.text.DecimalFormat;
 import java.util.List;
 
-public class PhucDanhSachPhongTimKiemAdapter extends RecyclerView.Adapter<PhucDanhSachPhongTimKiemAdapter.PhongGoiYViewHolder> {
+public class PhucDanhSachPhongTheoQuanAdapter extends RecyclerView.Adapter<PhucDanhSachPhongTheoQuanAdapter.PhongGoiYViewHolder> {
     private Activity activity;
-    private List<PhongTro> list;
+    private List<com.example.mobileprojectapp2.datamodel.PhongTro> list;
     private int layoutID;
-    private PhucDanhSachPhongTimKiemAdapter.MyOnCLickListener myOnCLickListener;
+    private PhucDanhSachPhongTheoQuanAdapter.MyOnCLickListener myOnCLickListener;
 
-    public void setMyOnCLickListener(PhucDanhSachPhongTimKiemAdapter.MyOnCLickListener myOnCLickListener) {
+    public void setMyOnCLickListener(PhucDanhSachPhongTheoQuanAdapter.MyOnCLickListener myOnCLickListener) {
         this.myOnCLickListener = myOnCLickListener;
     }
 
-    public PhucDanhSachPhongTimKiemAdapter(Activity activity, List<PhongTro> list, int layoutID) {
+    public PhucDanhSachPhongTheoQuanAdapter(Activity activity, List<com.example.mobileprojectapp2.datamodel.PhongTro> list, int layoutID) {
         this.activity = activity;
         this.list = list;
         this.layoutID = layoutID;
@@ -48,7 +47,7 @@ public class PhucDanhSachPhongTimKiemAdapter extends RecyclerView.Adapter<PhucDa
 
     @Override
     public void onBindViewHolder(@NonNull PhongGoiYViewHolder holder, int position) {
-        PhongTro phongTro = list.get(position);
+        com.example.mobileprojectapp2.datamodel.PhongTro phongTro = list.get(position);
         if (phongTro == null) {
             return;
         }

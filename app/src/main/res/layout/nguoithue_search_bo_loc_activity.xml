@@ -298,8 +298,8 @@
 
                 <TextView
                     style="@style/tv_16sp_2"
-                    android:text="@string/gt"
-                    android:layout_gravity="center_vertical"/>
+                    android:layout_gravity="center_vertical"
+                    android:text="@string/gt" />
 
 
                 <androidx.recyclerview.widget.RecyclerView
@@ -315,17 +315,45 @@
                 android:id="@+id/rcv_list_phong_tim_kiem"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
+            <!--            Giao diện danh sách phòng theo quận-->
+            <LinearLayout
+                android:id="@+id/ll_list_phong_theo_quan"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rcv_list_phong_theo_quan"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+            </LinearLayout>
+
 
             <LinearLayout
                 android:id="@+id/ll_khong_tim_thay"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
+                android:layout_height="100dp"
+                android:layout_gravity="center"
                 android:visibility="gone">
 
                 <TextView
                     style="@style/tv_20sp"
+                    android:layout_gravity="center_vertical"
                     android:text="Không tìm thấy phòng" />
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/ll_chua_co_phong_nao"
+                android:layout_width="wrap_content"
+                android:layout_height="100dp"
+                android:layout_gravity="center"
+                android:visibility="gone">
+
+                <TextView
+                    style="@style/tv_20sp"
+                    android:layout_gravity="center_vertical"
+                    android:text="Quận hiện tại chưa có phòng nào" />
             </LinearLayout>
             <!--                Button Áp dụng-->
             <LinearLayout

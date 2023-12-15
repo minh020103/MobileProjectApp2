@@ -59,16 +59,7 @@ public class DanhSachPhongTheoChuTroActivity extends AppCompatActivity {
         getChuTroByID();
         getListPhongDataApi(idChuTro);
 
-        adapter.setMyOnCLickListener(new PhucDanhSachPhongTheoChuTroAdapter.MyOnCLickListener() {
-            @Override
-            public void OnClickItem(int position, View v) {
-                Animation anim = AnimationUtils.loadAnimation(DanhSachPhongTheoChuTroActivity.this, R.anim.item_click);
-                v.startAnimation(anim);
-                Intent intent = new Intent(DanhSachPhongTheoChuTroActivity.this, DetailPhongTroNguoiThueActivity.class);
-                intent.putExtra("idPhong", listDanhSachPhong.get(position).getId());
-                startActivity(intent);
-            }
-        });
+
 
         imgViewBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -106,6 +97,17 @@ public class DanhSachPhongTheoChuTroActivity extends AppCompatActivity {
                  listDanhSachPhong.addAll(response.body());
                  adapter.notifyDataSetChanged();
              }
+             adapter.setMyOnCLickListener(new PhucDanhSachPhongTheoChuTroAdapter.MyOnCLickListener() {
+                 @Override
+                 public void OnClickItem(int position, View v) {
+                     Animation anim = AnimationUtils.loadAnimation(DanhSachPhongTheoChuTroActivity.this, R.anim.item_click);
+                     v.startAnimation(anim);
+                     Intent intent = new Intent(DanhSachPhongTheoChuTroActivity.this, DetailPhongTroNguoiThueActivity.class);
+                     intent.putExtra("idPhong", response.body().get(position).getIdPhongTro());
+                     startActivity(intent);
+                 }
+             });
+
          }
 
          @Override

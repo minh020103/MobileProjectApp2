@@ -81,7 +81,7 @@ public class DetailPhongTroNguoiThueActivity extends AppCompatActivity {
     private TextView tvLoaiPhongNguoiThue, tvGioTinhNguoiThue, tvGiaNguoiThue, tvSoLuongToiDaNguoiThue, tvDienTichNguoiThue,
             tvTienCocNguoiThue, tvTienDienNguoiThue, tvTienNuocNguoiThue, tvQuanNguoiThue, tvDiaChiNguoiThue, tvTienIchRong,
             tvTenChuTro, tvSDTChuTro, tv_dsnt, tv_cho_xac_nhan;
-    private ImageView img_hinh_anh_rong, image_gif, img_like, img_like2;
+    private ImageView img_hinh_anh_rong, image_gif, img_like, img_like2, img_delete;
     private ReadMoreTextView tvMoTaNguoiThue;
     private TienIchAdapter adapterTienIch;
     private ImageView imageBack, imageViewChuTro;
@@ -102,7 +102,6 @@ public class DetailPhongTroNguoiThueActivity extends AppCompatActivity {
     private int idPhong = 1;
     private int idTaiKhoan = 22;
     private LinearLayout llXemThem, llThuGon, ll_dsnt, llDatPhong, llGoi, llChat, ll_dsp_chu_tro, ll_phong_cho_xac_nhan, ll_phong_dang_cho;
-    private RelativeLayout rlt_phong_dang_cho;
     private int idTaiKhoanNhan;
     private ProgressDialog mProgressDialog;
     SharedPreferences sharedPreferences;
@@ -249,9 +248,40 @@ public class DetailPhongTroNguoiThueActivity extends AppCompatActivity {
 
             }
         });
-
-
         getIdYeuCauDatPhong();
+
+        img_delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(DetailPhongTroNguoiThueActivity.this);
+                builder.setMessage("Bạn muốn xóa yêu cầu đặt phòng này ?")
+                        .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Call<YeuCauDatPhong> call = ApiServicePhuc2.apiService.deleteYeuCauDatPhong(idTaiKhoan);
+                                call.enqueue(new Callback<YeuCauDatPhong>() {
+                                    @Override
+                                    public void onResponse(Call<YeuCauDatPhong> call, Response<YeuCauDatPhong> response) {
+                                        alertSuccess("Xóa yêu cầu đặt phòng thành công");
+                                    }
+
+                                    @Override
+                                    public void onFailure(Call<YeuCauDatPhong> call, Throwable t) {
+
+                                    }
+                                });
+                            }
+                        }).setNegativeButton("Hủy", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                mProgressDialog.cancel();
+                            }
+                        });
+                builder.create();
+                builder.show();
+
+            }
+        });
     }
 
     private void getIdYeuCauDatPhong() {
@@ -259,17 +289,30 @@ public class DetailPhongTroNguoiThueActivity extends AppCompatActivity {
         call.enqueue(new Callback<YeuCauDatPhong>() {
             @Override
             public void onResponse(Call<YeuCauDatPhong> call, Response<YeuCauDatPhong> response) {
-                Log.d("TAG", "onResponseApi: "+response.body().getIdPhong());
-                Log.d("TAG", "onResponseN: "+ idPhong);
+                Log.d("TAG", "onResponseApi: "+response.body().getId());
+
 
                 if (idPhong == response.body().getIdPhong()){
                     ll_phong_cho_xac_nhan.setVisibility(View.VISIBLE);
-                    rlt_phong_dang_cho.setVisibility(View.GONE);
+                    ll_phong_dang_cho.setVisibility(View.GONE);
                 }else {
                     ll_phong_cho_xac_nhan.setVisibility(View.GONE);
-                    rlt_phong_dang_cho.setVisibility(View.VISIBLE);
+                    ll_phong_dang_cho.setVisibility(View.VISIBLE);
                 }
-                useIdPhongDaGuiYeuCau(response.body().getIdPhong());
+                tv_cho_xac_nhan.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if(response.body() == null){
+                            alertSuccess("Ban chua yeu cau phong nao");
+                        }else {
+                            Intent intent = new Intent(DetailPhongTroNguoiThueActivity.this, DetailPhongTroNguoiThueActivity.class);
+                            intent.putExtra("idPhong", response.body().getIdPhong());
+                            startActivity(intent);
+                        }
+
+                    }
+                });
+
 
             }
 
@@ -281,16 +324,6 @@ public class DetailPhongTroNguoiThueActivity extends AppCompatActivity {
 
     }
 
-    private void useIdPhongDaGuiYeuCau(int id){
-        tv_cho_xac_nhan.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(DetailPhongTroNguoiThueActivity.this, DetailPhongTroNguoiThueActivity.class);
-                intent.putExtra("idPhong", id);
-                startActivity(intent);
-            }
-        });
-    }
 
     private void _initialization() {
         intentChuTro = new Intent(DetailPhongTroNguoiThueActivity.this, PhongNhanTinActivity.class);
@@ -748,7 +781,7 @@ public class DetailPhongTroNguoiThueActivity extends AppCompatActivity {
                             }
                         });
                     } else {
-                        alertSuccess("Có phòng không tồn tại chủ trọ");
+                        alertSuccess("Phòng trọ không tồn tại chủ trọ ");
                     }
 
                     llGoi.setOnClickListener(new View.OnClickListener() {
@@ -840,6 +873,7 @@ public class DetailPhongTroNguoiThueActivity extends AppCompatActivity {
 
         img_like = findViewById(R.id.img_like1);
         img_like2 = findViewById(R.id.img_like2);
+        img_delete = findViewById(R.id.img_delete);
 
         llThuGon = findViewById(R.id.ll_thu_gon);
         llXemThem = findViewById(R.id.ll_xem_them);
@@ -850,7 +884,7 @@ public class DetailPhongTroNguoiThueActivity extends AppCompatActivity {
         llGoi = findViewById(R.id.ll_goi);
         ll_dsp_chu_tro = findViewById(R.id.ll_dsp_chu_tro);
         ll_phong_cho_xac_nhan = findViewById(R.id.ll_phong_cho_xac_nhan);
-        rlt_phong_dang_cho = findViewById(R.id.rlt_phong_dang_cho);
+        ll_phong_dang_cho = findViewById(R.id.ll_phong_dang_cho);
         tvTienIchRong = findViewById(R.id.tv_tien_ich_rong);
 //        ci_3 = findViewById(R.id.ci_3);
 

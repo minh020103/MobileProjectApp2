@@ -30,6 +30,7 @@ import com.example.mobileprojectapp2.model.Selected;
 import com.example.mobileprojectapp2.model.TienIch;
 import com.example.mobileprojectapp2.recyclerviewadapter.chutro.SelectedAdapter;
 import com.example.mobileprojectapp2.recyclerviewadapter.chutro.TienIchAdapter;
+import com.example.mobileprojectapp2.recyclerviewadapter.nguoithue.PhucDanhSachPhongTheoQuanAdapter;
 import com.example.mobileprojectapp2.recyclerviewadapter.nguoithue.PhucDanhSachPhongTimKiemAdapter;
 import com.example.mobileprojectapp2.recyclerviewadapter.nguoithue.PhucGioiTinhAdapter;
 import com.example.mobileprojectapp2.recyclerviewadapter.nguoithue.PhucLoaiPhongAdapter;
@@ -52,7 +53,7 @@ public class SearchBoLocActivity extends AppCompatActivity {
     private List<Integer> listLoaiPhong;
     private List<Integer> listGioiTinh;
     private List<PhongTro> listPhongTimKiem;
-
+    private List<com.example.mobileprojectapp2.datamodel.PhongTro> listPhongTheoQuan;
 
     //List luu data api
     private List<TienIch> listTienIchSeleted;
@@ -62,17 +63,20 @@ public class SearchBoLocActivity extends AppCompatActivity {
     //List nguoi dung
     private volatile List<Selected> listSelected;
     private ImageView imgDownTienIch, imgUpTienIch, imgClear, img_loai_phong_down, img_loai_phong_up,
-            img_gia_down, img_gia_up, img_so_nguoi_down, img_so_nguoi_up;
-    private RecyclerView rcvListTienIch, rcvListSelected, rcvListLoaiPhong, rcvListGioiTinh, rcvListPhongTimKiem;
+            img_gia_down, img_gia_up, img_gioi_tinh_down, img_gioi_tinh_up;
+    private RecyclerView rcvListTienIch, rcvListSelected, rcvListLoaiPhong,
+            rcvListGioiTinh, rcvListPhongTimKiem, rcv_list_phong_theo_quan;
 
     private TienIchAdapter adapterTienIch;
     private PhucLoaiPhongAdapter adapterLoaiPhong;
     private PhucGioiTinhAdapter adapterGioiTinh;
     private SelectedAdapter adapterSelected;
+    private PhucDanhSachPhongTheoQuanAdapter adapterPhongTroTheoQuan;
     private PhucDanhSachPhongTimKiemAdapter adapterPhongTimKiem;
     private LinearLayoutManager layoutManagerTienIch, layoutManagerSelected, layoutManagerLoaiPhong,
-            layoutManagerGioiTinh, layoutManagerTimKiem;
-    private LinearLayout ll_list_Selected, llSearchBoLoc, ll_so_nguoi_gioi_tinh, ll_ap_dung, ll_khong_tim_thay;
+            layoutManagerGioiTinh, layoutManagerTimKiem, layoutManagerPhongTheoQuan;
+    private LinearLayout ll_list_Selected, llSearchBoLoc, ll_so_nguoi_gioi_tinh,
+            ll_ap_dung, ll_khong_tim_thay, ll_chua_co_phong_nao, ll_list_phong_theo_quan;
     private TextView tv_quan, tv_huy, tv_gia_start, tv_gia_end;
     private LinearLayout llGiaSeekBar;
     private int flagTienIch = 0;
@@ -102,14 +106,14 @@ public class SearchBoLocActivity extends AppCompatActivity {
         notShowListSelected();
         getQuanById();
         onChangePrice();
+
         rcvListLoaiPhong.setVisibility(View.GONE);
-        llGiaSeekBar.setVisibility(View.VISIBLE);
+        llGiaSeekBar.setVisibility(View.GONE);
         ll_so_nguoi_gioi_tinh.setVisibility(View.GONE);
-        ll_ap_dung.setVisibility(View.VISIBLE);
-
+        ll_ap_dung.setVisibility(View.GONE);
+        getQuanById();
         int max = (int) (maxValue * 1000);
-        tv_gia_end.setText(String.valueOf(max/1000000) + " triệu");
-
+        tv_gia_end.setText(String.valueOf(max / 1000000) + " triệu");
     }
 
     private void _Initialization() {
@@ -121,6 +125,7 @@ public class SearchBoLocActivity extends AppCompatActivity {
         listLoaiPhong = new ArrayList<>();
         listGioiTinh = new ArrayList<>();
         listPhongTimKiem = new ArrayList<>();
+        listPhongTheoQuan = new ArrayList<>();
     }
 
     private void notShowListSelected() {
@@ -270,10 +275,19 @@ public class SearchBoLocActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        adapterPhongTroTheoQuan.setMyOnCLickListener(new PhucDanhSachPhongTheoQuanAdapter.MyOnCLickListener() {
+            @Override
+            public void OnClickItem(int position, View v) {
+                Intent intent = new Intent(SearchBoLocActivity.this, DetailPhongTroNguoiThueActivity.class);
+                intent.putExtra("idPhong", listPhongTheoQuan.get(position).getId());
+                startActivity(intent);
+            }
+        });
     }
 
     private void onChangePrice() {
         range_slider.setValues(0f, 5000f);
+
         range_slider.addOnChangeListener(new RangeSlider.OnChangeListener() {
             @Override
             public void onValueChange(@NonNull RangeSlider slider, float value, boolean fromUser) {
@@ -318,6 +332,13 @@ public class SearchBoLocActivity extends AppCompatActivity {
         });
     }
 
+    private void flag0() {
+        flagGia = 0;
+        flagSoNguoi = 0;
+        flagLoaiPhong = 0;
+        flagTienIch = 0;
+    }
+
     private void onClickButton() {
         btnTienIch.setOnClickListener(onClickListener);
         btnLoaiPhong.setOnClickListener(onClickListener);
@@ -336,9 +357,14 @@ public class SearchBoLocActivity extends AppCompatActivity {
             int id = v.getId();
             switch (id) {
                 case R.id.btn_tien_ich:
+
                     switch (flagTienIch) {
                         case 0:
                             //Bat
+                            btnLoaiPhong.setTextColor(getResources().getColor(R.color.black));
+                            btnGia.setTextColor(getResources().getColor(R.color.black));
+                            btnTienIch.setTextColor(getResources().getColor(R.color.main_color_app_light));
+                            btnSoNguoi.setTextColor(getResources().getColor(R.color.black));
                             Log.d("TAG", "listNguoiDung: " + listSelected.size());
                             Log.d("TAG", "listSoNguoi: " + listTienIchSeleted.size());
                             imgDownTienIch.setVisibility(View.GONE);
@@ -356,29 +382,37 @@ public class SearchBoLocActivity extends AppCompatActivity {
                             img_loai_phong_down.setVisibility(View.VISIBLE);
                             img_gia_up.setVisibility(View.GONE);
                             img_gia_down.setVisibility(View.VISIBLE);
-                            img_so_nguoi_up.setVisibility(View.GONE);
-                            img_so_nguoi_down.setVisibility(View.VISIBLE);
+                            img_gioi_tinh_up.setVisibility(View.GONE);
+                            img_gioi_tinh_down.setVisibility(View.VISIBLE);
 
                             rcvListLoaiPhong.setVisibility(View.GONE);
                             llGiaSeekBar.setVisibility(View.GONE);
                             ll_so_nguoi_gioi_tinh.setVisibility(View.GONE);
                             ll_khong_tim_thay.setVisibility(View.GONE);
                             rcvListPhongTimKiem.setVisibility(View.GONE);
+                            ll_list_phong_theo_quan.setVisibility(View.GONE);
                             break;
                         case 1:
                             //Tat
+                            btnTienIch.setTextColor(getResources().getColor(R.color.black));
                             imgDownTienIch.setVisibility(View.VISIBLE);
                             imgUpTienIch.setVisibility(View.GONE);
                             flagTienIch = 0;
                             rcvListTienIch.setVisibility(View.GONE);
                             ll_ap_dung.setVisibility(View.GONE);
+                            ll_list_phong_theo_quan.setVisibility(View.VISIBLE);
                             break;
                     }
                     break;
 
                 case R.id.btn_loai_phong:
+
                     switch (flagLoaiPhong) {
                         case 0:
+                            btnLoaiPhong.setTextColor(getResources().getColor(R.color.main_color_app_light));
+                            btnGia.setTextColor(getResources().getColor(R.color.black));
+                            btnTienIch.setTextColor(getResources().getColor(R.color.black));
+                            btnSoNguoi.setTextColor(getResources().getColor(R.color.black));
                             //Bat
                             img_loai_phong_down.setVisibility(View.GONE);
                             img_loai_phong_up.setVisibility(View.VISIBLE);
@@ -395,31 +429,38 @@ public class SearchBoLocActivity extends AppCompatActivity {
                             imgDownTienIch.setVisibility(View.VISIBLE);
                             img_gia_up.setVisibility(View.GONE);
                             img_gia_down.setVisibility(View.VISIBLE);
-                            img_so_nguoi_up.setVisibility(View.GONE);
-                            img_so_nguoi_down.setVisibility(View.VISIBLE);
+                            img_gioi_tinh_up.setVisibility(View.GONE);
+                            img_gioi_tinh_down.setVisibility(View.VISIBLE);
 
                             rcvListTienIch.setVisibility(View.GONE);
                             llGiaSeekBar.setVisibility(View.GONE);
                             ll_so_nguoi_gioi_tinh.setVisibility(View.GONE);
                             ll_khong_tim_thay.setVisibility(View.GONE);
                             rcvListPhongTimKiem.setVisibility(View.GONE);
-
+                            ll_list_phong_theo_quan.setVisibility(View.GONE);
                             break;
                         case 1:
                             //Tat
+                            btnLoaiPhong.setTextColor(getResources().getColor(R.color.black));
                             img_loai_phong_down.setVisibility(View.VISIBLE);
                             img_loai_phong_up.setVisibility(View.GONE);
                             flagLoaiPhong = 0;
                             rcvListLoaiPhong.setVisibility(View.GONE);
                             ll_ap_dung.setVisibility(View.GONE);
+                            ll_list_phong_theo_quan.setVisibility(View.VISIBLE);
                             break;
                     }
                     break;
 
                 case R.id.btn_gia:
+
                     switch (flagGia) {
                         //Bat
                         case 0:
+                            btnLoaiPhong.setTextColor(getResources().getColor(R.color.black));
+                            btnGia.setTextColor(getResources().getColor(R.color.main_color_app_light));
+                            btnTienIch.setTextColor(getResources().getColor(R.color.black));
+                            btnSoNguoi.setTextColor(getResources().getColor(R.color.black));
                             img_gia_down.setVisibility(View.GONE);
                             img_gia_up.setVisibility(View.VISIBLE);
                             llGiaSeekBar.setVisibility(View.VISIBLE);
@@ -433,8 +474,8 @@ public class SearchBoLocActivity extends AppCompatActivity {
                             imgDownTienIch.setVisibility(View.VISIBLE);
                             img_loai_phong_up.setVisibility(View.GONE);
                             img_loai_phong_down.setVisibility(View.VISIBLE);
-                            img_so_nguoi_up.setVisibility(View.GONE);
-                            img_so_nguoi_down.setVisibility(View.VISIBLE);
+                            img_gioi_tinh_up.setVisibility(View.GONE);
+                            img_gioi_tinh_down.setVisibility(View.VISIBLE);
 
                             rcvListLoaiPhong.setVisibility(View.GONE);
                             rcvListTienIch.setVisibility(View.GONE);
@@ -442,24 +483,30 @@ public class SearchBoLocActivity extends AppCompatActivity {
                             ll_ap_dung.setVisibility(View.VISIBLE);
                             ll_khong_tim_thay.setVisibility(View.GONE);
                             rcvListPhongTimKiem.setVisibility(View.GONE);
-
+                            ll_list_phong_theo_quan.setVisibility(View.GONE);
                             break;
                         case 1:
+                            btnGia.setTextColor(getResources().getColor(R.color.black));
                             img_gia_down.setVisibility(View.VISIBLE);
                             img_gia_up.setVisibility(View.GONE);
                             llGiaSeekBar.setVisibility(View.GONE);
                             ll_ap_dung.setVisibility(View.GONE);
                             flagGia = 0;
-
+                            ll_list_phong_theo_quan.setVisibility(View.VISIBLE);
                             break;
                     }
                     break;
 
                 case R.id.btn_so_nguoi:
+
                     switch (flagSoNguoi) {
                         case 0:
-                            img_so_nguoi_up.setVisibility(View.VISIBLE);
-                            img_so_nguoi_down.setVisibility(View.GONE);
+                            btnLoaiPhong.setTextColor(getResources().getColor(R.color.black));
+                            btnGia.setTextColor(getResources().getColor(R.color.black));
+                            btnTienIch.setTextColor(getResources().getColor(R.color.black));
+                            btnSoNguoi.setTextColor(getResources().getColor(R.color.main_color_app_light));
+                            img_gioi_tinh_up.setVisibility(View.VISIBLE);
+                            img_gioi_tinh_down.setVisibility(View.GONE);
                             flagSoNguoi = 1;
                             getListGioiTinh();
                             ll_so_nguoi_gioi_tinh.setVisibility(View.VISIBLE);
@@ -481,13 +528,16 @@ public class SearchBoLocActivity extends AppCompatActivity {
                             ll_khong_tim_thay.setVisibility(View.GONE);
                             rcvListPhongTimKiem.setVisibility(View.GONE);
                             Log.d("TAG", "onClick: " + idGioiTinh);
+                            ll_list_phong_theo_quan.setVisibility(View.GONE);
                             break;
                         case 1:
-                            img_so_nguoi_down.setVisibility(View.VISIBLE);
-                            img_so_nguoi_up.setVisibility(View.GONE);
+                            btnSoNguoi.setTextColor(getResources().getColor(R.color.black));
+                            img_gioi_tinh_down.setVisibility(View.VISIBLE);
+                            img_gioi_tinh_up.setVisibility(View.GONE);
                             flagSoNguoi = 0;
                             ll_so_nguoi_gioi_tinh.setVisibility(View.GONE);
                             ll_ap_dung.setVisibility(View.GONE);
+                            ll_list_phong_theo_quan.setVisibility(View.VISIBLE);
                             break;
                         default:
                             break;
@@ -503,6 +553,8 @@ public class SearchBoLocActivity extends AppCompatActivity {
                     range_slider.setValues(0f, 5000f);
                     listSelected.clear();
                     notShowListSelected();
+                    offAll();
+                    getQuanById();
                     break;
 
                 case R.id.tv_huy:
@@ -518,6 +570,25 @@ public class SearchBoLocActivity extends AppCompatActivity {
             }
         }
     };
+
+    private void offAll() {
+        img_gia_down.setVisibility(View.VISIBLE);
+        img_gia_up.setVisibility(View.GONE);
+        imgDownTienIch.setVisibility(View.VISIBLE);
+        imgUpTienIch.setVisibility(View.GONE);
+        img_loai_phong_down.setVisibility(View.VISIBLE);
+        img_loai_phong_up.setVisibility(View.GONE);
+        img_gioi_tinh_down.setVisibility(View.VISIBLE);
+        img_gioi_tinh_up.setVisibility(View.GONE);
+        flagGia = 0;
+        flagSoNguoi = 0;
+        flagTienIch = 0;
+        flagLoaiPhong = 0;
+        rcvListTienIch.setVisibility(View.GONE);
+        llGiaSeekBar.setVisibility(View.GONE);
+        rcvListLoaiPhong.setVisibility(View.GONE);
+        ll_so_nguoi_gioi_tinh.setVisibility(View.GONE);
+    }
 
     private void getListTienIch() {
         Call<List<TienIch>> call = ApiServicePhuc2.apiService.getAllListTienIch();
@@ -546,6 +617,7 @@ public class SearchBoLocActivity extends AppCompatActivity {
             public void onResponse(Call<Quan> call, Response<Quan> response) {
                 tv_quan.setText(response.body().getTenQuan());
                 useIdQuan(response.body().getId());
+                getDanhSachPhongTroTheoQuan(response.body().getId());
             }
 
             @Override
@@ -560,66 +632,86 @@ public class SearchBoLocActivity extends AppCompatActivity {
         btn_ap_dung.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                flagGia = 0;
-                flagSoNguoi = 0;
-                flagTienIch = 0;
-                flagLoaiPhong = 0;
-                ll_ap_dung.setVisibility(View.GONE);
-                llGiaSeekBar.setVisibility(View.GONE);
-                ll_so_nguoi_gioi_tinh.setVisibility(View.GONE);
-                rcvListLoaiPhong.setVisibility(View.GONE);
-                rcvListTienIch.setVisibility(View.GONE);
+                offAll();
+                Log.d("TAG", "onClickL: " + listSelected.size());
+                if (listSelected.size() == 0) {
+                    getQuanById();
+                    ll_list_phong_theo_quan.setVisibility(View.VISIBLE);
+                } else {
+                    ll_list_phong_theo_quan.setVisibility(View.GONE);
+                    ll_list_Selected.setVisibility(View.GONE);
+                    rcvListSelected.setVisibility(View.VISIBLE);
+                    ll_list_Selected.setVisibility(View.VISIBLE);
+                    adapterSelected.notifyDataSetChanged();
 
-                if (minValue == 0.0f && maxValue == 5000.0f) {
-                    listSelected.add(new Selected(Const.GIA, 0, minValue / 1000 + " k VND" + " - " + maxValue / 1000 + " triệu"));
-                }
-                if (idLoaiPhong == -1) {
-                    listSelected.add(new Selected(Const.LOAI_PHONG, 0, "Phòng trống"));
-                }
-                if (idGioiTinh == -1) {
-                    listSelected.add(new Selected(Const.GIOI_TINH, 0, "Nam/Nữ"));
-                }
+                    Call<List<PhongTro>> call = ApiServicePhuc2.apiService.getDanhSachPhongTimKiemBoLoc(id,
+                            (int) minValue * 1000,
+                            (int) maxValue * 1000,
+                            idLoaiPhong == -1 ? idLoaiPhong = 0 : idLoaiPhong,
+                            idGioiTinh == -1 ? idGioiTinh = 0 : idGioiTinh,
+                            new Gson().toJson(listTienIchSeleted));
+                    call.enqueue(new Callback<List<PhongTro>>() {
+                        @Override
+                        public void onResponse(Call<List<PhongTro>> call, Response<List<PhongTro>> response) {
+                            if (response.code() == 200) {
+                                if (response.body().size() == 0) {
+                                    Log.d("TAG", "onResponse: " + response.body().size());
+                                    ll_khong_tim_thay.setVisibility(View.VISIBLE);
+                                    rcvListPhongTimKiem.setVisibility(View.GONE);
 
-                ll_list_Selected.setVisibility(View.VISIBLE);
-                adapterSelected.notifyDataSetChanged();
-                Call<List<PhongTro>> call = ApiServicePhuc2.apiService.getDanhSachPhongTimKiemBoLoc(id,
-                        (int) minValue * 1000,
-                        (int) maxValue * 1000,
-                        idLoaiPhong == -1 ? idLoaiPhong = 0 : idLoaiPhong,
-                        idGioiTinh == -1 ? idGioiTinh = 0 : idGioiTinh,
-                        new Gson().toJson(listTienIchSeleted));
-                call.enqueue(new Callback<List<PhongTro>>() {
-                    @Override
-                    public void onResponse(Call<List<PhongTro>> call, Response<List<PhongTro>> response) {
-                        if (response.code() == 200) {
-                            if (response.body().size() == 0) {
-                                Log.d("TAG", "onResponse: " + response.body().size());
-                                ll_khong_tim_thay.setVisibility(View.VISIBLE);
+                                } else {
+                                    listPhongTimKiem.clear();
+                                    listPhongTimKiem.addAll(response.body());
+                                    rcvListPhongTimKiem.setVisibility(View.VISIBLE);
+                                    adapterPhongTimKiem.notifyDataSetChanged();
+                                }
 
-                            } else {
-                                listPhongTimKiem.clear();
-                                listPhongTimKiem.addAll(response.body());
-                                rcvListPhongTimKiem.setVisibility(View.VISIBLE);
-                                adapterPhongTimKiem.notifyDataSetChanged();
                             }
+                            Log.d("TAG", "onResponse: " + response.body().size());
+                            Log.d("TAG", "onClick: " + (int) minValue * 1000);
+                            Log.d("TAG", "onClick: " + (int) maxValue * 1000);
+                            Log.d("TAG", "onClick: " + idLoaiPhong);
+                            Log.d("TAG", "onClick: " + idGioiTinh);
+                        }
+
+                        @Override
+                        public void onFailure(Call<List<PhongTro>> call, Throwable t) {
 
                         }
-                        Log.d("TAG", "onResponse: " + response.body().size());
-                        Log.d("TAG", "onClick: " + (int) minValue * 1000);
-                        Log.d("TAG", "onClick: " + (int) maxValue * 1000);
-                        Log.d("TAG", "onClick: " + idLoaiPhong);
-                        Log.d("TAG", "onClick: " + idGioiTinh);
+                    });
+                }
+            }
+        });
+    }
+
+
+
+    private void getDanhSachPhongTroTheoQuan(int idQuan) {
+        Call<List<com.example.mobileprojectapp2.datamodel.PhongTro>> call = ApiServicePhuc2.apiService.layTatCaPhongTroTheoQuan(idQuan, Const.NHO_DEN_LON);
+        call.enqueue(new Callback<List<com.example.mobileprojectapp2.datamodel.PhongTro>>() {
+            @Override
+            public void onResponse(Call<List<com.example.mobileprojectapp2.datamodel.PhongTro>> call, Response<List<com.example.mobileprojectapp2.datamodel.PhongTro>> response) {
+                if (response.code() == 200) {
+                    if (response.body().size() == 0) {
+                        btnGia.setEnabled(false);
+                        btnLoaiPhong.setEnabled(false);
+                        btnSoNguoi.setEnabled(false);
+                        btnTienIch.setEnabled(false);
+
+                        ll_chua_co_phong_nao.setVisibility(View.VISIBLE);
+                    } else {
+                        listPhongTheoQuan.addAll(response.body());
+                        adapterPhongTroTheoQuan.notifyDataSetChanged();
                     }
 
-                    @Override
-                    public void onFailure(Call<List<PhongTro>> call, Throwable t) {
+                }
+            }
 
-                    }
-                });
+            @Override
+            public void onFailure(Call<List<com.example.mobileprojectapp2.datamodel.PhongTro>> call, Throwable t) {
 
             }
         });
-
     }
 
     private void anhXa() {
@@ -636,13 +728,14 @@ public class SearchBoLocActivity extends AppCompatActivity {
         img_loai_phong_up = findViewById(R.id.img_loai_phong_up);
         img_gia_down = findViewById(R.id.img_gia_down);
         img_gia_up = findViewById(R.id.img_gia_up);
-        img_so_nguoi_down = findViewById(R.id.img_gioi_tinh_down);
-        img_so_nguoi_up = findViewById(R.id.img_gioi_tinh_up);
+        img_gioi_tinh_down = findViewById(R.id.img_gioi_tinh_down);
+        img_gioi_tinh_up = findViewById(R.id.img_gioi_tinh_up);
         rcvListTienIch = findViewById(R.id.rcv_list_tien_ich);
         rcvListSelected = findViewById(R.id.rcv_list_selected);
         rcvListLoaiPhong = findViewById(R.id.rcv_list_loai_phong);
         rcvListGioiTinh = findViewById(R.id.rcv_list_gioi_tinh);
         rcvListPhongTimKiem = findViewById(R.id.rcv_list_phong_tim_kiem);
+        rcv_list_phong_theo_quan = findViewById(R.id.rcv_list_phong_theo_quan);
 
         ll_list_Selected = findViewById(R.id.ll_list_selected);
         llSearchBoLoc = findViewById(R.id.ll_search_bo_loc);
@@ -654,6 +747,8 @@ public class SearchBoLocActivity extends AppCompatActivity {
         tv_huy = findViewById(R.id.tv_huy);
         tv_gia_start = findViewById(R.id.tv_gia_start);
         tv_gia_end = findViewById(R.id.tv_gia_end);
+        ll_chua_co_phong_nao = findViewById(R.id.ll_chua_co_phong_nao);
+        ll_list_phong_theo_quan = findViewById(R.id.ll_list_phong_theo_quan);
         range_slider = findViewById(R.id.range_slider);
 
         llGiaSeekBar = findViewById(R.id.ll_seek_bar);
@@ -697,6 +792,11 @@ public class SearchBoLocActivity extends AppCompatActivity {
         rcvListPhongTimKiem.setLayoutManager(layoutManagerTimKiem);
         rcvListPhongTimKiem.setAdapter(adapterPhongTimKiem);
 
+        adapterPhongTroTheoQuan = new PhucDanhSachPhongTheoQuanAdapter(SearchBoLocActivity.this, listPhongTheoQuan, R.layout.nguoi_thue_cardview_item_phong_tim_kiem);
+        layoutManagerPhongTheoQuan = new LinearLayoutManager(SearchBoLocActivity.this);
+        layoutManagerPhongTheoQuan.setOrientation(RecyclerView.VERTICAL);
+        rcv_list_phong_theo_quan.setLayoutManager(layoutManagerPhongTheoQuan);
+        rcv_list_phong_theo_quan.setAdapter(adapterPhongTroTheoQuan);
 
     }
 

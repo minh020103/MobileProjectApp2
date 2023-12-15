@@ -102,6 +102,13 @@ public class DetailPhongTroActivity extends AppCompatActivity {
         });
 
         mViewPager2.setPageTransformer(new ZoomOutPageTransformer());
+
+        adapterTienIch.setOnClick(new TienIchAdapter.OnClick() {
+            @Override
+            public void onClickItemListener(int position, View view) {
+
+            }
+        });
     }
 
     private void getDataFromApi() {
