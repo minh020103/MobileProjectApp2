@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -78,6 +79,9 @@ public class RoomRandomActivity extends AppCompatActivity {
             @Override
             public void setOnClickCItem(int position, View view) {
                 //TODO: Chuyển qua màn hình chi tiết phòng
+                Intent intent = new Intent(RoomRandomActivity.this, DetailPhongTroNguoiThueActivity.class);
+                intent.putExtra("idPhong", listPhong.get(position).getId());
+                startActivity(intent);
             }
         });
     }
