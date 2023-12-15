@@ -104,5 +104,5 @@ public interface ApiServicePhuc2 {
     Call<List<com.example.mobileprojectapp2.datamodel.PhongTro>> layTatCaPhongTroTheoQuan(@Query("idQuan") int idQuan, @Query("arrange") String arrange);
 
     @DELETE("api/xoayeucaudatphong")
-    Call<YeuCauDatPhong> deleteYeuCauDatPhong(@Query("idTaiKhoanGui")int idTaiKhoanGui);
+    Call<Integer> deleteYeuCauDatPhong(@Query("idTaiKhoanGui")int idTaiKhoanGui);
 }

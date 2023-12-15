@@ -4,6 +4,7 @@ import static com.example.mobileprojectapp2.api.Const.MALE_GENDERS;
 import static com.example.mobileprojectapp2.api.Const.PHONG_DON;
 import static com.example.mobileprojectapp2.api.Const.PHONG_TRONG;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -28,6 +29,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -60,10 +62,14 @@ import com.example.mobileprojectapp2.recyclerviewadapter.chutro.PhongTroChuTroAd
 import com.example.mobileprojectapp2.recyclerviewadapter.chutro.TienIchAdapter;
 import com.example.mobileprojectapp2.recyclerviewadapter.nguoithue.PhucDanhSachPhongGoiYAdapter;
 import com.example.mobileprojectapp2.recyclerviewadapter.nguoithue.PhucNguoiThueAdapter;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.android.material.button.MaterialButton;
+import com.google.firebase.database.ValueEventListener;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -101,7 +107,8 @@ public class DetailPhongTroNguoiThueActivity extends AppCompatActivity {
     private RelativeLayout rlt_tren_dsnt;
     private int idPhong = 1;
     private int idTaiKhoan = 22;
-    private LinearLayout llXemThem, llThuGon, ll_dsnt, llDatPhong, llGoi, llChat, ll_dsp_chu_tro, ll_phong_cho_xac_nhan, ll_phong_dang_cho;
+    private LinearLayout llXemThem, llThuGon, ll_dsnt, llDatPhong, llGoi, llChat,
+            ll_dsp_chu_tro, ll_phong_cho_xac_nhan, ll_phong_dang_cho;
     private int idTaiKhoanNhan;
     private ProgressDialog mProgressDialog;
     SharedPreferences sharedPreferences;
@@ -248,9 +255,9 @@ public class DetailPhongTroNguoiThueActivity extends AppCompatActivity {
 
             }
         });
-        getIdYeuCauDatPhong();
 
-        img_delete.setOnClickListener(new View.OnClickListener() {
+
+        ll_phong_cho_xac_nhan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(DetailPhongTroNguoiThueActivity.this);
@@ -258,15 +265,27 @@ public class DetailPhongTroNguoiThueActivity extends AppCompatActivity {
                         .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                Call<YeuCauDatPhong> call = ApiServicePhuc2.apiService.deleteYeuCauDatPhong(idTaiKhoan);
-                                call.enqueue(new Callback<YeuCauDatPhong>() {
+                                Call<Integer> call = ApiServicePhuc2.apiService.deleteYeuCauDatPhong(idTaiKhoan);
+                                call.enqueue(new Callback<Integer>() {
                                     @Override
-                                    public void onResponse(Call<YeuCauDatPhong> call, Response<YeuCauDatPhong> response) {
-                                        alertSuccess("Xóa yêu cầu đặt phòng thành công");
+                                    public void onResponse(Call<Integer> call, Response<Integer> response) {
+                                        Log.d("TAG", "onResponseD: " + response.body());
+                                        databaseReference.child("yeuCau").setValue(idTaiKhoan).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void unused) {
+
+                                            }
+                                        }).addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+
+                                            }
+                                        });
+                                        alertSuccess("Xóa thành công");
                                     }
 
                                     @Override
-                                    public void onFailure(Call<YeuCauDatPhong> call, Throwable t) {
+                                    public void onFailure(Call<Integer> call, Throwable t) {
 
                                     }
                                 });
@@ -279,6 +298,21 @@ public class DetailPhongTroNguoiThueActivity extends AppCompatActivity {
                         });
                 builder.create();
                 builder.show();
+            }
+        });
+
+        coSuThayDoi();
+    }
+
+    private void coSuThayDoi() {
+        databaseReference.child("yeuCau").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                getIdYeuCauDatPhong();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
 
             }
         });
@@ -289,31 +323,32 @@ public class DetailPhongTroNguoiThueActivity extends AppCompatActivity {
         call.enqueue(new Callback<YeuCauDatPhong>() {
             @Override
             public void onResponse(Call<YeuCauDatPhong> call, Response<YeuCauDatPhong> response) {
-                Log.d("TAG", "onResponseApi: "+response.body().getId());
-
-
-                if (idPhong == response.body().getIdPhong()){
-                    ll_phong_cho_xac_nhan.setVisibility(View.VISIBLE);
-                    ll_phong_dang_cho.setVisibility(View.GONE);
-                }else {
-                    ll_phong_cho_xac_nhan.setVisibility(View.GONE);
-                    ll_phong_dang_cho.setVisibility(View.VISIBLE);
-                }
-                tv_cho_xac_nhan.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if(response.body() == null){
-                            alertSuccess("Ban chua yeu cau phong nao");
-                        }else {
-                            Intent intent = new Intent(DetailPhongTroNguoiThueActivity.this, DetailPhongTroNguoiThueActivity.class);
-                            intent.putExtra("idPhong", response.body().getIdPhong());
-                            startActivity(intent);
-                        }
-
+                Log.d("TAG", "onResponseApi: " + response.body());
+                if (response.body() != null) {
+                    if (idPhong == response.body().getIdPhong()) {
+                        ll_phong_cho_xac_nhan.setVisibility(View.VISIBLE);
+                        llDatPhong.setVisibility(View.GONE);
+                        ll_phong_dang_cho.setVisibility(View.GONE);
+                    } else {
+                        ll_phong_cho_xac_nhan.setVisibility(View.GONE);
+                        llDatPhong.setVisibility(View.VISIBLE);
+                        ll_phong_dang_cho.setVisibility(View.VISIBLE);
+                        ll_phong_dang_cho.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                if (response.body().getIdTaiKhoanGui() == -1) {
+                                    alertSuccess("Bạn chưa yêu cầu đăng ký phòng nào!");
+                                } else {
+                                    finish();
+                                    Intent intent = new Intent(DetailPhongTroNguoiThueActivity.this, DetailPhongTroNguoiThueActivity.class);
+                                    intent.putExtra("idPhong", response.body().getIdPhong());
+                                    startActivity(intent);
+                                }
+                            }
+                        });
                     }
-                });
 
-
+                }
             }
 
             @Override
@@ -573,8 +608,13 @@ public class DetailPhongTroNguoiThueActivity extends AppCompatActivity {
                                 call.enqueue(new Callback<KetQuaGuiYeuCauDatPhong>() {
                                     @Override
                                     public void onResponse(Call<KetQuaGuiYeuCauDatPhong> call, Response<KetQuaGuiYeuCauDatPhong> responseYC) {
-
                                         if (responseYC.code() == 200) {
+                                            databaseReference.child("yeuCau").setValue(0).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                @Override
+                                                public void onSuccess(Void unused) {
+
+                                                }
+                                            });
                                             if (responseYC.body() == null) {
                                                 databaseReference.child("notification").child(idNhan + "").child(responseYC.body().getObject().getId() + "").setValue(0).addOnSuccessListener(new OnSuccessListener<Void>() {
                                                     @Override
@@ -582,7 +622,9 @@ public class DetailPhongTroNguoiThueActivity extends AppCompatActivity {
                                                         Log.d("TAG", "onSuccess: PUSH NOTIFICATION REALTIME");
                                                     }
                                                 });
+
                                                 MFCM.sendNotificationForAccountID(responseYC.body().getObject().getIdTaiKhoanNhan(), responseYC.body().getObject().getId(), "Yêu cầu đặt phòng", "Có yêu cầu đặt phòng mới hãy vào xem");
+
                                             }
                                         }
                                         alertSuccess(responseYC.body().getMessage());
@@ -691,8 +733,6 @@ public class DetailPhongTroNguoiThueActivity extends AppCompatActivity {
                     llXemThem.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            Animation anim = AnimationUtils.loadAnimation(DetailPhongTroNguoiThueActivity.this, R.anim.item_click);
-                            v.startAnimation(anim);
                             listTienIch.clear();
                             for (TienIch tienIch : response.body().getDanhSachTienIch()) {
                                 listTienIch.add(tienIch);
@@ -705,8 +745,6 @@ public class DetailPhongTroNguoiThueActivity extends AppCompatActivity {
                     llThuGon.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            Animation anim = AnimationUtils.loadAnimation(DetailPhongTroNguoiThueActivity.this, R.anim.item_click);
-                            v.startAnimation(anim);
                             listTienIch.clear();
                             int i = 0;
                             for (TienIch tienIch : response.body().getDanhSachTienIch()) {
@@ -873,7 +911,7 @@ public class DetailPhongTroNguoiThueActivity extends AppCompatActivity {
 
         img_like = findViewById(R.id.img_like1);
         img_like2 = findViewById(R.id.img_like2);
-        img_delete = findViewById(R.id.img_delete);
+//        img_delete = findViewById(R.id.img_delete);
 
         llThuGon = findViewById(R.id.ll_thu_gon);
         llXemThem = findViewById(R.id.ll_xem_them);
