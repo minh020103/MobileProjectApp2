@@ -92,10 +92,10 @@ public class PackageUsingFragment extends AbstractFragment{
         shared = getActivity().getSharedPreferences(Const.PRE_LOGIN, Context.MODE_PRIVATE);
         idTaiKhoan = shared.getInt("idTaiKhoan", -1);
 
-        listHinh = new LinkedList<>();
-        imagesAdapter = new NguoiThueImageSlideViewPager2Adapter(getActivity(), listHinh, R.layout.chutro_item_image_layout);
-        vp2Banner.setAdapter(imagesAdapter);
-        getDataForImages();
+//        listHinh = new LinkedList<>();
+//        imagesAdapter = new NguoiThueImageSlideViewPager2Adapter(getActivity(), listHinh, R.layout.chutro_item_image_layout);
+//        vp2Banner.setAdapter(imagesAdapter);
+//        getDataForImages();
 
         HostByIdApi(idTaiKhoan);
         getGoiByIdAPI(temp);
