@@ -39,7 +39,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class MotelRoomOwnerActivity extends AppCompatActivity {
-
+    //TODO: sửa vuốt cho vigepager
     public static ViewPager2 vp2Chutro;
     private BottomNavigationView bnvChuTro;
     private MotelRoomOwnerViewPager2Adapter viewPager2Adapter;
@@ -67,7 +67,6 @@ public class MotelRoomOwnerActivity extends AppCompatActivity {
 
         viewPager2Adapter.setFragments(fragments);
         vp2Chutro.setAdapter(viewPager2Adapter);
-
         // Đếm số lượng thông báo
         BadgeDrawable badgeDrawableNotifi = bnvChuTro.getOrCreateBadge(R.id.notification);
         badgeDrawableNotifi.setVisible(false);

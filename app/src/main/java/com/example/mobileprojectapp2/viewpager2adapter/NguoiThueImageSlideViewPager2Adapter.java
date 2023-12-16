@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.mobileprojectapp2.R;
+import com.example.mobileprojectapp2.activity.chutro.MotelRoomOwnerActivity;
 import com.example.mobileprojectapp2.activity.nguoithue.RenterActivity;
 import com.example.mobileprojectapp2.api.Const;
 import com.example.mobileprojectapp2.datamodel.Banner;
@@ -54,6 +55,16 @@ public class NguoiThueImageSlideViewPager2Adapter extends RecyclerView.Adapter<N
                 public boolean onTouch(View view, MotionEvent motionEvent) {
                     Log.d("TAG", "onTouch: OKKKKKKK");
                     RenterActivity.viewPager2NguoiThue.setUserInputEnabled(false);
+                    return false;
+                }
+            });
+        }
+        if(MotelRoomOwnerActivity.vp2Chutro != null){
+            holder.imgItem.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View view, MotionEvent motionEvent) {
+                    Log.d("TAG", "onTouch: OKKKKKKK");
+                    MotelRoomOwnerActivity.vp2Chutro.setUserInputEnabled(false);
                     return false;
                 }
             });

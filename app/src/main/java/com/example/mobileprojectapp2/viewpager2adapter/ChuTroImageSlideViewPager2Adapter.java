@@ -3,6 +3,7 @@ package com.example.mobileprojectapp2.viewpager2adapter;
 import android.app.Activity;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.mobileprojectapp2.R;
+import com.example.mobileprojectapp2.activity.chutro.MotelRoomOwnerActivity;
 import com.example.mobileprojectapp2.api.Const;
 import com.example.mobileprojectapp2.datamodel.HinhAnh;
 
@@ -46,7 +48,13 @@ public class ChuTroImageSlideViewPager2Adapter extends RecyclerView.Adapter<ChuT
 //        holder.imgItem.setImageDrawable(activity.getResources().getDrawable(R.drawable.phong_tro, activity.getTheme()));
 
         Glide.with(activity.getLayoutInflater().getContext()).load(Const.DOMAIN+hinhAnh.getHinh()).placeholder(R.drawable.not_found).into(holder.imgItem);
-
+        holder.itemView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                MotelRoomOwnerActivity.vp2Chutro.setUserInputEnabled(false);
+                return false;
+            }
+        });
     }
 
     @Override

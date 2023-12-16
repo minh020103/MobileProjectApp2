@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -15,6 +16,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
@@ -67,6 +69,7 @@ public class PackageUsingFragment extends AbstractFragment{
     ViewPager2 vp2Banner;
     LinkedList<Banner> listHinh;
     NguoiThueImageSlideViewPager2Adapter imagesAdapter;
+    ConstraintLayout constraintlayout;
 
 
     int temp;
@@ -79,6 +82,7 @@ public class PackageUsingFragment extends AbstractFragment{
         this.container = container;
 
         //anh xa
+        constraintlayout = fragmentLayout.findViewById(R.id.contrainlayout);
         ten_nguoi_dung = fragmentLayout.findViewById(R.id.ten_nguoi_dung);
         Ngay_het_han = fragmentLayout.findViewById(R.id.Ngay_het_han);
         text = fragmentLayout.findViewById(R.id.textView11);
@@ -90,7 +94,13 @@ public class PackageUsingFragment extends AbstractFragment{
         huy_dich_vu = fragmentLayout.findViewById(R.id.huy_dich_vu);
         thoi_gian = fragmentLayout.findViewById(R.id.thoi_gian);
         vp2Banner = fragmentLayout.findViewById(R.id.vp2Banner);
-
+        constraintlayout.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                MotelRoomOwnerActivity.vp2Chutro.setUserInputEnabled(true);
+                return false;
+            }
+        });
         shared = getActivity().getSharedPreferences(Const.PRE_LOGIN, Context.MODE_PRIVATE);
         idTaiKhoan = shared.getInt("idTaiKhoan", -1);
 

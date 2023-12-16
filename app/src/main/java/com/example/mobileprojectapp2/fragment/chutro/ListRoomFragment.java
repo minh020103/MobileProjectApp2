@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
@@ -19,6 +20,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -76,6 +78,7 @@ public class ListRoomFragment extends AbstractFragment {
     private int pageComment = 1;
     private final int quantityComment = 10;
     private boolean check = false;
+    private Toolbar toolbar;
 
     FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
     DatabaseReference databaseReference = firebaseDatabase.getReference();
@@ -85,6 +88,7 @@ public class ListRoomFragment extends AbstractFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View fragmentLayout = null;
         fragmentLayout = inflater.inflate(R.layout.chutro_fragment_list_room_layout, container, false);
+        toolbar = fragmentLayout.findViewById(R.id.toolbar);
         SharedPreferences sharedPreferences = getContext().getSharedPreferences(Const.PRE_LOGIN, Context.MODE_PRIVATE);
         idChuTro = sharedPreferences.getInt("idChuTro", -1);
         idTaiKhoan = sharedPreferences.getInt("idTaiKhoan", -1);
@@ -94,8 +98,20 @@ public class ListRoomFragment extends AbstractFragment {
         onScrollView();
         onClickButtomInFragment();
         onClickItemInCardView();
-
-
+        toolbar.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                MotelRoomOwnerActivity.vp2Chutro.setUserInputEnabled(true);
+                return false;
+            }
+        });
+        rcvListMotelRoom.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                MotelRoomOwnerActivity.vp2Chutro.setUserInputEnabled(true);
+                return false;
+            }
+        });
         return fragmentLayout;
     }
 
@@ -159,7 +175,6 @@ public class ListRoomFragment extends AbstractFragment {
     @Override
     public void onResume() {
         super.onResume();
-        MotelRoomOwnerActivity.vp2Chutro.setUserInputEnabled(false);
         pageRoom = 1;
         phongTroOfChuTroList.clear();
         getDataFromAPI();

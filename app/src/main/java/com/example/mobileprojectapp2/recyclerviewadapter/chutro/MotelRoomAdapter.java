@@ -18,6 +18,7 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import com.bumptech.glide.Glide;
 import com.example.mobileprojectapp2.R;
+import com.example.mobileprojectapp2.activity.chutro.MotelRoomOwnerActivity;
 import com.example.mobileprojectapp2.api.Const;
 import com.example.mobileprojectapp2.datamodel.PhongTro;
 import com.example.mobileprojectapp2.datamodel.PhongTroChuTro;
@@ -108,6 +109,7 @@ public class MotelRoomAdapter extends RecyclerView.Adapter<MotelRoomAdapter.MyVi
 //        ChuTroImageSlideViewPager2Adapter adapter = new ChuTroImageSlideViewPager2Adapter(activity,list.get(position).getList(),R.layout.chutro_item_image_layout);
 //        holder.vp2SlideImage.setAdapter(adapter);
 //        holder.ci3SlideImage.setViewPager(holder.vp2SlideImage);
+
 
 
         holder.onClickListener = new View.OnClickListener() {
