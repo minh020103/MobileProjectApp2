@@ -647,15 +647,15 @@ public class SearchBoLocActivity extends AppCompatActivity {
                     Call<List<PhongTro>> call = ApiServicePhuc2.apiService.getDanhSachPhongTimKiemBoLoc(id,
                             (int) minValue * 1000,
                             (int) maxValue * 1000,
-                            idLoaiPhong == -1 ? idLoaiPhong = 0 : idLoaiPhong,
-                            idGioiTinh == -1 ? idGioiTinh = 0 : idGioiTinh,
+                            idLoaiPhong == -1 ? 0 : idLoaiPhong,
+                            idGioiTinh == -1 ? 0 : idGioiTinh,
                             new Gson().toJson(listTienIchSeleted));
                     call.enqueue(new Callback<List<PhongTro>>() {
                         @Override
                         public void onResponse(Call<List<PhongTro>> call, Response<List<PhongTro>> response) {
                             if (response.code() == 200) {
                                 if (response.body().size() == 0) {
-                                    Log.d("TAG", "onResponse: " + response.body().size());
+                                    Log.d("TAG", "onResponseS: " + response.body().size());
                                     ll_khong_tim_thay.setVisibility(View.VISIBLE);
                                     rcvListPhongTimKiem.setVisibility(View.GONE);
 
@@ -663,6 +663,7 @@ public class SearchBoLocActivity extends AppCompatActivity {
                                     listPhongTimKiem.clear();
                                     listPhongTimKiem.addAll(response.body());
                                     rcvListPhongTimKiem.setVisibility(View.VISIBLE);
+                                    Log.d("TAG", "onResponse: "+  new Gson().toJson(listTienIchSeleted));
                                     adapterPhongTimKiem.notifyDataSetChanged();
                                 }
 

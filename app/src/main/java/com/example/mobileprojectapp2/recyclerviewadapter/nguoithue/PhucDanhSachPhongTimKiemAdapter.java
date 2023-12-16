@@ -1,5 +1,6 @@
 package com.example.mobileprojectapp2.recyclerviewadapter.nguoithue;
 
+import static com.example.mobileprojectapp2.api.Const.ALL_GENDERS;
 import static com.example.mobileprojectapp2.api.Const.MALE_GENDERS;
 import static com.example.mobileprojectapp2.api.Const.PHONG_GHEP;
 
@@ -77,7 +78,7 @@ public class PhucDanhSachPhongTimKiemAdapter extends RecyclerView.Adapter<PhucDa
         }
 
         holder.tvLoaiPhong.setText(phongTro.getLoaiPhong() == PHONG_GHEP ? "Phòng ghép" : "Tìm người thuê");
-        holder.tvGioiTinh.setText(phongTro.getGioiTinh() == MALE_GENDERS ? "Nam" : "Nữ");
+        holder.tvGioiTinh.setText(phongTro.getGioiTinh() == ALL_GENDERS ? "Nam/Nữ" : phongTro.getGioiTinh() == MALE_GENDERS ? "Nam" : "Nữ");
         holder.onClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {

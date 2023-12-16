@@ -406,17 +406,20 @@ public class DetailPhongTroNguoiThueActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<Integer> call, Response<Integer> response) {
                 Log.d("TAG", "onResponse: " + response.body());
-                if (response.body() == 0) {
-                    img_like.setVisibility(View.VISIBLE);
-                    img_like2.setVisibility(View.GONE);
-                    check = 0;
-                    Log.d("TAG", "onClickX: " + check);
-                } else {
-                    check = 1;
-                    img_like.setVisibility(View.GONE);
-                    img_like2.setVisibility(View.VISIBLE);
-                    Log.d("TAG", "onClick: " + check);
+                if (response.body() != null){
+                    if (response.body() == 0) {
+                        img_like.setVisibility(View.VISIBLE);
+                        img_like2.setVisibility(View.GONE);
+                        check = 0;
+                        Log.d("TAG", "onClickX: " + check);
+                    } else {
+                        check = 1;
+                        img_like.setVisibility(View.GONE);
+                        img_like2.setVisibility(View.VISIBLE);
+                        Log.d("TAG", "onClick: " + check);
+                    }
                 }
+
 
             }
 
