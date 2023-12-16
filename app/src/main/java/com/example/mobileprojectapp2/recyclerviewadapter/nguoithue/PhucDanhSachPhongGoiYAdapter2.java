@@ -18,6 +18,7 @@ import com.example.mobileprojectapp2.R;
 import com.example.mobileprojectapp2.api.Const;
 import com.example.mobileprojectapp2.datamodel.PhongTroChuTro;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 public class PhucDanhSachPhongGoiYAdapter2 extends RecyclerView.Adapter<PhucDanhSachPhongGoiYAdapter2.PhongGoiYViewHolder> {
@@ -58,7 +59,26 @@ public class PhucDanhSachPhongGoiYAdapter2 extends RecyclerView.Adapter<PhucDanh
         }
         holder.tvDiaChi.setText(phongTro.getPhongTro().getDiaChiChiTiet());
 //        holder.tvQuan.setText(phongTro.getPhongTro().getQuan().getTenQuan()+ "");
-        holder.tvGia.setText(phongTro.getPhongTro().getGia() + "triệu VNĐ/tháng");
+//        holder.tvGia.setText(phongTro.getPhongTro().getGia() + "triệu VNĐ/tháng");
+
+        float trieu = 1000000;
+        float ngan = 1000;
+        float tram = 100000;
+        float gia;
+        String gia2;
+        DecimalFormat decimalFormat = new DecimalFormat("#.#");
+        if (phongTro.getPhongTro().getGia() < tram) {
+            holder.tvGia.setText("Đang cập nhật");
+        } else if (phongTro.getPhongTro().getGia() < trieu) {
+            gia = phongTro.getPhongTro().getGia() / ngan;
+            gia2 = decimalFormat.format(gia);
+            holder.tvGia.setText(gia2 + "k /tháng");
+        } else if (phongTro.getPhongTro().getGia() >= trieu) {
+            gia = phongTro.getPhongTro().getGia() / trieu;
+            gia2 = decimalFormat.format(gia);
+            holder.tvGia.setText(gia2 + " triệu/tháng");
+        }
+
         holder.tvLoaiPhong.setText(phongTro.getPhongTro().getLoaiPhong() == PHONG_GHEP ? "Phòng ghép" : "Tìm người thuê");
         holder.tvGioiTinh.setText(phongTro.getPhongTro().getGioiTinh() == MALE_GENDERS ? "Nam" : "Nữ");
         holder.onClickListener = new View.OnClickListener() {

@@ -25,18 +25,17 @@
 
             <LinearLayout
                 android:id="@+id/llSearch"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:layout_alignParentRight="true"
                 android:layout_marginTop="10dp"
                 android:layout_marginRight="20dp"
-                android:background="@drawable/circle_buttom_gray"
                 android:padding="7dp">
 
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:src="@drawable/icon_search" />
+                    android:src="@drawable/iconp_favorites_list" />
             </LinearLayout>
 
             <androidx.cardview.widget.CardView

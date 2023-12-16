@@ -9,8 +9,8 @@ android {
 
     defaultConfig {
         applicationId "com.example.mobileprojectapp2"
-        minSdk 28
-        targetSdk 33
+        minSdk 29
+        targetSdk 34
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -58,6 +58,6 @@ dependencies {
     implementation 'com.intuit.sdp:sdp-android:1.0.6'
     implementation 'com.intuit.ssp:ssp-android:1.0.6'
     implementation 'de.hdodenhof:circleimageview:3.1.0'
-     implementation 'com.borjabravo:readmoretextview:2.1.0'
-
+    implementation 'com.borjabravo:readmoretextview:2.1.0'
+    implementation 'jp.wasabeef:recyclerview-animators:3.0.0'
 }

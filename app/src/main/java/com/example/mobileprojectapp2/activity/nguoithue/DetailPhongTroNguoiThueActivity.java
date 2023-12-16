@@ -17,6 +17,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -30,29 +32,27 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager2.widget.CompositePageTransformer;
+import androidx.viewpager2.widget.MarginPageTransformer;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.borjabravo.readmoretextview.ReadMoreTextView;
 import com.bumptech.glide.Glide;
 import com.example.mobileprojectapp2.R;
-import com.example.mobileprojectapp2.activity.chutro.DetailPhongTroActivity;
 import com.example.mobileprojectapp2.activity.chutro.PhongNhanTinActivity;
-import com.example.mobileprojectapp2.activity.chutro.SearchActivity;
-import com.example.mobileprojectapp2.activity.chutro.RenterDetailActivity;
-import com.example.mobileprojectapp2.activity.chutro.ReviewRoomActivity;
 import com.example.mobileprojectapp2.activity.chutro.ZoomOutPageTransformer;
 import com.example.mobileprojectapp2.api.Const;
 import com.example.mobileprojectapp2.api.chutro.ApiServiceNghiem;
 import com.example.mobileprojectapp2.api.chutro.ApiServicePhuc;
 import com.example.mobileprojectapp2.api.nguoithue.ApiServicePhuc2;
 
+import com.example.mobileprojectapp2.component.MFCM;
 import com.example.mobileprojectapp2.datamodel.HinhAnh;
 import com.example.mobileprojectapp2.datamodel.PhongNguoiThue;
 import com.example.mobileprojectapp2.datamodel.PhongTinNhan;
 import com.example.mobileprojectapp2.datamodel.VideoReview;
-import com.example.mobileprojectapp2.model.ChuTro;
+import com.example.mobileprojectapp2.model.KetQuaGuiYeuCauDatPhong;
 import com.example.mobileprojectapp2.model.PhongTro;
-import com.example.mobileprojectapp2.model.PhongTroGoiY;
 import com.example.mobileprojectapp2.model.TienIch;
 import com.example.mobileprojectapp2.model.YeuCauDatPhong;
 import com.example.mobileprojectapp2.recyclerviewadapter.chutro.HinhAnhAdapter;
@@ -65,6 +65,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.android.material.button.MaterialButton;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -80,14 +81,14 @@ public class DetailPhongTroNguoiThueActivity extends AppCompatActivity {
     private TextView tvLoaiPhongNguoiThue, tvGioTinhNguoiThue, tvGiaNguoiThue, tvSoLuongToiDaNguoiThue, tvDienTichNguoiThue,
             tvTienCocNguoiThue, tvTienDienNguoiThue, tvTienNuocNguoiThue, tvQuanNguoiThue, tvDiaChiNguoiThue, tvTienIchRong,
             tvTenChuTro, tvSDTChuTro, tv_dsnt;
-    private ImageView img_hinh_anh_rong;
+    private ImageView img_hinh_anh_rong, image_gif, img_like, img_like2;
     private ReadMoreTextView tvMoTaNguoiThue;
     private TienIchAdapter adapterTienIch;
     private ImageView imageBack, imageViewChuTro;
     private LinearLayoutManager layoutManagerTienIch = new LinearLayoutManager(DetailPhongTroNguoiThueActivity.this);
     private LinearLayoutManager layoutManagerNguoiThue = new LinearLayoutManager(DetailPhongTroNguoiThueActivity.this);
     private LinearLayoutManager layoutManagerPhongGoiY = new LinearLayoutManager(DetailPhongTroNguoiThueActivity.this);
-
+    //    private CircleIndicator3 ci_3;
     private RecyclerView rcvListTienIchNguoiThue, rcvListNguoiThue, rcvDSPhongGoiY;
     private HinhAnhAdapter adapterHinhAnh;
     private ViewPager2 mViewPager2;
@@ -98,17 +99,18 @@ public class DetailPhongTroNguoiThueActivity extends AppCompatActivity {
     private List<com.example.mobileprojectapp2.datamodels.PhongTro> listPhongGoiY;
     private PhucDanhSachPhongGoiYAdapter adapterPhongGoiY;
     private RelativeLayout rlt_tren_dsnt;
-    private int idPhong;
-    private int idTaiKhoan;
+    private int idPhong = 1;
+    private int idTaiKhoan = 22;
     private LinearLayout llXemThem, llThuGon, ll_dsnt, llDatPhong, llGoi, llChat, ll_dsp_chu_tro;
     private int idTaiKhoanNhan;
     private ProgressDialog mProgressDialog;
     SharedPreferences sharedPreferences;
     Intent intentChuTro;
     Intent intentNguoiThue;
-       MaterialButton reviewPhong;
+    MaterialButton reviewPhong;
     FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
     DatabaseReference databaseReference = firebaseDatabase.getReference();
+    private int check = 0;
 
     private Handler handler = new Handler();
     private Runnable runnable = new Runnable() {
@@ -124,37 +126,26 @@ public class DetailPhongTroNguoiThueActivity extends AppCompatActivity {
         }
     };
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.nguoithue_detail_phong_tro_layout);
 
-        intentChuTro = new Intent(DetailPhongTroNguoiThueActivity.this, PhongNhanTinActivity.class);
-        intentNguoiThue = new Intent(DetailPhongTroNguoiThueActivity.this, PhongNhanTinActivity.class);
-        listTienIch = new ArrayList<>();
-        listHinhAnh = new ArrayList<>();
-        listNguoiThue = new ArrayList<>();
-        listPhongGoiY = new ArrayList<>();
+        _initialization();
+        _sharedPreferences();
+        findViewById();
 
-        mProgressDialog = new ProgressDialog(this);
-        mProgressDialog.setMessage("Please wait ...");
-
-        sharedPreferences = this.getSharedPreferences(Const.PRE_LOGIN, Context.MODE_PRIVATE);
-        idTaiKhoan = sharedPreferences.getInt("idTaiKhoan", -1);
-
-        Intent intent = getIntent();
-        idPhong = intent.getIntExtra("idPhong", -1);
-
-        anhXa();
         reviewPhong.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Animation anim = AnimationUtils.loadAnimation(DetailPhongTroNguoiThueActivity.this, R.anim.item_click);
+                view.startAnimation(anim);
                 xemVideoReview();
             }
         });
         getDataFromApi();
-//        getNguoiThue();
+        checkLike();
+        updateLike();
 
         imageBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -178,6 +169,8 @@ public class DetailPhongTroNguoiThueActivity extends AppCompatActivity {
         adapterNguoiThue.setMyOnClickListener(new PhongTroChuTroAdapter.MyOnClickListener() {
             @Override
             public void OnClickItem(int position, View v) {
+                Animation anim = AnimationUtils.loadAnimation(DetailPhongTroNguoiThueActivity.this, R.anim.item_click);
+                v.startAnimation(anim);
                 if (listNguoiThue.get(position).getNguoiThue().getIdTaiKhoan() != idTaiKhoan) {
                     Call<Integer> call = ApiServiceNghiem.apiService.layIdPhongTinNhan(idTaiKhoan, listNguoiThue.get(position).getNguoiThue().getIdTaiKhoan());
                     call.enqueue(new Callback<Integer>() {
@@ -224,10 +217,11 @@ public class DetailPhongTroNguoiThueActivity extends AppCompatActivity {
 
         getDanhSachPhongGoiY();
 
-
         llChat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Animation anim = AnimationUtils.loadAnimation(DetailPhongTroNguoiThueActivity.this, R.anim.item_click);
+                view.startAnimation(anim);
                 startActivity(intentChuTro);
             }
         });
@@ -235,22 +229,50 @@ public class DetailPhongTroNguoiThueActivity extends AppCompatActivity {
         adapterPhongGoiY.setMyOnCLickListener(new PhucDanhSachPhongGoiYAdapter.MyOnCLickListener() {
             @Override
             public void OnClickItem(int position, View v) {
-                alertSuccess("ok");
-                Intent intent = new Intent(DetailPhongTroNguoiThueActivity.this,DetailPhongTroNguoiThueActivity.class);
-                intent.putExtra("idPhong",listPhongGoiY.get(position).getId());
+                Animation anim = AnimationUtils.loadAnimation(DetailPhongTroNguoiThueActivity.this, R.anim.item_click);
+                v.startAnimation(anim);
+                Intent intent = new Intent(DetailPhongTroNguoiThueActivity.this, DetailPhongTroNguoiThueActivity.class);
+                intent.putExtra("idPhong", listPhongGoiY.get(position).getId());
                 startActivity(intent);
+            }
+
+            @Override
+            public void OnCLickLike(int position, View v) {
+                alertSuccess("ok");
             }
         });
 
 
     }
 
+
+
+    private void _initialization() {
+        intentChuTro = new Intent(DetailPhongTroNguoiThueActivity.this, PhongNhanTinActivity.class);
+        intentNguoiThue = new Intent(DetailPhongTroNguoiThueActivity.this, PhongNhanTinActivity.class);
+        listTienIch = new ArrayList<>();
+        listHinhAnh = new ArrayList<>();
+        listNguoiThue = new ArrayList<>();
+        listPhongGoiY = new ArrayList<>();
+
+        mProgressDialog = new ProgressDialog(this);
+        mProgressDialog.setMessage("Please wait ...");
+    }
+
+    private void _sharedPreferences() {
+        sharedPreferences = this.getSharedPreferences(Const.PRE_LOGIN, Context.MODE_PRIVATE);
+        idTaiKhoan = sharedPreferences.getInt("idTaiKhoan", -1);
+
+        Intent intent = getIntent();
+        idPhong = intent.getIntExtra("idPhong", -1);
+    }
+
     private void capNhatPhongGoiY(int idTaiKhoan, int idQuan, int tienCoc, int gioiTinh) {
-        RequestBody idTaiKhoanApi = RequestBody.create(MediaType.parse("multipart/form-data"), idTaiKhoan+"");
-        RequestBody idQuanApi = RequestBody.create(MediaType.parse("multipart/form-data"), idQuan+"");
-        RequestBody tienCocApi = RequestBody.create(MediaType.parse("multipart/form-data"), tienCoc+"");
-        RequestBody gioiTinhApi = RequestBody.create(MediaType.parse("multipart/form-data"), gioiTinh+"");
-        Call<Integer> call = ApiServicePhuc2.apiService.capNhatPhongGoiY(idTaiKhoanApi,idQuanApi,tienCocApi,gioiTinhApi);
+        RequestBody idTaiKhoanApi = RequestBody.create(MediaType.parse("multipart/form-data"), idTaiKhoan + "");
+        RequestBody idQuanApi = RequestBody.create(MediaType.parse("multipart/form-data"), idQuan + "");
+        RequestBody tienCocApi = RequestBody.create(MediaType.parse("multipart/form-data"), tienCoc + "");
+        RequestBody gioiTinhApi = RequestBody.create(MediaType.parse("multipart/form-data"), gioiTinh + "");
+        Call<Integer> call = ApiServicePhuc2.apiService.capNhatPhongGoiY(idTaiKhoanApi, idQuanApi, tienCocApi, gioiTinhApi);
         call.enqueue(new Callback<Integer>() {
             @Override
             public void onResponse(Call<Integer> call, Response<Integer> response) {
@@ -264,6 +286,79 @@ public class DetailPhongTroNguoiThueActivity extends AppCompatActivity {
         });
     }
 
+    private void checkLike() {
+
+        Call<Integer> call = ApiServicePhuc2.apiService.checkYeuThich(idPhong, idTaiKhoan);
+        call.enqueue(new Callback<Integer>() {
+            @Override
+            public void onResponse(Call<Integer> call, Response<Integer> response) {
+                Log.d("TAG", "onResponse: " + response.body());
+                if (response.body() == 0) {
+                    img_like.setVisibility(View.VISIBLE);
+                    img_like2.setVisibility(View.GONE);
+                    check = 0;
+                    Log.d("TAG", "onClickX: " + check);
+                } else {
+                    check = 1;
+                    img_like.setVisibility(View.GONE);
+                    img_like2.setVisibility(View.VISIBLE);
+                    Log.d("TAG", "onClick: " + check);
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<Integer> call, Throwable t) {
+
+            }
+        });
+    }
+
+    private void updateLike() {
+        RequestBody idTaiKhoanApi = RequestBody.create(MediaType.parse("multipart/form-data"), idTaiKhoan + "");
+        RequestBody idPhongApi = RequestBody.create(MediaType.parse("multipart/form-data"), idPhong + "");
+        if (check == 0) {
+            img_like.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Animation anim = AnimationUtils.loadAnimation(DetailPhongTroNguoiThueActivity.this, R.anim.item_click);
+                    v.startAnimation(anim);
+                    Call<Integer> call = ApiServicePhuc2.apiService.updateLike(idPhongApi, idTaiKhoanApi);
+                    call.enqueue(new Callback<Integer>() {
+                        @Override
+                        public void onResponse(Call<Integer> call, Response<Integer> response) {
+                            check = 1;
+                            checkLike();
+                        }
+
+                        @Override
+                        public void onFailure(Call<Integer> call, Throwable t) {
+                        }
+                    });
+                }
+            });
+        }
+        img_like2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Animation anim = AnimationUtils.loadAnimation(DetailPhongTroNguoiThueActivity.this, R.anim.item_click);
+                v.startAnimation(anim);
+                Call<Integer> call = ApiServicePhuc2.apiService.updateLike(idPhongApi, idTaiKhoanApi);
+                call.enqueue(new Callback<Integer>() {
+                    @Override
+                    public void onResponse(Call<Integer> call, Response<Integer> response) {
+                        check = 0;
+                        checkLike();
+                    }
+                    @Override
+                    public void onFailure(Call<Integer> call, Throwable t) {
+
+                    }
+                });
+            }
+        });
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -271,9 +366,9 @@ public class DetailPhongTroNguoiThueActivity extends AppCompatActivity {
         adapterPhongGoiY.notifyDataSetChanged();
     }
 
-    private void xemVideoReview(){
+    private void xemVideoReview() {
         AlertDialog.Builder dialog = new AlertDialog.Builder(this);
-        View view = DetailPhongTroNguoiThueActivity.this.getLayoutInflater().inflate(R.layout.activity_review_phong,null);
+        View view = DetailPhongTroNguoiThueActivity.this.getLayoutInflater().inflate(R.layout.activity_review_phong, null);
         dialog.setView(view);
         AlertDialog dialogB = dialog.create();
         dialogB.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -285,16 +380,16 @@ public class DetailPhongTroNguoiThueActivity extends AppCompatActivity {
         call.enqueue(new Callback<VideoReview>() {
             @Override
             public void onResponse(Call<VideoReview> call, Response<VideoReview> response) {
-                if(response.body()!=null){
+                if (response.body() != null) {
                     ghiChuHuongDan.setVisibility(View.INVISIBLE);
                     VideoReview videoReview = response.body();
-                    if(!videoReview.getLinkVideo().equals("Video_Rong")){
-                        if(videoReview.getLoaiVideo()==0){
-                            String video = Const.DOMAIN+response.body().getLinkVideo();
+                    if (!videoReview.getLinkVideo().equals("Video_Rong")) {
+                        if (videoReview.getLoaiVideo() == 0) {
+                            String video = Const.DOMAIN + response.body().getLinkVideo();
                             webView.loadUrl(video);
                             webView.getSettings().setJavaScriptEnabled(true);
                             webView.setWebChromeClient(new WebChromeClient());
-                        }else{
+                        } else {
                             String dataUrl = "<!DOCTYPE html>\n" +
                                     "<html>\n" +
                                     "  <body>\n" +
@@ -316,7 +411,7 @@ public class DetailPhongTroNguoiThueActivity extends AppCompatActivity {
                                     "        player = new YT.Player('player', {\n" +
                                     "          height: '240',\n" +
                                     "          width: '100%',\n" +
-                                    "          videoId: '"+ videoReview.getLinkVideo()+"',\n" +
+                                    "          videoId: '" + videoReview.getLinkVideo() + "',\n" +
                                     "          playerVars: {\n" +
                                     "            'playsinline': 1\n" +
                                     "          },\n" +
@@ -351,7 +446,7 @@ public class DetailPhongTroNguoiThueActivity extends AppCompatActivity {
 
 
                             webView.getSettings().setJavaScriptEnabled(true);
-                            webView.setWebViewClient(new WebViewClient(){
+                            webView.setWebViewClient(new WebViewClient() {
                                 @Override
                                 public boolean shouldOverrideUrlLoading(WebView view, String url) {
                                     view.loadUrl(url);
@@ -359,19 +454,20 @@ public class DetailPhongTroNguoiThueActivity extends AppCompatActivity {
                                 }
                             });
 //                            webView.getSettings().getMixedContentMode();
-                            webView.loadData(dataUrl,"text/html","utf-8");
+                            webView.loadData(dataUrl, "text/html", "utf-8");
                             webView.setWebChromeClient(new WebChromeClient());
                         }
-                    }else{
+                    } else {
                         ghiChuHuongDan.setVisibility(View.VISIBLE);
                     }
-                }else{
+                } else {
                     ghiChuHuongDan.setVisibility(View.VISIBLE);
                 }
             }
+
             @Override
             public void onFailure(Call<VideoReview> call, Throwable t) {
-                Toast.makeText(getApplicationContext(),"Lỗi Dữ Liệu",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Lỗi Dữ Liệu", Toast.LENGTH_SHORT).show();
             }
         });
         dong.setOnClickListener(new View.OnClickListener() {
@@ -382,30 +478,40 @@ public class DetailPhongTroNguoiThueActivity extends AppCompatActivity {
         });
         dialogB.show();
     }
+
     private void requestYeuCauDatPhong(int idNhan) {
         llDatPhong.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Animation anim = AnimationUtils.loadAnimation(DetailPhongTroNguoiThueActivity.this, R.anim.item_click);
+                v.startAnimation(anim);
                 AlertDialog.Builder builder = new AlertDialog.Builder(DetailPhongTroNguoiThueActivity.this);
                 builder.setMessage("Bạn chắc chắn muốn đặt phòng này ?")
                         .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                Call<YeuCauDatPhong> call = ApiServicePhuc2.apiService.yeuCauDatPhong(idTaiKhoan, idNhan, idPhong);
-                                call.enqueue(new Callback<YeuCauDatPhong>() {
+                                Call<KetQuaGuiYeuCauDatPhong> call = ApiServicePhuc2.apiService.yeuCauDatPhong(idTaiKhoan, idNhan, idPhong);
+                                call.enqueue(new Callback<KetQuaGuiYeuCauDatPhong>() {
                                     @Override
-                                    public void onResponse(Call<YeuCauDatPhong> call, Response<YeuCauDatPhong> responseYC) {
-                                        databaseReference.child("notification").child(idNhan + "").child(responseYC.body().getId() + "").setValue(0).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                            @Override
-                                            public void onSuccess(Void unused) {
-                                                Log.d("TAG", "onSuccess: PUSH NOTIFICATION REALTIME");
+                                    public void onResponse(Call<KetQuaGuiYeuCauDatPhong> call, Response<KetQuaGuiYeuCauDatPhong> responseYC) {
+
+                                        if (responseYC.code() == 200){
+                                            if (responseYC.body() == null){
+                                                databaseReference.child("notification").child(idNhan + "").child(responseYC.body().getObject().getId() + "").setValue(0).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                    @Override
+                                                    public void onSuccess(Void unused) {
+                                                        Log.d("TAG", "onSuccess: PUSH NOTIFICATION REALTIME");
+                                                    }
+                                                });
+                                                MFCM.sendNotificationForAccountID(responseYC.body().getObject().getIdTaiKhoanNhan(),responseYC.body().getObject().getId(), "Yêu cầu đặt phòng", "Có yêu cầu đặt phòng mới hãy vào xem");
                                             }
-                                        });
-                                        alertSuccess("Bạn đã đặt phòng thành công!");
+                                        }
+                                       alertSuccess(responseYC.body().getMessage());
+
                                     }
 
                                     @Override
-                                    public void onFailure(Call<YeuCauDatPhong> call, Throwable t) {
+                                    public void onFailure(Call<KetQuaGuiYeuCauDatPhong> call, Throwable t) {
                                         Toast.makeText(DetailPhongTroNguoiThueActivity.this, "Error not call Api", Toast.LENGTH_SHORT).show();
                                     }
                                 });
@@ -420,10 +526,7 @@ public class DetailPhongTroNguoiThueActivity extends AppCompatActivity {
                 builder.show();
             }
         });
-
-
     }
-
 
     private void getDataFromApi() {
         Call<PhongTro> call = ApiServicePhuc.apiService.getPhongTroByID(idPhong);
@@ -432,7 +535,25 @@ public class DetailPhongTroNguoiThueActivity extends AppCompatActivity {
             public void onResponse(Call<PhongTro> call, Response<PhongTro> response) {
                 tvDienTichNguoiThue.setText(response.body().getDienTich() + "㎡");
                 tvQuanNguoiThue.setText(response.body().getIdQuan() + "");
-                tvGiaNguoiThue.setText(response.body().getGia() + " / tháng");
+
+                float trieu = 1000000;
+                float ngan = 1000;
+                float tram = 100000;
+                float gia;
+                String gia2;
+                DecimalFormat decimalFormat = new DecimalFormat("#.#");
+                if (response.body().getGia() < tram) {
+                    tvGiaNguoiThue.setText("Đang cập nhật");
+                } else if (response.body().getGia() < trieu) {
+                    gia = response.body().getGia() / ngan;
+                    gia2 = decimalFormat.format(gia);
+                    tvGiaNguoiThue.setText(gia2 + "k /tháng");
+                } else if (response.body().getGia() >= trieu) {
+                    gia = response.body().getGia() / trieu;
+                    gia2 = decimalFormat.format(gia);
+                    tvGiaNguoiThue.setText(gia2 + " triệu/tháng");
+                }
+
                 if (response.body().getLoaiPhong() == PHONG_DON || response.body().getLoaiPhong() == PHONG_TRONG) {
                     tvLoaiPhongNguoiThue.setText("Phòng đơn");
                     ll_dsnt.setVisibility(View.GONE);
@@ -441,7 +562,7 @@ public class DetailPhongTroNguoiThueActivity extends AppCompatActivity {
                 } else {
                     tvLoaiPhongNguoiThue.setText("Phòng ghép");
                     ll_dsnt.setVisibility(View.VISIBLE);
-                    getDanhSachNguoiThueGoiY();
+                    getDanhSachNguoiThue();
                     rlt_tren_dsnt.setVisibility(View.VISIBLE);
                 }
 
@@ -457,7 +578,6 @@ public class DetailPhongTroNguoiThueActivity extends AppCompatActivity {
                 tvSoLuongToiDaNguoiThue.setText(response.body().getSoLuongToiDa() + " người");
                 tvDiaChiNguoiThue.setText(response.body().getDiaChiChiTiet());
 
-//                Log.d("TAG", "onResponse: "+ response.body().getHinhAnhPhongTro().size());
 
                 if (response.body().getHinhAnhPhongTro().size() == 0) {
 //                    tvHinhAnhRong.setVisibility(View.VISIBLE);
@@ -470,10 +590,11 @@ public class DetailPhongTroNguoiThueActivity extends AppCompatActivity {
                 }
                 adapterHinhAnh.notifyDataSetChanged();
 
+
                 if (response.body().getDanhSachTienIch().size() == 0) {
                     tvTienIchRong.setVisibility(View.VISIBLE);
                 }
-                if (response.body().getDanhSachTienIch().size() < 8) {
+                if (response.body().getDanhSachTienIch().size() <= 8) {
                     llXemThem.setVisibility(View.GONE);
                 }
                 int i = 0;
@@ -488,6 +609,8 @@ public class DetailPhongTroNguoiThueActivity extends AppCompatActivity {
                 llXemThem.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        Animation anim = AnimationUtils.loadAnimation(DetailPhongTroNguoiThueActivity.this, R.anim.item_click);
+                        v.startAnimation(anim);
                         listTienIch.clear();
                         for (TienIch tienIch : response.body().getDanhSachTienIch()) {
                             listTienIch.add(tienIch);
@@ -500,6 +623,8 @@ public class DetailPhongTroNguoiThueActivity extends AppCompatActivity {
                 llThuGon.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        Animation anim = AnimationUtils.loadAnimation(DetailPhongTroNguoiThueActivity.this, R.anim.item_click);
+                        v.startAnimation(anim);
                         listTienIch.clear();
                         int i = 0;
                         for (TienIch tienIch : response.body().getDanhSachTienIch()) {
@@ -561,24 +686,26 @@ public class DetailPhongTroNguoiThueActivity extends AppCompatActivity {
                     ll_dsp_chu_tro.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
+                            Animation anim = AnimationUtils.loadAnimation(DetailPhongTroNguoiThueActivity.this, R.anim.item_click);
+                            v.startAnimation(anim);
                             Intent intent = new Intent(DetailPhongTroNguoiThueActivity.this, DanhSachPhongTheoChuTroActivity.class);
-                            intent.putExtra("idTaiKhoan",response.body().getPhongTroChuTro().getIdTaiKhoan());
-                            Log.d("TAG", "onClick: "+ response.body().getPhongTroChuTro().getIdTaiKhoan());
-                            intent.putExtra("idChuTro",response.body().getPhongTroChuTro().getId());
-                            Log.d("TAG", "onClick: "+ response.body().getPhongTroChuTro().getId());
-
+                            intent.putExtra("idTaiKhoan", response.body().getPhongTroChuTro().getIdTaiKhoan());
+                            Log.d("TAG", "onClick: " + response.body().getPhongTroChuTro().getIdTaiKhoan());
+                            intent.putExtra("idChuTro", response.body().getPhongTroChuTro().getId());
+                            Log.d("TAG", "onClick: " + response.body().getPhongTroChuTro().getId());
 
 
                             startActivity(intent);
                         }
                     });
-                }
-                else{
-                    alertSuccess("Đéo có chủ trọ mà có phòng");
+                } else {
+                    alertSuccess("Có phòng không tồn tại chủ trọ");
                 }
                 llGoi.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        Animation anim = AnimationUtils.loadAnimation(DetailPhongTroNguoiThueActivity.this, R.anim.item_click);
+                        v.startAnimation(anim);
                         String phone = "tel:" + tvSDTChuTro.getText();
                         Intent callIntent = new Intent(Intent.ACTION_DIAL);
                         callIntent.setData(Uri.parse(phone));
@@ -596,7 +723,7 @@ public class DetailPhongTroNguoiThueActivity extends AppCompatActivity {
         });
     }
 
-    private void getDanhSachNguoiThueGoiY() {
+    private void getDanhSachNguoiThue() {
         Call<List<PhongNguoiThue>> call = ApiServicePhuc2.apiService.getNguoiThueTheoPhong(idPhong);
         call.enqueue(new Callback<List<PhongNguoiThue>>() {
             @Override
@@ -636,7 +763,7 @@ public class DetailPhongTroNguoiThueActivity extends AppCompatActivity {
         });
     }
 
-    private void anhXa() {
+    private void findViewById() {
         tvDienTichNguoiThue = findViewById(R.id.tv_detail_dien_tich_nguoi_thue);
         tvQuanNguoiThue = findViewById(R.id.tv_detail_quan_nguoi_thue);
         tvMoTaNguoiThue = findViewById(R.id.tv_detail_mo_ta_nguoi_thue);
@@ -657,19 +784,34 @@ public class DetailPhongTroNguoiThueActivity extends AppCompatActivity {
         tvSDTChuTro = findViewById(R.id.tv_sdt_chu_tro);
         img_hinh_anh_rong = findViewById(R.id.img_hinh_anh_rong);
         tv_dsnt = findViewById(R.id.tv_dsnt);
+        img_like = findViewById(R.id.img_like1);
+        img_like2 = findViewById(R.id.img_like2);
 
         llThuGon = findViewById(R.id.ll_thu_gon);
         llXemThem = findViewById(R.id.ll_xem_them);
         ll_dsnt = findViewById(R.id.ll_dsnt);
         llChat = findViewById(R.id.ll_chat);
         llDatPhong = findViewById(R.id.ll_dat_phong);
+        image_gif = findViewById(R.id.image_gif);
         llGoi = findViewById(R.id.ll_goi);
         ll_dsp_chu_tro = findViewById(R.id.ll_dsp_chu_tro);
         tvTienIchRong = findViewById(R.id.tv_tien_ich_rong);
+//        ci_3 = findViewById(R.id.ci_3);
 
         mViewPager2 = findViewById(R.id.view_pager_2_nguoi_thue);
+        mViewPager2.setOffscreenPageLimit(3);
+        mViewPager2.setClipToPadding(false);
+        mViewPager2.setClipChildren(false);
+
+        CompositePageTransformer compositePageTransformer = new CompositePageTransformer();
+        compositePageTransformer.addTransformer(new MarginPageTransformer(40));
+        mViewPager2.setPageTransformer(compositePageTransformer);
+
         adapterHinhAnh = new HinhAnhAdapter(DetailPhongTroNguoiThueActivity.this, listHinhAnh, R.layout.chutro_item_image_layout);
         mViewPager2.setAdapter(adapterHinhAnh);
+//        ci_3.setViewPager(mViewPager2);
+
+        Glide.with(this).load(R.drawable.iconp_giphy).into(image_gif);
 
         adapterTienIch = new TienIchAdapter(DetailPhongTroNguoiThueActivity.this, listTienIch, R.layout.cardview_item_tien_ich_layout);
         layoutManagerTienIch = new LinearLayoutManager(DetailPhongTroNguoiThueActivity.this);
@@ -679,7 +821,6 @@ public class DetailPhongTroNguoiThueActivity extends AppCompatActivity {
         rcvListTienIchNguoiThue.setAdapter(adapterTienIch);
         imageBack = findViewById(R.id.img_back_detail);
 
-//        listNguoiThue2 = getListNguoiThue2();
         adapterNguoiThue = new PhucNguoiThueAdapter(DetailPhongTroNguoiThueActivity.this, listNguoiThue, R.layout.nguoithue_cardview_item_nguoi_thue_layout);
         layoutManagerNguoiThue = new LinearLayoutManager(DetailPhongTroNguoiThueActivity.this);
         layoutManagerNguoiThue.setOrientation(RecyclerView.VERTICAL);
@@ -695,7 +836,6 @@ public class DetailPhongTroNguoiThueActivity extends AppCompatActivity {
         reviewPhong = findViewById(R.id.reviewPhong);
 
     }
-
 
     private void alertSuccess(String s) {
         new AlertDialog.Builder(this)

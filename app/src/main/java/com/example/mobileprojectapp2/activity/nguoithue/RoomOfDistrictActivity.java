@@ -84,6 +84,9 @@ public class RoomOfDistrictActivity extends AppCompatActivity {
             @Override
             public void setOnClickCItem(int position, View view) {
                 //TODO: Chuyển qua màn hình chi tiết phòng
+                Intent intent = new Intent(RoomOfDistrictActivity.this, DetailPhongTroNguoiThueActivity.class);
+                intent.putExtra("idPhong", listPhong.get(position).getId());
+                startActivity(intent);
             }
         });
     }

@@ -42,5 +42,8 @@
     <color name="xanh_kuler">#CAF272</color>
     <color name="nau_kuler">#D9A23D</color>
     <color name="blue_kuler">#6A66D9</color>
+    <color name="seekbar1">#18A5A7</color>
+    <color name="seekbar2">#BFFFC7</color>
+    <color name="text_search">#515151</color>
 
 </resources>
