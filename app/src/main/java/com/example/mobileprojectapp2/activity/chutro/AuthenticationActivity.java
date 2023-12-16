@@ -118,6 +118,7 @@ public class AuthenticationActivity extends AppCompatActivity {
         trangThaiXacThuc = sharedPreferences.getInt("trangThaiXacThuc", -1);
 
         anhXa();
+
         getDetailChuTro();
         onClickCanDuLieu(trangThaiXacThuc);
 
@@ -125,7 +126,6 @@ public class AuthenticationActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 sendDataToApi();
-                tvDangChoAuthencation.setVisibility(View.VISIBLE);
 
             }
         });
@@ -165,6 +165,8 @@ public class AuthenticationActivity extends AppCompatActivity {
                     tvNotAuthencation.setVisibility(View.GONE);
                     tvOkAuthencation.setVisibility(View.GONE);
                     btnAcceptYeuCauXacThuc.setVisibility(View.GONE);
+                    tvDangChoAuthencation.setVisibility(View.VISIBLE);
+
                     imageViewMatTruocCCCD.setEnabled(false);
                     imageViewMatSauCCCD.setEnabled(false);
                     databaseReference.child("notification_admin").child(idChuTro + "").setValue(0).addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -206,6 +208,9 @@ public class AuthenticationActivity extends AppCompatActivity {
             });
         } else {
             Toast.makeText(this, "Chưa chọn ảnh Căn cước công dân", Toast.LENGTH_SHORT).show();
+            tvDangChoAuthencation.setVisibility(View.GONE);
+            tvNotAuthencation.setVisibility(View.VISIBLE);
+
         }
     }
 
@@ -248,6 +253,9 @@ public class AuthenticationActivity extends AppCompatActivity {
                 tvNotAuthencation.setVisibility(View.VISIBLE);
                 tvOkAuthencation.setVisibility(View.GONE);
                 btnAcceptYeuCauXacThuc.setVisibility(View.VISIBLE);
+                imageViewMatTruocCCCD.setEnabled(true);
+                imageViewMatSauCCCD.setEnabled(true);
+
             }
 
         });

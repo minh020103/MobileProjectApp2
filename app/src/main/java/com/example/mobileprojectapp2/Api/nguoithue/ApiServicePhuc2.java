@@ -94,9 +94,7 @@ public interface ApiServicePhuc2 {
     Call<List<com.example.mobileprojectapp2.model.PhongTro>> getDanhSachPhongTimKiemBoLoc(@Query("quan") int quan,
                                                                                           @Query("giaBatDau") int giaBatDau,
                                                                                           @Query("giaKetThuc") int giaKetThuc,
-                                                                                          @Query("loaiPhong") int loaiPhong,
-                                                                                          @Query("gioiTinh") int gioiTinh,
-                                                                                          @Query("tienIch") String tienIch);
+                                                                                          @Query("loaiPhong") int loaiPhong,@Query("gioiTinh") int gioiTinh,@Query("tienIch") String tienIch);
     @GET("api/layyeucaudatphong")
     Call<YeuCauDatPhong> getYCDPByIdNguoiGui(@Query("idTaiKhoanGui")int idTaiKhoanGui);
 
