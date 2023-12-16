@@ -158,7 +158,7 @@ public class LoginFragment extends AbstractFragment {
                     public void onSuccess(AuthResult authResult) {
                         MComponent.saveTokenAppDevice(response.body().getId());
                         sharedPreferences.edit().putInt("idTaiKhoan", response.body().getId()).commit();
-//                        sharedPreferences.edit().putInt("loaiTaiKhoan", response.body().getLoaiTaiKhoan()).commit();
+                        sharedPreferences.edit().putInt("loaiTaiKhoan", response.body().getLoaiTaiKhoan()).commit();
                         if (response.body().getLoaiTaiKhoan() == 1) {
                             sharedPreferences.edit().putInt("idChuTro", response.body().getNguoiDangNhap().getId()).commit();
                             sharedPreferences.edit().putInt("trangThaiXacThuc", response.body().getNguoiDangNhap().getXacThuc()).commit();

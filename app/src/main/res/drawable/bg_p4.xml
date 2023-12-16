@@ -4,7 +4,9 @@
 
 
     <stroke
-        android:width="5dp"
-        android:color="@color/button_tim" />
+        android:width="2dp"
+        android:color="@color/black" />
     <corners android:radius="10dp"/>
+    <size android:height="50dp" android:width="120dp"/>
+    <gradient android:startColor="#2193b0" android:endColor="#6dd5ed"/>
 </shape>
