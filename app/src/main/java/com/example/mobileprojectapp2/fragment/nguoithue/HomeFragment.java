@@ -118,8 +118,6 @@ public class HomeFragment extends AbstractFragment {
         layoutManagerPhong = new GridLayoutManager(getActivity(), 2);
         rcvPhong.setLayoutManager(layoutManagerPhong);
         rcvPhong.setAdapter(phongAdaprer);
-
-
         batSuKienAdapterQuan();
         batSuKienPhong();
         return fragmentLayout;

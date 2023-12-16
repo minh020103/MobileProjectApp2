@@ -75,6 +75,7 @@ public class DanhSachPhongGoiYActivity extends AppCompatActivity {
         });
     }
     private void getDataForImages() {
+        listHinh.clear();
         ApiServiceMinh.apiService.layTatCaBanner().enqueue(new Callback<List<Banner>>() {
             @Override
             public void onResponse(Call<List<Banner>> call, Response<List<Banner>> response) {

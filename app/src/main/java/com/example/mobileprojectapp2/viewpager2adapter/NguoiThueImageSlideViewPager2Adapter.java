@@ -48,14 +48,16 @@ public class NguoiThueImageSlideViewPager2Adapter extends RecyclerView.Adapter<N
         Banner hinhAnh = list.get(position);
 //        holder.imgItem.setImageDrawable(activity.getResources().getDrawable(R.drawable.phong_tro, activity.getTheme()));
         Glide.with(activity.getLayoutInflater().getContext()).load(Const.DOMAIN+hinhAnh.getHinhBanner()).into(holder.imgItem);
-        holder.imgItem.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                Log.d("TAG", "onTouch: OKKKKKKK");
-                RenterActivity.viewPager2NguoiThue.setUserInputEnabled(false);
-                return false;
-            }
-        });
+        if (RenterActivity.viewPager2NguoiThue != null) {
+            holder.imgItem.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View view, MotionEvent motionEvent) {
+                    Log.d("TAG", "onTouch: OKKKKKKK");
+                    RenterActivity.viewPager2NguoiThue.setUserInputEnabled(false);
+                    return false;
+                }
+            });
+        }
     }
 
     @Override

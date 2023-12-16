@@ -23,6 +23,7 @@ import com.example.mobileprojectapp2.R;
 import com.example.mobileprojectapp2.activity.chutro.MotelRoomOwnerActivity;
 import com.example.mobileprojectapp2.activity.chutro.ThanhToanGoiActivity;
 import com.example.mobileprojectapp2.activity.nguoithue.DanhSachPhongGoiYActivity;
+import com.example.mobileprojectapp2.activity.nguoithue.RenterActivity;
 import com.example.mobileprojectapp2.adapter.chutro.GoiDichVuAdapter;
 import com.example.mobileprojectapp2.api.Const;
 import com.example.mobileprojectapp2.api.chutro.ApiServiceDung;
@@ -88,6 +89,7 @@ public class PackageUsingFragment extends AbstractFragment{
         gia_han_lai = fragmentLayout.findViewById(R.id.gia_han_lai);
         huy_dich_vu = fragmentLayout.findViewById(R.id.huy_dich_vu);
         thoi_gian = fragmentLayout.findViewById(R.id.thoi_gian);
+        vp2Banner = fragmentLayout.findViewById(R.id.vp2Banner);
 
         shared = getActivity().getSharedPreferences(Const.PRE_LOGIN, Context.MODE_PRIVATE);
         idTaiKhoan = shared.getInt("idTaiKhoan", -1);
@@ -149,6 +151,7 @@ public class PackageUsingFragment extends AbstractFragment{
         });
     }
     private void getDataForImages() {
+        listHinh.clear();
         ApiServiceMinh.apiService.layTatCaBanner().enqueue(new Callback<List<Banner>>() {
             @Override
             public void onResponse(Call<List<Banner>> call, Response<List<Banner>> response) {
@@ -157,8 +160,11 @@ public class PackageUsingFragment extends AbstractFragment{
                     listHinh.addAll(response.body());
                     imagesAdapter.notifyDataSetChanged();
                 } else {
-                    vp2Banner.setBackground(PackageUsingFragment.this.getResources().getDrawable(R.drawable.thuduc, PackageUsingFragment.this.getActivity().getTheme()));
+                    vp2Banner.setBackground(getActivity().getResources().getDrawable(R.drawable.thuduc, getActivity().getTheme()));
                 }
+
+
+
             }
 
             @Override
