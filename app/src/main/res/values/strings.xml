@@ -76,6 +76,7 @@ Thuận tiện: gần hàng xanh, trường đại học Hurtech, Hồng Bàng, 
     <string name="vnd">VND</string>
     <string name="gi">Giá</string>
     <string name="dn">Điện - Nước</string>
+    <string name="cxn">Đang chờ xác nhận</string>
     <array name="rangeSlide">
         <item>0</item>
         <item>15</item>

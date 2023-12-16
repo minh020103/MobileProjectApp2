@@ -77,6 +77,19 @@ public class YeuCauDatPhong {
     public void setTrangThaiNhan(int trangThaiNhan) {
         this.trangThaiNhan = trangThaiNhan;
     }
+
+    @Override
+    public String toString() {
+        return "YeuCauDatPhong{" +
+                "id=" + id +
+                ", idTaiKhoanGui=" + idTaiKhoanGui +
+                ", idTaiKhoanNhan=" + idTaiKhoanNhan +
+                ", idPhong=" + idPhong +
+                ", trangThaiXacThuc=" + trangThaiXacThuc +
+                ", trangThaiThongBao=" + trangThaiThongBao +
+                ", trangThaiNhan=" + trangThaiNhan +
+                '}';
+    }
 }
 
 

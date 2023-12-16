@@ -40,7 +40,7 @@ public class PhucGioiTinhAdapter extends RecyclerView.Adapter<PhucGioiTinhAdapte
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        holder.tvGioiTinh.setText(list.get(position) == Const.ALL_GENDERS? "Tất cả":list.get(position) == Const.MALE_GENDERS?"Nam":"Nữ");
+        holder.tvGioiTinh.setText(list.get(position) == Const.ALL_GENDERS? "Nam/nữ":list.get(position) == Const.MALE_GENDERS?"Nam":"Nữ");
         holder.onClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
