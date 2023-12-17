@@ -120,15 +120,17 @@ public class EditProfileActivity extends AppCompatActivity {
         call.enqueue(new Callback<NguoiThue>() {
             @Override
             public void onResponse(Call<NguoiThue> call, Response<NguoiThue> response) {
-                NguoiThue nguoiThue = response.body();
-                if(response.body().getHinh() != null)
-                Glide.with(EditProfileActivity.this.getLayoutInflater().getContext()).load(Const.DOMAIN + response.body().getHinh()).into(imgViewProfileEditNguoiThue);
-                else {
-                    imgViewProfileEditNguoiThue.setImageResource(R.drawable.khongcoanh);
+                if (response.body()!=null) {
+                    NguoiThue nguoiThue = response.body();
+                    if (response.body().getHinh() != null)
+                        Glide.with(EditProfileActivity.this.getLayoutInflater().getContext()).load(Const.DOMAIN + response.body().getHinh()).into(imgViewProfileEditNguoiThue);
+                    else {
+                        imgViewProfileEditNguoiThue.setImageResource(R.drawable.khongcoanh);
+                    }
+                    edtNameNguoiThue.setText(response.body().getTen());
+                    edtPhoneNguoiThue.setText(response.body().getSoDienThoai());
+                    editPrFile(nguoiThue);
                 }
-                edtNameNguoiThue.setText(response.body().getTen());
-                edtPhoneNguoiThue.setText(response.body().getSoDienThoai());
-                editPrFile(nguoiThue);
             }
 
             @Override
@@ -160,18 +162,20 @@ public class EditProfileActivity extends AppCompatActivity {
                         call.enqueue(new Callback<Integer>() {
                             @Override
                             public void onResponse(Call<Integer> call, Response<Integer> response) {
-                                edtNameNguoiThue.setText("");
-                                edtPhoneNguoiThue.setText("");
-                                alertSuccess("Cập nhật thông tin thành công");
+                                if (response.body()!=null) {
+                                    edtNameNguoiThue.setText("");
+                                    edtPhoneNguoiThue.setText("");
+                                    alertSuccess("Cập nhật thông tin thành công");
 
-                                handler = new Handler();
-                                handler.postDelayed(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        handler.postDelayed(this, 2000);
-                                        finish();
-                                    }
-                                }, 2000);
+                                    handler = new Handler();
+                                    handler.postDelayed(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            handler.postDelayed(this, 2000);
+                                            finish();
+                                        }
+                                    }, 2000);
+                                }
                             }
 
                             @Override
@@ -188,18 +192,20 @@ public class EditProfileActivity extends AppCompatActivity {
                         call.enqueue(new Callback<Integer>() {
                             @Override
                             public void onResponse(Call<Integer> call, Response<Integer> response) {
-                                edtNameNguoiThue.setText("");
-                                edtPhoneNguoiThue.setText("");
-                                alertSuccess("Cập nhật thông tin thành công");
+                                if (response.body()!=null) {
+                                    edtNameNguoiThue.setText("");
+                                    edtPhoneNguoiThue.setText("");
+                                    alertSuccess("Cập nhật thông tin thành công");
 
-                                handler = new Handler();
-                                handler.postDelayed(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        handler.postDelayed(this, 2000);
-                                        finish();
-                                    }
-                                }, 2000);
+                                    handler = new Handler();
+                                    handler.postDelayed(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            handler.postDelayed(this, 2000);
+                                            finish();
+                                        }
+                                    }, 2000);
+                                }
                             }
 
                             @Override

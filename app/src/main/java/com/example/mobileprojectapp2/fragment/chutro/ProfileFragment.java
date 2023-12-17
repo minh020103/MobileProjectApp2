@@ -95,7 +95,7 @@ public class ProfileFragment extends AbstractFragment {
         call.enqueue(new Callback<ChuTro>() {
             @Override
             public void onResponse(Call<ChuTro> call, Response<ChuTro> response) {
-                if(response.body()!=null) {
+                if (response.body()!=null) {
                     if (response.body().getHinh() != null)
                         Glide.with(ProfileFragment.this.getLayoutInflater().getContext()).load(Const.DOMAIN + response.body().getHinh()).into(imgViewProfile);
                     else {

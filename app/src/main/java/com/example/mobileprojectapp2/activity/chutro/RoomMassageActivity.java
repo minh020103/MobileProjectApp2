@@ -136,10 +136,12 @@ public class RoomMassageActivity extends AppCompatActivity {
         call.enqueue(new Callback<ArrayList<TinNhan>>() {
             @Override
             public void onResponse(Call<ArrayList<TinNhan>> call, Response<ArrayList<TinNhan>> response) {
-                if(response.body().size()!=0){
-                    arrayList.addAll(response.body());
-                    tinNhanAdapter.notifyDataSetChanged();
-                    recyclerView.smoothScrollToPosition(arrayList.size()-1);
+                if (response.body()!=null) {
+                    if (response.body().size() != 0) {
+                        arrayList.addAll(response.body());
+                        tinNhanAdapter.notifyDataSetChanged();
+                        recyclerView.smoothScrollToPosition(arrayList.size() - 1);
+                    }
                 }
 
             }
@@ -186,24 +188,25 @@ public class RoomMassageActivity extends AppCompatActivity {
                     call.enqueue(new Callback<TinNhan>() {
                         @Override
                         public void onResponse(Call<TinNhan> call, Response<TinNhan> response) {
-                            Date currentTime = Calendar.getInstance().getTime();
-                            Timestamp tsTemp = new Timestamp(currentTime.getTime());
-                            Date date = new Date(tsTemp.getTime());
-                            SimpleDateFormat newFormat = new SimpleDateFormat("hh:mm dd-MM-yyyy");
-                            if(arrayList.size()!=0){
-                                TinNhan tinNhan = new TinNhan(arrayList.get(arrayList.size()-1).getId()+1,idPhong,senderId,inputMess.getText().toString(),tsTemp);
-                                arrayList.add(tinNhan);
-                                tinNhanAdapter.notifyDataSetChanged();
+                            if (response.body()!=null) {
+                                Date currentTime = Calendar.getInstance().getTime();
+                                Timestamp tsTemp = new Timestamp(currentTime.getTime());
+                                Date date = new Date(tsTemp.getTime());
+                                SimpleDateFormat newFormat = new SimpleDateFormat("hh:mm dd-MM-yyyy");
+                                if (arrayList.size() != 0) {
+                                    TinNhan tinNhan = new TinNhan(arrayList.get(arrayList.size() - 1).getId() + 1, idPhong, senderId, inputMess.getText().toString(), tsTemp);
+                                    arrayList.add(tinNhan);
+                                    tinNhanAdapter.notifyDataSetChanged();
 //                                recyclerView.smoothScrollToPosition(arrayList.size()-1);
-                            }
-                            else{
-                                TinNhan tinNhan = new TinNhan(1,idPhong,senderId,inputMess.getText().toString(),tsTemp);
-                                arrayList.add(tinNhan);
-                                tinNhanAdapter.notifyDataSetChanged();
+                                } else {
+                                    TinNhan tinNhan = new TinNhan(1, idPhong, senderId, inputMess.getText().toString(), tsTemp);
+                                    arrayList.add(tinNhan);
+                                    tinNhanAdapter.notifyDataSetChanged();
 //                                recyclerView.smoothScrollToPosition(arrayList.size()-1);
+                                }
+                                recyclerView.smoothScrollToPosition(arrayList.size() - 1);
+                                capNhatTinNhanNew(idPhong, inputMess.getText().toString(), formatDate(response.body().getCreated_at()));
                             }
-                            recyclerView.smoothScrollToPosition(arrayList.size()-1);
-                         capNhatTinNhanNew(idPhong,inputMess.getText().toString(),formatDate(response.body().getCreated_at()));
                         }
                         @Override
                         public void onFailure(Call<TinNhan> call, Throwable t) {
@@ -237,7 +240,7 @@ public class RoomMassageActivity extends AppCompatActivity {
         call.enqueue(new Callback<ArrayList<TinNhan>>() {
             @Override
             public void onResponse(Call<ArrayList<TinNhan>> call, Response<ArrayList<TinNhan>> response) {
-                if(response != null){
+                if(response.body() != null){
                     if(response.body().size()!=0){
                         arrayList.addAll(response.body());
                         tinNhanAdapter.notifyDataSetChanged();
@@ -278,10 +281,12 @@ public class RoomMassageActivity extends AppCompatActivity {
         taiKhoanCall.enqueue(new Callback<TaiKhoan>() {
             @Override
             public void onResponse(Call<TaiKhoan> call, Response<TaiKhoan> response) {
-                if(response.body().getLoaiTaiKhoan()==0){
-                    layThongTinNguoiThue(response.body().getId());
-                }else{
-                    layThongTinChuTro(response.body().getId());
+                if (response.body()!=null) {
+                    if (response.body().getLoaiTaiKhoan() == 0) {
+                        layThongTinNguoiThue(response.body().getId());
+                    } else {
+                        layThongTinChuTro(response.body().getId());
+                    }
                 }
             }
             @Override
@@ -295,10 +300,12 @@ public class RoomMassageActivity extends AppCompatActivity {
         chuTroCall.enqueue(new Callback<ChuTro>() {
             @Override
             public void onResponse(Call<ChuTro> call, Response<ChuTro> response) {
-                tinNhanAdapter.setAnhDoiPhuong(response.body().getHinh());
-                Glide.with(getApplicationContext()).load(Const.DOMAIN+response.body().getHinh()).into(avt_doiPhuong);
-                tinNhanAdapter.notifyDataSetChanged();
-                setTextName(response.body().getTen());
+                if (response.body()!=null) {
+                    tinNhanAdapter.setAnhDoiPhuong(response.body().getHinh());
+                    Glide.with(getApplicationContext()).load(Const.DOMAIN + response.body().getHinh()).into(avt_doiPhuong);
+                    tinNhanAdapter.notifyDataSetChanged();
+                    setTextName(response.body().getTen());
+                }
             }
 
             @Override
@@ -312,10 +319,12 @@ public class RoomMassageActivity extends AppCompatActivity {
         nguoiThueCall.enqueue(new Callback<NguoiThue>() {
             @Override
             public void onResponse(Call<NguoiThue> call, Response<NguoiThue> response) {
-                setTextName(response.body().getTen());
-                tinNhanAdapter.setAnhDoiPhuong(response.body().getHinh());
-                Glide.with(getApplicationContext()).load(Const.DOMAIN+response.body().getHinh()).into(avt_doiPhuong);
-                tinNhanAdapter.notifyDataSetChanged();
+                if (response.body()!=null) {
+                    setTextName(response.body().getTen());
+                    tinNhanAdapter.setAnhDoiPhuong(response.body().getHinh());
+                    Glide.with(getApplicationContext()).load(Const.DOMAIN + response.body().getHinh()).into(avt_doiPhuong);
+                    tinNhanAdapter.notifyDataSetChanged();
+                }
             }
 
             @Override

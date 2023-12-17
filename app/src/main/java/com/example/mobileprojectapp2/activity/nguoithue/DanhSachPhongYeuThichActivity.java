@@ -90,15 +90,16 @@ public class DanhSachPhongYeuThichActivity extends AppCompatActivity {
            @Override
            public void onResponse(Call<List<PhongTro>> call, Response<List<PhongTro>> response) {
                if (response.code() == 200) {
-                   if (response.body().size() == 0){
-                       tv_thongbao.setVisibility(View.VISIBLE);
-                   }else {
-                       tv_thongbao.setVisibility(View.GONE);
-                       listPhongYeuThich.clear();
-                       listPhongYeuThich.addAll(response.body());
-                       adapter.notifyDataSetChanged();
+                   if (response.body()!=null) {
+                       if (response.body().size() == 0) {
+                           tv_thongbao.setVisibility(View.VISIBLE);
+                       } else {
+                           tv_thongbao.setVisibility(View.GONE);
+                           listPhongYeuThich.clear();
+                           listPhongYeuThich.addAll(response.body());
+                           adapter.notifyDataSetChanged();
+                       }
                    }
-
                }
            }
 

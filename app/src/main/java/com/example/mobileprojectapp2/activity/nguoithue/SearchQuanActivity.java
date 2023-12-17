@@ -81,9 +81,11 @@ public class SearchQuanActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<List<Quan>> call, Response<List<Quan>> response) {
                 if (response.code() == 200) {
-                    listQuan.clear();
-                    listQuan.addAll(response.body());
-                    adapterQuan.notifyDataSetChanged();
+                    if (response.body()!=null) {
+                        listQuan.clear();
+                        listQuan.addAll(response.body());
+                        adapterQuan.notifyDataSetChanged();
+                    }
                 }
             }
 

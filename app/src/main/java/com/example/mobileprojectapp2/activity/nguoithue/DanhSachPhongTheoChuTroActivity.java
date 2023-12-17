@@ -74,12 +74,14 @@ public class DanhSachPhongTheoChuTroActivity extends AppCompatActivity {
         call.enqueue(new Callback<ChuTro>() {
             @Override
             public void onResponse(Call<ChuTro> call, Response<ChuTro> response) {
-                if (response.body().getHinh() != null)
-                    Glide.with(DanhSachPhongTheoChuTroActivity.this.getLayoutInflater().getContext()).load(Const.DOMAIN + response.body().getHinh()).into(imgViewChuTro);
-                else
-                    imgViewChuTro.setImageResource(R.drawable.khongcoanh);
-                tvName.setText(response.body().getTen());
-                tvSdt.setText(response.body().getSoDienThoai());
+                if (response.body()!=null) {
+                    if (response.body().getHinh() != null)
+                        Glide.with(DanhSachPhongTheoChuTroActivity.this.getLayoutInflater().getContext()).load(Const.DOMAIN + response.body().getHinh()).into(imgViewChuTro);
+                    else
+                        imgViewChuTro.setImageResource(R.drawable.khongcoanh);
+                    tvName.setText(response.body().getTen());
+                    tvSdt.setText(response.body().getSoDienThoai());
+                }
             }
             @Override
             public void onFailure(Call<ChuTro> call, Throwable t) {
@@ -93,9 +95,11 @@ public class DanhSachPhongTheoChuTroActivity extends AppCompatActivity {
          @Override
          public void onResponse(Call<List<PhongTroChuTro>> call, Response<List<PhongTroChuTro>> response) {
              if (response.code() == 200) {
-                 listDanhSachPhong.clear();
-                 listDanhSachPhong.addAll(response.body());
-                 adapter.notifyDataSetChanged();
+                 if (response.body()!=null) {
+                     listDanhSachPhong.clear();
+                     listDanhSachPhong.addAll(response.body());
+                     adapter.notifyDataSetChanged();
+                 }
              }
              adapter.setMyOnCLickListener(new PhucDanhSachPhongTheoChuTroAdapter.MyOnCLickListener() {
                  @Override

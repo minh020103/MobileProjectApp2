@@ -78,10 +78,12 @@ public class MotelRoomOwnerActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(Call<Integer> call, Response<Integer> response) {
                         if (response.code() == 200) {
-                            badgeDrawableNotifi.setVisible(true);
-                            badgeDrawableNotifi.setNumber(response.body());
-                            if (response.body() == 0)
-                                badgeDrawableNotifi.setVisible(false);
+                            if (response.body()!=null) {
+                                badgeDrawableNotifi.setVisible(true);
+                                badgeDrawableNotifi.setNumber(response.body());
+                                if (response.body() == 0)
+                                    badgeDrawableNotifi.setVisible(false);
+                            }
                         }
                     }
 

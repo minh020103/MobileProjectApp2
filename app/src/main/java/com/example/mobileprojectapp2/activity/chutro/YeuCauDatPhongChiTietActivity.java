@@ -112,23 +112,22 @@ public class YeuCauDatPhongChiTietActivity extends AppCompatActivity {
         ApiServiceKiet.apiServiceKiet.getYeuCauDangKiPhongById(id).enqueue(new Callback<YeuCauDatPhong>() {
             @Override
             public void onResponse(Call<YeuCauDatPhong> call, Response<YeuCauDatPhong> response) {
-                YeuCauDatPhong data = response.body();
-                tvTieuDeThongBaoChiTiet.setText("Yêu cầu đăng ký phòng số " + data.getPhong().getSoPhong());
-                tvNoiDungThongBaoChiTiet1.setText("Mã phòng " + data.getPhong().getId());
-                tvNoiDungThongBaoChiTiet2.setText("Tên: " + data.getNguoiThue().getTen());
-                tvNoiDungThongBaoChiTiet3.setText("SĐT: " + data.getNguoiThue().getSoDienThoai());
-                idPhong = data.getIdPhong();
-                idTaiKhoanGui = data.getIdTaiKhoanGui();
-                idNguoiThue = data.getNguoiThue().getId();
-                if (data.getNguoiThue().getGioiTinh() == 0)
-                {
-                    tvNoiDungThongBaoChiTiet4.setText("Giới tính: Nam");
+                if (response.body()!=null) {
+                    YeuCauDatPhong data = response.body();
+                    tvTieuDeThongBaoChiTiet.setText("Yêu cầu đăng ký phòng số " + data.getPhong().getSoPhong());
+                    tvNoiDungThongBaoChiTiet1.setText("Mã phòng " + data.getPhong().getId());
+                    tvNoiDungThongBaoChiTiet2.setText("Tên: " + data.getNguoiThue().getTen());
+                    tvNoiDungThongBaoChiTiet3.setText("SĐT: " + data.getNguoiThue().getSoDienThoai());
+                    idPhong = data.getIdPhong();
+                    idTaiKhoanGui = data.getIdTaiKhoanGui();
+                    idNguoiThue = data.getNguoiThue().getId();
+                    if (data.getNguoiThue().getGioiTinh() == 0) {
+                        tvNoiDungThongBaoChiTiet4.setText("Giới tính: Nam");
+                    } else {
+                        tvNoiDungThongBaoChiTiet4.setText("Giới tính: Nữ");
+                    }
+                    idTaiKhoanNguoiNhan = data.getIdTaiKhoanGui();
                 }
-                else
-                {
-                    tvNoiDungThongBaoChiTiet4.setText("Giới tính: Nữ");
-                }
-                idTaiKhoanNguoiNhan = data.getIdTaiKhoanGui();
 
             }
 
@@ -176,9 +175,11 @@ public class YeuCauDatPhongChiTietActivity extends AppCompatActivity {
         ApiServiceKiet.apiServiceKiet.tuChoiDatPhong(id, idTaiKhoanGui, idTaiKhoan).enqueue(new Callback<ThongBao>() {
             @Override
             public void onResponse(Call<ThongBao> call, Response<ThongBao> response) {
-                ThongBao thongBao = response.body();
-                MFCM.sendNotificationForAccountID(thongBao.getIdTaiKhoanNhan(), thongBao.getId(), thongBao.getTieuDe(), thongBao.getNoiDung() );
-                realTimeThongBao(response.body().getIdTaiKhoanGui(), response.body().getId());
+                if (response.body()!=null) {
+                    ThongBao thongBao = response.body();
+                    MFCM.sendNotificationForAccountID(thongBao.getIdTaiKhoanNhan(), thongBao.getId(), thongBao.getTieuDe(), thongBao.getNoiDung());
+                    realTimeThongBao(response.body().getIdTaiKhoanGui(), response.body().getId());
+                }
             }
 
             @Override

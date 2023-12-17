@@ -112,14 +112,16 @@ public class SearchActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<List<PhongTroChuTro2>> call, Response<List<PhongTroChuTro2>> response) {
                 if (response.code() == 200) {
-                    if (response.body().size() == 0){
-                        tv_thongbao.setVisibility(View.VISIBLE);
-                        tv_sai_noi_dung.setVisibility(View.GONE);
+                    if (response.body()!=null) {
+                        if (response.body().size() == 0) {
+                            tv_thongbao.setVisibility(View.VISIBLE);
+                            tv_sai_noi_dung.setVisibility(View.GONE);
 
-                    }else {
-                        mList.clear();
-                        mList.addAll(response.body());
-                        adapter.notifyDataSetChanged();
+                        } else {
+                            mList.clear();
+                            mList.addAll(response.body());
+                            adapter.notifyDataSetChanged();
+                        }
                     }
 
                 }

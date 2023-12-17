@@ -148,15 +148,17 @@ public class ThanhToanGoiActivity extends AppCompatActivity {
             ApiServiceDung.apiServiceDung.yeucaudangkygoi(idChuTro2,idGoiDK,mulPart).enqueue(new Callback<YeuCauDKG>() {
                 @Override
                 public void onResponse(Call<YeuCauDKG> call, Response<YeuCauDKG> response) {
-                    alertSuccess("Gửi Yêu Cầu Thành Công");
-                    Log.d("TAG", "onResponse: "+idChuTro);
-                    databaseReference.child("notification_admin").child(response.body().getIdGoi() + "").setValue(new Date().getSeconds()).addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void unused) {
-                            Log.d(TAG, "onSuccess: PUSH NOTIFICATION REALTIME");
-                        }
-                    });
-                    MFCM.sendNotificationForAccountID(1,new Date().getSeconds(),"Yêu cầu đăng ký gói", "id chủ trọ: "+ idChuTro+" id gói: "+ idG);
+                    if (response.body()!=null) {
+                        alertSuccess("Gửi Yêu Cầu Thành Công");
+                        Log.d("TAG", "onResponse: " + idChuTro);
+                        databaseReference.child("notification_admin").child(response.body().getIdGoi() + "").setValue(new Date().getSeconds()).addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void unused) {
+                                Log.d(TAG, "onSuccess: PUSH NOTIFICATION REALTIME");
+                            }
+                        });
+                        MFCM.sendNotificationForAccountID(1, new Date().getSeconds(), "Yêu cầu đăng ký gói", "id chủ trọ: " + idChuTro + " id gói: " + idG);
+                    }
                 }
                 @Override
                 public void onFailure(Call<YeuCauDKG> call, Throwable t) {
@@ -172,10 +174,12 @@ public class ThanhToanGoiActivity extends AppCompatActivity {
         ApiServiceDung.apiServiceDung.getPakageByIdAPI(key).enqueue(new Callback<Goi>() {
             @Override
             public void onResponse(Call<Goi> call, Response<Goi> response) {
-                Goi goi = response.body();
-                so_ngay.setText(String.valueOf(goi.getThoiHan()) + " Ngày");
-                so_phong.setText(String.valueOf(goi.getSoLuongPhongToiDa())+" Phòng");
-                gia.setText(String.valueOf(goi.getGia())+" VND");
+                if (response.body()!=null) {
+                    Goi goi = response.body();
+                    so_ngay.setText(String.valueOf(goi.getThoiHan()) + " Ngày");
+                    so_phong.setText(String.valueOf(goi.getSoLuongPhongToiDa()) + " Phòng");
+                    gia.setText(String.valueOf(goi.getGia()) + " VND");
+                }
             }
             @Override
             public void onFailure(Call<Goi> call, Throwable t) {
@@ -188,9 +192,11 @@ public class ThanhToanGoiActivity extends AppCompatActivity {
         ApiServiceDung.apiServiceDung.layThongTinAdmin(1).enqueue(new Callback<Admin>() {
             @Override
             public void onResponse(Call<Admin> call, Response<Admin> response) {
-                Admin admin = response.body();
-                ten_admin.setText(String.valueOf(admin.getTenChuTaiKhoan()));
-                so_tai_khoan.setText(String.valueOf(admin.getSoTaiKhoanNganHang()));
+                if (response.body()!=null) {
+                    Admin admin = response.body();
+                    ten_admin.setText(String.valueOf(admin.getTenChuTaiKhoan()));
+                    so_tai_khoan.setText(String.valueOf(admin.getSoTaiKhoanNganHang()));
+                }
             }
 
             @Override

@@ -161,41 +161,42 @@ public class AuthenticationActivity extends AppCompatActivity {
             call.enqueue(new Callback<XacThucChuTro>() {
                 @Override
                 public void onResponse(Call<XacThucChuTro> call, Response<XacThucChuTro> responseXTCT) {
-                    alertSuccess("Gửi yêu cầu xác nhận chủ trọ thành công");
-                    tvNotAuthencation.setVisibility(View.GONE);
-                    tvOkAuthencation.setVisibility(View.GONE);
-                    btnAcceptYeuCauXacThuc.setVisibility(View.GONE);
-                    tvDangChoAuthencation.setVisibility(View.VISIBLE);
+                    if (responseXTCT.body()!=null) {
+                        alertSuccess("Gửi yêu cầu xác nhận chủ trọ thành công");
+                        tvNotAuthencation.setVisibility(View.GONE);
+                        tvOkAuthencation.setVisibility(View.GONE);
+                        btnAcceptYeuCauXacThuc.setVisibility(View.GONE);
+                        tvDangChoAuthencation.setVisibility(View.VISIBLE);
 
-                    imageViewMatTruocCCCD.setEnabled(false);
-                    imageViewMatSauCCCD.setEnabled(false);
-                    databaseReference.child("notification_admin").child(idChuTro + "").setValue(0).addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void unused) {
-                            Log.d(TAG, "onSuccess: PUSH NOTIFICATION REALTIME");
-                        }
-                    });
-                    ApiServiceMinh.apiService.layTatCaTaiKhoanTheoLoaiTaiKhoan(Const.ADMIN).enqueue(new Callback<List<TaiKhoan>>() {
-                        @Override
-                        public void onResponse(Call<List<TaiKhoan>> call, Response<List<TaiKhoan>> responseTaiKhoan) {
-                            if (responseTaiKhoan.code() == 200){
-                                if (responseTaiKhoan.body() != null){
-                                    for (TaiKhoan taikhoan:
-                                         responseTaiKhoan.body()) {
-                                        Log.d(TAG, "onResponse: "+taikhoan.getId());
-                                        MFCM.sendNotificationForAccountID(taikhoan.getId(), responseXTCT.body().getId(), "Xác thực chủ trọ", "Yêu cầu xác thực chủ trọ." );
+                        imageViewMatTruocCCCD.setEnabled(false);
+                        imageViewMatSauCCCD.setEnabled(false);
+                        databaseReference.child("notification_admin").child(idChuTro + "").setValue(0).addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void unused) {
+                                Log.d(TAG, "onSuccess: PUSH NOTIFICATION REALTIME");
+                            }
+                        });
+                        ApiServiceMinh.apiService.layTatCaTaiKhoanTheoLoaiTaiKhoan(Const.ADMIN).enqueue(new Callback<List<TaiKhoan>>() {
+                            @Override
+                            public void onResponse(Call<List<TaiKhoan>> call, Response<List<TaiKhoan>> responseTaiKhoan) {
+                                if (responseTaiKhoan.code() == 200) {
+                                    if (responseTaiKhoan.body() != null) {
+                                        for (TaiKhoan taikhoan :
+                                                responseTaiKhoan.body()) {
+                                            Log.d(TAG, "onResponse: " + taikhoan.getId());
+                                            MFCM.sendNotificationForAccountID(taikhoan.getId(), responseXTCT.body().getId(), "Xác thực chủ trọ", "Yêu cầu xác thực chủ trọ.");
+                                        }
+
                                     }
-
                                 }
                             }
-                        }
 
-                        @Override
-                        public void onFailure(Call<List<TaiKhoan>> call, Throwable t) {
+                            @Override
+                            public void onFailure(Call<List<TaiKhoan>> call, Throwable t) {
 
-                        }
-                    });
-
+                            }
+                        });
+                    }
                 }
 
                 @Override

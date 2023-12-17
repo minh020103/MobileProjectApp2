@@ -166,9 +166,14 @@ public class PackageUsingFragment extends AbstractFragment{
             @Override
             public void onResponse(Call<List<Banner>> call, Response<List<Banner>> response) {
                 if (response.code() == 200) {
-                    vp2Banner.setBackground(null);
-                    listHinh.addAll(response.body());
-                    imagesAdapter.notifyDataSetChanged();
+                    if (response.body()!=null) {
+                        vp2Banner.setBackground(null);
+                        listHinh.addAll(response.body());
+                        imagesAdapter.notifyDataSetChanged();
+                    }
+                    else {
+                        vp2Banner.setBackground(getActivity().getResources().getDrawable(R.drawable.thuduc, getActivity().getTheme()));
+                    }
                 } else {
                     vp2Banner.setBackground(getActivity().getResources().getDrawable(R.drawable.thuduc, getActivity().getTheme()));
                 }
@@ -206,17 +211,19 @@ public class PackageUsingFragment extends AbstractFragment{
         ApiServiceDung.apiServiceDung.getListPakageAPI().enqueue(new Callback<List<Goi>>() {
             @Override
             public void onResponse(Call<List<Goi>> call, Response<List<Goi>> response) {
-                goiList = response.body();
-                goiDichVuAdapter = new GoiDichVuAdapter(getActivity(), goiList, R.layout.cardview_goi_item);
-                recyclerView.setAdapter(goiDichVuAdapter);
-                goiDichVuAdapter.setOnClickItemListener(new GoiDichVuAdapter.OnClickItemListener() {
-                    @Override
-                    public void onClickItem(int position, View v) {
-                        Intent intent = new Intent(getActivity(), ThanhToanGoiActivity.class);
-                        intent.putExtra("idGoi",goiList.get(position).getId());
-                        startActivity(intent);
-                    }
-                });
+                if (response.body()!=null) {
+                    goiList = response.body();
+                    goiDichVuAdapter = new GoiDichVuAdapter(getActivity(), goiList, R.layout.cardview_goi_item);
+                    recyclerView.setAdapter(goiDichVuAdapter);
+                    goiDichVuAdapter.setOnClickItemListener(new GoiDichVuAdapter.OnClickItemListener() {
+                        @Override
+                        public void onClickItem(int position, View v) {
+                            Intent intent = new Intent(getActivity(), ThanhToanGoiActivity.class);
+                            intent.putExtra("idGoi", goiList.get(position).getId());
+                            startActivity(intent);
+                        }
+                    });
+                }
             }
 
             @Override
@@ -269,13 +276,12 @@ public class PackageUsingFragment extends AbstractFragment{
             ApiServiceDung.apiServiceDung.getPakageByIdAPI(key).enqueue(new Callback<Goi>() {
                 @Override
                 public void onResponse(Call<Goi> call, Response<Goi> response) {
-                    if(response.body()!=null){
+                    if (response.body()!=null) {
                         Goi goi = response.body();
                         String thoihan = String.valueOf(goi.getThoiHan());
                         String soPhong = String.valueOf(goi.getSoLuongPhongToiDa());
                         goi_dang_dung.setText(thoihan + " Ngày / " + soPhong + " Phòng");
                     }
-
                 }
                 @Override
                 public void onFailure(Call<Goi> call, Throwable t) {
