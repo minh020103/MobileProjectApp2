@@ -95,20 +95,22 @@ public class ProfileFragment extends AbstractFragment {
         call.enqueue(new Callback<ChuTro>() {
             @Override
             public void onResponse(Call<ChuTro> call, Response<ChuTro> response) {
-                if (response.body().getHinh() != null)
-                    Glide.with(ProfileFragment.this.getLayoutInflater().getContext()).load(Const.DOMAIN + response.body().getHinh()).into(imgViewProfile);
-                else {
-                    imgViewProfile.setImageResource(R.drawable.khongcoanh);
+                if(response.body()!=null) {
+                    if (response.body().getHinh() != null)
+                        Glide.with(ProfileFragment.this.getLayoutInflater().getContext()).load(Const.DOMAIN + response.body().getHinh()).into(imgViewProfile);
+                    else {
+                        imgViewProfile.setImageResource(R.drawable.khongcoanh);
+                    }
+                    if (response.body().getSoDienThoai() != null) {
+                        tvPhone.setText(response.body().getSoDienThoai());
+                        tvPhone.setVisibility(View.VISIBLE);
+                        tv_phone_nguoi_thue_chua_dl.setVisibility(View.GONE);
+                    } else {
+                        tv_phone_nguoi_thue_chua_dl.setVisibility(View.VISIBLE);
+                        tvPhone.setVisibility(View.GONE);
+                    }
+                    tvName.setText(response.body().getTen());
                 }
-                if (response.body().getSoDienThoai() != null){
-                    tvPhone.setText(response.body().getSoDienThoai());
-                    tvPhone.setVisibility(View.VISIBLE);
-                    tv_phone_nguoi_thue_chua_dl.setVisibility(View.GONE);
-                }else {
-                    tv_phone_nguoi_thue_chua_dl.setVisibility(View.VISIBLE);
-                    tvPhone.setVisibility(View.GONE);
-                }
-                tvName.setText(response.body().getTen());
             }
 
             @Override

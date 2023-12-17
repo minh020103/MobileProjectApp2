@@ -269,10 +269,13 @@ public class PackageUsingFragment extends AbstractFragment{
             ApiServiceDung.apiServiceDung.getPakageByIdAPI(key).enqueue(new Callback<Goi>() {
                 @Override
                 public void onResponse(Call<Goi> call, Response<Goi> response) {
-                    Goi goi = response.body();
-                    String thoihan = String.valueOf(goi.getThoiHan());
-                    String soPhong = String.valueOf(goi.getSoLuongPhongToiDa());
-                    goi_dang_dung.setText(thoihan + " Ngày / " + soPhong + " Phòng");
+                    if(response.body()!=null){
+                        Goi goi = response.body();
+                        String thoihan = String.valueOf(goi.getThoiHan());
+                        String soPhong = String.valueOf(goi.getSoLuongPhongToiDa());
+                        goi_dang_dung.setText(thoihan + " Ngày / " + soPhong + " Phòng");
+                    }
+
                 }
                 @Override
                 public void onFailure(Call<Goi> call, Throwable t) {
