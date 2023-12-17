@@ -74,6 +74,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -642,8 +643,9 @@ public class DetailPhongTroNguoiThueActivity extends AppCompatActivity {
 
                                                     }
                                                 });
-                                                if (responseYC.body() == null) {
-                                                    databaseReference.child("notification").child(idNhan + "").child(responseYC.body().getObject().getId() + "").setValue(0).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                if (responseYC.body() != null) {
+                                                    Log.d("TAGM", "onResponse: "+idNhan);
+                                                    databaseReference.child("notification").child(idNhan + "").child(idNhan+"").setValue(0).addOnSuccessListener(new OnSuccessListener<Void>() {
                                                         @Override
                                                         public void onSuccess(Void unused) {
                                                             Log.d("TAG", "onSuccess: PUSH NOTIFICATION REALTIME");

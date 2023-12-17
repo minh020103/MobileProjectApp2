@@ -46,6 +46,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 
 import okhttp3.MediaType;
@@ -170,7 +171,7 @@ public class AuthenticationActivity extends AppCompatActivity {
 
                         imageViewMatTruocCCCD.setEnabled(false);
                         imageViewMatSauCCCD.setEnabled(false);
-                        databaseReference.child("notification_admin").child(idChuTro + "").setValue(0).addOnSuccessListener(new OnSuccessListener<Void>() {
+                        databaseReference.child("notification_admin").child(idChuTro + "").setValue(new Date().getSeconds()).addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void unused) {
                                 Log.d(TAG, "onSuccess: PUSH NOTIFICATION REALTIME");

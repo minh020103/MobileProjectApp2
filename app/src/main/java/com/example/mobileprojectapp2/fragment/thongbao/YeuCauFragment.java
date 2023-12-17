@@ -62,7 +62,7 @@ public class YeuCauFragment extends AbstractFragment {
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(thongBaoYeuCauDatPhongAdapter);
         list = new ArrayList<>();
-
+        Log.d("TAGM", "onCreateView: "+idTaiKhoan);
         databaseReference.child("notification").child(idTaiKhoan+"").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
