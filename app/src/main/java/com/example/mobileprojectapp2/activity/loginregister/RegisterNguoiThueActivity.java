@@ -14,6 +14,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -46,6 +47,7 @@ public class RegisterNguoiThueActivity extends AppCompatActivity {
     Button btnDangKy;
     Integer gioiTinh;
     AppCompatImageView ic_back;
+    ProgressBar progressBar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,6 +85,7 @@ public class RegisterNguoiThueActivity extends AppCompatActivity {
         btnDangKy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                batTatProgessBar(0);
                 if(kiemTraRong()){
                     if(edtMatKhau.getText().toString().length()>5){
                         if(kiemTraCheckBox()){
@@ -99,42 +102,65 @@ public class RegisterNguoiThueActivity extends AppCompatActivity {
                                         }
                                     }
                                     if(kt==true){
-                                        RequestBody ten = RequestBody.create(MediaType.parse("multipart/form-data"),edtTen.getText().toString());
-                                        RequestBody matKhau = RequestBody.create(MediaType.parse("multipart/form-data"),edtMatKhau.getText().toString());
-                                        RequestBody email = RequestBody.create(MediaType.parse("multipart/form-data"),edtEmail.getText().toString());
-                                        RequestBody gioiTinhApi = RequestBody.create(MediaType.parse("multipart/form-data"),gioiTinh+"");
-                                        Call<NguoiThue> call1 = ApiServiceNghiem.apiService.taoTaiKhoanNguoiThue(ten,email,matKhau,email,gioiTinhApi);
-                                        call1.enqueue(new Callback<NguoiThue>() {
+
+                                        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+                                        firebaseAuth.createUserWithEmailAndPassword(edtEmail.getText().toString(),edtMatKhau.getText().toString()).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                                             @Override
-                                            public void onResponse(Call<NguoiThue> call, Response<NguoiThue> response) {
-                                                addUserFireBase(edtEmail.getText().toString(),edtMatKhau.getText().toString());
+                                            public void onSuccess(AuthResult authResult) {
+                                                RequestBody ten = RequestBody.create(MediaType.parse("multipart/form-data"),edtTen.getText().toString());
+                                                RequestBody matKhau = RequestBody.create(MediaType.parse("multipart/form-data"),edtMatKhau.getText().toString());
+                                                RequestBody email = RequestBody.create(MediaType.parse("multipart/form-data"),edtEmail.getText().toString());
+                                                RequestBody gioiTinhApi = RequestBody.create(MediaType.parse("multipart/form-data"),gioiTinh+"");
+                                                Call<NguoiThue> call1 = ApiServiceNghiem.apiService.taoTaiKhoanNguoiThue(ten,email,matKhau,email,gioiTinhApi);
+                                                call1.enqueue(new Callback<NguoiThue>() {
+                                                    @Override
+                                                    public void onResponse(Call<NguoiThue> call, Response<NguoiThue> response) {
+                                                        batTatProgessBar(1);
+                                                        thongBao("Tạo Tài Khoản Thành Công");
+                                                        edtTen.setText("");
+                                                        edtMatKhau.setText("");
+                                                        edtEmail.setText("");
+                                                        checkBox.setChecked(false);
+                                                        spinner.setSelection(0);
+                                                    }
+
+                                                    @Override
+                                                    public void onFailure(Call<NguoiThue> call, Throwable t) {
+                                                        batTatProgessBar(1);
+                                                        thongBao("Tạo tài Khoản Thất Bại");
+
+                                                    }
+                                                });
                                             }
-
+                                        }).addOnFailureListener(new OnFailureListener() {
                                             @Override
-                                            public void onFailure(Call<NguoiThue> call, Throwable t) {
-                                                thongBao("Tạo tài Khoản Thất Bại");
-
+                                            public void onFailure(@NonNull Exception e) {
+                                                batTatProgessBar(1);
+                                                thongBao("Lỗi Hệ Thống!");
                                             }
                                         });
-
-
                                     }else{
+                                        batTatProgessBar(1);
                                         thongBao("Email Đã Có!");
                                     }
                                 }
 
                                 @Override
                                 public void onFailure(Call<ArrayList<TaiKhoan>> call, Throwable t) {
+                                    batTatProgessBar(1);
                                     thongBao("Lỗi!");
                                 }
                             });
                         }else{
+                            batTatProgessBar(1);
                             thongBao("Bạn Chưa Đồng Ý Với Điều Kiên!");
                         }
                     }else{
+                        batTatProgessBar(1);
                             thongBao("Mật Khẩu Tối Thiểu 6 Kí Tự");
                     }
                 }else{
+                    batTatProgessBar(1);
                     thongBao("Không Được Để Trống Thông Tin!");
                 }
             }
@@ -152,6 +178,7 @@ public class RegisterNguoiThueActivity extends AppCompatActivity {
         firebaseAuth.createUserWithEmailAndPassword(email,password).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
             @Override
             public void onSuccess(AuthResult authResult) {
+                batTatProgessBar(1);
                 thongBao("Tạo Tài Khoản Thành Công");
                 edtTen.setText("");
                 edtMatKhau.setText("");
@@ -162,6 +189,7 @@ public class RegisterNguoiThueActivity extends AppCompatActivity {
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
+                batTatProgessBar(1);
                 thongBao("Lỗi Hệ Thống!");
             }
         });
@@ -208,6 +236,13 @@ public class RegisterNguoiThueActivity extends AppCompatActivity {
         builder.create();
         builder.show();
     }
+    private void batTatProgessBar(int kt) {
+        if (kt == 0) {
+            progressBar.setVisibility(View.VISIBLE);
+        } else if (kt == 1) {
+            progressBar.setVisibility(View.INVISIBLE);
+        }
+    }
     private void anhXa(){
         edtTen = findViewById(R.id.hoTenNguoiDung);
         edtMatKhau = findViewById(R.id.matKhau);
@@ -217,5 +252,6 @@ public class RegisterNguoiThueActivity extends AppCompatActivity {
         btnDangKy = findViewById(R.id.btnChapNhan);
         spinner = findViewById(R.id.spinner);
         ic_back = findViewById(R.id.ic_back);
+        progressBar = findViewById(R.id.progessbar);
     }
 }
