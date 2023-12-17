@@ -51,7 +51,9 @@ public class ChuTroImageSlideViewPager2Adapter extends RecyclerView.Adapter<ChuT
         holder.itemView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
-                MotelRoomOwnerActivity.vp2Chutro.setUserInputEnabled(false);
+                if (MotelRoomOwnerActivity.vp2Chutro != null) {
+                    MotelRoomOwnerActivity.vp2Chutro.setUserInputEnabled(false);
+                }
                 return false;
             }
         });
