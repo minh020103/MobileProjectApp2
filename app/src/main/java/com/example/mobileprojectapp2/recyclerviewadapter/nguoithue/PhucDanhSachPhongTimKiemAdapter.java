@@ -76,9 +76,9 @@ public class PhucDanhSachPhongTimKiemAdapter extends RecyclerView.Adapter<PhucDa
             gia2 = decimalFormat.format(gia);
             holder.tvGia.setText(gia2 + " triệu/tháng");
         }
-
         holder.tvLoaiPhong.setText(phongTro.getLoaiPhong() == PHONG_GHEP ? "Phòng ghép" : "Tìm người thuê");
         holder.tvGioiTinh.setText(phongTro.getGioiTinh() == ALL_GENDERS ? "Nam/Nữ" : phongTro.getGioiTinh() == MALE_GENDERS ? "Nam" : "Nữ");
+
         holder.onClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -99,7 +99,7 @@ public class PhucDanhSachPhongTimKiemAdapter extends RecyclerView.Adapter<PhucDa
     public class PhongGoiYViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private ImageView imgViewPhongTimKiem;
-        private TextView tvLoaiPhong, tvGioiTinh, tvGia;
+        private TextView tvLoaiPhong, tvGioiTinh, tvGia, tv_quan_ds_tim_kiem;
         View.OnClickListener onClickListener;
 
         public PhongGoiYViewHolder(@NonNull View itemView) {

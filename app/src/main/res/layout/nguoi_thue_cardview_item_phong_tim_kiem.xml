@@ -92,25 +92,25 @@
             android:textStyle="bold" />
 
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+<!--        <LinearLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:orientation="horizontal">-->
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Quận: "
-                android:textColor="@color/black" />
+<!--            <TextView-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="Quận: "-->
+<!--                android:textColor="@color/black" />-->
 
-            <TextView
-                android:id="@+id/tv_quan_ds_tim_kiem"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Thủ Đức "
-                android:textColor="@color/black" />
+<!--            <TextView-->
+<!--                android:id="@+id/tv_quan_ds_tim_kiem"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="Thủ Đức "-->
+<!--                android:textColor="@color/black" />-->
 
-        </LinearLayout>
+<!--        </LinearLayout>-->
     </LinearLayout>
 
 </androidx.cardview.widget.CardView>

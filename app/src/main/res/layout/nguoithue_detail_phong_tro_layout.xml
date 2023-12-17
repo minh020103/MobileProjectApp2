@@ -61,11 +61,12 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
                 android:orientation="horizontal"
-                android:visibility="visible">
+                android:visibility="gone">
 
                 <TextView
                     android:id="@+id/tv_cho_xac_nhan"
                     style="@style/tv_toolbar"
+                    android:layout_height="wrap_content"
                     android:layout_marginEnd="10dp"
                     android:text="Chờ xác nhận" />
 

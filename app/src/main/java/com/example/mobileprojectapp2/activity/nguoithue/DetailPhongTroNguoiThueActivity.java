@@ -349,27 +349,28 @@ public class DetailPhongTroNguoiThueActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<YeuCauDatPhong> call, Response<YeuCauDatPhong> response) {
                 if (response.body() != null) {
+                    Log.d("TAG", "onResponse: "+response.body().getTrangThaiXacThuc());
                     if (idPhong == response.body().getIdPhong()) {
                         ll_phong_cho_xac_nhan.setVisibility(View.VISIBLE);
                         llDatPhong.setVisibility(View.GONE);
-                        ll_phong_dang_cho.setVisibility(View.GONE);
+//                        ll_phong_dang_cho.setVisibility(View.GONE);
                     } else {
                         ll_phong_cho_xac_nhan.setVisibility(View.GONE);
                         llDatPhong.setVisibility(View.VISIBLE);
-                        ll_phong_dang_cho.setVisibility(View.VISIBLE);
-                        ll_phong_dang_cho.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                if (response.body().getIdTaiKhoanGui() == -1) {
-                                    alertSuccess("Bạn chưa yêu cầu đăng ký phòng nào!");
-                                } else {
-                                    finish();
-                                    Intent intent = new Intent(DetailPhongTroNguoiThueActivity.this, DetailPhongTroNguoiThueActivity.class);
-                                    intent.putExtra("idPhong", response.body().getIdPhong());
-                                    startActivity(intent);
-                                }
-                            }
-                        });
+//                        ll_phong_dang_cho.setVisibility(View.VISIBLE);
+//                        ll_phong_dang_cho.setOnClickListener(new View.OnClickListener() {
+//                            @Override
+//                            public void onClick(View v) {
+//                                if (response.body().getIdTaiKhoanGui() == -1) {
+//                                    alertSuccess("Bạn chưa yêu cầu đăng ký phòng nào!");
+//                                } else {
+//                                    finish();
+//                                    Intent intent = new Intent(DetailPhongTroNguoiThueActivity.this, DetailPhongTroNguoiThueActivity.class);
+//                                    intent.putExtra("idPhong", response.body().getIdPhong());
+//                                    startActivity(intent);
+//                                }
+//                            }
+//                        });
                     }
 
                 }
@@ -651,9 +652,8 @@ public class DetailPhongTroNguoiThueActivity extends AppCompatActivity {
                                                             Log.d("TAG", "onSuccess: PUSH NOTIFICATION REALTIME");
                                                         }
                                                     });
-
+                                                    if(responseYC.body().getObject() != null)
                                                     MFCM.sendNotificationForAccountID(responseYC.body().getObject().getIdTaiKhoanNhan(), responseYC.body().getObject().getId(), "Yêu cầu đặt phòng", "Có yêu cầu đặt phòng mới hãy vào xem");
-
                                                 }
                                             }
 
@@ -708,6 +708,22 @@ public class DetailPhongTroNguoiThueActivity extends AppCompatActivity {
                         tvGiaNguoiThue.setText(gia2 + " triệu/tháng");
                     }
 
+                    float tienCoc;
+                    String tinCoc2;
+                    if (response.body().getTienCoc() < tram) {
+                        tvTienCocNguoiThue.setText("Đang cập nhật");
+                    } else if (response.body().getTienCoc() < trieu) {
+                        tienCoc = response.body().getTienCoc() / ngan;
+                        tinCoc2 = decimalFormat.format(tienCoc);
+                        tvTienCocNguoiThue.setText(tinCoc2 + "k");
+                    } else if (response.body().getTienCoc() >= trieu) {
+                        tienCoc = response.body().getTienCoc() / trieu;
+                        tinCoc2 = decimalFormat.format(tienCoc);
+                        tvTienCocNguoiThue.setText(tinCoc2 + " triệu");
+                    }
+
+
+
                     if (response.body().getLoaiPhong() == PHONG_DON || response.body().getLoaiPhong() == PHONG_TRONG) {
                         tvLoaiPhongNguoiThue.setText("Phòng đơn");
                         ll_dsnt.setVisibility(View.GONE);
@@ -727,7 +743,11 @@ public class DetailPhongTroNguoiThueActivity extends AppCompatActivity {
                         tvGioTinhNguoiThue.setText("Nữ ♀");
                     }
                     tvTienDienNguoiThue.setText(response.body().getTienDien() + "k");
-                    tvTienCocNguoiThue.setText(response.body().getTienCoc() + " ₫");
+
+
+
+
+
                     tvTienNuocNguoiThue.setText(response.body().getTienNuoc() + "k");
                     tvSoLuongToiDaNguoiThue.setText(response.body().getSoLuongToiDa() + " người");
                     tvDiaChiNguoiThue.setText(response.body().getDiaChiChiTiet());
@@ -828,6 +848,7 @@ public class DetailPhongTroNguoiThueActivity extends AppCompatActivity {
                         tvTenChuTro.setText(response.body().getPhongTroChuTro().getTen());
                         tvSDTChuTro.setText(response.body().getPhongTroChuTro().getSoDienThoai());
 //                        idTaiKhoanNhan = response.body().getPhongTroChuTro().getId();
+
                         int idNhanYC = response.body().getPhongTroChuTro().getIdTaiKhoan();
                         requestYeuCauDatPhong(idNhanYC);
                         Glide.with(DetailPhongTroNguoiThueActivity.this.getLayoutInflater().getContext()).load(Const.DOMAIN + response.body().getPhongTroChuTro().getHinh()).into(imageViewChuTro);
