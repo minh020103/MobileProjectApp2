@@ -82,7 +82,7 @@ public class KetQuaFragment extends AbstractFragment {
     }
 
     private void listThongBaoTheoIdTaiKhoan(){
-        ApiServiceKiet.apiServiceKiet.getListThongBaoTheoIdTaiKhoan(3).enqueue(new Callback<List<ThongBao>>() {
+        ApiServiceKiet.apiServiceKiet.getListThongBaoTheoIdTaiKhoan(idTaiKhoan).enqueue(new Callback<List<ThongBao>>() {
             @Override
             public void onResponse(Call<List<ThongBao>> call, Response<List<ThongBao>> response) {
                 if (response.body()!=null) {

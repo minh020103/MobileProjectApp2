@@ -26,6 +26,8 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.Date;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -150,13 +152,13 @@ public class YeuCauDatPhongChiTietActivity extends AppCompatActivity {
                     if (data.getLoai() == 1)
                     {
                         MFCM.sendNotificationForAccountID(data.getThongBaoThanhCong().getIdTaiKhoanNhan(), response.body().getThongBaoThanhCong().getId(), data.getThongBaoThanhCong().getTieuDe(), data.getThongBaoThanhCong().getNoiDung());
-                        realTimeThongBao(response.body().getThongBaoThanhCong().getIdTaiKhoanNhan() ,response.body().getThongBaoThanhCong().getId());
+                        realTimeThongBao(data.getThongBaoThanhCong().getIdTaiKhoanNhan() ,response.body().getThongBaoThanhCong().getId());
                     }
                     if (data.getLoai() == 2)
                     {
                         MFCM.sendNotificationForAccountID(data.getThongBaoThanhCong().getIdTaiKhoanNhan(), response.body().getThongBaoThanhCong().getId(), data.getThongBaoThanhCong().getTieuDe(), data.getThongBaoThanhCong().getNoiDung());
-                        realTimeThongBao(response.body().getThongBaoThanhCong().getIdTaiKhoanNhan() ,response.body().getThongBaoThanhCong().getId());
-                        for (ThongBao thongBao : response.body().getThongBaoThatBai()) {
+                        realTimeThongBao(data.getThongBaoThanhCong().getIdTaiKhoanNhan() ,new Date().getSeconds());
+                        for (ThongBao thongBao : data.getThongBaoThatBai()) {
                             MFCM.sendNotificationForAccountID(thongBao.getIdTaiKhoanNhan(), thongBao.getId(), thongBao.getTieuDe(), thongBao.getNoiDung() );
                             realTimeThongBao(thongBao.getIdTaiKhoanNhan() ,thongBao.getId());
                         }
@@ -214,7 +216,7 @@ public class YeuCauDatPhongChiTietActivity extends AppCompatActivity {
     private void realTimeThongBao(int id, int i)
     {
         Log.d("REALTIME",  idTaiKhoanNguoiNhan + "");
-        databaseReference.child("notification").child(idTaiKhoanNguoiNhan + "").child(id+"").setValue(0).addOnSuccessListener(new OnSuccessListener<Void>() {
+        databaseReference.child("notification").child(idTaiKhoanNguoiNhan + "").child(id+"").setValue(i).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {
                 Log.d("TAG", "onSuccess: PUSH NOTIFICATION REALTIME");

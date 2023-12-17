@@ -645,7 +645,7 @@ public class DetailPhongTroNguoiThueActivity extends AppCompatActivity {
                                                 });
                                                 if (responseYC.body() != null) {
                                                     Log.d("TAGM", "onResponse: "+idNhan);
-                                                    databaseReference.child("notification").child(idNhan + "").child(idNhan+"").setValue(0).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                    databaseReference.child("notification").child(idNhan + "").child(idNhan+"").setValue(new Date().getSeconds()).addOnSuccessListener(new OnSuccessListener<Void>() {
                                                         @Override
                                                         public void onSuccess(Void unused) {
                                                             Log.d("TAG", "onSuccess: PUSH NOTIFICATION REALTIME");
