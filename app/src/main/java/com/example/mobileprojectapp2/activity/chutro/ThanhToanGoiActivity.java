@@ -49,7 +49,7 @@ import retrofit2.Response;
 public class ThanhToanGoiActivity extends AppCompatActivity {
     TextView so_phong,so_ngay,gia,so_tai_khoan,ten_admin;
     RoundedImageView imgCK;
-    int idGoi,idTaiKhoan;
+    int idGoi,idTaiKhoan, idChuTro;
     private SharedPreferences shared;
 
     ImageView img_Back;
@@ -103,6 +103,7 @@ public class ThanhToanGoiActivity extends AppCompatActivity {
 
         shared = getApplicationContext().getSharedPreferences(Const.PRE_LOGIN, Context.MODE_PRIVATE);
         idTaiKhoan = shared.getInt("idTaiKhoan", -1);
+        idChuTro = shared.getInt("idChuTro", -1);
 
         img_Back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -127,7 +128,7 @@ public class ThanhToanGoiActivity extends AppCompatActivity {
 
     private void uploadDangKiGoiAPI() {
         if (mUri != null){
-            String idCT = idTaiKhoan+"";
+            String idCT = idChuTro+"";
             String idG = idGoi+"";
             RequestBody idChuTro = RequestBody.create(MediaType.parse("multipart/form-data"), idCT);
             RequestBody idGoiDK = RequestBody.create(MediaType.parse("multipart/form-data"), idG);
