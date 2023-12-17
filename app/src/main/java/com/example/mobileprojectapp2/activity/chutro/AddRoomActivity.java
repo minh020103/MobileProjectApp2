@@ -373,6 +373,7 @@ public class AddRoomActivity extends AppCompatActivity {
                 utilitiesAdapter.setOnClick(new UtilitiesAdapter.OnClick() {
                     @Override
                     public void checkBox(int position, View v) {
+                        Log.d("TAG", "checkBox: "+position);
                         utilitiesSeletedAdapter.notifyDataSetChanged();
                     }
                 });
