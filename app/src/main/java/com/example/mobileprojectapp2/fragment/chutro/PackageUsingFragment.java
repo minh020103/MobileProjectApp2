@@ -231,24 +231,29 @@ public class PackageUsingFragment extends AbstractFragment{
         ApiServicePhuc.apiService.getChuTroById(key).enqueue(new Callback<ChuTro>() {
             @Override
             public void onResponse(Call<ChuTro> call, Response<ChuTro> response) {
-                ChuTro chuTro = response.body();
-                ten_nguoi_dung.setText(chuTro.getTen());
-                temp = chuTro.getIdGoi();
-                getGoiByIdAPI(temp);
-                if (chuTro.getIdGoi() == 0){
-                    thoi_gian.setVisibility(View.GONE);
-                    Ngay_het_han.setVisibility(View.GONE);
-                    text.setText("Vui Lòng Đăng Kí Gói Để Có Thể Đăng Cho Thuê Phòng");
-                    dang_ki_goi.setVisibility(View.VISIBLE);
-                    da_dang_ki.setVisibility(View.GONE);
-                }else {
-                    thoi_gian.setVisibility(View.VISIBLE);
-                    Ngay_het_han.setVisibility(View.VISIBLE);
-                    text.setText("Vui Lòng Gia Hạn Trước Khi Hết Hạn Để Không Bị Gián Đoạn Sử Dụng Dịch Vụ");
-                    dang_ki_goi.setVisibility(View.GONE);
-                    da_dang_ki.setVisibility(View.VISIBLE);
-                }
-            }
+              if (response.code() == 200){
+                  if(response.body() != null){
+                      ChuTro chuTro = response.body();
+                      ten_nguoi_dung.setText(chuTro.getTen());
+                      temp = chuTro.getIdGoi();
+                      getGoiByIdAPI(temp);
+                      if (chuTro.getIdGoi() == 0){
+                          thoi_gian.setVisibility(View.GONE);
+                          Ngay_het_han.setVisibility(View.GONE);
+                          text.setText("Vui Lòng Đăng Kí Gói Để Có Thể Đăng Cho Thuê Phòng");
+                          dang_ki_goi.setVisibility(View.VISIBLE);
+                          da_dang_ki.setVisibility(View.GONE);
+                      }else {
+                          thoi_gian.setVisibility(View.VISIBLE);
+                          Ngay_het_han.setVisibility(View.VISIBLE);
+                          text.setText("Vui Lòng Gia Hạn Trước Khi Hết Hạn Để Không Bị Gián Đoạn Sử Dụng Dịch Vụ");
+                          dang_ki_goi.setVisibility(View.GONE);
+                          da_dang_ki.setVisibility(View.VISIBLE);
+                      }
+                  }
+                  }
+              }
+
 
             @Override
             public void onFailure(Call<ChuTro> call, Throwable t) {

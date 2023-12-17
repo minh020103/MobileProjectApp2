@@ -91,9 +91,7 @@ public class RenterActivity extends AppCompatActivity {
 
             }
         });
-        BadgeDrawable badgeMessage = bottomNavigationViewNguoiThue.getOrCreateBadge(R.id.navMessage);
-        badgeMessage.setVisible(true);
-        badgeMessage.setNumber(10);
+
         adapter = new RenterViewPage2Adapter(this);
 
         list.add(new HomeFragment());
