@@ -144,7 +144,7 @@ public class YeuCauDatPhongChiTietActivity extends AppCompatActivity {
         ApiServiceKiet.apiServiceKiet.xacNhanDatPhong(id, idTaiKhoanGui, idNguoiThue, idTaiKhoan, idPhong).enqueue(new Callback<FCMThongBaoDatPhong>() {
             @Override
             public void onResponse(Call<FCMThongBaoDatPhong> call, Response<FCMThongBaoDatPhong> response) {
-                Log.d("rrr", "onResponse" + response.body()+"");
+//                Log.d("rrr", "onResponse" + response.body()+"");
                 if (response.body() != null)
                 {
                     FCMThongBaoDatPhong data = response.body();
