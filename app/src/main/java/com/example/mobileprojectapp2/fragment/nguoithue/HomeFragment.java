@@ -168,9 +168,14 @@ public class HomeFragment extends AbstractFragment {
             @Override
             public void onResponse(Call<List<Banner>> call, Response<List<Banner>> response) {
                 if (response.code() == 200) {
-                    vp2Banner.setBackground(null);
-                    listHinh.addAll(response.body());
-                    imagesAdapter.notifyDataSetChanged();
+                    if (response.body()!=null) {
+                        vp2Banner.setBackground(null);
+                        listHinh.addAll(response.body());
+                        imagesAdapter.notifyDataSetChanged();
+                    }
+                    else {
+                        vp2Banner.setBackground(getActivity().getResources().getDrawable(R.drawable.thuduc, getActivity().getTheme()));
+                    }
                 } else {
                     vp2Banner.setBackground(getActivity().getResources().getDrawable(R.drawable.thuduc, getActivity().getTheme()));
                 }
@@ -190,9 +195,11 @@ public class HomeFragment extends AbstractFragment {
             @Override
             public void onResponse(Call<List<PhongTro>> call, Response<List<PhongTro>> response) {
                 if (response.code() == 200) {
-                    Log.d("TAG", "onResponse: OKKKK: " + response.body().size());
-                    listPhong.addAll(response.body());
-                    phongAdaprer.notifyDataSetChanged();
+                    if (response.body()!=null) {
+                        Log.d("TAG", "onResponse: OKKKK: " + response.body().size());
+                        listPhong.addAll(response.body());
+                        phongAdaprer.notifyDataSetChanged();
+                    }
                 }
             }
 
@@ -211,8 +218,10 @@ public class HomeFragment extends AbstractFragment {
             @Override
             public void onResponse(Call<List<Quan>> call, Response<List<Quan>> response) {
                 if (response.code() == 200) {
-                    listQuan.addAll(response.body());
-                    quanAdaprer.notifyDataSetChanged();
+                    if (response.body()!=null) {
+                        listQuan.addAll(response.body());
+                        quanAdaprer.notifyDataSetChanged();
+                    }
                 }
             }
 

@@ -38,7 +38,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class TinNhanFragment extends AbstractFragment{
+public class TinNhanFragment extends AbstractFragment {
 
 
     FirebaseDatabase firebaseDatabase;
@@ -49,6 +49,7 @@ public class TinNhanFragment extends AbstractFragment{
     private int senderId;
     SharedPreferences sharedPreferences;
     LinearLayoutManager linearLayoutManager;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -58,19 +59,21 @@ public class TinNhanFragment extends AbstractFragment{
         khoiTaoFB();
         layShared();
         arrayList = new ArrayList<>();
-        tinNhanAdapter = new ListTinNhanAdapter(getActivity(),R.layout.cardview_item_message,arrayList,senderId);
+        tinNhanAdapter = new ListTinNhanAdapter(getActivity(), R.layout.cardview_item_message, arrayList, senderId);
         linearLayoutManager = new LinearLayoutManager(getContext());
         linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
         recyclerView.setLayoutManager(linearLayoutManager);
         layDuLieu();
         return fragmentLayout;
     }
+
     @Override
     public void onResume() {
         super.onResume();
         layDuLieu();
     }
-    private void thongBao(String mes){
+
+    private void thongBao(String mes) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setMessage(mes).setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
@@ -81,36 +84,41 @@ public class TinNhanFragment extends AbstractFragment{
         builder.create();
         builder.show();
     }
-    private void setSuKien(){
+
+    private void setSuKien() {
         tinNhanAdapter.setOnClickItemListener(new ListTinNhanAdapter.OnClickItemListener() {
             @Override
             public void onClickItem(int position, View v) {
                 Intent intent = new Intent(getActivity(), PhongNhanTinActivity.class);
-                if(arrayList.get(position).getIdTaiKhoan1()!=senderId){
-                    callThongTin(arrayList.get(position).getIdTaiKhoan1(),arrayList.get(position).getId(),arrayList.get(position).getTrangThai2(),intent);
+                if (arrayList.get(position).getIdTaiKhoan1() != senderId) {
+                    callThongTin(arrayList.get(position).getIdTaiKhoan1(), arrayList.get(position).getId(), arrayList.get(position).getTrangThai2(), intent);
 
-                }else if(arrayList.get(position).getIdTaiKhoan2()!=senderId){
-                    callThongTin(arrayList.get(position).getIdTaiKhoan2(),arrayList.get(position).getId(),arrayList.get(position).getTrangThai1(),intent);
+                } else if (arrayList.get(position).getIdTaiKhoan2() != senderId) {
+                    callThongTin(arrayList.get(position).getIdTaiKhoan2(), arrayList.get(position).getId(), arrayList.get(position).getTrangThai1(), intent);
 
                 }
 //                startActivity(intent);
             }
         });
     }
-    private void setIntent(int idPhong,int idDoiPhuong, int trangThaiSender, String ten, String hinh, Intent intent){
-        intent.putExtra("idDoiPhuong",idDoiPhuong);
-        intent.putExtra("idPhong",idPhong);
-        intent.putExtra("trangThaiSender",trangThaiSender);
-        intent.putExtra("ten",ten);
-        intent.putExtra("hinh",hinh);
+
+    private void setIntent(int idPhong, int idDoiPhuong, int trangThaiSender, String ten, String hinh, Intent intent) {
+        intent.putExtra("idDoiPhuong", idDoiPhuong);
+        intent.putExtra("idPhong", idPhong);
+        intent.putExtra("trangThaiSender", trangThaiSender);
+        intent.putExtra("ten", ten);
+        intent.putExtra("hinh", hinh);
         startActivity(intent);
     }
-    private void callThongTin(int idDoiPhuong,int idPhong,int trangThaiSender, Intent intent){
-        Call<TaiKhoan> call = ApiServiceNghiem.apiService.callThongTinDoiPhuong(senderId,idPhong,idDoiPhuong);
+
+    private void callThongTin(int idDoiPhuong, int idPhong, int trangThaiSender, Intent intent) {
+        Call<TaiKhoan> call = ApiServiceNghiem.apiService.callThongTinDoiPhuong(senderId, idPhong, idDoiPhuong);
         call.enqueue(new Callback<TaiKhoan>() {
             @Override
             public void onResponse(Call<TaiKhoan> call, Response<TaiKhoan> response) {
-                setIntent(idPhong,idDoiPhuong,trangThaiSender,response.body().getThongTin().getTen(),response.body().getThongTin().getHinh(),intent);
+                if (response.body() != null) {
+                    setIntent(idPhong, idDoiPhuong, trangThaiSender, response.body().getThongTin().getTen(), response.body().getThongTin().getHinh(), intent);
+                }
             }
 
             @Override
@@ -119,9 +127,10 @@ public class TinNhanFragment extends AbstractFragment{
             }
         });
     }
-    private void layDuLieu(){
 
-        databaseReference.child("thongBaoReset").child(senderId+"").addValueEventListener(new ValueEventListener() {
+    private void layDuLieu() {
+
+        databaseReference.child("thongBaoReset").child(senderId + "").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 arrayList.clear();
@@ -130,11 +139,13 @@ public class TinNhanFragment extends AbstractFragment{
                 call.enqueue(new Callback<ArrayList<PhongTinNhan>>() {
                     @Override
                     public void onResponse(Call<ArrayList<PhongTinNhan>> call, Response<ArrayList<PhongTinNhan>> response) {
-                        arrayList.clear();
-                        arrayList.addAll(response.body());
-                        tinNhanAdapter.notifyDataSetChanged();
-                        recyclerView.setAdapter(tinNhanAdapter);
-                        setSuKien();
+                        if (response.body() != null) {
+                            arrayList.clear();
+                            arrayList.addAll(response.body());
+                            tinNhanAdapter.notifyDataSetChanged();
+                            recyclerView.setAdapter(tinNhanAdapter);
+                            setSuKien();
+                        }
                     }
 
                     @Override
@@ -151,15 +162,18 @@ public class TinNhanFragment extends AbstractFragment{
         });
 
     }
-    private void layShared(){
-        sharedPreferences = getActivity().getSharedPreferences(Const.PRE_LOGIN,Context.MODE_PRIVATE);
-        senderId = sharedPreferences.getInt("idTaiKhoan",-1);
+
+    private void layShared() {
+        sharedPreferences = getActivity().getSharedPreferences(Const.PRE_LOGIN, Context.MODE_PRIVATE);
+        senderId = sharedPreferences.getInt("idTaiKhoan", -1);
     }
-    private void khoiTaoFB(){
+
+    private void khoiTaoFB() {
         firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference();
     }
-    private void anhXa(View fragment){
+
+    private void anhXa(View fragment) {
         recyclerView = fragment.findViewById(R.id.recyclerViewTinNhan);
     }
 }

@@ -87,22 +87,23 @@ public class ProfileFragment extends AbstractFragment {
             @Override
             public void onResponse(Call<NguoiThue> call, Response<NguoiThue> response) {
                 if(response.code() == 200){
-                    if (response.body() != null){
-                        if (response.body().getHinh() != null)
-                            Glide.with(com.example.mobileprojectapp2.fragment.nguoithue.ProfileFragment.this.getLayoutInflater().getContext()).load(Const.DOMAIN + response.body().getHinh()).into(imgViewProfileNguoiThue);
-                        else {
-                            imgViewProfileNguoiThue.setImageResource(R.drawable.khongcoanh);
+                    if (response.body()!=null) {
+                        if (response.body() != null) {
+                            if (response.body().getHinh() != null)
+                                Glide.with(com.example.mobileprojectapp2.fragment.nguoithue.ProfileFragment.this.getLayoutInflater().getContext()).load(Const.DOMAIN + response.body().getHinh()).into(imgViewProfileNguoiThue);
+                            else {
+                                imgViewProfileNguoiThue.setImageResource(R.drawable.khongcoanh);
+                            }
+                            if (response.body().getSoDienThoai() != null) {
+                                tvPhoneNguoiThue.setText(response.body().getSoDienThoai());
+                                tv_phone_nguoi_thue_chua_dl.setVisibility(View.GONE);
+                                tvPhoneNguoiThue.setVisibility(View.VISIBLE);
+                            } else {
+                                tv_phone_nguoi_thue_chua_dl.setVisibility(View.VISIBLE);
+                                tvPhoneNguoiThue.setVisibility(View.GONE);
+                            }
+                            tvNameNguoiThue.setText(response.body().getTen());
                         }
-                        if (response.body().getSoDienThoai() != null ) {
-                            tvPhoneNguoiThue.setText(response.body().getSoDienThoai());
-                            tv_phone_nguoi_thue_chua_dl.setVisibility(View.GONE);
-                            tvPhoneNguoiThue.setVisibility(View.VISIBLE);
-                        }
-                        else {
-                            tv_phone_nguoi_thue_chua_dl.setVisibility(View.VISIBLE);
-                            tvPhoneNguoiThue.setVisibility(View.GONE);
-                        }
-                        tvNameNguoiThue.setText(response.body().getTen());
                     }
                 }
 

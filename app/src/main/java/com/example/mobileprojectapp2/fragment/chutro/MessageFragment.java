@@ -108,7 +108,8 @@ public class MessageFragment extends AbstractFragment{
         call.enqueue(new Callback<ArrayList<PhongTinNhan>>() {
             @Override
             public void onResponse(Call<ArrayList<PhongTinNhan>> call, Response<ArrayList<PhongTinNhan>> response) {
-                if(response!=null){
+
+                if(response.body()!=null){
                     arrayList.addAll(response.body());
                     listTinNhanAdapter.notifyDataSetChanged();
                 }
@@ -125,7 +126,7 @@ public class MessageFragment extends AbstractFragment{
         call.enqueue(new Callback<ArrayList<PhongTinNhan>>() {
             @Override
             public void onResponse(Call<ArrayList<PhongTinNhan>> call, Response<ArrayList<PhongTinNhan>> response) {
-                if(response!=null){
+                if(response.body()!=null){
                     arrayList.addAll(response.body());
                     listTinNhanAdapter.notifyDataSetChanged();
                 }

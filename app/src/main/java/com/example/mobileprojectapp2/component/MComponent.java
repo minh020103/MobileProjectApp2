@@ -83,20 +83,22 @@ public class MComponent {
                         @Override
                         public void onResponse(Call<PhongBinhLuan> call, Response<PhongBinhLuan> response) {
                             if (response.code() == 201) {
-                                edtComment.setText("");
-                                listComment.addFirst(response.body());
-                                commentAdapter.notifyDataSetChanged();
-                                databaseReference.child("comment").child(idPhong + "").child(response.body().getId() + "").setValue(response.body().getId()).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                    @Override
-                                    public void onSuccess(Void unused) {
-                                        Log.d("TAG", "onDataChange: NEW OK");
-                                    }
-                                }).addOnFailureListener(new OnFailureListener() {
-                                    @Override
-                                    public void onFailure(@NonNull Exception e) {
+                                if (response.body()!=null) {
+                                    edtComment.setText("");
+                                    listComment.addFirst(response.body());
+                                    commentAdapter.notifyDataSetChanged();
+                                    databaseReference.child("comment").child(idPhong + "").child(response.body().getId() + "").setValue(response.body().getId()).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void unused) {
+                                            Log.d("TAG", "onDataChange: NEW OK");
+                                        }
+                                    }).addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
 
-                                    }
-                                });
+                                        }
+                                    });
+                                }
                             }
                         }
 
@@ -130,9 +132,11 @@ public class MComponent {
             @Override
             public void onResponse(Call<List<PhongBinhLuan>> call, Response<List<PhongBinhLuan>> response) {
                 if (response.code() == 200) {
-                    listComment.clear();
-                    listComment.addAll(response.body());
-                    commentAdapter.notifyDataSetChanged();
+                    if (response.body()!=null) {
+                        listComment.clear();
+                        listComment.addAll(response.body());
+                        commentAdapter.notifyDataSetChanged();
+                    }
                 }
             }
 
@@ -172,7 +176,9 @@ public class MComponent {
             @Override
             public void onResponse(Call<PhongDanhGia> call, Response<PhongDanhGia> response) {
                 if (response.code() == 200) {
-                    ratingPlayer.setStarForRating(response.body().getDanhGia());
+                    if (response.body()!=null) {
+                        ratingPlayer.setStarForRating(response.body().getDanhGia());
+                    }
                 }
             }
 
@@ -194,8 +200,10 @@ public class MComponent {
                     @Override
                     public void onResponse(Call<Integer> call, Response<Integer> response) {
                         if (response.code() == 200) {
-                            Toast.makeText(activity, "Đánh giá thành công", Toast.LENGTH_SHORT).show();
-                            dialog.hide();
+                            if (response.body()!=null) {
+                                Toast.makeText(activity, "Đánh giá thành công", Toast.LENGTH_SHORT).show();
+                                dialog.hide();
+                            }
                         }
                     }
 
@@ -236,7 +244,9 @@ public class MComponent {
                             @Override
                             public void onResponse(Call<FirebaseCloudMessaging> call, Response<FirebaseCloudMessaging> response) {
                                 if (response.code() == 200) {
-                                    Log.d("TAG", "onResponse: SAVE TOKEN COMPLATED");
+                                    if (response.body()!=null) {
+                                        Log.d("TAG", "onResponse: SAVE TOKEN COMPLATED");
+                                    }
                                 }
                             }
 
@@ -266,7 +276,9 @@ public class MComponent {
                             @Override
                             public void onResponse(Call<Integer> call, Response<Integer> response) {
                                 if (response.code() == 200) {
-                                    Log.d("TAG", "onResponse: DELETE TOKEN COMPLATED");
+                                    if (response.body()!=null) {
+                                        Log.d("TAG", "onResponse: DELETE TOKEN COMPLATED");
+                                    }
                                 }
                             }
 

@@ -71,16 +71,18 @@ public class RegisterChuTroActivity extends AppCompatActivity {
                 call.enqueue(new Callback<ChinhSach>() {
                     @Override
                     public void onResponse(Call<ChinhSach> call, Response<ChinhSach> response) {
-                        AlertDialog.Builder builder = new AlertDialog.Builder(RegisterChuTroActivity.this);
-                        builder.setMessage(response.body().getNoiDungChinhSach()).setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
+                        if (response.body()!=null) {
+                            AlertDialog.Builder builder = new AlertDialog.Builder(RegisterChuTroActivity.this);
+                            builder.setMessage(response.body().getNoiDungChinhSach()).setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
 
-                            }
-                        });
-                        builder.setTitle("Thông Tin Chính Sách");
-                        builder.create();
-                        builder.show();
+                                }
+                            });
+                            builder.setTitle("Thông Tin Chính Sách");
+                            builder.create();
+                            builder.show();
+                        }
                     }
                     @Override
                     public void onFailure(Call<ChinhSach> call, Throwable t) {
@@ -100,24 +102,25 @@ public class RegisterChuTroActivity extends AppCompatActivity {
                             call.enqueue(new Callback<ArrayList<TaiKhoan>>() {
                                 @Override
                                 public void onResponse(Call<ArrayList<TaiKhoan>> call, Response<ArrayList<TaiKhoan>> response) {
-                                    boolean kt = true;
+                                    if (response.body()!=null) {
+                                        boolean kt = true;
 
-                                    for (TaiKhoan taiKhoan:
-                                            response.body()) {
-                                        if(edtEmail.getText().toString().equals(taiKhoan.getEmail())){
-                                            kt= false;
+                                        for (TaiKhoan taiKhoan :
+                                                response.body()) {
+                                            if (edtEmail.getText().toString().equals(taiKhoan.getEmail())) {
+                                                kt = false;
+                                            }
                                         }
-                                    }
-                                    if(kt==true){
+                                        if (kt == true) {
 
                                             FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
-                                            firebaseAuth.createUserWithEmailAndPassword(edtEmail.getText().toString(),edtMatKhau.getText().toString()).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
+                                            firebaseAuth.createUserWithEmailAndPassword(edtEmail.getText().toString(), edtMatKhau.getText().toString()).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                                                 @Override
                                                 public void onSuccess(AuthResult authResult) {
-                                                    RequestBody ten = RequestBody.create(MediaType.parse("multipart/form-data"),edtTen.getText().toString());
-                                                    RequestBody matKhau = RequestBody.create(MediaType.parse("multipart/form-data"),edtMatKhau.getText().toString());
-                                                    RequestBody email = RequestBody.create(MediaType.parse("multipart/form-data"),edtEmail.getText().toString());
-                                                    Call<ChuTro> call1 = ApiServiceNghiem.apiService.taoTaiKhoanChuTro(ten, email,matKhau,email);
+                                                    RequestBody ten = RequestBody.create(MediaType.parse("multipart/form-data"), edtTen.getText().toString());
+                                                    RequestBody matKhau = RequestBody.create(MediaType.parse("multipart/form-data"), edtMatKhau.getText().toString());
+                                                    RequestBody email = RequestBody.create(MediaType.parse("multipart/form-data"), edtEmail.getText().toString());
+                                                    Call<ChuTro> call1 = ApiServiceNghiem.apiService.taoTaiKhoanChuTro(ten, email, matKhau, email);
                                                     call1.enqueue(new Callback<ChuTro>() {
                                                         @Override
                                                         public void onResponse(Call<ChuTro> call, Response<ChuTro> response) {
@@ -126,14 +129,15 @@ public class RegisterChuTroActivity extends AppCompatActivity {
                                                             edtTen.setText("");
                                                             edtMatKhau.setText("");
                                                             edtEmail.setText("");
-                                                            checkBox.setChecked(false);   }
+                                                            checkBox.setChecked(false);
+                                                        }
+
                                                         @Override
                                                         public void onFailure(Call<ChuTro> call, Throwable t) {
                                                             batTatProgessBar(1);
                                                             thongBao("Tạo Tài Khoản Thất Bại");
                                                         }
                                                     });
-
 
 
                                                 }
@@ -145,9 +149,10 @@ public class RegisterChuTroActivity extends AppCompatActivity {
                                                     thongBao("Lỗi Hệ Thống!");
                                                 }
                                             });
-                                    }else{
-                                        batTatProgessBar(1);
-                                        thongBao("Tên Tài Khoản Đã Có!");
+                                        } else {
+                                            batTatProgessBar(1);
+                                            thongBao("Tên Tài Khoản Đã Có!");
+                                        }
                                     }
                                 }
 

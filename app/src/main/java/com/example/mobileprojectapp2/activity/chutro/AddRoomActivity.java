@@ -491,9 +491,11 @@ public class AddRoomActivity extends AppCompatActivity {
                         @Override
                         public void onResponse(Call<Integer> call, Response<Integer> response) {
                             if (response.code() == 200){
-                                if (response.body() == 1){
-                                    Toast.makeText(AddRoomActivity.this, "Thêm thành công", Toast.LENGTH_SHORT).show();
-                                    finish();
+                                if (response.body()!=null) {
+                                    if (response.body() == 1) {
+                                        Toast.makeText(AddRoomActivity.this, "Thêm thành công", Toast.LENGTH_SHORT).show();
+                                        finish();
+                                    }
                                 }
                             }
                         }
@@ -519,9 +521,11 @@ public class AddRoomActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<List<Phuong>> call, Response<List<Phuong>> response) {
                 if (response.code() == 200) {
-                    listPhuong.clear();
-                    listPhuong.addAll(response.body());
-                    wardAdapter.notifyDataSetChanged();
+                    if (response.body() != null) {
+                        listPhuong.clear();
+                        listPhuong.addAll(response.body());
+                        wardAdapter.notifyDataSetChanged();
+                    }
                 }
             }
 
@@ -537,9 +541,11 @@ public class AddRoomActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<List<Quan>> call, Response<List<Quan>> response) {
                 if (response.code() == 200) {
-                    lisQuan.clear();
-                    lisQuan.addAll(response.body());
-                    Log.d("TAG", "onResponse quan: " + lisQuan);
+                    if (response.body()!=null) {
+                        lisQuan.clear();
+                        lisQuan.addAll(response.body());
+                        Log.d("TAG", "onResponse quan: " + lisQuan);
+                    }
                 }
                 districtAdapter.notifyDataSetChanged();
             }
@@ -556,8 +562,10 @@ public class AddRoomActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<List<TienIch>> call, Response<List<TienIch>> response) {
                 if (response.code() == 200) {
-                    listTienIch.clear();
-                    listTienIch.addAll(response.body());
+                    if (response.body()!=null) {
+                        listTienIch.clear();
+                        listTienIch.addAll(response.body());
+                    }
                 }
                 utilitiesAdapter.notifyDataSetChanged();
             }

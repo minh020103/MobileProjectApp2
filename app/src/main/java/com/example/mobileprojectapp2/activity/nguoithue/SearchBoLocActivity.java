@@ -596,9 +596,11 @@ public class SearchBoLocActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<List<TienIch>> call, Response<List<TienIch>> response) {
                 if (response.code() == 200) {
-                    listTienIch.clear();
-                    listTienIch.addAll(response.body());
-                    adapterTienIch.notifyDataSetChanged();
+                    if (response.body()!=null) {
+                        listTienIch.clear();
+                        listTienIch.addAll(response.body());
+                        adapterTienIch.notifyDataSetChanged();
+                    }
                 }
             }
 
@@ -615,9 +617,11 @@ public class SearchBoLocActivity extends AppCompatActivity {
         call.enqueue(new Callback<Quan>() {
             @Override
             public void onResponse(Call<Quan> call, Response<Quan> response) {
-                tv_quan.setText(response.body().getTenQuan());
-                useIdQuan(response.body().getId());
-                getDanhSachPhongTroTheoQuan(response.body().getId());
+                if (response.body()!=null) {
+                    tv_quan.setText(response.body().getTenQuan());
+                    useIdQuan(response.body().getId());
+                    getDanhSachPhongTroTheoQuan(response.body().getId());
+                }
             }
 
             @Override
@@ -654,25 +658,26 @@ public class SearchBoLocActivity extends AppCompatActivity {
                         @Override
                         public void onResponse(Call<List<PhongTro>> call, Response<List<PhongTro>> response) {
                             if (response.code() == 200) {
-                                if (response.body().size() == 0) {
-                                    Log.d("TAG", "onResponseS: " + response.body().size());
-                                    ll_khong_tim_thay.setVisibility(View.VISIBLE);
-                                    rcvListPhongTimKiem.setVisibility(View.GONE);
+                                if (response.body() != null) {
+                                    if (response.body().size() == 0) {
+                                        Log.d("TAG", "onResponseS: " + response.body().size());
+                                        ll_khong_tim_thay.setVisibility(View.VISIBLE);
+                                        rcvListPhongTimKiem.setVisibility(View.GONE);
 
-                                } else {
-                                    listPhongTimKiem.clear();
-                                    listPhongTimKiem.addAll(response.body());
-                                    rcvListPhongTimKiem.setVisibility(View.VISIBLE);
-                                    Log.d("TAG", "onResponse: "+  new Gson().toJson(listTienIchSeleted));
-                                    adapterPhongTimKiem.notifyDataSetChanged();
+                                    } else {
+                                        listPhongTimKiem.clear();
+                                        listPhongTimKiem.addAll(response.body());
+                                        rcvListPhongTimKiem.setVisibility(View.VISIBLE);
+                                        Log.d("TAG", "onResponse: " + new Gson().toJson(listTienIchSeleted));
+                                        adapterPhongTimKiem.notifyDataSetChanged();
+                                    }
                                 }
 
+                                Log.d("TAG", "onClick: " + (int) minValue * 1000);
+                                Log.d("TAG", "onClick: " + (int) maxValue * 1000);
+                                Log.d("TAG", "onClick: " + idLoaiPhong);
+                                Log.d("TAG", "onClick: " + idGioiTinh);
                             }
-                            Log.d("TAG", "onResponse: " + response.body().size());
-                            Log.d("TAG", "onClick: " + (int) minValue * 1000);
-                            Log.d("TAG", "onClick: " + (int) maxValue * 1000);
-                            Log.d("TAG", "onClick: " + idLoaiPhong);
-                            Log.d("TAG", "onClick: " + idGioiTinh);
                         }
 
                         @Override
@@ -693,18 +698,19 @@ public class SearchBoLocActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<List<com.example.mobileprojectapp2.datamodel.PhongTro>> call, Response<List<com.example.mobileprojectapp2.datamodel.PhongTro>> response) {
                 if (response.code() == 200) {
-                    if (response.body().size() == 0) {
-                        btnGia.setEnabled(false);
-                        btnLoaiPhong.setEnabled(false);
-                        btnSoNguoi.setEnabled(false);
-                        btnTienIch.setEnabled(false);
+                    if (response.body()!=null) {
+                        if (response.body().size() == 0) {
+                            btnGia.setEnabled(false);
+                            btnLoaiPhong.setEnabled(false);
+                            btnSoNguoi.setEnabled(false);
+                            btnTienIch.setEnabled(false);
 
-                        ll_chua_co_phong_nao.setVisibility(View.VISIBLE);
-                    } else {
-                        listPhongTheoQuan.addAll(response.body());
-                        adapterPhongTroTheoQuan.notifyDataSetChanged();
+                            ll_chua_co_phong_nao.setVisibility(View.VISIBLE);
+                        } else {
+                            listPhongTheoQuan.addAll(response.body());
+                            adapterPhongTroTheoQuan.notifyDataSetChanged();
+                        }
                     }
-
                 }
             }
 

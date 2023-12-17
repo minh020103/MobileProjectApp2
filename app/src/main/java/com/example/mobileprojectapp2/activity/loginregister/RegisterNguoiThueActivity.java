@@ -64,16 +64,18 @@ public class RegisterNguoiThueActivity extends AppCompatActivity {
                 call.enqueue(new Callback<ChinhSach>() {
                     @Override
                     public void onResponse(Call<ChinhSach> call, Response<ChinhSach> response) {
-                        AlertDialog.Builder builder = new AlertDialog.Builder(RegisterNguoiThueActivity.this);
-                        builder.setMessage(response.body().getNoiDungChinhSach()).setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
+                        if (response.body()!=null) {
+                            AlertDialog.Builder builder = new AlertDialog.Builder(RegisterNguoiThueActivity.this);
+                            builder.setMessage(response.body().getNoiDungChinhSach()).setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
 
-                            }
-                        });
-                        builder.setTitle("Thông Tin Chính Sách");
-                        builder.create();
-                        builder.show();
+                                }
+                            });
+                            builder.setTitle("Thông Tin Chính Sách");
+                            builder.create();
+                            builder.show();
+                        }
                     }
                     @Override
                     public void onFailure(Call<ChinhSach> call, Throwable t) {
@@ -93,55 +95,57 @@ public class RegisterNguoiThueActivity extends AppCompatActivity {
                             call.enqueue(new Callback<ArrayList<TaiKhoan>>() {
                                 @Override
                                 public void onResponse(Call<ArrayList<TaiKhoan>> call, Response<ArrayList<TaiKhoan>> response) {
-                                    boolean kt = true;
+                                    if (response.body()!=null) {
+                                        boolean kt = true;
 
-                                    for (TaiKhoan taiKhoan:
-                                            response.body()) {
-                                        if(edtEmail.getText().toString().equals(taiKhoan.getEmail())){
-                                            kt= false;
+                                        for (TaiKhoan taiKhoan :
+                                                response.body()) {
+                                            if (edtEmail.getText().toString().equals(taiKhoan.getEmail())) {
+                                                kt = false;
+                                            }
                                         }
-                                    }
-                                    if(kt==true){
+                                        if (kt == true) {
 
-                                        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
-                                        firebaseAuth.createUserWithEmailAndPassword(edtEmail.getText().toString(),edtMatKhau.getText().toString()).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
-                                            @Override
-                                            public void onSuccess(AuthResult authResult) {
-                                                RequestBody ten = RequestBody.create(MediaType.parse("multipart/form-data"),edtTen.getText().toString());
-                                                RequestBody matKhau = RequestBody.create(MediaType.parse("multipart/form-data"),edtMatKhau.getText().toString());
-                                                RequestBody email = RequestBody.create(MediaType.parse("multipart/form-data"),edtEmail.getText().toString());
-                                                RequestBody gioiTinhApi = RequestBody.create(MediaType.parse("multipart/form-data"),gioiTinh+"");
-                                                Call<NguoiThue> call1 = ApiServiceNghiem.apiService.taoTaiKhoanNguoiThue(ten,email,matKhau,email,gioiTinhApi);
-                                                call1.enqueue(new Callback<NguoiThue>() {
-                                                    @Override
-                                                    public void onResponse(Call<NguoiThue> call, Response<NguoiThue> response) {
-                                                        batTatProgessBar(1);
-                                                        thongBao("Tạo Tài Khoản Thành Công");
-                                                        edtTen.setText("");
-                                                        edtMatKhau.setText("");
-                                                        edtEmail.setText("");
-                                                        checkBox.setChecked(false);
-                                                        spinner.setSelection(0);
-                                                    }
+                                            FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+                                            firebaseAuth.createUserWithEmailAndPassword(edtEmail.getText().toString(), edtMatKhau.getText().toString()).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
+                                                @Override
+                                                public void onSuccess(AuthResult authResult) {
+                                                    RequestBody ten = RequestBody.create(MediaType.parse("multipart/form-data"), edtTen.getText().toString());
+                                                    RequestBody matKhau = RequestBody.create(MediaType.parse("multipart/form-data"), edtMatKhau.getText().toString());
+                                                    RequestBody email = RequestBody.create(MediaType.parse("multipart/form-data"), edtEmail.getText().toString());
+                                                    RequestBody gioiTinhApi = RequestBody.create(MediaType.parse("multipart/form-data"), gioiTinh + "");
+                                                    Call<NguoiThue> call1 = ApiServiceNghiem.apiService.taoTaiKhoanNguoiThue(ten, email, matKhau, email, gioiTinhApi);
+                                                    call1.enqueue(new Callback<NguoiThue>() {
+                                                        @Override
+                                                        public void onResponse(Call<NguoiThue> call, Response<NguoiThue> response) {
+                                                            batTatProgessBar(1);
+                                                            thongBao("Tạo Tài Khoản Thành Công");
+                                                            edtTen.setText("");
+                                                            edtMatKhau.setText("");
+                                                            edtEmail.setText("");
+                                                            checkBox.setChecked(false);
+                                                            spinner.setSelection(0);
+                                                        }
 
-                                                    @Override
-                                                    public void onFailure(Call<NguoiThue> call, Throwable t) {
-                                                        batTatProgessBar(1);
-                                                        thongBao("Tạo tài Khoản Thất Bại");
+                                                        @Override
+                                                        public void onFailure(Call<NguoiThue> call, Throwable t) {
+                                                            batTatProgessBar(1);
+                                                            thongBao("Tạo tài Khoản Thất Bại");
 
-                                                    }
-                                                });
-                                            }
-                                        }).addOnFailureListener(new OnFailureListener() {
-                                            @Override
-                                            public void onFailure(@NonNull Exception e) {
-                                                batTatProgessBar(1);
-                                                thongBao("Lỗi Hệ Thống!");
-                                            }
-                                        });
-                                    }else{
-                                        batTatProgessBar(1);
-                                        thongBao("Email Đã Có!");
+                                                        }
+                                                    });
+                                                }
+                                            }).addOnFailureListener(new OnFailureListener() {
+                                                @Override
+                                                public void onFailure(@NonNull Exception e) {
+                                                    batTatProgessBar(1);
+                                                    thongBao("Lỗi Hệ Thống!");
+                                                }
+                                            });
+                                        } else {
+                                            batTatProgessBar(1);
+                                            thongBao("Email Đã Có!");
+                                        }
                                     }
                                 }
 

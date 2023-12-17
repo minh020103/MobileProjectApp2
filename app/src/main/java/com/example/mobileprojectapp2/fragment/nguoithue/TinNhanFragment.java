@@ -108,7 +108,9 @@ public class TinNhanFragment extends AbstractFragment {
         call.enqueue(new Callback<TaiKhoan>() {
             @Override
             public void onResponse(Call<TaiKhoan> call, Response<TaiKhoan> response) {
-                setIntent(idPhong,idDoiPhuong,trangThaiSender,response.body().getThongTin().getTen(),response.body().getThongTin().getHinh(),intent);
+                if (response.body()!=null) {
+                    setIntent(idPhong, idDoiPhuong, trangThaiSender, response.body().getThongTin().getTen(), response.body().getThongTin().getHinh(), intent);
+                }
             }
 
             @Override
@@ -126,11 +128,13 @@ public class TinNhanFragment extends AbstractFragment {
                 call.enqueue(new Callback<ArrayList<PhongTinNhan>>() {
                     @Override
                     public void onResponse(Call<ArrayList<PhongTinNhan>> call, Response<ArrayList<PhongTinNhan>> response) {
-                        arrayList.clear();
-                        arrayList.addAll(response.body());
-                        tinNhanAdapter.notifyDataSetChanged();
-                        recyclerView.setAdapter(tinNhanAdapter);
-                        setSuKien();
+                        if (response.body()!=null) {
+                            arrayList.clear();
+                            arrayList.addAll(response.body());
+                            tinNhanAdapter.notifyDataSetChanged();
+                            recyclerView.setAdapter(tinNhanAdapter);
+                            setSuKien();
+                        }
                     }
 
                     @Override

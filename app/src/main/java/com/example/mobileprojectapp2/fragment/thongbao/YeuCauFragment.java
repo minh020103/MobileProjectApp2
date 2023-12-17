@@ -87,16 +87,18 @@ public class YeuCauFragment extends AbstractFragment {
         ApiServiceKiet.apiServiceKiet.getListYeuCauDangKiPhong(idTaiKhoan).enqueue(new Callback<List<YeuCauDatPhong>>() {
             @Override
             public void onResponse(Call<List<YeuCauDatPhong>> call, Response<List<YeuCauDatPhong>> response) {
-                list = response.body();
-                thongBaoYeuCauDatPhongAdapter = new ThongBaoYeuCauDatPhongAdapter(getActivity(), list, R.layout.cardview_yeu_cau_dat_phong);
-                recyclerView.setAdapter(thongBaoYeuCauDatPhongAdapter);
+                if (response.body()!=null) {
+                    list = response.body();
+                    thongBaoYeuCauDatPhongAdapter = new ThongBaoYeuCauDatPhongAdapter(getActivity(), list, R.layout.cardview_yeu_cau_dat_phong);
+                    recyclerView.setAdapter(thongBaoYeuCauDatPhongAdapter);
 
-                thongBaoYeuCauDatPhongAdapter.setOnClickItemListener(new ThongBaoYeuCauDatPhongAdapter.OnClickItemListener() {
-                    @Override
-                    public void onClickItem(int position, View v) {
-                        nextActivity(list.get(position).getId());
-                    }
-                });
+                    thongBaoYeuCauDatPhongAdapter.setOnClickItemListener(new ThongBaoYeuCauDatPhongAdapter.OnClickItemListener() {
+                        @Override
+                        public void onClickItem(int position, View v) {
+                            nextActivity(list.get(position).getId());
+                        }
+                    });
+                }
             }
 
             @Override

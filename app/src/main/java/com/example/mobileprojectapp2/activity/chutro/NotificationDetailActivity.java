@@ -72,9 +72,11 @@ public class NotificationDetailActivity extends AppCompatActivity {
         ApiServiceKiet.apiServiceKiet.getChiTietThongBaoTheoId(id).enqueue(new Callback<ThongBao>() {
             @Override
             public void onResponse(Call<ThongBao> call, Response<ThongBao> response) {
-                ThongBao notify = response.body();
-                tvTieuDeThongBaoChiTiet.setText(notify.getTieuDe());
-                tvNoiDungThongBaoChiTiet.setText(notify.getNoiDung());
+                if (response.body()!=null) {
+                    ThongBao notify = response.body();
+                    tvTieuDeThongBaoChiTiet.setText(notify.getTieuDe());
+                    tvNoiDungThongBaoChiTiet.setText(notify.getNoiDung());
+                }
             }
 
             @Override
