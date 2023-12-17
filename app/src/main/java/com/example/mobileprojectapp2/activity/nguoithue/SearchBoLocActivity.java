@@ -111,6 +111,7 @@ public class SearchBoLocActivity extends AppCompatActivity {
         llGiaSeekBar.setVisibility(View.GONE);
         ll_so_nguoi_gioi_tinh.setVisibility(View.GONE);
         ll_ap_dung.setVisibility(View.GONE);
+
         getQuanById();
         int max = (int) (maxValue * 1000);
         tv_gia_end.setText(String.valueOf(max / 1000000) + " triệu");
@@ -641,6 +642,8 @@ public class SearchBoLocActivity extends AppCompatActivity {
                 if (listSelected.size() == 0) {
                     getQuanById();
                     ll_list_phong_theo_quan.setVisibility(View.VISIBLE);
+                    listPhongTheoQuan.clear();
+                    adapterPhongTroTheoQuan.notifyDataSetChanged();
                 } else {
                     ll_list_phong_theo_quan.setVisibility(View.GONE);
                     ll_list_Selected.setVisibility(View.GONE);
@@ -704,9 +707,9 @@ public class SearchBoLocActivity extends AppCompatActivity {
                             btnLoaiPhong.setEnabled(false);
                             btnSoNguoi.setEnabled(false);
                             btnTienIch.setEnabled(false);
-
                             ll_chua_co_phong_nao.setVisibility(View.VISIBLE);
                         } else {
+                            listPhongTheoQuan.clear();
                             listPhongTheoQuan.addAll(response.body());
                             adapterPhongTroTheoQuan.notifyDataSetChanged();
                         }
