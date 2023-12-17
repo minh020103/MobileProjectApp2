@@ -275,7 +275,7 @@ public class PackageUsingFragment extends AbstractFragment{
                         String soPhong = String.valueOf(goi.getSoLuongPhongToiDa());
                         goi_dang_dung.setText(thoihan + " Ngày / " + soPhong + " Phòng");
                     }
-                    
+
                 }
                 @Override
                 public void onFailure(Call<Goi> call, Throwable t) {

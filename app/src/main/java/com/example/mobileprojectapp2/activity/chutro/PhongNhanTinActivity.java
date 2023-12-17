@@ -151,7 +151,7 @@ public class PhongNhanTinActivity extends AppCompatActivity {
                         recyclerView.smoothScrollToPosition(arrayList.size() - 1);
                         capNhatTinNhanNew(idPhong, inputMess.getText().toString(), formatDate(response.body().getCreated_at()));
                     }else{
-                        thongBao("Nhắn Chậm Thôi Bạn");
+                        thongBao("Xìn Chờ, Dữ Liệu Quá Nhiều Để Load App");
                     }
                 }
 
