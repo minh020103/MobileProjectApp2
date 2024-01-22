@@ -22,7 +22,7 @@ import com.example.mobileprojectapp2.api.chutro.ApiServicePhuc;
 import com.example.mobileprojectapp2.api.nguoithue.ApiServicePhuc2;
 import com.example.mobileprojectapp2.datamodel.PhongTroChuTro;
 import com.example.mobileprojectapp2.model.ChuTro;
-import com.example.mobileprojectapp2.recyclerviewadapter.nguoithue.PhucDanhSachPhongGoiYAdapter2;
+import com.example.mobileprojectapp2.recyclerviewadapter.nguoithue.PhucDanhSachPhongTheoChuTroAdapter;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -36,7 +36,7 @@ public class DanhSachPhongTheoChuTroActivity extends AppCompatActivity {
     private ImageView imgViewChuTro, imgViewBack;
     private TextView tvName, tvSdt;
     private RecyclerView rcvListPhong;
-    private PhucDanhSachPhongGoiYAdapter2 adapter;
+    private PhucDanhSachPhongTheoChuTroAdapter adapter;
     private LinearLayoutManager layoutManager = new LinearLayoutManager(DanhSachPhongTheoChuTroActivity.this);
     private List<PhongTroChuTro> listDanhSachPhong;
 
@@ -59,16 +59,7 @@ public class DanhSachPhongTheoChuTroActivity extends AppCompatActivity {
         getChuTroByID();
         getListPhongDataApi(idChuTro);
 
-        adapter.setMyOnCLickListener(new PhucDanhSachPhongGoiYAdapter2.MyOnCLickListener() {
-            @Override
-            public void OnClickItem(int position, View v) {
-                Animation anim = AnimationUtils.loadAnimation(DanhSachPhongTheoChuTroActivity.this, R.anim.item_click);
-                v.startAnimation(anim);
-                Intent intent = new Intent(DanhSachPhongTheoChuTroActivity.this, DetailPhongTroNguoiThueActivity.class);
-                intent.putExtra("idPhong", listDanhSachPhong.get(position).getId());
-                startActivity(intent);
-            }
-        });
+
 
         imgViewBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -83,12 +74,14 @@ public class DanhSachPhongTheoChuTroActivity extends AppCompatActivity {
         call.enqueue(new Callback<ChuTro>() {
             @Override
             public void onResponse(Call<ChuTro> call, Response<ChuTro> response) {
-                if (response.body().getHinh() != null)
-                    Glide.with(DanhSachPhongTheoChuTroActivity.this.getLayoutInflater().getContext()).load(Const.DOMAIN + response.body().getHinh()).into(imgViewChuTro);
-                else
-                    imgViewChuTro.setImageResource(R.drawable.khongcoanh);
-                tvName.setText(response.body().getTen());
-                tvSdt.setText(response.body().getSoDienThoai());
+                if (response.body()!=null) {
+                    if (response.body().getHinh() != null)
+                        Glide.with(DanhSachPhongTheoChuTroActivity.this.getLayoutInflater().getContext()).load(Const.DOMAIN + response.body().getHinh()).into(imgViewChuTro);
+                    else
+                        imgViewChuTro.setImageResource(R.drawable.khongcoanh);
+                    tvName.setText(response.body().getTen());
+                    tvSdt.setText(response.body().getSoDienThoai());
+                }
             }
             @Override
             public void onFailure(Call<ChuTro> call, Throwable t) {
@@ -102,10 +95,23 @@ public class DanhSachPhongTheoChuTroActivity extends AppCompatActivity {
          @Override
          public void onResponse(Call<List<PhongTroChuTro>> call, Response<List<PhongTroChuTro>> response) {
              if (response.code() == 200) {
-                 listDanhSachPhong.clear();
-                 listDanhSachPhong.addAll(response.body());
-                 adapter.notifyDataSetChanged();
+                 if (response.body()!=null) {
+                     listDanhSachPhong.clear();
+                     listDanhSachPhong.addAll(response.body());
+                     adapter.notifyDataSetChanged();
+                 }
              }
+             adapter.setMyOnCLickListener(new PhucDanhSachPhongTheoChuTroAdapter.MyOnCLickListener() {
+                 @Override
+                 public void OnClickItem(int position, View v) {
+                     Animation anim = AnimationUtils.loadAnimation(DanhSachPhongTheoChuTroActivity.this, R.anim.item_click);
+                     v.startAnimation(anim);
+                     Intent intent = new Intent(DanhSachPhongTheoChuTroActivity.this, DetailPhongTroNguoiThueActivity.class);
+                     intent.putExtra("idPhong", response.body().get(position).getIdPhongTro());
+                     startActivity(intent);
+                 }
+             });
+
          }
 
          @Override
@@ -122,7 +128,7 @@ public class DanhSachPhongTheoChuTroActivity extends AppCompatActivity {
         tvSdt = findViewById(R.id.tv_sdt_chu_tro);
         rcvListPhong = findViewById(R.id.rcv_list_ds_phong_theo_chu_tro);
 
-        adapter = new PhucDanhSachPhongGoiYAdapter2(DanhSachPhongTheoChuTroActivity.this, listDanhSachPhong, R.layout.nguoi_thue_cardview_item_phong_goi_y);
+        adapter = new PhucDanhSachPhongTheoChuTroAdapter(DanhSachPhongTheoChuTroActivity.this, listDanhSachPhong, R.layout.nguoi_thue_cardview_item_phong_theo_chu_tro);
         layoutManager = new LinearLayoutManager(DanhSachPhongTheoChuTroActivity.this);
         layoutManager.setOrientation(RecyclerView.HORIZONTAL);
         layoutManager = new GridLayoutManager(this, 2);

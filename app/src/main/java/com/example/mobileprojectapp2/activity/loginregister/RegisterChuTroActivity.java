@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.mobileprojectapp2.R;
@@ -41,6 +42,7 @@ public class RegisterChuTroActivity extends AppCompatActivity {
     TextView xemChinhSach;
     Button btnDangKy;
     AppCompatImageView ic_back;
+    ProgressBar progressBar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,16 +71,18 @@ public class RegisterChuTroActivity extends AppCompatActivity {
                 call.enqueue(new Callback<ChinhSach>() {
                     @Override
                     public void onResponse(Call<ChinhSach> call, Response<ChinhSach> response) {
-                        AlertDialog.Builder builder = new AlertDialog.Builder(RegisterChuTroActivity.this);
-                        builder.setMessage(response.body().getNoiDungChinhSach()).setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
+                        if (response.body()!=null) {
+                            AlertDialog.Builder builder = new AlertDialog.Builder(RegisterChuTroActivity.this);
+                            builder.setMessage(response.body().getNoiDungChinhSach()).setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
 
-                            }
-                        });
-                        builder.setTitle("Thông Tin Chính Sách");
-                        builder.create();
-                        builder.show();
+                                }
+                            });
+                            builder.setTitle("Thông Tin Chính Sách");
+                            builder.create();
+                            builder.show();
+                        }
                     }
                     @Override
                     public void onFailure(Call<ChinhSach> call, Throwable t) {
@@ -90,6 +94,7 @@ public class RegisterChuTroActivity extends AppCompatActivity {
         btnDangKy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                batTatProgessBar(0);
                 if(kiemTraRong()){
                     if(edtMatKhau.getText().toString().length()>5){
                         if(kiemTraCheckBox()){
@@ -97,50 +102,77 @@ public class RegisterChuTroActivity extends AppCompatActivity {
                             call.enqueue(new Callback<ArrayList<TaiKhoan>>() {
                                 @Override
                                 public void onResponse(Call<ArrayList<TaiKhoan>> call, Response<ArrayList<TaiKhoan>> response) {
-                                    boolean kt = true;
+                                    if (response.body()!=null) {
+                                        boolean kt = true;
 
-                                    for (TaiKhoan taiKhoan:
-                                            response.body()) {
-                                        if(edtEmail.getText().toString().equals(taiKhoan.getEmail())){
-                                            kt= false;
+                                        for (TaiKhoan taiKhoan :
+                                                response.body()) {
+                                            if (edtEmail.getText().toString().equals(taiKhoan.getEmail())) {
+                                                kt = false;
+                                            }
                                         }
-                                    }
-                                    if(kt==true){
-                                        RequestBody ten = RequestBody.create(MediaType.parse("multipart/form-data"),edtTen.getText().toString());
-                                        RequestBody matKhau = RequestBody.create(MediaType.parse("multipart/form-data"),edtMatKhau.getText().toString());
-                                        RequestBody email = RequestBody.create(MediaType.parse("multipart/form-data"),edtEmail.getText().toString());
-                                        Call<ChuTro> call1 = ApiServiceNghiem.apiService.taoTaiKhoanChuTro(ten, email,matKhau,email);
-                                        call1.enqueue(new Callback<ChuTro>() {
-                                            @Override
-                                            public void onResponse(Call<ChuTro> call, Response<ChuTro> response) {
-//                                            FireBase Nằm Ở đây
-                                                addUserFireBase(edtEmail.getText().toString(),edtMatKhau.getText().toString());
-                                            }
-                                            @Override
-                                            public void onFailure(Call<ChuTro> call, Throwable t) {
-                                                thongBao("Tạo Tài Khoản Thất Bại");
-                                            }
-                                        });
+                                        if (kt == true) {
+
+                                            FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+                                            firebaseAuth.createUserWithEmailAndPassword(edtEmail.getText().toString(), edtMatKhau.getText().toString()).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
+                                                @Override
+                                                public void onSuccess(AuthResult authResult) {
+                                                    RequestBody ten = RequestBody.create(MediaType.parse("multipart/form-data"), edtTen.getText().toString());
+                                                    RequestBody matKhau = RequestBody.create(MediaType.parse("multipart/form-data"), edtMatKhau.getText().toString());
+                                                    RequestBody email = RequestBody.create(MediaType.parse("multipart/form-data"), edtEmail.getText().toString());
+                                                    Call<ChuTro> call1 = ApiServiceNghiem.apiService.taoTaiKhoanChuTro(ten, email, matKhau, email);
+                                                    call1.enqueue(new Callback<ChuTro>() {
+                                                        @Override
+                                                        public void onResponse(Call<ChuTro> call, Response<ChuTro> response) {
+                                                            batTatProgessBar(1);
+                                                            thongBao("Tạo Tài Khoản Thành Công");
+                                                            edtTen.setText("");
+                                                            edtMatKhau.setText("");
+                                                            edtEmail.setText("");
+                                                            checkBox.setChecked(false);
+                                                        }
+
+                                                        @Override
+                                                        public void onFailure(Call<ChuTro> call, Throwable t) {
+                                                            batTatProgessBar(1);
+                                                            thongBao("Tạo Tài Khoản Thất Bại");
+                                                        }
+                                                    });
 
 
-                                    }else{
-                                        thongBao("Tên Tài Khoản Đã Có!");
+                                                }
+                                            }).addOnFailureListener(new OnFailureListener() {
+                                                @Override
+                                                public void onFailure(@NonNull Exception e) {
+
+                                                    batTatProgessBar(1);
+                                                    thongBao("Lỗi Hệ Thống!");
+                                                }
+                                            });
+                                        } else {
+                                            batTatProgessBar(1);
+                                            thongBao("Tên Tài Khoản Đã Có!");
+                                        }
                                     }
                                 }
 
                                 @Override
                                 public void onFailure(Call<ArrayList<TaiKhoan>> call, Throwable t) {
+                                    batTatProgessBar(1);
                                     thongBao("Lấy Tất Cả Tài Khoản Sai");
                                 }
                             });
                         }else{
+                            batTatProgessBar(1);
                             thongBao("Bạn Chưa Đồng Ý Với Điều Kiên!");
                         }
                     }else{
+                        batTatProgessBar(1);
                         thongBao("Mật Khẩu Tối Thiểu 6 Kí Tự");
                     }
 
                 }else{
+                    batTatProgessBar(1);
                     thongBao("Không Được Để Trống Thông Tin!");
                 }
             }
@@ -157,6 +189,7 @@ public class RegisterChuTroActivity extends AppCompatActivity {
         firebaseAuth.createUserWithEmailAndPassword(email,password).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
             @Override
             public void onSuccess(AuthResult authResult) {
+                batTatProgessBar(1);
                 thongBao("Tạo Tài Khoản Thành Công");
                 edtTen.setText("");
                 edtMatKhau.setText("");
@@ -166,6 +199,8 @@ public class RegisterChuTroActivity extends AppCompatActivity {
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
+
+                batTatProgessBar(1);
                 thongBao("Lỗi Hệ Thống!");
             }
         });
@@ -181,6 +216,13 @@ public class RegisterChuTroActivity extends AppCompatActivity {
         builder.create();
         builder.show();
     }
+    private void batTatProgessBar(int kt) {
+        if (kt == 0) {
+            progressBar.setVisibility(View.VISIBLE);
+        } else if (kt == 1) {
+            progressBar.setVisibility(View.INVISIBLE);
+        }
+    }
     private void anhXa(){
         edtTen = findViewById(R.id.hoTenNguoiDung);
         edtMatKhau = findViewById(R.id.matKhau);
@@ -189,5 +231,6 @@ public class RegisterChuTroActivity extends AppCompatActivity {
         xemChinhSach = findViewById(R.id.chinhSach);
         btnDangKy = findViewById(R.id.btnChapNhan);
         ic_back = findViewById(R.id.ic_back);
+        progressBar = findViewById(R.id.progessbar);
     }
 }

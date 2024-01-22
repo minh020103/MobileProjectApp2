@@ -46,6 +46,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 
 import okhttp3.MediaType;
@@ -118,6 +119,7 @@ public class AuthenticationActivity extends AppCompatActivity {
         trangThaiXacThuc = sharedPreferences.getInt("trangThaiXacThuc", -1);
 
         anhXa();
+
         getDetailChuTro();
         onClickCanDuLieu(trangThaiXacThuc);
 
@@ -125,7 +127,6 @@ public class AuthenticationActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 sendDataToApi();
-                tvDangChoAuthencation.setVisibility(View.VISIBLE);
 
             }
         });
@@ -161,39 +162,42 @@ public class AuthenticationActivity extends AppCompatActivity {
             call.enqueue(new Callback<XacThucChuTro>() {
                 @Override
                 public void onResponse(Call<XacThucChuTro> call, Response<XacThucChuTro> responseXTCT) {
-                    alertSuccess("Gửi yêu cầu xác nhận chủ trọ thành công");
-                    tvNotAuthencation.setVisibility(View.GONE);
-                    tvOkAuthencation.setVisibility(View.GONE);
-                    btnAcceptYeuCauXacThuc.setVisibility(View.GONE);
-                    imageViewMatTruocCCCD.setEnabled(false);
-                    imageViewMatSauCCCD.setEnabled(false);
-                    databaseReference.child("notification_admin").child(idChuTro + "").setValue(0).addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void unused) {
-                            Log.d(TAG, "onSuccess: PUSH NOTIFICATION REALTIME");
-                        }
-                    });
-                    ApiServiceMinh.apiService.layTatCaTaiKhoanTheoLoaiTaiKhoan(Const.ADMIN).enqueue(new Callback<List<TaiKhoan>>() {
-                        @Override
-                        public void onResponse(Call<List<TaiKhoan>> call, Response<List<TaiKhoan>> responseTaiKhoan) {
-                            if (responseTaiKhoan.code() == 200){
-                                if (responseTaiKhoan.body() != null){
-                                    for (TaiKhoan taikhoan:
-                                         responseTaiKhoan.body()) {
-                                        Log.d(TAG, "onResponse: "+taikhoan.getId());
-                                        MFCM.sendNotificationForAccountID(taikhoan.getId(), responseXTCT.body().getId(), "Xác thực chủ trọ", "Yêu cầu xác thực chủ trọ." );
-                                    }
+                    if (responseXTCT.body()!=null) {
+                        alertSuccess("Gửi yêu cầu xác nhận chủ trọ thành công");
+                        tvNotAuthencation.setVisibility(View.GONE);
+                        tvOkAuthencation.setVisibility(View.GONE);
+                        btnAcceptYeuCauXacThuc.setVisibility(View.GONE);
+                        tvDangChoAuthencation.setVisibility(View.VISIBLE);
 
+                        imageViewMatTruocCCCD.setEnabled(false);
+                        imageViewMatSauCCCD.setEnabled(false);
+                        databaseReference.child("notification_admin").child(idChuTro + "").setValue(new Date().getSeconds()).addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void unused) {
+                                Log.d(TAG, "onSuccess: PUSH NOTIFICATION REALTIME");
+                            }
+                        });
+                        ApiServiceMinh.apiService.layTatCaTaiKhoanTheoLoaiTaiKhoan(Const.ADMIN).enqueue(new Callback<List<TaiKhoan>>() {
+                            @Override
+                            public void onResponse(Call<List<TaiKhoan>> call, Response<List<TaiKhoan>> responseTaiKhoan) {
+                                if (responseTaiKhoan.code() == 200) {
+                                    if (responseTaiKhoan.body() != null) {
+                                        for (TaiKhoan taikhoan :
+                                                responseTaiKhoan.body()) {
+                                            Log.d(TAG, "onResponse: " + taikhoan.getId());
+                                            MFCM.sendNotificationForAccountID(taikhoan.getId(), responseXTCT.body().getId(), "Xác thực chủ trọ", "Yêu cầu xác thực chủ trọ.");
+                                        }
+
+                                    }
                                 }
                             }
-                        }
 
-                        @Override
-                        public void onFailure(Call<List<TaiKhoan>> call, Throwable t) {
+                            @Override
+                            public void onFailure(Call<List<TaiKhoan>> call, Throwable t) {
 
-                        }
-                    });
-
+                            }
+                        });
+                    }
                 }
 
                 @Override
@@ -206,6 +210,9 @@ public class AuthenticationActivity extends AppCompatActivity {
             });
         } else {
             Toast.makeText(this, "Chưa chọn ảnh Căn cước công dân", Toast.LENGTH_SHORT).show();
+            tvDangChoAuthencation.setVisibility(View.GONE);
+            tvNotAuthencation.setVisibility(View.VISIBLE);
+
         }
     }
 
@@ -248,6 +255,9 @@ public class AuthenticationActivity extends AppCompatActivity {
                 tvNotAuthencation.setVisibility(View.VISIBLE);
                 tvOkAuthencation.setVisibility(View.GONE);
                 btnAcceptYeuCauXacThuc.setVisibility(View.VISIBLE);
+                imageViewMatTruocCCCD.setEnabled(true);
+                imageViewMatSauCCCD.setEnabled(true);
+
             }
 
         });

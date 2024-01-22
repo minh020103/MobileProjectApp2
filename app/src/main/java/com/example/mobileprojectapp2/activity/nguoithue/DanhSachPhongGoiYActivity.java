@@ -80,9 +80,11 @@ public class DanhSachPhongGoiYActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<List<Banner>> call, Response<List<Banner>> response) {
                 if (response.code() == 200) {
-                    vp2Banner.setBackground(null);
-                    listHinh.addAll(response.body());
-                    imagesAdapter.notifyDataSetChanged();
+                    if (response.body()!=null) {
+                        vp2Banner.setBackground(null);
+                        listHinh.addAll(response.body());
+                        imagesAdapter.notifyDataSetChanged();
+                    }
                 } else {
                     vp2Banner.setBackground(DanhSachPhongGoiYActivity.this.getResources().getDrawable(R.drawable.thuduc, DanhSachPhongGoiYActivity.this.getTheme()));
                 }
@@ -111,7 +113,7 @@ public class DanhSachPhongGoiYActivity extends AppCompatActivity {
         call.enqueue(new Callback<ArrayList<PhongTro>>() {
             @Override
             public void onResponse(Call<ArrayList<PhongTro>> call, Response<ArrayList<PhongTro>> response) {
-                if(response!=null){
+                if(response.body()!=null){
                     arrayList.clear();
                     arrayList.addAll(response.body());
                     if(arrayList.size()==0){

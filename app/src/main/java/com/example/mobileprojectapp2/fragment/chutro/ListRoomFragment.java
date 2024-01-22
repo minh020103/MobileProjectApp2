@@ -147,11 +147,13 @@ public class ListRoomFragment extends AbstractFragment {
                     @Override
                     public void onResponse(Call<ChuTro> call, Response<ChuTro> response) {
                         if (response.code() == 200) {
-                            if (response.body().getXacThuc() == 1) {
-                                Intent intent = new Intent(getActivity(), AddRoomActivity.class);
-                                startActivity(intent);
-                            } else {
-                                alertFailAddRoom("Bạn cần xác thực tài khoản trước khi thêm phòng.\nNhấn OK để chuyển qua màn hình xác thực.\nNhấn CANCAL để tắt thông báo.");
+                            if (response.body() != null) {
+                                if (response.body().getXacThuc() == 1) {
+                                    Intent intent = new Intent(getActivity(), AddRoomActivity.class);
+                                    startActivity(intent);
+                                } else {
+                                    alertFailAddRoom("Bạn cần xác thực tài khoản trước khi thêm phòng.\nNhấn OK để chuyển qua màn hình xác thực.\nNhấn CANCAL để tắt thông báo.");
+                                }
                             }
                         }
                     }
@@ -186,15 +188,17 @@ public class ListRoomFragment extends AbstractFragment {
             @Override
             public void onResponse(Call<List<PhongTroChuTro>> call, Response<List<PhongTroChuTro>> response) {
                 if (response.code() == 200) {
-                    if (response.body().size() == 0) {
-                        pageRoom--;
-                        Toast.makeText(getActivity(), "Đã hết dữ liệu", Toast.LENGTH_LONG).show();
-                    } else {
-                        phongTroOfChuTroList.addAll(response.body());
-                        roomAdapter.notifyDataSetChanged();
+                    if (response.body()!=null) {
+                        if (response.body().size() == 0) {
+                            pageRoom--;
+                            Toast.makeText(getActivity(), "Đã hết dữ liệu", Toast.LENGTH_LONG).show();
+                        } else {
+                            phongTroOfChuTroList.addAll(response.body());
+                            roomAdapter.notifyDataSetChanged();
+                        }
+                        pbReLoad.setVisibility(View.GONE);
+                        pbLoadmoreRoom.setVisibility(View.GONE);
                     }
-                    pbReLoad.setVisibility(View.GONE);
-                    pbLoadmoreRoom.setVisibility(View.GONE);
                 }
             }
 
@@ -237,11 +241,13 @@ public class ListRoomFragment extends AbstractFragment {
                                     @Override
                                     public void onResponse(Call<Integer> call, Response<Integer> response) {
                                         if (response.code() == 200) {
-                                            if (response.body() == 1) {
-                                                phongTroOfChuTroList.remove(phongTroOfChuTroList.get(position));
-                                                roomAdapter.notifyDataSetChanged();
-                                                Toast.makeText(getContext(), "Xóa thành công", Toast.LENGTH_SHORT).show();
+                                            if (response.body()!=null) {
+                                                if (response.body() == 1) {
+                                                    phongTroOfChuTroList.remove(phongTroOfChuTroList.get(position));
+                                                    roomAdapter.notifyDataSetChanged();
+                                                    Toast.makeText(getContext(), "Xóa thành công", Toast.LENGTH_SHORT).show();
 
+                                                }
                                             }
                                         }
                                     }
@@ -307,18 +313,20 @@ public class ListRoomFragment extends AbstractFragment {
             @Override
             public void onResponse(Call<Integer> call, Response<Integer> response) {
                 if (response.code() == 200) {
-                    if (response.body() == Const.PHONG_DA_CO_NGUOI_THUE) {
-                        alertFail("Phòng đã có người thuê không thể tắt hoạt động");
-                    }
-                    if (response.body() == Const.DA_DAT_SO_LUONG_PHONG_TOI_DA) {
-                        alertFail("Số lượng phòng hoạt động đã đạt tối đa gói dịch vụ không thể bật");
-                    }
-                    if (response.body() == Const.CHUA_DANG_KY_DICH_VU) {
-                        alertFail("Bạn chưa đăng ký dịch vụ hãy đăng ký dịch vụ để bật hoạt động phòng");
-                    }
-                    if (response.body() == 1){
-                        phongTroOfChuTroList.get(position).getPhongTro().setHoatDong(hoatDong);
-                        roomAdapter.notifyDataSetChanged();
+                    if (response.body()!=null) {
+                        if (response.body() == Const.PHONG_DA_CO_NGUOI_THUE) {
+                            alertFail("Phòng đã có người thuê không thể tắt hoạt động");
+                        }
+                        if (response.body() == Const.DA_DAT_SO_LUONG_PHONG_TOI_DA) {
+                            alertFail("Số lượng phòng hoạt động đã đạt tối đa gói dịch vụ không thể bật");
+                        }
+                        if (response.body() == Const.CHUA_DANG_KY_DICH_VU) {
+                            alertFail("Bạn chưa đăng ký dịch vụ hãy đăng ký dịch vụ để bật hoạt động phòng");
+                        }
+                        if (response.body() == 1) {
+                            phongTroOfChuTroList.get(position).getPhongTro().setHoatDong(hoatDong);
+                            roomAdapter.notifyDataSetChanged();
+                        }
                     }
                 }
             }

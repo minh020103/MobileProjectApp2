@@ -88,15 +88,17 @@ public class NotificationFragment extends AbstractFragment{
         ApiServiceKiet.apiServiceKiet.getListThongBaoTheoIdTaiKhoan(idTaiKhoan).enqueue(new Callback<List<ThongBao>>() {
             @Override
             public void onResponse(Call<List<ThongBao>> call, Response<List<ThongBao>> response) {
-                list = response.body();
-                thongBaoAdapter = new ThongBaoAdapter(getActivity(), list, R.layout.cardview_danh_sach_thong_bao);
-                recyclerView.setAdapter(thongBaoAdapter);
-                thongBaoAdapter.setOnClickItemListener(new ThongBaoAdapter.OnClickItemListener() {
-                    @Override
-                    public void onClickItem(int position, View v) {
-                        nextActivity(list.get(position).getId());
-                    }
-                });
+                if (response.body()!=null) {
+                    list = response.body();
+                    thongBaoAdapter = new ThongBaoAdapter(getActivity(), list, R.layout.cardview_danh_sach_thong_bao);
+                    recyclerView.setAdapter(thongBaoAdapter);
+                    thongBaoAdapter.setOnClickItemListener(new ThongBaoAdapter.OnClickItemListener() {
+                        @Override
+                        public void onClickItem(int position, View v) {
+                            nextActivity(list.get(position).getId());
+                        }
+                    });
+                }
             }
 
             @Override

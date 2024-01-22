@@ -63,6 +63,15 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"/>
+                <TextView
+                    android:id="@+id/tv_thongbao"
+                    style="@style/tv_18sp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_gravity="center_horizontal"
+                    android:padding="3dp"
+                    android:background="@color/text_gray2"
+                    android:text="Chưa có phòng nào"
+                    android:visibility="visible" />
 
             </LinearLayout>
         </LinearLayout>

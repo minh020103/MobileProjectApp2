@@ -55,6 +55,7 @@ public class PhongNhanTinActivity extends AppCompatActivity {
     TinNhanAdapter tinNhanAdapter;
     private int senderId;
     private int idDoiPhuong;
+    private String tenSender;
     private int idPhong;
     private int trangThai;
     private String ten;
@@ -131,25 +132,27 @@ public class PhongNhanTinActivity extends AppCompatActivity {
             call.enqueue(new Callback<TinNhan>() {
                 @Override
                 public void onResponse(Call<TinNhan> call, Response<TinNhan> response) {
-                    Date currentTime = Calendar.getInstance().getTime();
-                    Timestamp tsTemp = new Timestamp(currentTime.getTime());
+                    if(response.body()!=null) {
+                        Date currentTime = Calendar.getInstance().getTime();
+                        Timestamp tsTemp = new Timestamp(currentTime.getTime());
 //                    Date date = new Date(tsTemp.getTime());
 //                    SimpleDateFormat newFormat = new SimpleDateFormat("hh:mm dd-MM-yyyy");
-                    if(arrayList.size()!=0){
-                        TinNhan tinNhan = new TinNhan(arrayList.get(arrayList.size()-1).getId()+1,idPhong,senderId,inputMess.getText().toString(),tsTemp);
-                        arrayList.add(tinNhan);
-                        tinNhanAdapter.notifyDataSetChanged();
+                        if (arrayList.size() != 0) {
+                            TinNhan tinNhan = new TinNhan(arrayList.get(arrayList.size() - 1).getId() + 1, idPhong, senderId, inputMess.getText().toString(), tsTemp);
+                            arrayList.add(tinNhan);
+                            tinNhanAdapter.notifyDataSetChanged();
 //                                recyclerView.smoothScrollToPosition(arrayList.size()-1);
-                    }
-                    else{
-                        TinNhan tinNhan = new TinNhan(1,idPhong,senderId,inputMess.getText().toString(),tsTemp);
-                        arrayList.add(tinNhan);
-                        tinNhanAdapter.notifyDataSetChanged();
+                        } else {
+                            TinNhan tinNhan = new TinNhan(1, idPhong, senderId, inputMess.getText().toString(), tsTemp);
+                            arrayList.add(tinNhan);
+                            tinNhanAdapter.notifyDataSetChanged();
 //                                recyclerView.smoothScrollToPosition(arrayList.size()-1);
+                        }
+                        recyclerView.smoothScrollToPosition(arrayList.size() - 1);
+                        capNhatTinNhanNew(idPhong, inputMess.getText().toString(), formatDate(response.body().getCreated_at()));
+                    }else{
+                        thongBao("Xin Chờ, Dữ Liệu Quá Nhiều Để Load App");
                     }
-                    recyclerView.smoothScrollToPosition(arrayList.size()-1);
-                    capNhatTinNhanNew(idPhong,inputMess.getText().toString(),formatDate(response.body().getCreated_at()));
-
                 }
 
                 @Override
@@ -166,22 +169,12 @@ public class PhongNhanTinActivity extends AppCompatActivity {
         call.enqueue(new Callback<Integer>() {
             @Override
             public void onResponse(Call<Integer> call, Response<Integer> response) {
-                Call<TenSender> tenSenderCall = ApiServiceNghiem.apiService.layTenSender(senderId);
-                tenSenderCall.enqueue(new Callback<TenSender>() {
-                    @Override
-                    public void onResponse(Call<TenSender> call, Response<TenSender> response) {
-                        if(response!=null){
-                            Date date = new Date();
-                            MFCM.sendNotificationForAccountID(idDoiPhuong,date.getSeconds(),response.body().getTen(),noiDung);
-                        }
-                    }
-                    @Override
-                    public void onFailure(Call<TenSender> call, Throwable t) {
-                        thongBao("Sai");
-                    }
-                });
-                thongBaoReset(inputMess.getText().toString());
-                inputMess.setText("");
+                if(response.body()!=null) {
+                                Date date = new Date();
+                                MFCM.sendNotificationForAccountID(idDoiPhuong, date.getSeconds(), tenSender, noiDung);
+                    thongBaoReset(inputMess.getText().toString());
+                    inputMess.setText("");
+                }
             }
 
             @Override
@@ -199,6 +192,7 @@ public class PhongNhanTinActivity extends AppCompatActivity {
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
+                thongBao("Lỗi Hệ Thống");
 
             }
         });
@@ -210,7 +204,7 @@ public class PhongNhanTinActivity extends AppCompatActivity {
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-
+                thongBao("Lỗi Hệ Thống");
             }
         });
     }
@@ -224,7 +218,7 @@ public class PhongNhanTinActivity extends AppCompatActivity {
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
-
+                    thongBao("Lỗi Hệ Thống Tin Nhắn");
                 }
             });
         }
@@ -237,8 +231,9 @@ public class PhongNhanTinActivity extends AppCompatActivity {
         call.enqueue(new Callback<ArrayList<TinNhan>>() {
             @Override
             public void onResponse(Call<ArrayList<TinNhan>> call, Response<ArrayList<TinNhan>> response) {
-                arrayList.clear();
-                if(response!=null){
+
+                if(response.body()!=null){
+                    arrayList.clear();
                     if(response.body().size()!=0){
                         arrayList.addAll(response.body());
                         tinNhanAdapter.notifyDataSetChanged();
@@ -248,7 +243,7 @@ public class PhongNhanTinActivity extends AppCompatActivity {
                         setSuKienGuiTinNhan();
                     }
                 }else{
-                    thongBao("Error");
+                    thongBao("Error Nhắn Tin Quá nhanh");
                 }
             }
 
@@ -262,6 +257,7 @@ public class PhongNhanTinActivity extends AppCompatActivity {
     private void layShared(){
         sharedPreferences = getSharedPreferences(Const.PRE_LOGIN, Context.MODE_PRIVATE);
         senderId = sharedPreferences.getInt("idTaiKhoan",-1);
+        tenSender = sharedPreferences.getString("tenCuaSender","0001");
         ten = getIntent().getStringExtra("ten");
         hinh = getIntent().getStringExtra("hinh");
         idPhong = getIntent().getIntExtra("idPhong",-1);

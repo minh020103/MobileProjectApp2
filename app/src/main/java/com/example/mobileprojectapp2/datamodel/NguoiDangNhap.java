@@ -3,6 +3,15 @@ package com.example.mobileprojectapp2.datamodel;
 public class NguoiDangNhap {
     private int id;
     private int xacThuc;
+    private String ten;
+
+    public String getTen() {
+        return ten;
+    }
+
+    public void setTen(String ten) {
+        this.ten = ten;
+    }
 
     public NguoiDangNhap() {
     }

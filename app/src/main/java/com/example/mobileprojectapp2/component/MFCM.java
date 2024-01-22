@@ -30,28 +30,30 @@ public class MFCM {
             @Override
             public void onResponse(Call<List<FirebaseCloudMessaging>> call, Response<List<FirebaseCloudMessaging>> responseToken) {
                 if (responseToken.code() == 200){
-                    for (FirebaseCloudMessaging firebaseCloudMessaging:
-                            responseToken.body()) {
-                        Log.d("TAG", "onResponse: "+firebaseCloudMessaging.getToken());
-                        ApiFCMService.apiService.postNotification(new PushNotification(
-                                new Notification(idNotification, title, content),
-                                firebaseCloudMessaging.getToken())
-                        ).enqueue(new Callback<ResultFCM>() {
-                            @Override
-                            public void onResponse(Call<ResultFCM> call, Response<ResultFCM> response) {
-                                Log.d("TAG", "onResponse: idNoti: "+idNotification);
-                                Log.d("TAG", "onResponse: title: "+title);
-                                Log.d("TAG", "onResponse: content: "+content);
-                                Log.d("TAG", "onResponse: idTK: "+idTaiKhoan);
-                                Log.d("TAG", "onResponse: token: "+firebaseCloudMessaging.getToken());
+                    if (responseToken.body()!=null) {
+                        for (FirebaseCloudMessaging firebaseCloudMessaging :
+                                responseToken.body()) {
+                            Log.d("TAG", "onResponse: " + firebaseCloudMessaging.getToken());
+                            ApiFCMService.apiService.postNotification(new PushNotification(
+                                    new Notification(idNotification, title, content),
+                                    firebaseCloudMessaging.getToken())
+                            ).enqueue(new Callback<ResultFCM>() {
+                                @Override
+                                public void onResponse(Call<ResultFCM> call, Response<ResultFCM> response) {
+                                    Log.d("TAG", "onResponse: idNoti: " + idNotification);
+                                    Log.d("TAG", "onResponse: title: " + title);
+                                    Log.d("TAG", "onResponse: content: " + content);
+                                    Log.d("TAG", "onResponse: idTK: " + idTaiKhoan);
+                                    Log.d("TAG", "onResponse: token: " + firebaseCloudMessaging.getToken());
 
-                            }
+                                }
 
-                            @Override
-                            public void onFailure(Call<ResultFCM> call, Throwable t) {
-                                Log.d("TAG", "onFailure: "+t);
-                            }
-                        });
+                                @Override
+                                public void onFailure(Call<ResultFCM> call, Throwable t) {
+                                    Log.d("TAG", "onFailure: " + t);
+                                }
+                            });
+                        }
                     }
                 }
             }

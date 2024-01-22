@@ -166,9 +166,14 @@ public class PackageUsingFragment extends AbstractFragment{
             @Override
             public void onResponse(Call<List<Banner>> call, Response<List<Banner>> response) {
                 if (response.code() == 200) {
-                    vp2Banner.setBackground(null);
-                    listHinh.addAll(response.body());
-                    imagesAdapter.notifyDataSetChanged();
+                    if (response.body()!=null) {
+                        vp2Banner.setBackground(null);
+                        listHinh.addAll(response.body());
+                        imagesAdapter.notifyDataSetChanged();
+                    }
+                    else {
+                        vp2Banner.setBackground(getActivity().getResources().getDrawable(R.drawable.thuduc, getActivity().getTheme()));
+                    }
                 } else {
                     vp2Banner.setBackground(getActivity().getResources().getDrawable(R.drawable.thuduc, getActivity().getTheme()));
                 }
@@ -206,17 +211,19 @@ public class PackageUsingFragment extends AbstractFragment{
         ApiServiceDung.apiServiceDung.getListPakageAPI().enqueue(new Callback<List<Goi>>() {
             @Override
             public void onResponse(Call<List<Goi>> call, Response<List<Goi>> response) {
-                goiList = response.body();
-                goiDichVuAdapter = new GoiDichVuAdapter(getActivity(), goiList, R.layout.cardview_goi_item);
-                recyclerView.setAdapter(goiDichVuAdapter);
-                goiDichVuAdapter.setOnClickItemListener(new GoiDichVuAdapter.OnClickItemListener() {
-                    @Override
-                    public void onClickItem(int position, View v) {
-                        Intent intent = new Intent(getActivity(), ThanhToanGoiActivity.class);
-                        intent.putExtra("idGoi",goiList.get(position).getId());
-                        startActivity(intent);
-                    }
-                });
+                if (response.body()!=null) {
+                    goiList = response.body();
+                    goiDichVuAdapter = new GoiDichVuAdapter(getActivity(), goiList, R.layout.cardview_goi_item);
+                    recyclerView.setAdapter(goiDichVuAdapter);
+                    goiDichVuAdapter.setOnClickItemListener(new GoiDichVuAdapter.OnClickItemListener() {
+                        @Override
+                        public void onClickItem(int position, View v) {
+                            Intent intent = new Intent(getActivity(), ThanhToanGoiActivity.class);
+                            intent.putExtra("idGoi", goiList.get(position).getId());
+                            startActivity(intent);
+                        }
+                    });
+                }
             }
 
             @Override
@@ -231,24 +238,29 @@ public class PackageUsingFragment extends AbstractFragment{
         ApiServicePhuc.apiService.getChuTroById(key).enqueue(new Callback<ChuTro>() {
             @Override
             public void onResponse(Call<ChuTro> call, Response<ChuTro> response) {
-                ChuTro chuTro = response.body();
-                ten_nguoi_dung.setText(chuTro.getTen());
-                temp = chuTro.getIdGoi();
-                getGoiByIdAPI(temp);
-                if (chuTro.getIdGoi() == 0){
-                    thoi_gian.setVisibility(View.GONE);
-                    Ngay_het_han.setVisibility(View.GONE);
-                    text.setText("Vui Lòng Đăng Kí Gói Để Có Thể Đăng Cho Thuê Phòng");
-                    dang_ki_goi.setVisibility(View.VISIBLE);
-                    da_dang_ki.setVisibility(View.GONE);
-                }else {
-                    thoi_gian.setVisibility(View.VISIBLE);
-                    Ngay_het_han.setVisibility(View.VISIBLE);
-                    text.setText("Vui Lòng Gia Hạn Trước Khi Hết Hạn Để Không Bị Gián Đoạn Sử Dụng Dịch Vụ");
-                    dang_ki_goi.setVisibility(View.GONE);
-                    da_dang_ki.setVisibility(View.VISIBLE);
-                }
-            }
+              if (response.code() == 200){
+                  if(response.body() != null){
+                      ChuTro chuTro = response.body();
+                      ten_nguoi_dung.setText(chuTro.getTen());
+                      temp = chuTro.getIdGoi();
+                      getGoiByIdAPI(temp);
+                      if (chuTro.getIdGoi() == 0){
+                          thoi_gian.setVisibility(View.GONE);
+                          Ngay_het_han.setVisibility(View.GONE);
+                          text.setText("Vui Lòng Đăng Kí Gói Để Có Thể Đăng Cho Thuê Phòng");
+                          dang_ki_goi.setVisibility(View.VISIBLE);
+                          da_dang_ki.setVisibility(View.GONE);
+                      }else {
+                          thoi_gian.setVisibility(View.VISIBLE);
+                          Ngay_het_han.setVisibility(View.VISIBLE);
+                          text.setText("Vui Lòng Gia Hạn Trước Khi Hết Hạn Để Không Bị Gián Đoạn Sử Dụng Dịch Vụ");
+                          dang_ki_goi.setVisibility(View.GONE);
+                          da_dang_ki.setVisibility(View.VISIBLE);
+                      }
+                  }
+                  }
+              }
+
 
             @Override
             public void onFailure(Call<ChuTro> call, Throwable t) {
@@ -264,10 +276,12 @@ public class PackageUsingFragment extends AbstractFragment{
             ApiServiceDung.apiServiceDung.getPakageByIdAPI(key).enqueue(new Callback<Goi>() {
                 @Override
                 public void onResponse(Call<Goi> call, Response<Goi> response) {
-                    Goi goi = response.body();
-                    String thoihan = String.valueOf(goi.getThoiHan());
-                    String soPhong = String.valueOf(goi.getSoLuongPhongToiDa());
-                    goi_dang_dung.setText(thoihan + " Ngày / " + soPhong + " Phòng");
+                    if (response.body()!=null) {
+                        Goi goi = response.body();
+                        String thoihan = String.valueOf(goi.getThoiHan());
+                        String soPhong = String.valueOf(goi.getSoLuongPhongToiDa());
+                        goi_dang_dung.setText(thoihan + " Ngày / " + soPhong + " Phòng");
+                    }
                 }
                 @Override
                 public void onFailure(Call<Goi> call, Throwable t) {

@@ -19,4 +19,12 @@ public class KetQuaGuiYeuCauDatPhong {
     public void setObject(YeuCauDatPhong object) {
         this.object = object;
     }
+
+    @Override
+    public String toString() {
+        return "KetQuaGuiYeuCauDatPhong{" +
+                "message='" + message + '\'' +
+                ", object=" + object +
+                '}';
+    }
 }

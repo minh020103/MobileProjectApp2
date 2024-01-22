@@ -102,6 +102,13 @@ public class DetailPhongTroActivity extends AppCompatActivity {
         });
 
         mViewPager2.setPageTransformer(new ZoomOutPageTransformer());
+
+        adapterTienIch.setOnClick(new TienIchAdapter.OnClick() {
+            @Override
+            public void onClickItemListener(int position, View view) {
+
+            }
+        });
     }
 
     private void getDataFromApi() {
@@ -109,83 +116,85 @@ public class DetailPhongTroActivity extends AppCompatActivity {
         call.enqueue(new Callback<PhongTro>() {
             @Override
             public void onResponse(Call<PhongTro> call, Response<PhongTro> response) {
-                tvDienTich.setText(response.body().getDienTich() + "㎡");
-                tvQuan.setText(response.body().getIdQuan() + "");
-                tvGia.setText(response.body().getGia() + " / tháng");
-                if (response.body().getLoaiPhong() == PHONG_TRONG) {
-                    tvLoaiPhong.setText("Phòng trống");
-                } else if (response.body().getLoaiPhong() == PHONG_DON) {
-                    tvLoaiPhong.setText("Phòng đơn");
-                } else {
-                    tvLoaiPhong.setText("Phòng ghép");
-                }
-                tvMoTa.setText(response.body().getMoTa());
-                if (response.body().getGioiTinh() == MALE_GENDERS) {
-                    tvGioTinh.setText("Nam ♂");
-                } else {
-                    tvGioTinh.setText("Nữ ♀");
-                }
-                tvTienDien.setText(response.body().getTienDien() + "k");
-                tvTienCoc.setText(response.body().getTienCoc() + " ₫");
-                tvTienNuoc.setText(response.body().getTienNuoc() + "k");
-                tvSoLuongToiDa.setText(response.body().getSoLuongToiDa() + " người");
-                tvDiaChi.setText(response.body().getDiaChiChiTiet());
-
-                Log.d("TAG", "onResponse: "+ response.body().getHinhAnhPhongTro().size());
-
-                if (response.body().getHinhAnhPhongTro().size() == 0){
-                    tvHinhAnhRong.setVisibility(View.VISIBLE);
-                    mViewPager2.setVisibility(View.GONE);
-                }
-                for (HinhAnh hinhAnh : response.body().getHinhAnhPhongTro()) {
-                    listHinhAnh.add(hinhAnh);
-                }
-                adapterHinhAnh.notifyDataSetChanged();
-
-                if (response.body().getDanhSachTienIch().size() == 0) {
-                    tvTienIchRong.setVisibility(View.VISIBLE);
-                }
-                if (response.body().getDanhSachTienIch().size() < 8) {
-                    llXemThem.setVisibility(View.GONE);
-                }
-                int i = 0;
-                for (TienIch tienIch : response.body().getDanhSachTienIch()) {
-                    listTienIch.add(tienIch);
-                    i++;
-                    if (i == 8) {
-                        break;
+                if (response.body()!=null) {
+                    tvDienTich.setText(response.body().getDienTich() + "㎡");
+                    tvQuan.setText(response.body().getIdQuan() + "");
+                    tvGia.setText(response.body().getGia() + " / tháng");
+                    if (response.body().getLoaiPhong() == PHONG_TRONG) {
+                        tvLoaiPhong.setText("Phòng trống");
+                    } else if (response.body().getLoaiPhong() == PHONG_DON) {
+                        tvLoaiPhong.setText("Phòng đơn");
+                    } else {
+                        tvLoaiPhong.setText("Phòng ghép");
                     }
-                }
+                    tvMoTa.setText(response.body().getMoTa());
+                    if (response.body().getGioiTinh() == MALE_GENDERS) {
+                        tvGioTinh.setText("Nam ♂");
+                    } else {
+                        tvGioTinh.setText("Nữ ♀");
+                    }
+                    tvTienDien.setText(response.body().getTienDien() + "k");
+                    tvTienCoc.setText(response.body().getTienCoc() + " ₫");
+                    tvTienNuoc.setText(response.body().getTienNuoc() + "k");
+                    tvSoLuongToiDa.setText(response.body().getSoLuongToiDa() + " người");
+                    tvDiaChi.setText(response.body().getDiaChiChiTiet());
 
-                adapterTienIch.notifyDataSetChanged();
-                llXemThem.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        listTienIch.clear();
-                        for (TienIch tienIch : response.body().getDanhSachTienIch()) {
-                            listTienIch.add(tienIch);
-                        }
-                        adapterTienIch.notifyDataSetChanged();
+                    Log.d("TAG", "onResponse: " + response.body().getHinhAnhPhongTro().size());
+
+                    if (response.body().getHinhAnhPhongTro().size() == 0) {
+                        tvHinhAnhRong.setVisibility(View.VISIBLE);
+                        mViewPager2.setVisibility(View.GONE);
+                    }
+                    for (HinhAnh hinhAnh : response.body().getHinhAnhPhongTro()) {
+                        listHinhAnh.add(hinhAnh);
+                    }
+                    adapterHinhAnh.notifyDataSetChanged();
+
+                    if (response.body().getDanhSachTienIch().size() == 0) {
+                        tvTienIchRong.setVisibility(View.VISIBLE);
+                    }
+                    if (response.body().getDanhSachTienIch().size() < 8) {
                         llXemThem.setVisibility(View.GONE);
-                        llThuGon.setVisibility(View.VISIBLE);
                     }
-                });
-                llThuGon.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        listTienIch.clear();
-                        int i = 0;
-                        for (TienIch tienIch : response.body().getDanhSachTienIch()) {
-                            listTienIch.add(tienIch);
-                            i++;
-                            if (i == 8)
-                                break;
+                    int i = 0;
+                    for (TienIch tienIch : response.body().getDanhSachTienIch()) {
+                        listTienIch.add(tienIch);
+                        i++;
+                        if (i == 8) {
+                            break;
                         }
-                        adapterTienIch.notifyDataSetChanged();
-                        llXemThem.setVisibility(View.VISIBLE);
-                        llThuGon.setVisibility(View.GONE);
                     }
-                });
+
+                    adapterTienIch.notifyDataSetChanged();
+                    llXemThem.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            listTienIch.clear();
+                            for (TienIch tienIch : response.body().getDanhSachTienIch()) {
+                                listTienIch.add(tienIch);
+                            }
+                            adapterTienIch.notifyDataSetChanged();
+                            llXemThem.setVisibility(View.GONE);
+                            llThuGon.setVisibility(View.VISIBLE);
+                        }
+                    });
+                    llThuGon.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            listTienIch.clear();
+                            int i = 0;
+                            for (TienIch tienIch : response.body().getDanhSachTienIch()) {
+                                listTienIch.add(tienIch);
+                                i++;
+                                if (i == 8)
+                                    break;
+                            }
+                            adapterTienIch.notifyDataSetChanged();
+                            llXemThem.setVisibility(View.VISIBLE);
+                            llThuGon.setVisibility(View.GONE);
+                        }
+                    });
+                }
             }
 
             @Override

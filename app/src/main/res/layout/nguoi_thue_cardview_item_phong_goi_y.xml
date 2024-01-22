@@ -95,12 +95,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/dcct"
+            android:textColor="@color/black"
             app:trimCollapsedText="@string/xem_them"
             app:trimExpandedText="@string/thu_gon"
             app:trimLength="15"
-            app:trimMode="trimModeLength"
-            android:textColor="@color/black"
-            />
+            app:trimMode="trimModeLength" />
 
         <LinearLayout
             android:layout_width="match_parent"

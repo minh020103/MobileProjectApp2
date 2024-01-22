@@ -26,6 +26,8 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.Date;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -112,23 +114,22 @@ public class YeuCauDatPhongChiTietActivity extends AppCompatActivity {
         ApiServiceKiet.apiServiceKiet.getYeuCauDangKiPhongById(id).enqueue(new Callback<YeuCauDatPhong>() {
             @Override
             public void onResponse(Call<YeuCauDatPhong> call, Response<YeuCauDatPhong> response) {
-                YeuCauDatPhong data = response.body();
-                tvTieuDeThongBaoChiTiet.setText("Yêu cầu đăng ký phòng số " + data.getPhong().getSoPhong());
-                tvNoiDungThongBaoChiTiet1.setText("Mã phòng " + data.getPhong().getId());
-                tvNoiDungThongBaoChiTiet2.setText("Tên: " + data.getNguoiThue().getTen());
-                tvNoiDungThongBaoChiTiet3.setText("SĐT: " + data.getNguoiThue().getSoDienThoai());
-                idPhong = data.getIdPhong();
-                idTaiKhoanGui = data.getIdTaiKhoanGui();
-                idNguoiThue = data.getNguoiThue().getId();
-                if (data.getNguoiThue().getGioiTinh() == 0)
-                {
-                    tvNoiDungThongBaoChiTiet4.setText("Giới tính: Nam");
+                if (response.body()!=null) {
+                    YeuCauDatPhong data = response.body();
+                    tvTieuDeThongBaoChiTiet.setText("Yêu cầu đăng ký phòng số " + data.getPhong().getSoPhong());
+                    tvNoiDungThongBaoChiTiet1.setText("Mã phòng " + data.getPhong().getId());
+                    tvNoiDungThongBaoChiTiet2.setText("Tên: " + data.getNguoiThue().getTen());
+                    tvNoiDungThongBaoChiTiet3.setText("SĐT: " + data.getNguoiThue().getSoDienThoai());
+                    idPhong = data.getIdPhong();
+                    idTaiKhoanGui = data.getIdTaiKhoanGui();
+                    idNguoiThue = data.getNguoiThue().getId();
+                    if (data.getNguoiThue().getGioiTinh() == 0) {
+                        tvNoiDungThongBaoChiTiet4.setText("Giới tính: Nam");
+                    } else {
+                        tvNoiDungThongBaoChiTiet4.setText("Giới tính: Nữ");
+                    }
+                    idTaiKhoanNguoiNhan = data.getIdTaiKhoanGui();
                 }
-                else
-                {
-                    tvNoiDungThongBaoChiTiet4.setText("Giới tính: Nữ");
-                }
-                idTaiKhoanNguoiNhan = data.getIdTaiKhoanGui();
 
             }
 
@@ -144,20 +145,20 @@ public class YeuCauDatPhongChiTietActivity extends AppCompatActivity {
         ApiServiceKiet.apiServiceKiet.xacNhanDatPhong(id, idTaiKhoanGui, idNguoiThue, idTaiKhoan, idPhong).enqueue(new Callback<FCMThongBaoDatPhong>() {
             @Override
             public void onResponse(Call<FCMThongBaoDatPhong> call, Response<FCMThongBaoDatPhong> response) {
-                Log.d("rrr", "onResponse" + response.body()+"");
+//                Log.d("rrr", "onResponse" + response.body()+"");
                 if (response.body() != null)
                 {
                     FCMThongBaoDatPhong data = response.body();
                     if (data.getLoai() == 1)
                     {
                         MFCM.sendNotificationForAccountID(data.getThongBaoThanhCong().getIdTaiKhoanNhan(), response.body().getThongBaoThanhCong().getId(), data.getThongBaoThanhCong().getTieuDe(), data.getThongBaoThanhCong().getNoiDung());
-                        realTimeThongBao(response.body().getThongBaoThanhCong().getIdTaiKhoanNhan() ,response.body().getThongBaoThanhCong().getId());
+                        realTimeThongBao(data.getThongBaoThanhCong().getIdTaiKhoanNhan() ,response.body().getThongBaoThanhCong().getId());
                     }
                     if (data.getLoai() == 2)
                     {
                         MFCM.sendNotificationForAccountID(data.getThongBaoThanhCong().getIdTaiKhoanNhan(), response.body().getThongBaoThanhCong().getId(), data.getThongBaoThanhCong().getTieuDe(), data.getThongBaoThanhCong().getNoiDung());
-                        realTimeThongBao(response.body().getThongBaoThanhCong().getIdTaiKhoanNhan() ,response.body().getThongBaoThanhCong().getId());
-                        for (ThongBao thongBao : response.body().getThongBaoThatBai()) {
+                        realTimeThongBao(data.getThongBaoThanhCong().getIdTaiKhoanNhan() ,new Date().getSeconds());
+                        for (ThongBao thongBao : data.getThongBaoThatBai()) {
                             MFCM.sendNotificationForAccountID(thongBao.getIdTaiKhoanNhan(), thongBao.getId(), thongBao.getTieuDe(), thongBao.getNoiDung() );
                             realTimeThongBao(thongBao.getIdTaiKhoanNhan() ,thongBao.getId());
                         }
@@ -176,9 +177,11 @@ public class YeuCauDatPhongChiTietActivity extends AppCompatActivity {
         ApiServiceKiet.apiServiceKiet.tuChoiDatPhong(id, idTaiKhoanGui, idTaiKhoan).enqueue(new Callback<ThongBao>() {
             @Override
             public void onResponse(Call<ThongBao> call, Response<ThongBao> response) {
-                ThongBao thongBao = response.body();
-                MFCM.sendNotificationForAccountID(thongBao.getIdTaiKhoanNhan(), thongBao.getId(), thongBao.getTieuDe(), thongBao.getNoiDung() );
-                realTimeThongBao(response.body().getIdTaiKhoanGui(), response.body().getId());
+                if (response.body()!=null) {
+                    ThongBao thongBao = response.body();
+                    MFCM.sendNotificationForAccountID(thongBao.getIdTaiKhoanNhan(), thongBao.getId(), thongBao.getTieuDe(), thongBao.getNoiDung());
+                    realTimeThongBao(response.body().getIdTaiKhoanGui(), response.body().getId());
+                }
             }
 
             @Override
@@ -213,7 +216,7 @@ public class YeuCauDatPhongChiTietActivity extends AppCompatActivity {
     private void realTimeThongBao(int id, int i)
     {
         Log.d("REALTIME",  idTaiKhoanNguoiNhan + "");
-        databaseReference.child("notification").child(idTaiKhoanNguoiNhan + "").child(id+"").setValue(0).addOnSuccessListener(new OnSuccessListener<Void>() {
+        databaseReference.child("notification").child(idTaiKhoanNguoiNhan + "").child(id+"").setValue(i).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {
                 Log.d("TAG", "onSuccess: PUSH NOTIFICATION REALTIME");

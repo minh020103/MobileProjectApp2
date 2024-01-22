@@ -199,87 +199,66 @@ public class MyRoomFragment extends AbstractFragment{
         call.enqueue(new Callback<PhongTro>() {
             @Override
             public void onResponse(Call<PhongTro> call, Response<PhongTro> response) {
-
-                tv_detail_soPhong.setText(response.body().getSoPhong()+"");
+                if (response.body()!=null) {
+                    tv_detail_soPhong.setText(response.body().getSoPhong() + "");
 //                gia
-                float trieu = 1000000;
-                float ngan = 1000;
-                float tram = 100000;
-                float gia;
-                String gia2;
-                DecimalFormat decimalFormat = new DecimalFormat("#.#");
-                if (response.body().getGia() < tram) {
-                    tv_detail_gia_my_room.setText("Đang cập nhật");
-                } else if (response.body().getGia() < trieu) {
-                    gia = response.body().getGia() / ngan;
-                    gia2 = decimalFormat.format(gia);
-                    tv_detail_gia_my_room.setText(gia2 + "k /tháng");
-                } else if (response.body().getGia() >= trieu) {
-                    gia = response.body().getGia() / trieu;
-                    gia2 = decimalFormat.format(gia);
-                    tv_detail_gia_my_room.setText(gia2 + " triệu/tháng");
+                    float trieu = 1000000;
+                    float ngan = 1000;
+                    float tram = 100000;
+                    float gia;
+                    String gia2;
+                    DecimalFormat decimalFormat = new DecimalFormat("#.#");
+                    if (response.body().getGia() < tram) {
+                        tv_detail_gia_my_room.setText("Đang cập nhật");
+                    } else if (response.body().getGia() < trieu) {
+                        gia = response.body().getGia() / ngan;
+                        gia2 = decimalFormat.format(gia);
+                        tv_detail_gia_my_room.setText(gia2 + "k /tháng");
+                    } else if (response.body().getGia() >= trieu) {
+                        gia = response.body().getGia() / trieu;
+                        gia2 = decimalFormat.format(gia);
+                        tv_detail_gia_my_room.setText(gia2 + " triệu/tháng");
+                    }
+
+                    tv_detail_so_luong_toi_da.setText(response.body().getSoLuongToiDa() + " người");
+
+                    if (response.body().getLoaiPhong() == PHONG_TRONG) {
+                        tv_detail_loai_phong.setText("Phòng trống");
+                    } else if (response.body().getLoaiPhong() == PHONG_DON) {
+                        tv_detail_loai_phong.setText("Phòng đơn");
+                    } else {
+                        tv_detail_loai_phong.setText("Phòng ghép");
+                    }
+
+                    if (response.body().getTienCoc() < tram) {
+                        tv_detail_tien_coc.setText("Đang cập nhật");
+                    } else if (response.body().getTienCoc() < trieu) {
+                        gia = response.body().getTienCoc() / ngan;
+                        gia2 = decimalFormat.format(gia);
+                        tv_detail_tien_coc.setText(gia2 + "k");
+                    } else if (response.body().getTienCoc() >= trieu) {
+                        gia = response.body().getTienCoc() / trieu;
+                        gia2 = decimalFormat.format(gia);
+                        tv_detail_tien_coc.setText(gia2 + " triệu");
+                    }
+
+                    tv_detail_dien_tich.setText(response.body().getDienTich() + "㎡");
+
+                    if (response.body().getGioiTinh() == MALE_GENDERS) {
+                        tv_detail_gioi_tinh.setText("Nam ♂");
+                    } else {
+                        tv_detail_gioi_tinh.setText("Nữ ♀");
+                    }
+
+                    tv_detail_tien_dien.setText(response.body().getTienDien()+" VND");
+
+                    tv_detail_tien_nuoc.setText(response.body().getTienNuoc()+" VND");
+
+
+                    tv_detail_mo_ta.setText(response.body().getMoTa() + "");
+
+                    tv_detail_dia_chi.setText(response.body().getDiaChiChiTiet() + "");
                 }
-
-                tv_detail_so_luong_toi_da.setText(response.body().getSoLuongToiDa() + " người");
-
-                if (response.body().getLoaiPhong() == PHONG_TRONG) {
-                    tv_detail_loai_phong.setText("Phòng trống");
-                } else if (response.body().getLoaiPhong() == PHONG_DON) {
-                    tv_detail_loai_phong.setText("Phòng đơn");
-                } else {
-                    tv_detail_loai_phong.setText("Phòng ghép");
-                }
-
-                if (response.body().getTienCoc() < tram) {
-                    tv_detail_tien_coc.setText("Đang cập nhật");
-                } else if (response.body().getTienCoc() < trieu) {
-                    gia = response.body().getTienCoc() / ngan;
-                    gia2 = decimalFormat.format(gia);
-                    tv_detail_tien_coc.setText(gia2 + "k");
-                } else if (response.body().getTienCoc() >= trieu) {
-                    gia = response.body().getTienCoc() / trieu;
-                    gia2 = decimalFormat.format(gia);
-                    tv_detail_tien_coc.setText(gia2 + " triệu");
-                }
-
-                tv_detail_dien_tich.setText(response.body().getDienTich() + "㎡");
-
-                if (response.body().getGioiTinh() == MALE_GENDERS) {
-                    tv_detail_gioi_tinh.setText("Nam ♂");
-                } else {
-                    tv_detail_gioi_tinh.setText("Nữ ♀");
-                }
-
-                //tv_detail_tien_dien.setText(response.body().getTienDien()+"");
-                if (response.body().getTienDien() < tram) {
-                    tv_detail_tien_dien.setText("Đang cập nhật");
-                } else if (response.body().getTienDien() < trieu) {
-                    gia = response.body().getTienDien() / ngan;
-                    gia2 = decimalFormat.format(gia);
-                    tv_detail_tien_dien.setText(gia2 + "k");
-                } else if (response.body().getTienDien() >= trieu) {
-                    gia = response.body().getTienDien() / trieu;
-                    gia2 = decimalFormat.format(gia);
-                    tv_detail_tien_dien.setText(gia2 + " triệu");
-                }
-
-                //tv_detail_tien_nuoc.setText(response.body().getTienNuoc()+"");
-                if (response.body().getTienNuoc() < tram) {
-                    tv_detail_tien_nuoc.setText("Đang cập nhật");
-                } else if (response.body().getTienNuoc() < trieu) {
-                    gia = response.body().getTienNuoc() / ngan;
-                    gia2 = decimalFormat.format(gia);
-                    tv_detail_tien_nuoc.setText(gia2 + "k");
-                } else if (response.body().getTienNuoc() >= trieu) {
-                    gia = response.body().getTienNuoc() / trieu;
-                    gia2 = decimalFormat.format(gia);
-                    tv_detail_tien_nuoc.setText(gia2 + " triệu");
-                }
-
-                tv_detail_mo_ta.setText(response.body().getMoTa()+"");
-
-                tv_detail_dia_chi.setText(response.body().getDiaChiChiTiet()+"");
-
             }
             @Override
             public void onFailure(Call<PhongTro> call, Throwable t) {
@@ -294,11 +273,13 @@ public class MyRoomFragment extends AbstractFragment{
         call.enqueue(new Callback<PhongTro>() {
             @Override
             public void onResponse(Call<PhongTro> call, Response<PhongTro> response) {
-                for (HinhAnh hinhAnh : response.body().getHinhAnhPhongTro()) {
-                    listHinhAnh.add(hinhAnh);
+                if (response.body()!=null) {
+                    for (HinhAnh hinhAnh : response.body().getHinhAnhPhongTro()) {
+                        listHinhAnh.add(hinhAnh);
 
+                    }
+                    adapterHinhAnh.notifyDataSetChanged();
                 }
-                adapterHinhAnh.notifyDataSetChanged();
             }
 
             @Override

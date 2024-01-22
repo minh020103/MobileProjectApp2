@@ -122,17 +122,19 @@ public class EditProfileActivity extends AppCompatActivity {
         call.enqueue(new Callback<ChuTro>() {
             @Override
             public void onResponse(Call<ChuTro> call, Response<ChuTro> response) {
-                ChuTro chuTro = response.body();
-                if (response.body().getHinh() != null)
-                Glide.with(EditProfileActivity.this.getLayoutInflater().getContext()).load(Const.DOMAIN + response.body().getHinh()).into(imgViewProfileEdit);
-                else {
-                    imgViewProfileEdit.setImageResource(R.drawable.khongcoanh);
+                if (response.body()!=null) {
+                    ChuTro chuTro = response.body();
+                    if (response.body().getHinh() != null)
+                        Glide.with(EditProfileActivity.this.getLayoutInflater().getContext()).load(Const.DOMAIN + response.body().getHinh()).into(imgViewProfileEdit);
+                    else {
+                        imgViewProfileEdit.setImageResource(R.drawable.khongcoanh);
+                    }
+                    edtName.setText(response.body().getTen());
+                    edtPhone.setText(response.body().getSoDienThoai());
+                    edtNameBank.setText(response.body().getTenChuTaiKhoanNganHang());
+                    edtStkBank.setText(response.body().getSoTaiKhoanNganHang());
+                    editPrFile(chuTro);
                 }
-                edtName.setText(response.body().getTen());
-                edtPhone.setText(response.body().getSoDienThoai());
-                edtNameBank.setText(response.body().getTenChuTaiKhoanNganHang());
-                edtStkBank.setText(response.body().getSoTaiKhoanNganHang());
-                editPrFile(chuTro);
             }
 
             @Override

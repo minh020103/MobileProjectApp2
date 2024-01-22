@@ -91,8 +91,10 @@ public class RoomRandomActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<List<PhongTro>> call, Response<List<PhongTro>> response) {
                 if (response.code() == 200){
-                    listPhong.addAll(response.body());
-                    phongAdapter.notifyDataSetChanged();
+                    if (response.body()!=null) {
+                        listPhong.addAll(response.body());
+                        phongAdapter.notifyDataSetChanged();
+                    }
                 }
             }
 
@@ -137,20 +139,22 @@ public class RoomRandomActivity extends AppCompatActivity {
                         @Override
                         public void onResponse(Call<PhongBinhLuan> call, Response<PhongBinhLuan> response) {
                             if (response.code() == 201) {
-                                edtComment.setText("");
-                                listComment.addFirst(response.body());
-                                commentAdapter.notifyDataSetChanged();
-                                databaseReference.child("comment").child(listPhong.get(position).getId()+"").child(response.body().getId()+"").setValue(response.body().getId()).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                    @Override
-                                    public void onSuccess(Void unused) {
-                                        Log.d("TAG", "onDataChange: NEW OK");
-                                    }
-                                }).addOnFailureListener(new OnFailureListener() {
-                                    @Override
-                                    public void onFailure(@NonNull Exception e) {
+                                if (response.body()!=null) {
+                                    edtComment.setText("");
+                                    listComment.addFirst(response.body());
+                                    commentAdapter.notifyDataSetChanged();
+                                    databaseReference.child("comment").child(listPhong.get(position).getId() + "").child(response.body().getId() + "").setValue(response.body().getId()).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void unused) {
+                                            Log.d("TAG", "onDataChange: NEW OK");
+                                        }
+                                    }).addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
 
-                                    }
-                                });
+                                        }
+                                    });
+                                }
                             }
                         }
 
@@ -185,9 +189,11 @@ public class RoomRandomActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<List<PhongBinhLuan>> call, Response<List<PhongBinhLuan>> response) {
                 if (response.code() == 200) {
-                    listComment.clear();
-                    listComment.addAll(response.body());
-                    commentAdapter.notifyDataSetChanged();
+                    if (response.body()!=null) {
+                        listComment.clear();
+                        listComment.addAll(response.body());
+                        commentAdapter.notifyDataSetChanged();
+                    }
                 }
             }
 

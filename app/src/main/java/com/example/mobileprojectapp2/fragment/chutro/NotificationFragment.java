@@ -121,10 +121,12 @@ public class NotificationFragment extends AbstractFragment{
                                 @Override
                                 public void onResponse(Call<Integer> call, Response<Integer> response) {
                                     if (response.code() == 200) {
-                                        badgeDrawableNotifyKQ.setVisible(true);
-                                        badgeDrawableNotifyKQ.setNumber(response.body());
-                                        if (response.body() == 0)
-                                            badgeDrawableNotifyKQ.setVisible(false);
+                                        if (response.body()!=null) {
+                                            badgeDrawableNotifyKQ.setVisible(true);
+                                            badgeDrawableNotifyKQ.setNumber(response.body());
+                                            if (response.body() == 0)
+                                                badgeDrawableNotifyKQ.setVisible(false);
+                                        }
                                     }
                                 }
 
@@ -154,10 +156,12 @@ public class NotificationFragment extends AbstractFragment{
                                 @Override
                                 public void onResponse(Call<Integer> call, Response<Integer> response) {
                                     if (response.code() == 200) {
-                                        badgeDrawableNotifyYC.setVisible(true);
-                                        badgeDrawableNotifyYC.setNumber(response.body());
-                                        if (response.body() == 0)
-                                            badgeDrawableNotifyYC.setVisible(false);
+                                        if (response.body() != null) {
+                                            badgeDrawableNotifyYC.setVisible(true);
+                                            badgeDrawableNotifyYC.setNumber(response.body());
+                                            if (response.body() == 0)
+                                                badgeDrawableNotifyYC.setVisible(false);
+                                        }
                                     }
                                 }
 

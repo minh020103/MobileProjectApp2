@@ -74,10 +74,12 @@ public class RenterActivity extends AppCompatActivity {
                 @Override
                 public void onResponse(Call<Integer> call, Response<Integer> response) {
                     if (response.code() == 200) {
-                        badgeNotification.setVisible(true);
-                        badgeNotification.setNumber(response.body());
-                        if (response.body() == 0)
-                            badgeNotification.setVisible(false);
+                        if (response.body()!=null) {
+                            badgeNotification.setVisible(true);
+                            badgeNotification.setNumber(response.body());
+                            if (response.body() == 0)
+                                badgeNotification.setVisible(false);
+                        }
                     }
                 }
                 @Override
@@ -91,9 +93,7 @@ public class RenterActivity extends AppCompatActivity {
 
             }
         });
-        BadgeDrawable badgeMessage = bottomNavigationViewNguoiThue.getOrCreateBadge(R.id.navMessage);
-        badgeMessage.setVisible(true);
-        badgeMessage.setNumber(10);
+
         adapter = new RenterViewPage2Adapter(this);
 
         list.add(new HomeFragment());

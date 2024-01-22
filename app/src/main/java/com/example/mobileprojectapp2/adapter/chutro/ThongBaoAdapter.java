@@ -74,6 +74,9 @@ public class ThongBaoAdapter extends RecyclerView.Adapter<ThongBaoAdapter.MyView
 
     @Override
     public int getItemCount() {
+        if(list==null){
+            return 0;
+        }
         return list.size();
     }
 

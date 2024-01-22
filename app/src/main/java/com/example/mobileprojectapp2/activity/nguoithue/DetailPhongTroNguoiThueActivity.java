@@ -28,6 +28,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -46,8 +47,10 @@ import com.example.mobileprojectapp2.api.chutro.ApiServiceNghiem;
 import com.example.mobileprojectapp2.api.chutro.ApiServicePhuc;
 import com.example.mobileprojectapp2.api.nguoithue.ApiServicePhuc2;
 
+import com.example.mobileprojectapp2.component.MComponent;
 import com.example.mobileprojectapp2.component.MFCM;
 import com.example.mobileprojectapp2.datamodel.HinhAnh;
+import com.example.mobileprojectapp2.datamodel.PhongBinhLuan;
 import com.example.mobileprojectapp2.datamodel.PhongNguoiThue;
 import com.example.mobileprojectapp2.datamodel.PhongTinNhan;
 import com.example.mobileprojectapp2.datamodel.VideoReview;
@@ -60,13 +63,19 @@ import com.example.mobileprojectapp2.recyclerviewadapter.chutro.PhongTroChuTroAd
 import com.example.mobileprojectapp2.recyclerviewadapter.chutro.TienIchAdapter;
 import com.example.mobileprojectapp2.recyclerviewadapter.nguoithue.PhucDanhSachPhongGoiYAdapter;
 import com.example.mobileprojectapp2.recyclerviewadapter.nguoithue.PhucNguoiThueAdapter;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.android.material.button.MaterialButton;
+import com.google.firebase.database.ValueEventListener;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 
 import okhttp3.MediaType;
@@ -88,21 +97,23 @@ public class DetailPhongTroNguoiThueActivity extends AppCompatActivity {
     private LinearLayoutManager layoutManagerTienIch = new LinearLayoutManager(DetailPhongTroNguoiThueActivity.this);
     private LinearLayoutManager layoutManagerNguoiThue = new LinearLayoutManager(DetailPhongTroNguoiThueActivity.this);
     private LinearLayoutManager layoutManagerPhongGoiY = new LinearLayoutManager(DetailPhongTroNguoiThueActivity.this);
-    //    private CircleIndicator3 ci_3;
+
     private RecyclerView rcvListTienIchNguoiThue, rcvListNguoiThue, rcvDSPhongGoiY;
     private HinhAnhAdapter adapterHinhAnh;
     private ViewPager2 mViewPager2;
     private List<TienIch> listTienIch;
     private List<HinhAnh> listHinhAnh;
+    private LinkedList<PhongBinhLuan> listComment;
     private List<PhongNguoiThue> listNguoiThue;
     private PhucNguoiThueAdapter adapterNguoiThue;
     private List<com.example.mobileprojectapp2.datamodels.PhongTro> listPhongGoiY;
     private PhucDanhSachPhongGoiYAdapter adapterPhongGoiY;
     private RelativeLayout rlt_tren_dsnt;
-    private int idPhong = 1;
-    private int idTaiKhoan = 22;
-    private LinearLayout llXemThem, llThuGon, ll_dsnt, llDatPhong, llGoi, llChat, ll_dsp_chu_tro;
-    private int idTaiKhoanNhan;
+    private int idPhong;
+    private int idTaiKhoan;
+    private LinearLayout llXemThem, llThuGon, ll_dsnt, llDatPhong, llGoi, llChat,
+            ll_dsp_chu_tro, ll_phong_cho_xac_nhan, ll_phong_dang_cho;
+    private LinearLayout ll_danh_gia, ll_binh_luan;
     private ProgressDialog mProgressDialog;
     SharedPreferences sharedPreferences;
     Intent intentChuTro;
@@ -176,7 +187,7 @@ public class DetailPhongTroNguoiThueActivity extends AppCompatActivity {
                     call.enqueue(new Callback<Integer>() {
                         @Override
                         public void onResponse(Call<Integer> call, Response<Integer> response) {
-                            if (response != null) {
+                            if (response.body() != null) {
                                 if (response.body() == -1) {
                                     RequestBody senderID = RequestBody.create(MediaType.parse("multipart/form-data"), idTaiKhoan + "");
                                     RequestBody nguoiThueID = RequestBody.create(MediaType.parse("multipart/form-data"), listNguoiThue.get(position).getNguoiThue().getIdTaiKhoan() + "");
@@ -184,7 +195,7 @@ public class DetailPhongTroNguoiThueActivity extends AppCompatActivity {
                                     taoPhong.enqueue(new Callback<PhongTinNhan>() {
                                         @Override
                                         public void onResponse(Call<PhongTinNhan> call, Response<PhongTinNhan> response) {
-                                            if (response != null) {
+                                            if (response.body() != null) {
                                                 intentNguoiThue.putExtra("idPhong", response.body().getId());
                                             }
                                         }
@@ -242,9 +253,136 @@ public class DetailPhongTroNguoiThueActivity extends AppCompatActivity {
             }
         });
 
+        adapterTienIch.setOnClick(new TienIchAdapter.OnClick() {
+            @Override
+            public void onClickItemListener(int position, View view) {
 
+            }
+        });
+
+
+        ll_phong_cho_xac_nhan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(DetailPhongTroNguoiThueActivity.this);
+                builder.setMessage("Bạn muốn xóa yêu cầu đặt phòng này ?")
+                        .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Call<Integer> call = ApiServicePhuc2.apiService.deleteYeuCauDatPhong(idTaiKhoan);
+                                call.enqueue(new Callback<Integer>() {
+                                    @Override
+                                    public void onResponse(Call<Integer> call, Response<Integer> response) {
+                                        if (response.body() != null) {
+                                            databaseReference.child("yeuCau").setValue(idTaiKhoan).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                @Override
+                                                public void onSuccess(Void unused) {
+
+                                                }
+                                            }).addOnFailureListener(new OnFailureListener() {
+                                                @Override
+                                                public void onFailure(@NonNull Exception e) {
+
+                                                }
+                                            });
+                                            alertSuccess("Xóa thành công");
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onFailure(Call<Integer> call, Throwable t) {
+
+                                    }
+                                });
+                            }
+                        }).setNegativeButton("Hủy", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                mProgressDialog.cancel();
+                            }
+                        });
+                builder.create();
+                builder.show();
+            }
+        });
+
+        coSuThayDoi();
+
+        ll_binh_luan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Animation anim = AnimationUtils.loadAnimation(DetailPhongTroNguoiThueActivity.this, R.anim.item_click);
+                v.startAnimation(anim);
+                Log.d("TAG", "onClick: " + idPhong);
+                Log.d("TAG", "onClick: " + idTaiKhoan);
+                MComponent.comment(DetailPhongTroNguoiThueActivity.this, null, idPhong, listComment, idTaiKhoan);
+            }
+        });
+
+        ll_danh_gia.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Animation anim = AnimationUtils.loadAnimation(DetailPhongTroNguoiThueActivity.this, R.anim.item_click);
+                v.startAnimation(anim);
+                MComponent.rating(DetailPhongTroNguoiThueActivity.this, idPhong, idTaiKhoan);
+            }
+        });
     }
 
+    private void coSuThayDoi() {
+        databaseReference.child("yeuCau").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                getIdYeuCauDatPhong();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    private void getIdYeuCauDatPhong() {
+        Call<YeuCauDatPhong> call = ApiServicePhuc2.apiService.getYCDPByIdNguoiGui(idTaiKhoan);
+        call.enqueue(new Callback<YeuCauDatPhong>() {
+            @Override
+            public void onResponse(Call<YeuCauDatPhong> call, Response<YeuCauDatPhong> response) {
+                if (response.body() != null) {
+                    Log.d("TAG", "onResponse: "+response.body().getTrangThaiXacThuc());
+                    if (idPhong == response.body().getIdPhong()) {
+                        ll_phong_cho_xac_nhan.setVisibility(View.VISIBLE);
+                        llDatPhong.setVisibility(View.GONE);
+//                        ll_phong_dang_cho.setVisibility(View.GONE);
+                    } else {
+                        ll_phong_cho_xac_nhan.setVisibility(View.GONE);
+                        llDatPhong.setVisibility(View.VISIBLE);
+//                        ll_phong_dang_cho.setVisibility(View.VISIBLE);
+//                        ll_phong_dang_cho.setOnClickListener(new View.OnClickListener() {
+//                            @Override
+//                            public void onClick(View v) {
+//                                if (response.body().getIdTaiKhoanGui() == -1) {
+//                                    alertSuccess("Bạn chưa yêu cầu đăng ký phòng nào!");
+//                                } else {
+//                                    finish();
+//                                    Intent intent = new Intent(DetailPhongTroNguoiThueActivity.this, DetailPhongTroNguoiThueActivity.class);
+//                                    intent.putExtra("idPhong", response.body().getIdPhong());
+//                                    startActivity(intent);
+//                                }
+//                            }
+//                        });
+                    }
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<YeuCauDatPhong> call, Throwable t) {
+                ll_phong_cho_xac_nhan.setVisibility(View.GONE);
+            }
+        });
+
+    }
 
 
     private void _initialization() {
@@ -254,6 +392,7 @@ public class DetailPhongTroNguoiThueActivity extends AppCompatActivity {
         listHinhAnh = new ArrayList<>();
         listNguoiThue = new ArrayList<>();
         listPhongGoiY = new ArrayList<>();
+        listComment = new LinkedList<>();
 
         mProgressDialog = new ProgressDialog(this);
         mProgressDialog.setMessage("Please wait ...");
@@ -292,18 +431,20 @@ public class DetailPhongTroNguoiThueActivity extends AppCompatActivity {
         call.enqueue(new Callback<Integer>() {
             @Override
             public void onResponse(Call<Integer> call, Response<Integer> response) {
-                Log.d("TAG", "onResponse: " + response.body());
-                if (response.body() == 0) {
-                    img_like.setVisibility(View.VISIBLE);
-                    img_like2.setVisibility(View.GONE);
-                    check = 0;
-                    Log.d("TAG", "onClickX: " + check);
-                } else {
-                    check = 1;
-                    img_like.setVisibility(View.GONE);
-                    img_like2.setVisibility(View.VISIBLE);
-                    Log.d("TAG", "onClick: " + check);
+                if (response.body() != null) {
+                    if (response.body() == 0) {
+                        img_like.setVisibility(View.VISIBLE);
+                        img_like2.setVisibility(View.GONE);
+                        check = 0;
+                        Log.d("TAG", "onClickX: " + check);
+                    } else {
+                        check = 1;
+                        img_like.setVisibility(View.GONE);
+                        img_like2.setVisibility(View.VISIBLE);
+                        Log.d("TAG", "onClick: " + check);
+                    }
                 }
+
 
             }
 
@@ -350,6 +491,7 @@ public class DetailPhongTroNguoiThueActivity extends AppCompatActivity {
                         check = 0;
                         checkLike();
                     }
+
                     @Override
                     public void onFailure(Call<Integer> call, Throwable t) {
 
@@ -494,20 +636,30 @@ public class DetailPhongTroNguoiThueActivity extends AppCompatActivity {
                                 call.enqueue(new Callback<KetQuaGuiYeuCauDatPhong>() {
                                     @Override
                                     public void onResponse(Call<KetQuaGuiYeuCauDatPhong> call, Response<KetQuaGuiYeuCauDatPhong> responseYC) {
-
-                                        if (responseYC.code() == 200){
-                                            if (responseYC.body() == null){
-                                                databaseReference.child("notification").child(idNhan + "").child(responseYC.body().getObject().getId() + "").setValue(0).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        if (responseYC.code() == 200) {
+                                            if (responseYC.body() != null) {
+                                                databaseReference.child("yeuCau").setValue(0).addOnSuccessListener(new OnSuccessListener<Void>() {
                                                     @Override
                                                     public void onSuccess(Void unused) {
-                                                        Log.d("TAG", "onSuccess: PUSH NOTIFICATION REALTIME");
+
                                                     }
                                                 });
-                                                MFCM.sendNotificationForAccountID(responseYC.body().getObject().getIdTaiKhoanNhan(),responseYC.body().getObject().getId(), "Yêu cầu đặt phòng", "Có yêu cầu đặt phòng mới hãy vào xem");
+                                                if (responseYC.body() != null) {
+                                                    Log.d("TAGM", "onResponse: "+idNhan);
+                                                    databaseReference.child("notification").child(idNhan + "").child(idNhan+"").setValue(new Date().getSeconds()).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                        @Override
+                                                        public void onSuccess(Void unused) {
+                                                            Log.d("TAG", "onSuccess: PUSH NOTIFICATION REALTIME");
+                                                        }
+                                                    });
+                                                    if(responseYC.body().getObject() != null)
+                                                    MFCM.sendNotificationForAccountID(responseYC.body().getObject().getIdTaiKhoanNhan(), responseYC.body().getObject().getId(), "Yêu cầu đặt phòng", "Có yêu cầu đặt phòng mới hãy vào xem");
+                                                }
                                             }
-                                        }
-                                       alertSuccess(responseYC.body().getMessage());
 
+                                            alertSuccess(responseYC.body().getMessage());
+
+                                        }
                                     }
 
                                     @Override
@@ -533,187 +685,210 @@ public class DetailPhongTroNguoiThueActivity extends AppCompatActivity {
         call.enqueue(new Callback<PhongTro>() {
             @Override
             public void onResponse(Call<PhongTro> call, Response<PhongTro> response) {
-                tvDienTichNguoiThue.setText(response.body().getDienTich() + "㎡");
-                tvQuanNguoiThue.setText(response.body().getIdQuan() + "");
+                if (response.body() != null) {
 
-                float trieu = 1000000;
-                float ngan = 1000;
-                float tram = 100000;
-                float gia;
-                String gia2;
-                DecimalFormat decimalFormat = new DecimalFormat("#.#");
-                if (response.body().getGia() < tram) {
-                    tvGiaNguoiThue.setText("Đang cập nhật");
-                } else if (response.body().getGia() < trieu) {
-                    gia = response.body().getGia() / ngan;
-                    gia2 = decimalFormat.format(gia);
-                    tvGiaNguoiThue.setText(gia2 + "k /tháng");
-                } else if (response.body().getGia() >= trieu) {
-                    gia = response.body().getGia() / trieu;
-                    gia2 = decimalFormat.format(gia);
-                    tvGiaNguoiThue.setText(gia2 + " triệu/tháng");
-                }
+                    tvDienTichNguoiThue.setText(response.body().getDienTich() + "㎡");
+                    tvQuanNguoiThue.setText(response.body().getSoPhong() + "");
 
-                if (response.body().getLoaiPhong() == PHONG_DON || response.body().getLoaiPhong() == PHONG_TRONG) {
-                    tvLoaiPhongNguoiThue.setText("Phòng đơn");
-                    ll_dsnt.setVisibility(View.GONE);
-                    tv_dsnt.setVisibility(View.GONE);
-                    rlt_tren_dsnt.setVisibility(View.GONE);
-                } else {
-                    tvLoaiPhongNguoiThue.setText("Phòng ghép");
-                    ll_dsnt.setVisibility(View.VISIBLE);
-                    getDanhSachNguoiThue();
-                    rlt_tren_dsnt.setVisibility(View.VISIBLE);
-                }
+                    float trieu = 1000000;
+                    float ngan = 1000;
+                    float tram = 100000;
+                    float gia;
+                    String gia2;
+                    DecimalFormat decimalFormat = new DecimalFormat("#.#");
+                    if (response.body().getGia() < tram) {
+                        tvGiaNguoiThue.setText("Đang cập nhật");
+                    } else if (response.body().getGia() < trieu) {
+                        gia = response.body().getGia() / ngan;
+                        gia2 = decimalFormat.format(gia);
+                        tvGiaNguoiThue.setText(gia2 + "k /tháng");
+                    } else if (response.body().getGia() >= trieu) {
+                        gia = response.body().getGia() / trieu;
+                        gia2 = decimalFormat.format(gia);
+                        tvGiaNguoiThue.setText(gia2 + " triệu/tháng");
+                    }
 
-                tvMoTaNguoiThue.setText(response.body().getMoTa());
-                if (response.body().getGioiTinh() == MALE_GENDERS) {
-                    tvGioTinhNguoiThue.setText("Nam ♂");
-                } else {
-                    tvGioTinhNguoiThue.setText("Nữ ♀");
-                }
-                tvTienDienNguoiThue.setText(response.body().getTienDien() + "k");
-                tvTienCocNguoiThue.setText(response.body().getTienCoc() + " ₫");
-                tvTienNuocNguoiThue.setText(response.body().getTienNuoc() + "k");
-                tvSoLuongToiDaNguoiThue.setText(response.body().getSoLuongToiDa() + " người");
-                tvDiaChiNguoiThue.setText(response.body().getDiaChiChiTiet());
+                    float tienCoc;
+                    String tinCoc2;
+                    if (response.body().getTienCoc() < tram) {
+                        tvTienCocNguoiThue.setText("Đang cập nhật");
+                    } else if (response.body().getTienCoc() < trieu) {
+                        tienCoc = response.body().getTienCoc() / ngan;
+                        tinCoc2 = decimalFormat.format(tienCoc);
+                        tvTienCocNguoiThue.setText(tinCoc2 + "k");
+                    } else if (response.body().getTienCoc() >= trieu) {
+                        tienCoc = response.body().getTienCoc() / trieu;
+                        tinCoc2 = decimalFormat.format(tienCoc);
+                        tvTienCocNguoiThue.setText(tinCoc2 + " triệu");
+                    }
 
 
-                if (response.body().getHinhAnhPhongTro().size() == 0) {
+
+                    if (response.body().getLoaiPhong() == PHONG_DON || response.body().getLoaiPhong() == PHONG_TRONG) {
+                        tvLoaiPhongNguoiThue.setText("Phòng đơn");
+                        ll_dsnt.setVisibility(View.GONE);
+                        tv_dsnt.setVisibility(View.GONE);
+                        rlt_tren_dsnt.setVisibility(View.GONE);
+                    } else {
+                        tvLoaiPhongNguoiThue.setText("Phòng ghép");
+                        ll_dsnt.setVisibility(View.VISIBLE);
+                        getDanhSachNguoiThue();
+                        rlt_tren_dsnt.setVisibility(View.VISIBLE);
+                    }
+
+                    tvMoTaNguoiThue.setText(response.body().getMoTa());
+                    if (response.body().getGioiTinh() == MALE_GENDERS) {
+                        tvGioTinhNguoiThue.setText("Nam ♂");
+                    } else {
+                        tvGioTinhNguoiThue.setText("Nữ ♀");
+                    }
+                    tvTienDienNguoiThue.setText(response.body().getTienDien() + "k");
+
+
+
+
+
+                    tvTienNuocNguoiThue.setText(response.body().getTienNuoc() + "k");
+                    tvSoLuongToiDaNguoiThue.setText(response.body().getSoLuongToiDa() + " người");
+                    tvDiaChiNguoiThue.setText(response.body().getDiaChiChiTiet());
+
+
+                    if (response.body().getHinhAnhPhongTro().size() == 0) {
 //                    tvHinhAnhRong.setVisibility(View.VISIBLE);
-                    img_hinh_anh_rong.setVisibility(View.VISIBLE);
-                    mViewPager2.setVisibility(View.GONE);
+                        img_hinh_anh_rong.setVisibility(View.VISIBLE);
+                        mViewPager2.setVisibility(View.GONE);
 
-                }
-                for (HinhAnh hinhAnh : response.body().getHinhAnhPhongTro()) {
-                    listHinhAnh.add(hinhAnh);
-                }
-                adapterHinhAnh.notifyDataSetChanged();
-
-
-                if (response.body().getDanhSachTienIch().size() == 0) {
-                    tvTienIchRong.setVisibility(View.VISIBLE);
-                }
-                if (response.body().getDanhSachTienIch().size() <= 8) {
-                    llXemThem.setVisibility(View.GONE);
-                }
-                int i = 0;
-                for (TienIch tienIch : response.body().getDanhSachTienIch()) {
-                    listTienIch.add(tienIch);
-                    i++;
-                    if (i == 8) {
-                        break;
                     }
-                }
-                adapterTienIch.notifyDataSetChanged();
-                llXemThem.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Animation anim = AnimationUtils.loadAnimation(DetailPhongTroNguoiThueActivity.this, R.anim.item_click);
-                        v.startAnimation(anim);
-                        listTienIch.clear();
-                        for (TienIch tienIch : response.body().getDanhSachTienIch()) {
-                            listTienIch.add(tienIch);
-                        }
-                        adapterTienIch.notifyDataSetChanged();
+                    for (HinhAnh hinhAnh : response.body().getHinhAnhPhongTro()) {
+                        listHinhAnh.add(hinhAnh);
+                    }
+                    adapterHinhAnh.notifyDataSetChanged();
+
+
+                    if (response.body().getDanhSachTienIch().size() == 0) {
+                        tvTienIchRong.setVisibility(View.VISIBLE);
+                    }
+                    if (response.body().getDanhSachTienIch().size() <= 8) {
                         llXemThem.setVisibility(View.GONE);
-                        llThuGon.setVisibility(View.VISIBLE);
-                    }
-                });
-                llThuGon.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Animation anim = AnimationUtils.loadAnimation(DetailPhongTroNguoiThueActivity.this, R.anim.item_click);
-                        v.startAnimation(anim);
-                        listTienIch.clear();
-                        int i = 0;
-                        for (TienIch tienIch : response.body().getDanhSachTienIch()) {
-                            listTienIch.add(tienIch);
-                            i++;
-                            if (i == 8)
-                                break;
-                        }
-                        adapterTienIch.notifyDataSetChanged();
+                    } else {
                         llXemThem.setVisibility(View.VISIBLE);
-                        llThuGon.setVisibility(View.GONE);
                     }
-                });
-                if (response.body().getPhongTroChuTro() != null) {
-                    int idNhan = response.body().getPhongTroChuTro().getIdTaiKhoan();
-                    RequestBody senderID = RequestBody.create(MediaType.parse("multipart/form-data"), idTaiKhoan + "");
-                    RequestBody nguoiThueID = RequestBody.create(MediaType.parse("multipart/form-data"), idNhan + "");
-                    Call<Integer> calll = ApiServiceNghiem.apiService.layIdPhongTinNhan(idTaiKhoan, response.body().getPhongTroChuTro().getIdTaiKhoan());
-                    calll.enqueue(new Callback<Integer>() {
-                        @Override
-                        public void onResponse(Call<Integer> call, Response<Integer> response) {
-                            if (response.body() == -1) {
-                                Call<PhongTinNhan> taoPhong = ApiServiceNghiem.apiService.taoPhongTinNhan(senderID, nguoiThueID);
-                                taoPhong.enqueue(new Callback<PhongTinNhan>() {
-                                    @Override
-                                    public void onResponse(Call<PhongTinNhan> call, Response<PhongTinNhan> response) {
-                                        if (response != null) {
-                                            intentChuTro.putExtra("idPhong", response.body().getId());
-                                        }
-                                    }
-
-                                    @Override
-                                    public void onFailure(Call<PhongTinNhan> call, Throwable t) {
-
-                                    }
-                                });
-                            } else {
-                                intentChuTro.putExtra("idPhong", response.body());
-                            }
-
+                    int i = 0;
+                    for (TienIch tienIch : response.body().getDanhSachTienIch()) {
+                        listTienIch.add(tienIch);
+                        i++;
+                        if (i == 8) {
+                            break;
                         }
-
+                    }
+                    adapterTienIch.notifyDataSetChanged();
+                    llXemThem.setOnClickListener(new View.OnClickListener() {
                         @Override
-                        public void onFailure(Call<Integer> call, Throwable t) {
-
+                        public void onClick(View v) {
+                            listTienIch.clear();
+                            for (TienIch tienIch : response.body().getDanhSachTienIch()) {
+                                listTienIch.add(tienIch);
+                            }
+                            adapterTienIch.notifyDataSetChanged();
+                            llXemThem.setVisibility(View.GONE);
+                            llThuGon.setVisibility(View.VISIBLE);
                         }
                     });
-                    tvTenChuTro.setText(response.body().getPhongTroChuTro().getTen());
-                    tvSDTChuTro.setText(response.body().getPhongTroChuTro().getSoDienThoai());
-                    idTaiKhoanNhan = response.body().getPhongTroChuTro().getId();
-                    int idNhanYC = response.body().getPhongTroChuTro().getIdTaiKhoan();
-                    requestYeuCauDatPhong(idNhanYC);
-                    Glide.with(DetailPhongTroNguoiThueActivity.this.getLayoutInflater().getContext()).load(Const.DOMAIN + response.body().getPhongTroChuTro().getHinh()).into(imageViewChuTro);
-                    intentChuTro.putExtra("idDoiPhuong", response.body().getPhongTroChuTro().getIdTaiKhoan());
-                    intentChuTro.putExtra("ten", response.body().getPhongTroChuTro().getTen());
-                    intentChuTro.putExtra("hinh", response.body().getPhongTroChuTro().getHinh());
-                    capNhatPhongGoiY(idTaiKhoan, response.body().getIdQuan(), response.body().getTienCoc(), response.body().getGioiTinh());
-                    getDanhSachPhongGoiY();
-                    ll_dsp_chu_tro.setOnClickListener(new View.OnClickListener() {
+                    llThuGon.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            listTienIch.clear();
+                            int i = 0;
+                            for (TienIch tienIch : response.body().getDanhSachTienIch()) {
+                                listTienIch.add(tienIch);
+                                i++;
+                                if (i == 8)
+                                    break;
+                            }
+                            adapterTienIch.notifyDataSetChanged();
+                            llXemThem.setVisibility(View.VISIBLE);
+                            llThuGon.setVisibility(View.GONE);
+                        }
+                    });
+                    if (response.body().getPhongTroChuTro() != null) {
+                        int idNhan = response.body().getPhongTroChuTro().getIdTaiKhoan();
+                        RequestBody senderID = RequestBody.create(MediaType.parse("multipart/form-data"), idTaiKhoan + "");
+                        RequestBody nguoiThueID = RequestBody.create(MediaType.parse("multipart/form-data"), idNhan + "");
+                        Call<Integer> calll = ApiServiceNghiem.apiService.layIdPhongTinNhan(idTaiKhoan, response.body().getPhongTroChuTro().getIdTaiKhoan());
+                        calll.enqueue(new Callback<Integer>() {
+                            @Override
+                            public void onResponse(Call<Integer> call, Response<Integer> response) {
+                                if (response.body() != null) {
+                                    if (response.body() == -1) {
+                                        Call<PhongTinNhan> taoPhong = ApiServiceNghiem.apiService.taoPhongTinNhan(senderID, nguoiThueID);
+                                        taoPhong.enqueue(new Callback<PhongTinNhan>() {
+                                            @Override
+                                            public void onResponse(Call<PhongTinNhan> call, Response<PhongTinNhan> response) {
+                                                if (response.body() != null) {
+                                                    intentChuTro.putExtra("idPhong", response.body().getId());
+                                                }
+                                            }
+
+                                            @Override
+                                            public void onFailure(Call<PhongTinNhan> call, Throwable t) {
+
+                                            }
+                                        });
+                                    } else {
+                                        intentChuTro.putExtra("idPhong", response.body());
+                                    }
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Call<Integer> call, Throwable t) {
+
+                            }
+                        });
+                        tvTenChuTro.setText(response.body().getPhongTroChuTro().getTen());
+                        tvSDTChuTro.setText(response.body().getPhongTroChuTro().getSoDienThoai());
+//                        idTaiKhoanNhan = response.body().getPhongTroChuTro().getId();
+
+                        int idNhanYC = response.body().getPhongTroChuTro().getIdTaiKhoan();
+                        requestYeuCauDatPhong(idNhanYC);
+                        Glide.with(DetailPhongTroNguoiThueActivity.this.getLayoutInflater().getContext()).load(Const.DOMAIN + response.body().getPhongTroChuTro().getHinh()).into(imageViewChuTro);
+                        intentChuTro.putExtra("idDoiPhuong", response.body().getPhongTroChuTro().getIdTaiKhoan());
+                        intentChuTro.putExtra("ten", response.body().getPhongTroChuTro().getTen());
+                        intentChuTro.putExtra("hinh", response.body().getPhongTroChuTro().getHinh());
+                        capNhatPhongGoiY(idTaiKhoan, response.body().getIdQuan(), response.body().getTienCoc(), response.body().getGioiTinh());
+                        getDanhSachPhongGoiY();
+                        ll_dsp_chu_tro.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Animation anim = AnimationUtils.loadAnimation(DetailPhongTroNguoiThueActivity.this, R.anim.item_click);
+                                v.startAnimation(anim);
+                                Intent intent = new Intent(DetailPhongTroNguoiThueActivity.this, DanhSachPhongTheoChuTroActivity.class);
+                                intent.putExtra("idTaiKhoan", response.body().getPhongTroChuTro().getIdTaiKhoan());
+                                Log.d("TAG", "onClick: " + response.body().getPhongTroChuTro().getIdTaiKhoan());
+                                intent.putExtra("idChuTro", response.body().getPhongTroChuTro().getId());
+                                Log.d("TAG", "onClick: " + response.body().getPhongTroChuTro().getId());
+
+
+                                startActivity(intent);
+                            }
+                        });
+                    } else {
+                        alertSuccess("Phòng trọ không tồn tại chủ trọ ");
+                    }
+
+                    llGoi.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             Animation anim = AnimationUtils.loadAnimation(DetailPhongTroNguoiThueActivity.this, R.anim.item_click);
                             v.startAnimation(anim);
-                            Intent intent = new Intent(DetailPhongTroNguoiThueActivity.this, DanhSachPhongTheoChuTroActivity.class);
-                            intent.putExtra("idTaiKhoan", response.body().getPhongTroChuTro().getIdTaiKhoan());
-                            Log.d("TAG", "onClick: " + response.body().getPhongTroChuTro().getIdTaiKhoan());
-                            intent.putExtra("idChuTro", response.body().getPhongTroChuTro().getId());
-                            Log.d("TAG", "onClick: " + response.body().getPhongTroChuTro().getId());
-
-
-                            startActivity(intent);
+                            String phone = "tel:" + tvSDTChuTro.getText();
+                            Intent callIntent = new Intent(Intent.ACTION_DIAL);
+                            callIntent.setData(Uri.parse(phone));
+                            startActivity(callIntent);
                         }
                     });
-                } else {
-                    alertSuccess("Có phòng không tồn tại chủ trọ");
+
                 }
-                llGoi.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Animation anim = AnimationUtils.loadAnimation(DetailPhongTroNguoiThueActivity.this, R.anim.item_click);
-                        v.startAnimation(anim);
-                        String phone = "tel:" + tvSDTChuTro.getText();
-                        Intent callIntent = new Intent(Intent.ACTION_DIAL);
-                        callIntent.setData(Uri.parse(phone));
-                        startActivity(callIntent);
-                    }
-                });
-
-
             }
 
             @Override
@@ -721,6 +896,7 @@ public class DetailPhongTroNguoiThueActivity extends AppCompatActivity {
                 Toast.makeText(DetailPhongTroNguoiThueActivity.this, "Error not call Api", Toast.LENGTH_SHORT).show();
             }
         });
+
     }
 
     private void getDanhSachNguoiThue() {
@@ -729,9 +905,11 @@ public class DetailPhongTroNguoiThueActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<List<PhongNguoiThue>> call, Response<List<PhongNguoiThue>> response) {
                 if (response.code() == 200) {
-                    listNguoiThue.clear();
-                    listNguoiThue.addAll(response.body());
-                    adapterNguoiThue.notifyDataSetChanged();
+                    if (response.body()!=null) {
+                        listNguoiThue.clear();
+                        listNguoiThue.addAll(response.body());
+                        adapterNguoiThue.notifyDataSetChanged();
+                    }
                 }
             }
 
@@ -750,9 +928,11 @@ public class DetailPhongTroNguoiThueActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<List<com.example.mobileprojectapp2.datamodels.PhongTro>> call, Response<List<com.example.mobileprojectapp2.datamodels.PhongTro>> response) {
                 if (response.code() == 200) {
-                    listPhongGoiY.clear();
-                    listPhongGoiY.addAll(response.body());
-                    adapterPhongGoiY.notifyDataSetChanged();
+                    if (response.body()!=null) {
+                        listPhongGoiY.clear();
+                        listPhongGoiY.addAll(response.body());
+                        adapterPhongGoiY.notifyDataSetChanged();
+                    }
                 }
             }
 
@@ -762,6 +942,7 @@ public class DetailPhongTroNguoiThueActivity extends AppCompatActivity {
             }
         });
     }
+
 
     private void findViewById() {
         tvDienTichNguoiThue = findViewById(R.id.tv_detail_dien_tich_nguoi_thue);
@@ -784,8 +965,10 @@ public class DetailPhongTroNguoiThueActivity extends AppCompatActivity {
         tvSDTChuTro = findViewById(R.id.tv_sdt_chu_tro);
         img_hinh_anh_rong = findViewById(R.id.img_hinh_anh_rong);
         tv_dsnt = findViewById(R.id.tv_dsnt);
+
         img_like = findViewById(R.id.img_like1);
         img_like2 = findViewById(R.id.img_like2);
+//        img_delete = findViewById(R.id.img_delete);
 
         llThuGon = findViewById(R.id.ll_thu_gon);
         llXemThem = findViewById(R.id.ll_xem_them);
@@ -795,8 +978,12 @@ public class DetailPhongTroNguoiThueActivity extends AppCompatActivity {
         image_gif = findViewById(R.id.image_gif);
         llGoi = findViewById(R.id.ll_goi);
         ll_dsp_chu_tro = findViewById(R.id.ll_dsp_chu_tro);
+        ll_phong_cho_xac_nhan = findViewById(R.id.ll_phong_cho_xac_nhan);
+        ll_phong_dang_cho = findViewById(R.id.ll_phong_dang_cho);
         tvTienIchRong = findViewById(R.id.tv_tien_ich_rong);
-//        ci_3 = findViewById(R.id.ci_3);
+
+        ll_danh_gia = findViewById(R.id.ll_danh_gia);
+        ll_binh_luan = findViewById(R.id.ll_binh_luan);
 
         mViewPager2 = findViewById(R.id.view_pager_2_nguoi_thue);
         mViewPager2.setOffscreenPageLimit(3);
@@ -841,7 +1028,6 @@ public class DetailPhongTroNguoiThueActivity extends AppCompatActivity {
         new AlertDialog.Builder(this)
                 .setTitle("Thông báo")
                 .setMessage(s)
-                .setIcon(R.drawable.iconp_check)
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {

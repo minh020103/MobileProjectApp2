@@ -265,9 +265,11 @@ public class EditRoomActivity extends AppCompatActivity {
                                 ApiServiceMinh.apiService.xoaHinhCuaPhong(listHinhAnh.get(position).getId()).enqueue(new Callback<Integer>() {
                                     @Override
                                     public void onResponse(Call<Integer> call, Response<Integer> response) {
-                                        listHinhAnh.remove(listHinhAnh.get(position));
-                                        imagesOldAdapter.notifyDataSetChanged();
-                                        Toast.makeText(EditRoomActivity.this, "Xóa thành công hình trên database", Toast.LENGTH_SHORT).show();
+                                        if (response.body()!=null) {
+                                            listHinhAnh.remove(listHinhAnh.get(position));
+                                            imagesOldAdapter.notifyDataSetChanged();
+                                            Toast.makeText(EditRoomActivity.this, "Xóa thành công hình trên database", Toast.LENGTH_SHORT).show();
+                                        }
                                     }
 
                                     @Override
@@ -317,10 +319,12 @@ public class EditRoomActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<List<TienIch>> call, Response<List<TienIch>> response) {
                 if (response.code() == 200) {
-                    listTienIch.clear();
-                    listTienIch.addAll(response.body());
+                    if (response.body() != null) {
+                        listTienIch.clear();
+                        listTienIch.addAll(response.body());
+                    }
+                    utilitiesAdapter.notifyDataSetChanged();
                 }
-                utilitiesAdapter.notifyDataSetChanged();
             }
 
             @Override
@@ -335,11 +339,13 @@ public class EditRoomActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<List<Quan>> call, Response<List<Quan>> response) {
                 if (response.code() == 200) {
-                    lisQuan.clear();
-                    lisQuan.addAll(response.body());
-                    Log.d("TAG", "onResponse quan: " + lisQuan);
+                    if (response.body() != null) {
+                        lisQuan.clear();
+                        lisQuan.addAll(response.body());
+                        Log.d("TAG", "onResponse quan: " + lisQuan);
+                    }
+                    districtAdapter.notifyDataSetChanged();
                 }
-                districtAdapter.notifyDataSetChanged();
             }
 
             @Override
@@ -712,9 +718,11 @@ public class EditRoomActivity extends AppCompatActivity {
                         @Override
                         public void onResponse(Call<Integer> call, Response<Integer> response) {
                             if (response.code() == 200) {
-                                if (response.body() == 1) {
-                                    Toast.makeText(EditRoomActivity.this, "Sửa thành công", Toast.LENGTH_SHORT).show();
-                                    finish();
+                                if (response.body() != null) {
+                                    if (response.body() == 1) {
+                                        Toast.makeText(EditRoomActivity.this, "Sửa thành công", Toast.LENGTH_SHORT).show();
+                                        finish();
+                                    }
                                 }
                             }
                         }
@@ -776,9 +784,11 @@ public class EditRoomActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<List<Phuong>> call, Response<List<Phuong>> response) {
                 if (response.code() == 200) {
-                    listPhuong.clear();
-                    listPhuong.addAll(response.body());
-                    wardAdapter.notifyDataSetChanged();
+                    if (response.body()!=null) {
+                        listPhuong.clear();
+                        listPhuong.addAll(response.body());
+                        wardAdapter.notifyDataSetChanged();
+                    }
                 }
             }
 

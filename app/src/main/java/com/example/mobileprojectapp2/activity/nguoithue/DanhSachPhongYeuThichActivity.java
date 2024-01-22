@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.example.mobileprojectapp2.R;
 import com.example.mobileprojectapp2.api.Const;
@@ -32,6 +33,7 @@ public class DanhSachPhongYeuThichActivity extends AppCompatActivity {
 
     private ImageView imgViewBack;
     private RecyclerView rcvListPhongYeuThich;
+    private TextView tv_thongbao;
     private PhucDanhSachPhongGoiYAdapter adapter;
     private LinearLayoutManager layoutManager = new LinearLayoutManager(DanhSachPhongYeuThichActivity.this);
     private List<PhongTro> listPhongYeuThich;
@@ -62,7 +64,7 @@ public class DanhSachPhongYeuThichActivity extends AppCompatActivity {
 
             @Override
             public void OnCLickLike(int position, View v) {
-                alertSuccess("Coming soon");
+                alertComingSoon("Coming soon");
             }
         });
 
@@ -73,6 +75,12 @@ public class DanhSachPhongYeuThichActivity extends AppCompatActivity {
             }
         });
 
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         getDataPhongYeuThichApi();
     }
 
@@ -82,9 +90,16 @@ public class DanhSachPhongYeuThichActivity extends AppCompatActivity {
            @Override
            public void onResponse(Call<List<PhongTro>> call, Response<List<PhongTro>> response) {
                if (response.code() == 200) {
-                   listPhongYeuThich.clear();
-                   listPhongYeuThich.addAll(response.body());
-                   adapter.notifyDataSetChanged();
+                   if (response.body()!=null) {
+                       if (response.body().size() == 0) {
+                           tv_thongbao.setVisibility(View.VISIBLE);
+                       } else {
+                           tv_thongbao.setVisibility(View.GONE);
+                           listPhongYeuThich.clear();
+                           listPhongYeuThich.addAll(response.body());
+                           adapter.notifyDataSetChanged();
+                       }
+                   }
                }
            }
 
@@ -96,6 +111,7 @@ public class DanhSachPhongYeuThichActivity extends AppCompatActivity {
     }
 
     private void anhXa() {
+        tv_thongbao = findViewById(R.id.tv_thongbao);
         imgViewBack = findViewById(R.id.img_back_detail);
         rcvListPhongYeuThich = findViewById(R.id.rcv_list_ds_phong_yeu_thich);
 
@@ -106,7 +122,7 @@ public class DanhSachPhongYeuThichActivity extends AppCompatActivity {
         rcvListPhongYeuThich.setAdapter(adapter);
     }
 
-    private void alertSuccess(String s) {
+    private void alertComingSoon(String s) {
         new AlertDialog.Builder(this)
                 .setTitle("Thông báo")
                 .setMessage(s)

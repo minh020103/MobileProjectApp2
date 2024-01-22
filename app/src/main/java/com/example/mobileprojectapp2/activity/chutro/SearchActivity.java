@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.mobileprojectapp2.R;
@@ -34,6 +35,7 @@ public class SearchActivity extends AppCompatActivity {
     private PhongTroChuTroAdapter adapter;
     private LinearLayoutManager layoutManager;
     private SearchView searchView;
+    private TextView tv_thongbao, tv_sai_noi_dung;
 
     private List<PhongTroChuTro2> mList;
     private ImageView imgViewBack;
@@ -53,6 +55,8 @@ public class SearchActivity extends AppCompatActivity {
         mList = new LinkedList<>();
         imgViewBack = findViewById(R.id.img_back);
         rcvListPhongTro = findViewById(R.id.rcv_list_phong_tro);
+        tv_thongbao = findViewById(R.id.tv_thongbao);
+        tv_sai_noi_dung = findViewById(R.id.tv_sai_noi_dung);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         rcvListPhongTro.setLayoutManager(linearLayoutManager);
 
@@ -108,9 +112,18 @@ public class SearchActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<List<PhongTroChuTro2>> call, Response<List<PhongTroChuTro2>> response) {
                 if (response.code() == 200) {
-                    mList.clear();
-                    mList.addAll(response.body());
-                    adapter.notifyDataSetChanged();
+                    if (response.body()!=null) {
+                        if (response.body().size() == 0) {
+                            tv_thongbao.setVisibility(View.VISIBLE);
+                            tv_sai_noi_dung.setVisibility(View.GONE);
+
+                        } else {
+                            mList.clear();
+                            mList.addAll(response.body());
+                            adapter.notifyDataSetChanged();
+                        }
+                    }
+
                 }
             }
 

@@ -16,6 +16,7 @@ import com.bumptech.glide.Glide;
 import com.example.mobileprojectapp2.R;
 import com.example.mobileprojectapp2.api.Const;
 import com.example.mobileprojectapp2.model.TienIch;
+import com.example.mobileprojectapp2.recyclerviewadapter.nguoithue.PhucGioiTinhAdapter;
 
 import java.util.List;
 
@@ -23,6 +24,11 @@ public class TienIchAdapter extends RecyclerView.Adapter<TienIchAdapter.TienIchV
     private Activity activity;
     private List<TienIch> list;
     private int layoutID;
+    private OnClick onClick;
+
+    public void setOnClick(OnClick onClick) {
+        this.onClick = onClick;
+    }
 
     public TienIchAdapter(Activity activity, List<TienIch> list, int layoutID) {
         this.activity = activity;
@@ -52,7 +58,12 @@ public class TienIchAdapter extends RecyclerView.Adapter<TienIchAdapter.TienIchV
 
         holder.tvTenTienIch.setText(tienIch.getTen());
         Glide.with(activity.getLayoutInflater().getContext()).load(Const.DOMAIN + tienIch.getHinh()).into(holder.imageTienIch);
-
+        holder.onClickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onClick.onClickItemListener(position, view);
+            }
+        };
     }
 
     @Override
@@ -62,13 +73,17 @@ public class TienIchAdapter extends RecyclerView.Adapter<TienIchAdapter.TienIchV
         }
         return 0;
     }
+    public interface OnClick{
+        void onClickItemListener(int position, View view);
+    }
 
-    public class TienIchViewHolder extends RecyclerView.ViewHolder {
+    public class TienIchViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
 
         private ImageView imageTienIch;
         private TextView tvTenTienIch;
         LinearLayout llBg;
+        View.OnClickListener onClickListener;
 
 
         public TienIchViewHolder(@NonNull View itemView) {
@@ -76,7 +91,12 @@ public class TienIchAdapter extends RecyclerView.Adapter<TienIchAdapter.TienIchV
             llBg = itemView.findViewById(R.id.ll_bg_item_loai_phong);
             imageTienIch = itemView.findViewById(R.id.img_tien_ich);
             tvTenTienIch = itemView.findViewById(R.id.tv_ten_tien_ich);
+            itemView.setOnClickListener(this);
         }
 
+        @Override
+        public void onClick(View v) {
+            onClickListener.onClick(v);
+        }
     }
 }

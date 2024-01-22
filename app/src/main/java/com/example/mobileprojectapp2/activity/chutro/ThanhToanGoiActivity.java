@@ -31,13 +31,18 @@ import android.widget.TextView;
 import com.example.mobileprojectapp2.R;
 import com.example.mobileprojectapp2.api.Const;
 import com.example.mobileprojectapp2.api.chutro.ApiServiceDung;
+import com.example.mobileprojectapp2.component.MFCM;
 import com.example.mobileprojectapp2.datamodel.Goi;
 import com.example.mobileprojectapp2.datamodel.YeuCauDKG;
 import com.example.mobileprojectapp2.model.Admin;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.makeramen.roundedimageview.RoundedImageView;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Date;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -49,7 +54,7 @@ import retrofit2.Response;
 public class ThanhToanGoiActivity extends AppCompatActivity {
     TextView so_phong,so_ngay,gia,so_tai_khoan,ten_admin;
     RoundedImageView imgCK;
-    int idGoi,idTaiKhoan;
+    int idGoi,idTaiKhoan, idChuTro;
     private SharedPreferences shared;
 
     ImageView img_Back;
@@ -58,6 +63,7 @@ public class ThanhToanGoiActivity extends AppCompatActivity {
 
     public static final String TAG = ThanhToanGoiActivity.class.getName();
     private static final int MY_REQUEST_CODE = 10;
+    DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
 
     private ActivityResultLauncher<Intent> mActivityResultLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
@@ -103,6 +109,7 @@ public class ThanhToanGoiActivity extends AppCompatActivity {
 
         shared = getApplicationContext().getSharedPreferences(Const.PRE_LOGIN, Context.MODE_PRIVATE);
         idTaiKhoan = shared.getInt("idTaiKhoan", -1);
+        idChuTro = shared.getInt("idChuTro", -1);
 
         img_Back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -127,9 +134,9 @@ public class ThanhToanGoiActivity extends AppCompatActivity {
 
     private void uploadDangKiGoiAPI() {
         if (mUri != null){
-            String idCT = idTaiKhoan+"";
+            String idCT = idChuTro+"";
             String idG = idGoi+"";
-            RequestBody idChuTro = RequestBody.create(MediaType.parse("multipart/form-data"), idCT);
+            RequestBody idChuTro2 = RequestBody.create(MediaType.parse("multipart/form-data"), idCT);
             RequestBody idGoiDK = RequestBody.create(MediaType.parse("multipart/form-data"), idG);
 
             String strRealPath = RealPathUtil.getRealPath(getApplicationContext(), mUri);
@@ -138,14 +145,24 @@ public class ThanhToanGoiActivity extends AppCompatActivity {
 
             RequestBody requestBodyImage = RequestBody.create(MediaType.parse("multipart/form-data"), file);
             MultipartBody.Part mulPart = MultipartBody.Part.createFormData("hinhAnhChuyenKhoan", file.getName(), requestBodyImage);
-            ApiServiceDung.apiServiceDung.yeucaudangkygoi(idChuTro,idGoiDK,mulPart).enqueue(new Callback<YeuCauDKG>() {
+            ApiServiceDung.apiServiceDung.yeucaudangkygoi(idChuTro2,idGoiDK,mulPart).enqueue(new Callback<YeuCauDKG>() {
                 @Override
                 public void onResponse(Call<YeuCauDKG> call, Response<YeuCauDKG> response) {
-                    alertSuccess("Gửi Yêu Cầu Thành Công");
+                    if (response.body()!=null) {
+                        alertSuccess("Gửi Yêu Cầu Thành Công");
+                        Log.d("TAG", "onResponse: " + idChuTro);
+                        databaseReference.child("notification_admin").child(response.body().getIdGoi() + "").setValue(new Date().getSeconds()).addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void unused) {
+                                Log.d(TAG, "onSuccess: PUSH NOTIFICATION REALTIME");
+                            }
+                        });
+                        MFCM.sendNotificationForAccountID(1, new Date().getSeconds(), "Yêu cầu đăng ký gói", "id chủ trọ: " + idChuTro + " id gói: " + idG);
+                    }
                 }
                 @Override
                 public void onFailure(Call<YeuCauDKG> call, Throwable t) {
-                    alertFail("call loi");
+                    alertFail("Bạn đã gửi 1 yêu cầu trước đó hãy đợi admin xác nhận");
                 }
             });
         }else{
@@ -157,10 +174,12 @@ public class ThanhToanGoiActivity extends AppCompatActivity {
         ApiServiceDung.apiServiceDung.getPakageByIdAPI(key).enqueue(new Callback<Goi>() {
             @Override
             public void onResponse(Call<Goi> call, Response<Goi> response) {
-                Goi goi = response.body();
-                so_ngay.setText(String.valueOf(goi.getThoiHan()) + " Ngày");
-                so_phong.setText(String.valueOf(goi.getSoLuongPhongToiDa())+" Phòng");
-                gia.setText(String.valueOf(goi.getGia())+" VND");
+                if (response.body()!=null) {
+                    Goi goi = response.body();
+                    so_ngay.setText(String.valueOf(goi.getThoiHan()) + " Ngày");
+                    so_phong.setText(String.valueOf(goi.getSoLuongPhongToiDa()) + " Phòng");
+                    gia.setText(String.valueOf(goi.getGia()) + " VND");
+                }
             }
             @Override
             public void onFailure(Call<Goi> call, Throwable t) {
@@ -173,9 +192,11 @@ public class ThanhToanGoiActivity extends AppCompatActivity {
         ApiServiceDung.apiServiceDung.layThongTinAdmin(1).enqueue(new Callback<Admin>() {
             @Override
             public void onResponse(Call<Admin> call, Response<Admin> response) {
-                Admin admin = response.body();
-                ten_admin.setText(String.valueOf(admin.getTenChuTaiKhoan()));
-                so_tai_khoan.setText(String.valueOf(admin.getSoTaiKhoanNganHang()));
+                if (response.body()!=null) {
+                    Admin admin = response.body();
+                    ten_admin.setText(String.valueOf(admin.getTenChuTaiKhoan()));
+                    so_tai_khoan.setText(String.valueOf(admin.getSoTaiKhoanNganHang()));
+                }
             }
 
             @Override
@@ -190,13 +211,20 @@ public class ThanhToanGoiActivity extends AppCompatActivity {
             openGallery();
             return;
         }
-        //Xin cap phep
-        if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
-            openGallery();
-
+        else if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
+            if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+                openGallery();
+            } else {
+                String[] permission = {Manifest.permission.READ_EXTERNAL_STORAGE};
+                requestPermissions(permission, MY_REQUEST_CODE);
+            }
         } else {
-            String[] permission = {Manifest.permission.READ_EXTERNAL_STORAGE};
-            requestPermissions(permission, MY_REQUEST_CODE);
+            if (checkSelfPermission(Manifest.permission.READ_MEDIA_IMAGES) == PackageManager.PERMISSION_GRANTED) {
+                openGallery();
+            } else {
+                String[] permission = {Manifest.permission.READ_MEDIA_IMAGES};
+                requestPermissions(permission, MY_REQUEST_CODE);
+            }
         }
     }
     private void openGallery() {

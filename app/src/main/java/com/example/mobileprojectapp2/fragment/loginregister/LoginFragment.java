@@ -151,36 +151,41 @@ public class LoginFragment extends AbstractFragment {
         call.enqueue(new Callback<TaiKhoan>() {
             @Override
             public void onResponse(Call<TaiKhoan> call, Response<TaiKhoan> response) {
-                FirebaseAuth firebaseAuth;
-                firebaseAuth = FirebaseAuth.getInstance();
-                firebaseAuth.signInWithEmailAndPassword(tenTaiKhoan, matKhau).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
-                    @Override
-                    public void onSuccess(AuthResult authResult) {
-                        MComponent.saveTokenAppDevice(response.body().getId());
-                        sharedPreferences.edit().putInt("idTaiKhoan", response.body().getId()).commit();
-//                        sharedPreferences.edit().putInt("loaiTaiKhoan", response.body().getLoaiTaiKhoan()).commit();
-                        if (response.body().getLoaiTaiKhoan() == 1) {
-                            sharedPreferences.edit().putInt("idChuTro", response.body().getNguoiDangNhap().getId()).commit();
-                            sharedPreferences.edit().putInt("trangThaiXacThuc", response.body().getNguoiDangNhap().getXacThuc()).commit();
+                if(response.body()!=null) {
 
-                            batTatProgessBar(1);
-                            Intent intent = new Intent(getContext(), MotelRoomOwnerActivity.class);
-                            startActivity(intent);
-                        } else {
-                            batTatProgessBar(1);
-                            sharedPreferences.edit().putInt("idNguoiThue", response.body().getNguoiDangNhap().getId()).commit();
-                            Intent intent = new Intent(getContext(), RenterActivity.class);
-                            startActivity(intent);
+
+                    FirebaseAuth firebaseAuth;
+                    firebaseAuth = FirebaseAuth.getInstance();
+                    firebaseAuth.signInWithEmailAndPassword(tenTaiKhoan, matKhau).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
+                        @Override
+                        public void onSuccess(AuthResult authResult) {
+                            MComponent.saveTokenAppDevice(response.body().getId());
+                            sharedPreferences.edit().putInt("idTaiKhoan", response.body().getId()).commit();
+                            sharedPreferences.edit().putInt("loaiTaiKhoan", response.body().getLoaiTaiKhoan()).commit();
+                            sharedPreferences.edit().putString("tenCuaSender", response.body().getNguoiDangNhap().getTen()).commit();
+                            if (response.body().getLoaiTaiKhoan() == 1) {
+                                sharedPreferences.edit().putInt("idChuTro", response.body().getNguoiDangNhap().getId()).commit();
+                                sharedPreferences.edit().putInt("trangThaiXacThuc", response.body().getNguoiDangNhap().getXacThuc()).commit();
+
+                                batTatProgessBar(1);
+                                Intent intent = new Intent(getContext(), MotelRoomOwnerActivity.class);
+                                startActivity(intent);
+                            } else {
+                                batTatProgessBar(1);
+                                sharedPreferences.edit().putInt("idNguoiThue", response.body().getNguoiDangNhap().getId()).commit();
+                                Intent intent = new Intent(getContext(), RenterActivity.class);
+                                startActivity(intent);
+                            }
                         }
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
+                    }).addOnFailureListener(new OnFailureListener() {
 
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        batTatProgessBar(1);
-                        thongBao("Tài Khoản Hoặc Mật Khẩu Không Đúng 1");
-                    }
-                });
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            batTatProgessBar(1);
+                            thongBao("Tài Khoản Hoặc Mật Khẩu Không Đúng 1");
+                        }
+                    });
+                }
             }
 
             @Override

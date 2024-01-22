@@ -69,36 +69,41 @@ public class RenterDetailActivity extends AppCompatActivity {
                 call.enqueue(new Callback<Integer>() {
                     @Override
                     public void onResponse(Call<Integer> call, Response<Integer> response) {
-                        if(response.body()==-1){
-                            RequestBody senderID = RequestBody.create(MediaType.parse("multipart/form-data"),senderId+"");
-                            RequestBody nguoiThueID = RequestBody.create(MediaType.parse("multipart/form-data"),nguoiThue.getIdTaiKhoan()+"");
-                            Call<PhongTinNhan> phongTinNhanCall = ApiServiceNghiem.apiService.taoPhongTinNhan(senderID,nguoiThueID);
-                            phongTinNhanCall.enqueue(new Callback<PhongTinNhan>() {
-                                @Override
-                                public void onResponse(Call<PhongTinNhan> call, Response<PhongTinNhan> response) {
-                                    Call<Integer> phong = ApiServiceNghiem.apiService.layIdPhongTinNhan(senderId,nguoiThue.getIdTaiKhoan());
-                                    phong.enqueue(new Callback<Integer>() {
-                                        @Override
-                                        public void onResponse(Call<Integer> call, Response<Integer> response) {
+                        if (response.body()!=null) {
+                            if (response.body() == -1) {
+                                RequestBody senderID = RequestBody.create(MediaType.parse("multipart/form-data"), senderId + "");
+                                RequestBody nguoiThueID = RequestBody.create(MediaType.parse("multipart/form-data"), nguoiThue.getIdTaiKhoan() + "");
+                                Call<PhongTinNhan> phongTinNhanCall = ApiServiceNghiem.apiService.taoPhongTinNhan(senderID, nguoiThueID);
+                                phongTinNhanCall.enqueue(new Callback<PhongTinNhan>() {
+                                    @Override
+                                    public void onResponse(Call<PhongTinNhan> call, Response<PhongTinNhan> response) {
+                                        if (response.body()!=null) {
+                                            Call<Integer> phong = ApiServiceNghiem.apiService.layIdPhongTinNhan(senderId, nguoiThue.getIdTaiKhoan());
+                                            phong.enqueue(new Callback<Integer>() {
+                                                @Override
+                                                public void onResponse(Call<Integer> call, Response<Integer> response) {
+                                                    if (response.body()!=null) {
+                                                        thietLapIntent(response.body());
+                                                    }
+                                                }
 
-                                            thietLapIntent(response.body());
+                                                @Override
+                                                public void onFailure(Call<Integer> call, Throwable t) {
+
+                                                }
+                                            });
                                         }
+                                    }
 
-                                        @Override
-                                        public void onFailure(Call<Integer> call, Throwable t) {
+                                    @Override
+                                    public void onFailure(Call<PhongTinNhan> call, Throwable t) {
 
-                                        }
-                                    });
-                                }
+                                    }
+                                });
+                            } else {
 
-                                @Override
-                                public void onFailure(Call<PhongTinNhan> call, Throwable t) {
-
-                                }
-                            });
-                        }else{
-
-                            thietLapIntent(response.body());
+                                thietLapIntent(response.body());
+                            }
                         }
                     }
                     @Override
@@ -154,20 +159,18 @@ public class RenterDetailActivity extends AppCompatActivity {
         ApiServiceKiet.apiServiceKiet.getChiTietNguoiThueTheoIdPhong(id).enqueue(new Callback<NguoiThue>() {
             @Override
             public void onResponse(Call<NguoiThue> call, Response<NguoiThue> response) {
-                NguoiThue renter = response.body();
-                Glide.with(getApplicationContext()).load(Const.DOMAIN + renter.getHinh()).into(imgNguoiThueChiTiet);
-                tvTenNguoiThueChiTiet.setText(renter.getTen());
-                tvSDTNguoiThueChiTiet.setText(renter.getSoDienThoai());
-                sdt = renter.getSoDienThoai();
-                if (renter.getGioiTinh() == 1)
-                {
-                    tvGioiTinhNguoiThueChiTiet.setText("Nu");
+                if (response.body()!=null) {
+                    NguoiThue renter = response.body();
+                    Glide.with(getApplicationContext()).load(Const.DOMAIN + renter.getHinh()).into(imgNguoiThueChiTiet);
+                    tvTenNguoiThueChiTiet.setText(renter.getTen());
+                    tvSDTNguoiThueChiTiet.setText(renter.getSoDienThoai());
+                    sdt = renter.getSoDienThoai();
+                    if (renter.getGioiTinh() == 1) {
+                        tvGioiTinhNguoiThueChiTiet.setText("Nu");
+                    } else {
+                        tvGioiTinhNguoiThueChiTiet.setText("Nam");
+                    }
                 }
-                else
-                {
-                    tvGioiTinhNguoiThueChiTiet.setText("Nam");
-                }
-
 
             }
             @Override
